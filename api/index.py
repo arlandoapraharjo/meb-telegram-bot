@@ -167,26 +167,35 @@ async def lifespan(fastapi_app: FastAPI):
 app = FastAPI(
     title="English Buddy Telegram Bot - Vercel Serverless Webhook",
     lifespan=lifespan,
+    redirect_slashes=False,
 )
 
 
 @app.get("/")
 @app.get("/api")
+@app.get("/api/index")
+@app.get("/api/index.py")
+@app.get("/api/webhook")
 async def health_check():
     """
-    GET / & GET /api: Quick browser and uptime monitoring verification.
+    Health check: Quick browser and uptime monitoring verification.
+    Matches all GET routes regardless of Vercel rewrite collapsing.
     """
     return {"status": "healthy"}
 
 
 @app.post("/api/webhook")
 @app.post("/webhook")
+@app.post("/api/index")
+@app.post("/api/index.py")
+@app.post("/")
 async def telegram_webhook(
     request: Request,
     x_telegram_bot_api_secret_token: str | None = Header(
         None, alias="X-Telegram-Bot-Api-Secret-Token"
     ),
 ):
+
     """
     POST /api/webhook: Main Telegram Webhook endpoint.
     - Validates X-Telegram-Bot-Api-Secret-Token against WEBHOOK_SECRET.
