@@ -2,7 +2,7 @@
 Google Gemini Flash AI Service for English Buddy Bot.
 
 Features:
-- Direct async integration with Google GenAI SDK (gemini-2.5-flash).
+- Direct async integration with Google GenAI SDK (gemini-3.8-flash).
 - Conversational English Coach persona: allows natural chat, but actively analyzes
   sentence structure, highlights grammatical/lexical errors, and suggests native phrasing.
 - Generates dynamic, level-adapted exercises across all 6 learning modes.
