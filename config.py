@@ -78,27 +78,26 @@ GEMINI_TIMEOUT_SECONDS: Final[float] = 7.0
 LEVEL_BEGINNER: Final[str] = "beginner"
 LEVEL_INTERMEDIATE: Final[str] = "intermediate"
 LEVEL_ADVANCED: Final[str] = "advanced"
-DEFAULT_LEVEL: Final[str] = LEVEL_INTERMEDIATE
+DEFAULT_LEVEL: Final[str] = LEVEL_BEGINNER
 
 LEVEL_INFO: Final[dict[str, dict[str, str]]] = {
-
     LEVEL_BEGINNER: {
-        "title": "Beginner (A1–A2)",
-        "badge": "🟢 Beginner (A1–A2)",
+        "title": "Pemula (Beginner)",
+        "badge": "🟢 Pemula (Beginner)",
         "icon": "🟢",
-        "description": "Essential daily words, simple present/past, and foundational phrases.",
+        "description": "To be (am/is/are), anggota tubuh (body parts), kata kerja dasar, & susun kata mudah.",
     },
     LEVEL_INTERMEDIATE: {
-        "title": "Intermediate (B1–B2)",
-        "badge": "🟡 Intermediate (B1–B2)",
+        "title": "Menengah (Intermediate)",
+        "badge": "🟡 Menengah (Intermediate)",
         "icon": "🟡",
-        "description": "Conversational fluency, idioms, phrasal verbs, and varied tenses.",
+        "description": "Kegiatan sehari-hari (daily activity), kata sifat, cerita pendek fabel, & kuis to be.",
     },
     LEVEL_ADVANCED: {
-        "title": "Advanced (C1–C2)",
-        "badge": "🔴 Advanced (C1–C2)",
+        "title": "Percaya Diri (Confident)",
+        "badge": "🔴 Percaya Diri (Confident)",
         "icon": "🔴",
-        "description": "Subtle nuances, complex grammar, academic vocabulary, and professional flow.",
+        "description": "Mengenal jenis kata (part of speech), recount text (pengalaman kemarin), & kalimat aktif.",
     },
 }
 
@@ -125,68 +124,81 @@ ACTION_SET_LEVEL_PREFIX: Final[str] = "action_set_level_"
 
 # --- Learning Modes Display Content ---
 LEARNING_MODES: Final[dict[str, dict[str, Any]]] = {
-
     MODE_DAILY_CONVERSATION: {
-        "button_text": "💬 Daily Conversation",
-        "title": "Daily Conversation Practice",
-        "badge": "💬 Topic: Ordering Coffee & Light Lunch",
+        "button_text": "💬 Percakapan Harian",
+        "title": "Percakapan Sehari-hari (Daily Conversation)",
+        "badge": "💬 Sapaan & Perkenalan Diri",
         "prompt": (
-            "<b>☕ Scenario:</b> You are at a cozy neighborhood café in London.\n\n"
-            "<b>Barista:</b> <i>\"Hi there! Welcome to The Daily Roast. What can I get started for you today?\"</i>\n\n"
-            "👉 <b>Your Turn:</b> Reply with what you would say to order your drink, ask for almond milk, or ask about pastries!"
+            "👋 <b>Halo! Mari berkenalan! (Let's introduce yourself)</b>\n\n"
+            "<b>Teman baru:</b> <i>\"Hello! My name is Budi. What is your name?\"</i>\n"
+            "<i>(Halo! Nama saya Budi. Siapa namamu?)</i>\n\n"
+            "👉 <b>Giliranmu (Your Turn):</b> Jawab dengan mengetik:\n"
+            "<code>My name is [namamu]</code>\n"
+            "<i>(Contoh: My name is Siti)</i>"
         ),
     },
     MODE_VOCABULARY: {
-        "button_text": "📚 Vocabulary",
-        "title": "Vocabulary Builder",
-        "badge": "📚 Word of the Day",
+        "button_text": "📚 Kosakata (Vocab)",
+        "title": "Belajar Kosakata (Vocabularies)",
+        "badge": "📚 Body Parts & Daily Activity",
         "prompt": (
-            "🌟 <b>Word:</b> <code>Serendipity</code> <i>/ˌser.ənˈdɪp.ə.ti/</i> (noun)\n\n"
-            "<b>Definition:</b> The occurrence and development of events by chance in a happy or beneficial way.\n\n"
-            "<b>Example Sentence:</b> <i>\"Finding my dream apartment while lost in the city was pure serendipity.\"</i>\n\n"
-            "👉 <b>Your Turn:</b> Send a sentence using <b>serendipity</b> or ask for 3 real-world synonyms!"
+            "🌟 <b>Kosakata Anggota Tubuh (Body Parts):</b>\n\n"
+            "• <b>Head</b> = Kepala\n"
+            "• <b>Eyes</b> = Mata\n"
+            "• <b>Nose</b> = Hidung\n"
+            "• <b>Mouth</b> = Mulut\n\n"
+            "👉 <b>Giliranmu (Your Turn):</b> Tulis 1 kata anggota tubuh di atas beserta artinya!\n"
+            "<i>(Contoh: Eyes = mata)</i>"
         ),
     },
     MODE_GRAMMAR: {
-        "button_text": "✏️ Grammar",
-        "title": "Grammar Clinic",
-        "badge": "✏️ Spot & Fix the Mistake",
+        "button_text": "✏️ Tata Bahasa (Grammar)",
+        "title": "Tata Bahasa Mudah (Grammar)",
+        "badge": "✏️ Belajar 'To Be' (am, is, are)",
         "prompt": (
-            "🔍 <b>Spot the grammatical error in this sentence:</b>\n\n"
-            "❌ <code>\"Neither of the managers were aware of the updated security policy.\"</code>\n\n"
-            "👉 <b>Your Turn:</b> Send the corrected sentence and explain why the original was incorrect!"
+            "🔍 <b>Aturan Dasar 'To Be' (am / is / are):</b>\n\n"
+            "• <b>I</b> pasangannya <b>am</b> ➡️ <i>I am a student.</i> (Saya seorang murid)\n"
+            "• <b>He / She</b> pasangannya <b>is</b> ➡️ <i>She is happy.</i> (Dia senang)\n"
+            "• <b>They / We / You</b> pasangannya <b>are</b> ➡️ <i>We are friends.</i> (Kami berteman)\n\n"
+            "❓ <b>Lengkapi kalimat ini:</b>\n"
+            "<code>I ___ a girl.</code> (Pilih: am / is / are)\n\n"
+            "👉 <b>Giliranmu (Your Turn):</b> Ketik to be yang tepat!"
         ),
     },
     MODE_READING: {
-        "button_text": "📖 Reading",
-        "title": "Reading Comprehension",
-        "badge": "📖 Mini-Reading Passage",
+        "button_text": "📖 Membaca (Reading)",
+        "title": "Membaca Teks Pendek (Reading)",
+        "badge": "📖 Descriptive Text: My Cat",
         "prompt": (
-            "📄 <b>Passage:</b>\n"
-            "<i>\"Bioluminescent organisms, such as deep-sea anglerfish and fireflies, produce light through a chemical reaction involving luciferin and luciferase. Unlike incandescent bulbs that waste 90% of their energy generating heat, bioluminescence is almost 100% efficient cold light.\"</i>\n\n"
-            "❓ <b>Question:</b> In what way is bioluminescence superior to traditional incandescent lighting?\n\n"
-            "👉 <b>Your Turn:</b> Reply with your answer in your own words!"
+            "📄 <b>Teks Deskriptif Sederhana: My Cat (Kucingku)</b>\n\n"
+            "<i>\"I have a cat. His name is Milo. He is cute and soft. He likes to eat fish.\"</i>\n\n"
+            "💡 <b>Kamus Mini:</b>\n"
+            "• cat = kucing | cute = lucu | likes = suka | fish = ikan\n\n"
+            "❓ <b>Pertanyaan:</b> Siapa nama kucing itu? (What is the cat's name?)\n\n"
+            "👉 <b>Giliranmu (Your Turn):</b> Jawab dengan nama kucing tersebut!"
         ),
     },
     MODE_SPEAKING: {
-        "button_text": "🗣️ Speaking",
-        "title": "Speaking & Pronunciation Lab",
-        "badge": "🗣️ Pronunciation & Fluency",
+        "button_text": "🗣️ Berbicara (Speaking)",
+        "title": "Latihan Bicara (Speaking)",
+        "badge": "🗣️ Sapaan & Kata Dasar",
         "prompt": (
-            "🎙️ <b>Tongue Twister & Rhythm Challenge:</b>\n"
-            "<i>\"Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked.\"</i>\n\n"
-            "🎯 <b>Focus:</b> Clear plosive /p/ sounds and consistent speaking rhythm.\n\n"
-            "👉 <b>Your Turn:</b> Record and send a voice message practicing this line, or write down any questions about natural linking sounds!"
+            "🎙️ <b>Latihan Mengucapkan Sapaan:</b>\n\n"
+            "<i>\"Good morning! How are you?\"</i>\n"
+            "<i>(Dibaca: Gud morniing! Hau ar yu?)</i>\n"
+            "<i>Artinya: Selamat pagi! Apa kabarmu?</i>\n\n"
+            "👉 <b>Giliranmu (Your Turn):</b> Kirim pesan suara (voice note) atau ketik kalimat sapaan di atas!"
         ),
     },
     MODE_CHALLENGE: {
-        "button_text": "🎮 English Challenge",
-        "title": "English Challenge Arena",
-        "badge": "🎮 Level 1: Sentence Unscramble",
+        "button_text": "🎮 Tantangan (Challenge)",
+        "title": "Tantangan Seru (English Challenge)",
+        "badge": "🎮 Susun Kata (Unscramble)",
         "prompt": (
-            "🧩 <b>Unscramble the words into a natural English idiom:</b>\n\n"
-            "<code>[ weather / under / feeling / today / a / bit / the / I'm ]</code>\n\n"
-            "👉 <b>Your Turn:</b> Send the unscrambled sentence and explain what the idiom means!"
+            "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+            "<code>[ girl / a / am / I ]</code>\n\n"
+            "💡 <i>Petunjuk: Mulai dengan kata 'I' (Saya)...</i>\n\n"
+            "👉 <b>Giliranmu (Your Turn):</b> Ketik susunan kalimat yang benar!"
         ),
     },
 }

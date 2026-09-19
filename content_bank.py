@@ -1,11 +1,18 @@
 """
 Curated Offline Exercise Bank & Random Generator for English Buddy Bot.
 
+Specially designed for Indonesian children and students from rural areas
+who are starting English from ground zero.
+
 Features:
-- Exactly 108 distinct, pedagogically categorized exercises (6 tracks x 3 CEFR levels x 6 exercises).
-- Sub-millisecond O(1) in-memory retrieval (uses under 100 KB RAM; zero performance impact).
+- Exactly 108 bite-sized, ultra-accessible exercises (6 tracks x 3 levels x 6 exercises).
+- Grammar: to be (am/is/are), verbs, adjectives, part of speech.
+- Vocabs: body parts (anggota tubuh), daily activities (kegiatan sehari-hari).
+- Reading: descriptive text, narrative text (fables), recount text (pengalaman lampau).
+- English Challenge (dimudahkan): easy unscramble ('I am a girl') & 'to be' fill-in-the-blank quizzes.
+- Sub-millisecond O(1) in-memory retrieval.
 - Consecutive duplicate suppression with exclude_id tracking.
-- Contextual offline feedback generation when AI service is unconfigured or offline.
+- Contextual, encouraging Indonesian offline feedback.
 """
 
 from __future__ import annotations
@@ -18,1122 +25,1394 @@ import config
 EXERCISE_BANK: Dict[str, Dict[str, List[Dict[str, Any]]]] = {
     # =========================================================================
     # 1. 💬 DAILY CONVERSATION (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
+    # Sapaan & percakapan sehari-hari yang mudah untuk anak sekolah di Indonesia
     # =========================================================================
     config.MODE_DAILY_CONVERSATION: {
         config.LEVEL_BEGINNER: [
             {
                 "id": "conv_beg_01",
-                "badge": "💬 Fast Food Counter",
+                "badge": "💬 Sapaan Pagi (Morning Greeting)",
                 "prompt": (
-                    "<b>🍔 Scenario:</b> You are at a burger counter.\n\n"
-                    "<b>Cashier:</b> <i>\"Hello! What can I get for you today? Meal or just the sandwich?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Reply with your order (food, drink, and if you want it for dine-in or takeaway)!"
+                    "<b>☀️ Situasi:</b> Kamu bertemu teman di depan gerbang sekolah pada pagi hari.\n\n"
+                    "<b>Teman:</b> <i>\"Good morning! How are you today?\"</i>\n"
+                    "<i>(Selamat pagi! Apa kabarmu hari ini?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Balas dengan mengetik:\n"
+                    "<code>Good morning! I am fine, thank you.</code>\n"
+                    "<i>(Artinya: Selamat pagi! Saya baik-baik saja, terima kasih.)</i>"
                 ),
             },
             {
                 "id": "conv_beg_02",
-                "badge": "💬 Asking for Directions",
+                "badge": "💬 Berkenalan Nama (Introducing Yourself)",
                 "prompt": (
-                    "<b>🗺️ Scenario:</b> You are looking for the central train station.\n\n"
-                    "<b>Local Passerby:</b> <i>\"Excuse me, you look a bit lost. Can I help you find something?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Ask politely how to get to the train station on foot!"
+                    "<b>👋 Situasi:</b> Ada murid baru di kelasmu yang ingin berkenalan.\n\n"
+                    "<b>Murid Baru:</b> <i>\"Hello! My name is Budi. What is your name?\"</i>\n"
+                    "<i>(Halo! Nama saya Budi. Siapa namamu?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik namamu dalam bahasa Inggris:\n"
+                    "<code>My name is [namamu]</code>\n"
+                    "<i>(Contoh: My name is Siti)</i>"
                 ),
             },
             {
                 "id": "conv_beg_03",
-                "badge": "💬 Checking in at a Hotel",
+                "badge": "💬 Menanyakan Umur (Asking Age)",
                 "prompt": (
-                    "<b>🏨 Scenario:</b> You arrive at the hotel reception desk after a long flight.\n\n"
-                    "<b>Receptionist:</b> <i>\"Good evening! Welcome to The Grand Hotel. Checking in tonight?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Greet the receptionist, state that you have a reservation under your name, and ask about breakfast hours!"
+                    "<b>🎂 Situasi:</b> Temanmu bertanya berapa umurmu sekarang.\n\n"
+                    "<b>Teman:</b> <i>\"How old are you?\"</i>\n"
+                    "<i>(Berapa usiamu?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Jawab dengan angka umurmu:\n"
+                    "<code>I am 10 years old.</code>\n"
+                    "<i>(Ganti angka 10 sesuai umurmu ya!)</i>"
                 ),
             },
             {
                 "id": "conv_beg_04",
-                "badge": "💬 Grocery Shopping",
+                "badge": "💬 Meminjam Pensil (Borrowing a Pencil)",
                 "prompt": (
-                    "<b>🍎 Scenario:</b> You cannot find eggs in the supermarket.\n\n"
-                    "<b>Staff Member:</b> <i>\"Hi there, need help finding anything in aisle four?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Ask where the fresh eggs and dairy products are located!"
+                    "<b>✏️ Situasi:</b> Pensilmu tertinggal di rumah, kamu ingin meminjam pensil teman.\n\n"
+                    "<b>Kamu:</b> <i>\"Can I borrow your pencil, please?\"</i>\n"
+                    "<i>(Bolehkah saya meminjam pensilmu?)</i>\n\n"
+                    "<b>Teman:</b> <i>\"Sure! Here you are.\"</i> <i>(Tentu! Ini dia.)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan terima kasih dengan mengetik:\n"
+                    "<code>Thank you very much!</code>"
                 ),
             },
             {
                 "id": "conv_beg_05",
-                "badge": "💬 Rideshare / Taxi",
+                "badge": "💬 Sama-sama (You're Welcome)",
                 "prompt": (
-                    "<b>🚕 Scenario:</b> You get into a taxi outside the airport.\n\n"
-                    "<b>Driver:</b> <i>\"Afternoon! Where are we heading today?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> State your destination hotel and ask approximately how long the trip will take!"
+                    "<b>🤝 Situasi:</b> Kamu membantu teman mengambilkan buku yang jatuh.\n\n"
+                    "<b>Teman:</b> <i>\"Thank you for helping me!\"</i>\n"
+                    "<i>(Terima kasih sudah membantuku!)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Jawab 'sama-sama' dengan mengetik:\n"
+                    "<code>You are welcome!</code>"
                 ),
             },
             {
                 "id": "conv_beg_06",
-                "badge": "💬 Introducing Yourself",
+                "badge": "💬 Berpamitan (Saying Goodbye)",
                 "prompt": (
-                    "<b>👋 Scenario:</b> A new neighbor moves in next door.\n\n"
-                    "<b>Neighbor:</b> <i>\"Hi! I just moved into apartment 3B today. I'm Alex.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Introduce yourself warmly, welcome them to the building, and offer help if needed!"
+                    "<b>🔔 Situasi:</b> Bel pulang sekolah berbunyi, kamu berpamitan pada teman.\n\n"
+                    "<b>Teman:</b> <i>\"Goodbye! See you tomorrow!\"</i>\n"
+                    "<i>(Selamat tinggal! Sampai jumpa besok!)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Balas ucapan perpisahan dengan mengetik:\n"
+                    "<code>Goodbye! See you!</code>"
                 ),
             },
         ],
         config.LEVEL_INTERMEDIATE: [
             {
                 "id": "conv_int_01",
-                "badge": "💬 Returning a Defective Item",
+                "badge": "💬 Warna Kesukaan (Favorite Color)",
                 "prompt": (
-                    "<b>🛍️ Scenario:</b> The headphones you bought yesterday have a crackling left speaker.\n\n"
-                    "<b>Store Associate:</b> <i>\"Hi there! How can I assist you at Customer Service today?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Explain the defect politely, mention you have the receipt, and ask for a replacement or refund!"
+                    "<b>🎨 Situasi:</b> Kamu dan teman sedang mewarnai gambar di kelas.\n\n"
+                    "<b>Teman:</b> <i>\"What is your favorite color?\"</i>\n"
+                    "<i>(Apa warna kesukaanmu?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Jawab warna kesukaanmu (blue/red/green/yellow):\n"
+                    "<code>My favorite color is blue.</code>"
                 ),
             },
             {
                 "id": "conv_int_02",
-                "badge": "💬 Weekend Plans with a Colleague",
+                "badge": "💬 Makanan Kesukaan (Favorite Food)",
                 "prompt": (
-                    "<b>☕ Scenario:</b> It's Friday afternoon by the office coffee machine.\n\n"
-                    "<b>Colleague:</b> <i>\"Finally Friday! Are you doing anything exciting or just taking it easy this weekend?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Share two activities you have planned and ask about their weekend plans!"
+                    "<b>🍛 Situasi:</b> Waktu istirahat makan siang di sekolah.\n\n"
+                    "<b>Teman:</b> <i>\"What do you like to eat?\"</i>\n"
+                    "<i>(Kamu suka makan apa?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Beritahu makanan kesukaanmu:\n"
+                    "<code>I like fried rice.</code> <i>(Saya suka nasi goreng)</i>\n"
+                    "<i>Atau: I like noodles / chicken.</i>"
                 ),
             },
             {
                 "id": "conv_int_03",
-                "badge": "💬 Negotiating a Project Deadline",
+                "badge": "💬 Hobi Bermain (Hobbies)",
                 "prompt": (
-                    "<b>📊 Scenario:</b> Your project workload is higher than anticipated.\n\n"
-                    "<b>Manager:</b> <i>\"Can we still lock in the final design report for this Monday morning?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Explain why Monday is tight, propose Wednesday instead, and emphasize maintaining quality!"
+                    "<b>⚽ Situasi:</b> Mengobrol tentang kegemaran di sore hari.\n\n"
+                    "<b>Teman:</b> <i>\"What is your hobby?\"</i>\n"
+                    "<i>(Apa hobimu?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Pilih salah satu hobi dan ketik:\n"
+                    "<code>My hobby is playing football.</code> <i>(Sepak bola)</i>\n"
+                    "<i>Atau: My hobby is reading books / drawing.</i>"
                 ),
             },
             {
                 "id": "conv_int_04",
-                "badge": "💬 Apartment Viewing",
+                "badge": "💬 Saudara di Rumah (Family)",
                 "prompt": (
-                    "<b>🔑 Scenario:</b> You are viewing a rental apartment with the landlord.\n\n"
-                    "<b>Landlord:</b> <i>\"The rent is $1,200 monthly. Any specific questions before we wrap up the tour?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Inquire whether utilities are included and ask about the pet policy!"
+                    "<b>👨‍👩‍👧 Situasi:</b> Bercerita tentang keluarga.\n\n"
+                    "<b>Teman:</b> <i>\"Do you have a brother or sister?\"</i>\n"
+                    "<i>(Apakah kamu punya saudara laki-laki atau perempuan?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Jawab dengan mudah:\n"
+                    "<code>I have one brother.</code> <i>(1 saudara laki-laki)</i>\n"
+                    "<i>Atau: I have one sister.</i>"
                 ),
             },
             {
                 "id": "conv_int_05",
-                "badge": "💬 Doctor's Appointment",
+                "badge": "💬 Beli Jajan di Kantin (Canteen)",
                 "prompt": (
-                    "<b>🩺 Scenario:</b> You have been feeling unwell for three days.\n\n"
-                    "<b>Doctor:</b> <i>\"Hello. What symptoms have you been experiencing recently?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Describe having a persistent headache, fatigue, and ask if a prescription is needed!"
+                    "<b>🍞 Situasi:</b> Kamu membeli roti di kantin sekolah.\n\n"
+                    "<b>Ibu Kantin:</b> <i>\"Hello! What do you want to buy?\"</i>\n"
+                    "<i>(Halo! Kamu mau beli apa?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Pesan satu roti dengan sopan:\n"
+                    "<code>One bread, please. Thank you!</code>"
                 ),
             },
             {
                 "id": "conv_int_06",
-                "badge": "💬 Flight Delay Rescheduling",
+                "badge": "💬 Pulang Bersama (Walking Home)",
                 "prompt": (
-                    "<b>✈️ Scenario:</b> Your connecting flight was cancelled due to bad weather.\n\n"
-                    "<b>Airline Agent:</b> <i>\"We apologize for the inconvenience. Let me see what other flights we have open.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Express understanding while asking if you can be placed on the earliest morning flight with hotel vouchers!"
+                    "<b>🚶 Situasi:</b> Mengajak teman pulang jalan kaki bersama.\n\n"
+                    "<b>Kamu:</b> <i>\"Let's walk home together!\"</i>\n"
+                    "<i>(Ayo kita jalan pulang bersama!)</i>\n\n"
+                    "<b>Teman:</b> <i>\"Okay, let's go!\"</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kalimat ajakan di atas untuk latihan:\n"
+                    "<code>Let's go home together!</code>"
                 ),
             },
         ],
         config.LEVEL_ADVANCED: [
             {
                 "id": "conv_adv_01",
-                "badge": "💬 Diplomatic Disagreement",
+                "badge": "💬 Hewan Peliharaan (Pets)",
                 "prompt": (
-                    "<b>💼 Scenario:</b> A teammate suggests skipping end-to-end security audits to meet a launch date.\n\n"
-                    "<b>Team Lead:</b> <i>\"It seems risky, but does anyone strongly object to shipping without full audits?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Express diplomatic disagreement using professional hedging (e.g., <i>'While I appreciate the urgency...'</i>) and articulate the compliance risks!"
+                    "<b>🐱 Situasi:</b> Temanmu bertanya tentang hewan di rumahmu.\n\n"
+                    "<b>Teman:</b> <i>\"Do you have a pet at home?\"</i>\n"
+                    "<i>(Apakah kamu punya hewan peliharaan di rumah?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ceritakan hewanmu:\n"
+                    "<code>Yes, I have a cute cat. His name is Milo.</code>\n"
+                    "<i>(Atau: I have a cute bird / rabbit.)</i>"
                 ),
             },
             {
                 "id": "conv_adv_02",
-                "badge": "💬 De-escalating an Irate Client",
+                "badge": "💬 Kegiatan Hari Minggu (Sunday Routine)",
                 "prompt": (
-                    "<b>📞 Scenario:</b> A high-value corporate client complains about a delivery milestone.\n\n"
-                    "<b>Client:</b> <i>\"This timeline is completely unacceptable! We never signed off on a two-week delay!\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> De-escalate empathetically without accepting undue blame, and steer them toward a concrete compromise!"
+                    "<b>🌱 Situasi:</b> Menceritakan kegiatan di hari libur.\n\n"
+                    "<b>Teman:</b> <i>\"What do you do on Sunday?\"</i>\n"
+                    "<i>(Apa yang kamu lakukan di hari Minggu?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Jawab kegiatan membantumu di rumah:\n"
+                    "<code>I help my parents in the garden.</code>\n"
+                    "<i>(Saya membantu orang tua di kebun.)</i>"
                 ),
             },
             {
                 "id": "conv_adv_03",
-                "badge": "💬 Performance Review & Promotion",
+                "badge": "💬 Belajar PR Bersama (Study Together)",
                 "prompt": (
-                    "<b>📈 Scenario:</b> You are in your annual performance review discussing promotion.\n\n"
-                    "<b>Executive:</b> <i>\"You've done solid work this year. Where do you see your contribution expanding next quarter?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Confidently outline your measurable accomplishments, pitch your readiness for senior leadership, and request the title change!"
+                    "<b>📚 Situasi:</b> Kamu mengajak teman belajar PR bahasa Inggris bersama.\n\n"
+                    "<b>Teman:</b> <i>\"This English homework is a bit difficult.\"</i>\n"
+                    "<i>(PR bahasa Inggris ini agak sulit.)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ajak teman belajar bareng:\n"
+                    "<code>Don't worry, let's study together!</code>"
                 ),
             },
             {
                 "id": "conv_adv_04",
-                "badge": "💬 Cross-Cultural Negotiation",
+                "badge": "💬 Cuaca Hari Ini (The Weather)",
                 "prompt": (
-                    "<b>🤝 Scenario:</b> An international partner hesitates on exclusivity terms.\n\n"
-                    "<b>Partner:</b> <i>\"In our market, exclusive contracts are viewed with substantial skepticism.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Bridge the cultural gap gracefully, validating their business culture while proposing a phased milestone-based commitment!"
+                    "<b>🌧️ Situasi:</b> Hujan mulai turun saat pulang sekolah.\n\n"
+                    "<b>Teman:</b> <i>\"Oh, look! It is raining outside.\"</i>\n"
+                    "<i>(Oh, lihat! Di luar sedang hujan.)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ingatkan tentang payung:\n"
+                    "<code>Yes, bring your umbrella!</code> <i>(Bawa payungmu!)</i>"
                 ),
             },
             {
                 "id": "conv_adv_05",
-                "badge": "💬 Public Relations Crisis",
+                "badge": "💬 Bertamu ke Rumah Teman (Visiting a Friend)",
                 "prompt": (
-                    "<b>🎙️ Scenario:</b> A journalist questions you about an unexpected server outage affecting users.\n\n"
-                    "<b>Journalist:</b> <i>\"Are user credentials compromised, and why did it take three hours to notify customers?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Deliver a poised, reassuring statement emphasizing transparent investigation, zero data breaches, and concrete remediations!"
+                    "<b>🏡 Situasi:</b> Kamu berkunjung ke rumah temanmu di desa.\n\n"
+                    "<b>Teman:</b> <i>\"Welcome to my house! Please come in.\"</i>\n"
+                    "<i>(Selamat datang di rumahku! Silakan masuk.)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Puji rumahnya dengan sopan:\n"
+                    "<code>Thank you! Your house is very clean.</code>"
                 ),
             },
             {
                 "id": "conv_adv_06",
-                "badge": "💬 Venture Capital Pitch",
+                "badge": "💬 Cita-citaku (My Dream)",
                 "prompt": (
-                    "<b>💡 Scenario:</b> An investor challenges your startup's competitive barrier.\n\n"
-                    "<b>Investor:</b> <i>\"What prevents a tech giant from cloning your solution within six months?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Defend your competitive moat persuasively, highlighting proprietary datasets, network effects, and agility!"
+                    "<b>⭐ Situasi:</b> Guru bertanya cita-citamu saat besar nanti.\n\n"
+                    "<b>Guru:</b> <i>\"What do you want to be when you grow up?\"</i>\n"
+                    "<i>(Kamu ingin jadi apa saat sudah besar nanti?)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Sebutkan cita-citamu (teacher/doctor/policeman/farmer):\n"
+                    "<code>I want to be a teacher.</code> <i>(Guru)</i>\n"
+                    "<i>Atau: I want to be a doctor. (Dokter)</i>"
                 ),
             },
         ],
     },
+
     # =========================================================================
     # 2. 📚 VOCABULARY (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
+    # Sesuai revisi: Body Parts & Daily Activity
     # =========================================================================
     config.MODE_VOCABULARY: {
         config.LEVEL_BEGINNER: [
             {
                 "id": "voc_beg_01",
-                "badge": "📚 Word: Convenient",
+                "badge": "📚 Body Parts: Kepala & Rambut",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Convenient</code> <i>/kənˈviː.ni.ənt/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Fitting in well with a person's needs, activities, or easy to use.\n"
-                    "<b>Example:</b> <i>\"The metro station is very convenient because it's near my home.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Write a sentence about an app or service that is <b>convenient</b> for you!"
+                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
+                    "• <b>Head</b> <i>[hed]</i> = Kepala\n"
+                    "• <b>Hair</b> <i>[her]</i> = Rambut\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I have black hair.\"</i> (Saya punya rambut hitam)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Kepala'</b>!"
                 ),
             },
             {
                 "id": "voc_beg_02",
-                "badge": "📚 Word: Recommend",
+                "badge": "📚 Body Parts: Mata & Hidung",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Recommend</code> <i>/ˌrek.əˈmend/</i> (verb)\n\n"
-                    "<b>Meaning:</b> To suggest something as good or suitable for a purpose.\n"
-                    "<b>Example:</b> <i>\"Can you recommend a good café in town?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Reply by <b>recommending</b> your favorite movie or book in one sentence!"
+                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
+                    "• <b>Eyes</b> <i>[ais]</i> = Mata (dua mata)\n"
+                    "• <b>Nose</b> <i>[nous]</i> = Hidung\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I see with my eyes.\"</i> (Saya melihat dengan mata)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Mata'</b>!"
                 ),
             },
             {
                 "id": "voc_beg_03",
-                "badge": "📚 Word: Affordable",
+                "badge": "📚 Body Parts: Mulut & Gigi",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Affordable</code> <i>/əˈfɔː.də.bəl/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Reasonably priced; not too expensive.\n"
-                    "<b>Example:</b> <i>\"They offer delicious meals at very affordable prices.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Write a sentence using <b>affordable</b> to describe something you bought!"
+                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
+                    "• <b>Mouth</b> <i>[maut]</i> = Mulut\n"
+                    "• <b>Teeth</b> <i>[tiit]</i> = Gigi\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I brush my teeth.\"</i> (Saya menggosok gigi)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Gigi'</b>!"
                 ),
             },
             {
                 "id": "voc_beg_04",
-                "badge": "📚 Word: Delicious",
+                "badge": "📚 Body Parts: Telinga & Leher",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Delicious</code> <i>/dɪˈlɪʃ.əs/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Having a very pleasant taste or smell.\n"
-                    "<b>Example:</b> <i>\"This homemade apple pie is absolutely delicious.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Mention your favorite food and explain why it is <b>delicious</b>!"
+                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
+                    "• <b>Ears</b> <i>[irs]</i> = Telinga\n"
+                    "• <b>Neck</b> <i>[nek]</i> = Leher\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I hear sounds with my ears.\"</i> (Saya mendengar dengan telinga)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Telinga'</b>!"
                 ),
             },
             {
                 "id": "voc_beg_05",
-                "badge": "📚 Word: Necessary",
+                "badge": "📚 Body Parts: Tangan & Jari",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Necessary</code> <i>/ˈnes.ə.ser.i/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Needed to be done, achieved, or present; essential.\n"
-                    "<b>Example:</b> <i>\"A passport is necessary for international travel.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> What is one tool or habit that is <b>necessary</b> for your daily work?"
+                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
+                    "• <b>Hands</b> <i>[hends]</i> = Tangan\n"
+                    "• <b>Fingers</b> <i>[fing-gers]</i> = Jari tangan\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I wash my hands with soap.\"</i> (Saya mencuci tangan dengan sabun)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Tangan'</b>!"
                 ),
             },
             {
                 "id": "voc_beg_06",
-                "badge": "📚 Word: Immediately",
+                "badge": "📚 Body Parts: Kaki & Lutut",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Immediately</code> <i>/ɪˈmiː.di.ət.li/</i> (adverb)\n\n"
-                    "<b>Meaning:</b> At once; without any delay.\n"
-                    "<b>Example:</b> <i>\"When the alarm rang, she immediately woke up.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Create a sentence describing an action you take <b>immediately</b> in the morning!"
+                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
+                    "• <b>Legs</b> <i>[legs]</i> = Kaki (tungkai kaki)\n"
+                    "• <b>Foot</b> <i>[fut]</i> = Telapak kaki\n"
+                    "• <b>Knees</b> <i>[niis]</i> = Lutut\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I kick the ball with my foot.\"</i> (Saya menendang bola dengan kaki)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Kaki'</b>!"
                 ),
             },
         ],
         config.LEVEL_INTERMEDIATE: [
             {
                 "id": "voc_int_01",
-                "badge": "📚 Phrasal Verb: Figure Out",
+                "badge": "📚 Daily Activity: Bangun Pagi",
                 "prompt": (
-                    "🌟 <b>Phrasal Verb:</b> <code>Figure out</code>\n\n"
-                    "<b>Meaning:</b> To solve a problem or understand something after thinking.\n"
-                    "<b>Example:</b> <i>\"We spent hours trying to figure out why the program crashed.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Describe a riddle or situation you had to <b>figure out</b> recently!"
+                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
+                    "• <b>Wake up</b> = Bangun tidur\n"
+                    "• <b>Wash face</b> = Cuci muka\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I wake up at five in the morning.\"</i> (Saya bangun jam 5 pagi)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Bangun tidur'</b>!"
                 ),
             },
             {
                 "id": "voc_int_02",
-                "badge": "📚 Word: Resilient",
+                "badge": "📚 Daily Activity: Mandi & Sarapan",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Resilient</code> <i>/rɪˈzɪl.i.ənt/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Able to recover quickly from difficult conditions or setbacks.\n"
-                    "<b>Example:</b> <i>\"The team remained resilient despite falling behind in the first half.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Use <b>resilient</b> to describe an inspiring person or company!"
+                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
+                    "• <b>Take a bath</b> = Mandi\n"
+                    "• <b>Eat breakfast</b> = Sarapan (makan pagi)\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I eat breakfast with my family.\"</i> (Saya sarapan bersama keluarga)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Sarapan'</b>!"
                 ),
             },
             {
                 "id": "voc_int_03",
-                "badge": "📚 Phrasal Verb: Call Off",
+                "badge": "📚 Daily Activity: Pergi ke Sekolah",
                 "prompt": (
-                    "🌟 <b>Phrasal Verb:</b> <code>Call off</code>\n\n"
-                    "<b>Meaning:</b> To cancel an event, match, or agreement.\n"
-                    "<b>Example:</b> <i>\"They had to call off the outdoor festival due to heavy thunderstorm warnings.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Write a sentence using <b>call off</b> about an event or meeting!"
+                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
+                    "• <b>Go to school</b> = Pergi ke sekolah\n"
+                    "• <b>Study English</b> = Belajar bahasa Inggris\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"We go to school on foot.\"</i> (Kami pergi ke sekolah jalan kaki)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Pergi ke sekolah'</b>!"
                 ),
             },
             {
                 "id": "voc_int_04",
-                "badge": "📚 Word: Procrastinate",
+                "badge": "📚 Daily Activity: Bermain Sore",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Procrastinate</code> <i>/prəˈkræs.tɪ.neɪt/</i> (verb)\n\n"
-                    "<b>Meaning:</b> To delay or postpone action; put off doing something.\n"
-                    "<b>Example:</b> <i>\"I always procrastinate when it comes to cleaning the garage.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> What chore do you tend to <b>procrastinate</b> on, and why?"
+                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
+                    "• <b>Play football</b> = Bermain sepak bola\n"
+                    "• <b>Ride a bicycle</b> = Naik sepeda\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"In the afternoon, I play football.\"</i> (Di sore hari, saya main bola)\n\n"
+                    "👉 <b>Giliranmu:</b> Tulis kegiatan yang kamu suka lakukan di sore hari!"
                 ),
             },
             {
                 "id": "voc_int_05",
-                "badge": "📚 Word: Reluctant",
+                "badge": "📚 Daily Activity: Mengerjakan PR",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Reluctant</code> <i>/rɪˈlʌk.tənt/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Unwilling and hesitant; disinclined.\n"
-                    "<b>Example:</b> <i>\"He was reluctant to commit without seeing the final contract.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Describe a time you felt <b>reluctant</b> to try something new!"
+                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
+                    "• <b>Do homework</b> = Mengerjakan PR\n"
+                    "• <b>Read a book</b> = Membaca buku\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I do my homework at seven o'clock.\"</i> (Saya mengerjakan PR jam 7)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Membaca buku'</b>!"
                 ),
             },
             {
                 "id": "voc_int_06",
-                "badge": "📚 Phrasal Verb: Bring Up",
+                "badge": "📚 Daily Activity: Tidur Malam",
                 "prompt": (
-                    "🌟 <b>Phrasal Verb:</b> <code>Bring up</code>\n\n"
-                    "<b>Meaning:</b> To introduce a topic into a conversation or meeting.\n"
-                    "<b>Example:</b> <i>\"I didn't want to bring up the budget issues during the celebration.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Send a sentence about an important topic you plan to <b>bring up</b> soon!"
+                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
+                    "• <b>Go to sleep</b> = Pergi tidur\n"
+                    "• <b>Good night</b> = Selamat malam / selamat tidur\n\n"
+                    "<b>Contoh Kalimat:</b> <i>\"I go to sleep at nine o'clock.\"</i> (Saya tidur jam 9 malam)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Selamat malam'</b>!"
                 ),
             },
         ],
         config.LEVEL_ADVANCED: [
             {
                 "id": "voc_adv_01",
-                "badge": "📚 Word: Equivocal",
+                "badge": "📚 Kalimat: Mencuci Tangan",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Equivocal</code> <i>/ɪˈkwɪv.ə.kəl/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Open to more than one interpretation; deliberately ambiguous.\n"
-                    "<b>Example:</b> <i>\"The spokesperson's equivocal remarks sparked intense speculation among analysts.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Construct a sentence contrasting an <b>equivocal</b> answer with an unambiguous commitment!"
+                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
+                    "<i>\"Before eating, I wash my <b>hands</b>.\"</i>\n"
+                    "<i>(Sebelum makan, saya mencuci tangan saya.)</i>\n\n"
+                    "• wash = mencuci\n"
+                    "• hands = tangan\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik ulang kalimat bahasa Inggris di atas!"
                 ),
             },
             {
                 "id": "voc_adv_02",
-                "badge": "📚 Collocation: Paradigm Shift",
+                "badge": "📚 Kalimat: Menggosok Gigi",
                 "prompt": (
-                    "🌟 <b>Collocation:</b> <code>Paradigm shift</code> (noun phrase)\n\n"
-                    "<b>Meaning:</b> A fundamental change in approach, mindset, or underlying assumptions.\n"
-                    "<b>Example:</b> <i>\"Remote collaboration tools catalyzed a paradigm shift in corporate culture.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Name an industry that has undergone a <b>paradigm shift</b> and explain why!"
+                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
+                    "<i>\"Before sleeping, we brush our <b>teeth</b>.\"</i>\n"
+                    "<i>(Sebelum tidur, kita menggosok gigi.)</i>\n\n"
+                    "• brush = menyikat / menggosok\n"
+                    "• teeth = gigi\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik ulang kalimat bahasa Inggris di atas!"
                 ),
             },
             {
                 "id": "voc_adv_03",
-                "badge": "📚 Word: Ubiquitous",
+                "badge": "📚 Kalimat: Menyisir Rambut",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Ubiquitous</code> <i>/juːˈbɪk.wɪ.təs/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Present, appearing, or found everywhere simultaneously.\n"
-                    "<b>Example:</b> <i>\"Smartphones have become ubiquitous across every demographic over the past decade.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Use <b>ubiquitous</b> to describe a modern technology or cultural trend!"
+                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
+                    "<i>\"Every morning, she combs her <b>hair</b>.\"</i>\n"
+                    "<i>(Setiap pagi, dia menyisir rambutnya.)</i>\n\n"
+                    "• combs = menyisir\n"
+                    "• hair = rambut\n\n"
+                    "👉 <b>Giliranmu:</b> Kata <b>'hair'</b> artinya apa dalam bahasa Indonesia?"
                 ),
             },
             {
                 "id": "voc_adv_04",
-                "badge": "📚 Word: Ephemeral",
+                "badge": "📚 Kalimat: Membaca dengan Mata",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Ephemeral</code> <i>/ɪˈfem.ər.əl/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Lasting for a very short time; transitory; fleeting.\n"
-                    "<b>Example:</b> <i>\"Fame on social media is often ephemeral, fading as quickly as it emerges.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Describe a natural phenomenon or emotion that is purely <b>ephemeral</b>!"
+                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
+                    "<i>\"We use our <b>eyes</b> to read storybooks.\"</i>\n"
+                    "<i>(Kita menggunakan mata kita untuk membaca buku cerita.)</i>\n\n"
+                    "• eyes = mata\n"
+                    "• read = membaca\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Mata'</b>!"
                 ),
             },
             {
                 "id": "voc_adv_05",
-                "badge": "📚 Word: Pragmatic",
+                "badge": "📚 Kalimat: Berlari di Lapangan",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Pragmatic</code> <i>/præɡˈmæt.ɪk/</i> (adjective)\n\n"
-                    "<b>Meaning:</b> Dealing with things sensibly and realistically based on practical rather than theoretical considerations.\n"
-                    "<b>Example:</b> <i>\"We chose a pragmatic architecture that prioritized uptime over untested features.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Use <b>pragmatic</b> to describe an effective decision-making style!"
+                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
+                    "<i>\"The boys run with their <b>legs</b> in the field.\"</i>\n"
+                    "<i>(Anak-anak laki-laki berlari dengan kaki mereka di lapangan.)</i>\n\n"
+                    "• run = berlari\n"
+                    "• legs = kaki\n\n"
+                    "👉 <b>Giliranmu:</b> Kata <b>'run'</b> artinya apa dalam bahasa Indonesia?"
                 ),
             },
             {
                 "id": "voc_adv_06",
-                "badge": "📚 Word: Circumlocution",
+                "badge": "📚 Kalimat: Berbicara Bahasa Inggris",
                 "prompt": (
-                    "🌟 <b>Word:</b> <code>Circumlocution</code> <i>/ˌsɜː.kəm.ləˈkjuː.ʃən/</i> (noun)\n\n"
-                    "<b>Meaning:</b> The use of many words where fewer would do, especially in a deliberate attempt to be vague or evasive.\n"
-                    "<b>Example:</b> <i>\"His response was a masterclass in political circumlocution that answered nothing.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Formulate a sentence criticizing excessive <b>circumlocution</b> in formal correspondence!"
+                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
+                    "<i>\"I open my <b>mouth</b> to speak English with confidence!\"</i>\n"
+                    "<i>(Saya membuka mulut untuk berbicara bahasa Inggris dengan percaya diri!)</i>\n\n"
+                    "• mouth = mulut\n"
+                    "• speak = berbicara\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kalimat penyemangat ini: <code>I speak English!</code>"
                 ),
             },
         ],
     },
+
     # =========================================================================
     # 3. ✏️ GRAMMAR (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
+    # Sesuai revisi: verbs, to be, adjective, part of speech
     # =========================================================================
     config.MODE_GRAMMAR: {
         config.LEVEL_BEGINNER: [
             {
                 "id": "grm_beg_01",
-                "badge": "✏️ Present Simple vs Continuous",
+                "badge": "✏️ To Be: Belajar 'am'",
                 "prompt": (
-                    "🔍 <b>Spot the mistake:</b>\n\n"
-                    "❌ <code>\"Look! It rains outside right now, so take an umbrella.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Send the corrected sentence and explain why <i>'is raining'</i> is required!"
+                    "🔍 <b>Aturan 'To Be':</b>\n\n"
+                    "Kata <b>I</b> (Saya) pasangannya SELALU <b>am</b>!\n\n"
+                    "Contoh:\n"
+                    "• <i>I am a student.</i> (Saya seorang murid)\n"
+                    "• <i>I am happy.</i> (Saya bahagia)\n\n"
+                    "❓ <b>Lengkapi kalimat ini:</b>\n"
+                    "<code>I ___ a good boy/girl.</code> (am / is / are)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik to be yang tepat!"
                 ),
             },
             {
                 "id": "grm_beg_02",
-                "badge": "✏️ Prepositions of Time (At / On / In)",
+                "badge": "✏️ To Be: Belajar 'is'",
                 "prompt": (
-                    "🔍 <b>Fix the prepositions:</b>\n\n"
-                    "❌ <code>\"Our flight departs in Monday at 9:00 in night.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Rewrite using correct prepositions for days, times, and night!"
+                    "🔍 <b>Aturan 'To Be':</b>\n\n"
+                    "Untuk orang tunggal (dia/itu):\n"
+                    "• <b>He</b> (dia laki-laki) ➡️ <b>is</b>\n"
+                    "• <b>She</b> (dia perempuan) ➡️ <b>is</b>\n"
+                    "• <b>It</b> (hewan/benda) ➡️ <b>is</b>\n\n"
+                    "Contoh: <i>She is my sister.</i> (Dia adalah adik/kakak perempuanku)\n\n"
+                    "❓ <b>Lengkapi kalimat ini:</b>\n"
+                    "<code>He ___ my teacher.</code> (am / is / are)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik to be yang tepat!"
                 ),
             },
             {
                 "id": "grm_beg_03",
-                "badge": "✏️ Past Simple Irregular Verbs",
+                "badge": "✏️ To Be: Belajar 'are'",
                 "prompt": (
-                    "🔍 <b>Find and correct the irregular past tense error:</b>\n\n"
-                    "❌ <code>\"Yesterday she buyed three books and catched the express train home.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Send the corrected sentence with proper irregular forms!"
+                    "🔍 <b>Aturan 'To Be':</b>\n\n"
+                    "Untuk orang jamak (banyak) dan 'kamu':\n"
+                    "• <b>You</b> (kamu) ➡️ <b>are</b>\n"
+                    "• <b>They</b> (mereka) ➡️ <b>are</b>\n"
+                    "• <b>We</b> (kita / kami) ➡️ <b>are</b>\n\n"
+                    "Contoh: <i>We are friends.</i> (Kita berteman)\n\n"
+                    "❓ <b>Lengkapi kalimat ini:</b>\n"
+                    "<code>They ___ happy today.</code> (am / is / are)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik to be yang tepat!"
                 ),
             },
             {
                 "id": "grm_beg_04",
-                "badge": "✏️ Comparative Adjectives",
+                "badge": "✏️ Kuis To Be: I am a girl",
                 "prompt": (
-                    "🔍 <b>Spot the adjective error:</b>\n\n"
-                    "❌ <code>\"This new laptop is more cheap and more fast than my old one.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Rewrite with the correct comparative forms of <i>cheap</i> and <i>fast</i>!"
+                    "🔍 <b>Latihan Soal To Be:</b>\n\n"
+                    "Perhatikan kalimat ini:\n"
+                    "<code>I ___ a girl.</code>\n\n"
+                    "Pilihannya:\n"
+                    "A. am\n"
+                    "B. is\n"
+                    "C. are\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik jawaban yang benar (am / is / are)!"
                 ),
             },
             {
                 "id": "grm_beg_05",
-                "badge": "✏️ Countable vs Uncountable Nouns",
+                "badge": "✏️ Kuis To Be: The Cat",
                 "prompt": (
-                    "🔍 <b>Correct the quantifier mistake:</b>\n\n"
-                    "❌ <code>\"Can you give me a few advices? I don't have many informations about the exam.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Send the grammatically correct version for <i>advice</i> and <i>information</i>!"
+                    "🔍 <b>Latihan Soal To Be:</b>\n\n"
+                    "Perhatikan kalimat ini:\n"
+                    "<code>The cat ___ very cute.</code>\n"
+                    "<i>(Kucing itu sangat lucu)</i>\n\n"
+                    "💡 <i>Petunjuk: Karena kucingnya cuma 1 (it), kita gunakan 'is'.</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Tulis to be yang benar: <b>am</b>, <b>is</b>, atau <b>are</b>?"
                 ),
             },
             {
                 "id": "grm_beg_06",
-                "badge": "✏️ Question Word Order",
+                "badge": "✏️ Kuis To Be: We are happy",
                 "prompt": (
-                    "🔍 <b>Rearrange into a correct interrogative sentence:</b>\n\n"
-                    "❌ <code>\"Where you did go for vacation last summer?\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Send the properly ordered past tense question!"
+                    "🔍 <b>Latihan Soal To Be:</b>\n\n"
+                    "Lengkapi kalimat ini:\n"
+                    "<code>We ___ studying English.</code>\n"
+                    "<i>(Kami sedang belajar bahasa Inggris)</i>\n\n"
+                    "💡 <i>Petunjuk: 'We' (kami) pasangannya adalah 'are'.</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik jawaban yang benar!"
                 ),
             },
         ],
         config.LEVEL_INTERMEDIATE: [
             {
                 "id": "grm_int_01",
-                "badge": "✏️ Second Conditional",
+                "badge": "✏️ Verbs: Mengenal Kata Kerja",
                 "prompt": (
-                    "🔍 <b>Complete the hypothetical conditional sentence:</b>\n\n"
-                    "<i>\"If I _______ (have) more free time, I _______ (travel) across South America.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Fill in both blanks using correct Second Conditional forms and explain your choice!"
+                    "🏃 <b>Apa itu Verb (Kata Kerja)?</b>\n"
+                    "Verb adalah kata yang menunjukkan aksi atau kegiatan.\n\n"
+                    "Contoh Verb sehari-hari:\n"
+                    "• <b>eat</b> = makan\n"
+                    "• <b>drink</b> = minum\n"
+                    "• <b>sleep</b> = tidur\n"
+                    "• <b>play</b> = bermain\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata kerja bahasa Inggris untuk <b>'makan'</b>!"
                 ),
             },
             {
                 "id": "grm_int_02",
-                "badge": "✏️ Subject-Verb Agreement",
+                "badge": "✏️ Verbs: Membuat Kalimat Aksi",
                 "prompt": (
-                    "🔍 <b>Identify and fix the agreement error:</b>\n\n"
-                    "❌ <code>\"Everyone in our department have agreed to participate in the marathon.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Send the corrected version and state the rule for indefinite pronouns like <i>'everyone'</i>!"
+                    "🏃 <b>Kalimat Sederhana dengan Verb:</b>\n\n"
+                    "Susunannya mudah: <b>Subjek + Kata Kerja + Benda</b>\n"
+                    "• <i>I eat rice.</i> (Saya makan nasi)\n"
+                    "• <i>I drink milk.</i> (Saya minum susu)\n\n"
+                    "❓ <b>Lengkapi kalimat:</b>\n"
+                    "<code>I ___ football with my friends.</code>\n"
+                    "<i>(Pilihan kata kerja: drink / play / sleep)</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata kerja yang tepat!"
                 ),
             },
             {
                 "id": "grm_int_03",
-                "badge": "✏️ Present Perfect vs Past Simple",
+                "badge": "✏️ Adjectives: Mengenal Kata Sifat",
                 "prompt": (
-                    "🔍 <b>Choose the correct tense and fix the error:</b>\n\n"
-                    "❌ <code>\"I have finished that project two weeks ago, but my manager hasn't reviewed it yet.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Correct the sentence and explain why a specific time marker changes the tense!"
+                    "🌸 <b>Apa itu Adjective (Kata Sifat)?</b>\n"
+                    "Adjective adalah kata yang menggambarkan keadaan atau perasaan.\n\n"
+                    "Contoh Adjective:\n"
+                    "• <b>happy</b> = senang / gembira\n"
+                    "• <b>sad</b> = sedih\n"
+                    "• <b>big</b> = besar\n"
+                    "• <b>small</b> = kecil\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk kata sifat <b>'senang'</b>!"
                 ),
             },
             {
                 "id": "grm_int_04",
-                "badge": "✏️ Passive Voice in Reporting",
+                "badge": "✏️ Adjectives: Besar dan Kecil",
                 "prompt": (
-                    "🔍 <b>Convert from Active to Passive voice:</b>\n\n"
-                    "Active: <i>\"The research committee published the climate findings yesterday.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Rewrite the sentence in the passive voice, emphasizing the findings!"
+                    "🐘 <b>Contoh Penggunaan Kata Sifat:</b>\n\n"
+                    "• <i>The elephant is <b>big</b>.</i> (Gajah itu besar)\n"
+                    "• <i>The ant is <b>small</b>.</i> (Semut itu kecil)\n\n"
+                    "❓ <b>Pilih kata sifat yang cocok:</b>\n"
+                    "Rumah itu luas dan besar ➡️ <code>The house is ___ (big / small)</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata sifat yang tepat!"
                 ),
             },
             {
                 "id": "grm_int_05",
-                "badge": "✏️ Gerund vs Infinitive",
+                "badge": "✏️ Adjectives: Bersih dan Baik",
                 "prompt": (
-                    "🔍 <b>Fill in the blanks with the correct verb form (gerund or infinitive):</b>\n\n"
-                    "<i>\"She stopped _______ (smoke) five years ago, but on her drive home she stopped _______ (buy) some groceries.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Supply both forms and explain the difference in meaning!"
+                    "✨ <b>Kata Sifat Kebaikan & Kebersihan:</b>\n\n"
+                    "• <b>clean</b> = bersih\n"
+                    "• <b>kind</b> = baik hati\n"
+                    "• <b>smart</b> = pintar\n\n"
+                    "Contoh: <i>My teacher is kind.</i> (Guruku baik hati)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'pintar'</b>!"
                 ),
             },
             {
                 "id": "grm_int_06",
-                "badge": "✏️ Defining vs Non-Defining Relative Clauses",
+                "badge": "✏️ Verbs: Membaca dan Menulis",
                 "prompt": (
-                    "🔍 <b>Add commas where necessary:</b>\n\n"
-                    "Sentence: <i>\"My brother who lives in Tokyo is coming to visit next week.\"</i> (Note: You only have one brother).\n\n"
-                    "👉 <b>Your Turn:</b> Punctuate correctly and explain whether this is defining or non-defining!"
+                    "📖 <b>Kata Kerja Belajar:</b>\n\n"
+                    "• <b>read</b> = membaca\n"
+                    "• <b>write</b> = menulis\n\n"
+                    "Contoh: <i>I read an English story.</i> (Saya membaca cerita bahasa Inggris)\n\n"
+                    "👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk <b>'menulis'</b>!"
                 ),
             },
         ],
         config.LEVEL_ADVANCED: [
             {
                 "id": "grm_adv_01",
-                "badge": "✏️ Inversion for Emphasis",
+                "badge": "✏️ Part of Speech: Noun (Kata Benda)",
                 "prompt": (
-                    "🔍 <b>Transform this sentence into an inverted structure:</b>\n\n"
-                    "Standard: <i>\"I have rarely witnessed such dedication from an engineering team.\"</i>\n"
-                    "Start with: <b>\"Rarely...\"</b>\n\n"
-                    "👉 <b>Your Turn:</b> Complete the inverted sentence with proper auxiliary-subject word order!"
+                    "📦 <b>Part of Speech: Mengenal NOUN (Kata Benda)</b>\n\n"
+                    "Noun adalah nama benda, orang, hewan, atau tempat.\n"
+                    "Contoh:\n"
+                    "• <b>book</b> (buku)\n"
+                    "• <b>cat</b> (kucing)\n"
+                    "• <b>school</b> (sekolah)\n\n"
+                    "❓ Manakah yang merupakan NOUN (kata benda)?\n"
+                    "A. run (berlari)\n"
+                    "B. apple (apel)\n"
+                    "C. happy (senang)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik huruf jawaban yang benar!"
                 ),
             },
             {
                 "id": "grm_adv_02",
-                "badge": "✏️ Mixed Conditionals",
+                "badge": "✏️ Part of Speech: Verb (Kata Kerja)",
                 "prompt": (
-                    "🔍 <b>Construct a Mixed Conditional (Past Action -> Present Result):</b>\n\n"
-                    "Situation: You did not accept the overseas job offer last year (past), so you do not live in London today (present).\n\n"
-                    "👉 <b>Your Turn:</b> Combine these into a single mixed conditional sentence!"
+                    "🏃 <b>Part of Speech: Mengenal VERB (Kata Kerja)</b>\n\n"
+                    "Verb adalah kata yang menunjukkan kegiatan atau tindakan.\n\n"
+                    "❓ Pada kalimat ini, manakah yang merupakan VERB (kata kerja)?\n"
+                    "<code>\"The children play in the garden.\"</code>\n"
+                    "<i>(Anak-anak bermain di taman)</i>\n\n"
+                    "💡 Pilihan: children / play / garden\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata kerjanya!"
                 ),
             },
             {
                 "id": "grm_adv_03",
-                "badge": "✏️ Subjunctive Mood",
+                "badge": "✏️ Part of Speech: Adjective (Kata Sifat)",
                 "prompt": (
-                    "🔍 <b>Fix the subjunctive verb form:</b>\n\n"
-                    "❌ <code>\"The board insisted that the chief architect resigns immediately following the audit.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Correct the sentence using the formal mandate subjunctive form!"
+                    "🌸 <b>Part of Speech: Mengenal ADJECTIVE (Kata Sifat)</b>\n\n"
+                    "Adjective menjelaskan sifat atau keadaan suatu benda.\n\n"
+                    "❓ Pada kalimat ini, manakah yang merupakan ADJECTIVE (kata sifat)?\n"
+                    "<code>\"My sister has a beautiful doll.\"</code>\n"
+                    "<i>(Adikku memiliki boneka yang cantik)</i>\n\n"
+                    "💡 Pilihan: sister / beautiful / doll\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kata sifatnya!"
                 ),
             },
             {
                 "id": "grm_adv_04",
-                "badge": "✏️ Cleft Sentences for Focus",
+                "badge": "✏️ Part of Speech: Tebak Kategori",
                 "prompt": (
-                    "🔍 <b>Reframe using a 'What-cleft' sentence:</b>\n\n"
-                    "Original: <i>\"We desperately need a reliable data pipeline to scale our models.\"</i>\n"
-                    "Start with: <b>\"What we desperately need...\"</b>\n\n"
-                    "👉 <b>Your Turn:</b> Formulate the complete cleft sentence to emphasize the requirement!"
+                    "🎯 <b>Tebak Kategori Kata:</b>\n\n"
+                    "Kata: <b>\"SLEEP\"</b> (tidur)\n\n"
+                    "Apakah kata 'sleep' termasuk:\n"
+                    "A. Noun (kata benda)\n"
+                    "B. Verb (kata kerja)\n"
+                    "C. Adjective (kata sifat)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik A, B, atau C!"
                 ),
             },
             {
                 "id": "grm_adv_05",
-                "badge": "✏️ Participle Clauses for Conciseness",
+                "badge": "✏️ Part of Speech: Tebak Kategori",
                 "prompt": (
-                    "🔍 <b>Combine these two sentences using a perfect participle clause:</b>\n\n"
-                    "Sentence A: <i>\"She had completed the exhaustive clinical trials.\"</i>\n"
-                    "Sentence B: <i>\"She submitted the breakthrough pharmaceutical report to regulators.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Merge them beginning with <b>'Having...'</b>!"
+                    "🎯 <b>Tebak Kategori Kata:</b>\n\n"
+                    "Kata: <b>\"HAPPY\"</b> (bahagia / senang)\n\n"
+                    "Apakah kata 'happy' termasuk:\n"
+                    "A. Noun (kata benda)\n"
+                    "B. Verb (kata kerja)\n"
+                    "C. Adjective (kata sifat)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik A, B, atau C!"
                 ),
             },
             {
                 "id": "grm_adv_06",
-                "badge": "✏️ Modals of Past Deduction",
+                "badge": "✏️ Kalimat Lengkap (Noun + Verb + Adj)",
                 "prompt": (
-                    "🔍 <b>Choose between 'must have', 'can't have', or 'should have':</b>\n\n"
-                    "Scenario: The keys were on the kitchen table five minutes ago, and nobody entered the house.\n"
-                    "Sentence: <i>\"They _______ (vanish) into thin air!\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Fill in the past deduction modal and justify your logical certainty!"
+                    "🌟 <b>Menyusun Kalimat Lengkap:</b>\n\n"
+                    "Perhatikan kalimat ini:\n"
+                    "<code>\"The cute cat sleeps.\"</code>\n"
+                    "• <b>cute</b> = Adjective (lucu)\n"
+                    "• <b>cat</b> = Noun (kucing)\n"
+                    "• <b>sleeps</b> = Verb (tidur)\n\n"
+                    "👉 <b>Giliranmu:</b> Terjemahkan ke bahasa Indonesia dengan mengetik:\n"
+                    "<i>Kucing lucu itu tidur.</i>"
                 ),
             },
         ],
     },
+
     # =========================================================================
     # 4. 📖 READING (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
+    # Sesuai revisi: descriptive, narrative, recount text
     # =========================================================================
     config.MODE_READING: {
+        # Beginner: Descriptive Text (Mendeskripsikan hewan peliharaan, sekolah, dsb)
         config.LEVEL_BEGINNER: [
             {
                 "id": "rdg_beg_01",
-                "badge": "📖 The Sunday Market",
+                "badge": "📖 Descriptive: My Cat Milo",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Every Sunday morning, Sarah visits the open-air market near the harbor. She buys fresh sourdough bread, sweet strawberries, and local honey directly from farmers. She prefers buying here rather than supermarkets because the food is fresher and she loves chatting with the vendors.\"</i>\n\n"
-                    "❓ <b>Question:</b> Name two reasons why Sarah prefers the market over supermarkets.\n\n"
-                    "👉 <b>Your Turn:</b> Answer in 1–2 complete English sentences!"
+                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
+                    "<i>\"I have a pet cat. His name is Milo. He is yellow and white. He has big green eyes. Milo likes to eat fish and sleep on the sofa.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• pet cat = kucing peliharaan\n"
+                    "• big green eyes = mata hijau besar\n"
+                    "• fish = ikan\n\n"
+                    "❓ <b>Pertanyaan:</b> Apa warna mata Milo? (What color are Milo's eyes?)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik warnanya (green / yellow / white)!"
                 ),
             },
             {
                 "id": "rdg_beg_02",
-                "badge": "📖 The Adopted Puppy",
+                "badge": "📖 Descriptive: My School (Sekolahku)",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Tom adopted an energetic golden puppy named Toby from the animal shelter. At first, Toby was shy and hid under the sofa. But after a warm bowl of food and a squeaky toy, Toby began wagging his tail and following Tom everywhere around the house.\"</i>\n\n"
-                    "❓ <b>Question:</b> How did Toby's behavior change after getting food and a toy?\n\n"
-                    "👉 <b>Your Turn:</b> Reply with your answer!"
+                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
+                    "<i>\"My school is clean and beautiful. There are six classrooms. There is a big yard in front of the school. We play football in the yard.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• clean = bersih\n"
+                    "• yard = halaman\n"
+                    "• play football = bermain bola\n\n"
+                    "❓ <b>Pertanyaan:</b> Apa yang dilakukan anak-anak di halaman sekolah?\n\n"
+                    "👉 <b>Giliranmu:</b> Jawab: <code>Play football</code>"
                 ),
             },
             {
                 "id": "rdg_beg_03",
-                "badge": "📖 The City Library",
+                "badge": "📖 Descriptive: My Bicycle (Sepedaku)",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"The central city library is more than a quiet room with books. On the second floor, visitors can borrow laptops, attend weekly language exchange clubs, or practice digital photography in a free studio. It is open seven days a week to all residents.\"</i>\n\n"
-                    "❓ <b>Question:</b> Mention two free activities visitors can do on the second floor.\n\n"
-                    "👉 <b>Your Turn:</b> Send your answer below!"
+                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
+                    "<i>\"I have a new bicycle. It is bright red. It has two black wheels and a small bell. I ride my bicycle to school every day.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• bicycle = sepeda\n"
+                    "• red = merah\n"
+                    "• bell = bel\n\n"
+                    "❓ <b>Pertanyaan:</b> Apa warna sepeda itu? (What color is the bicycle?)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik warna sepedanya dalam bahasa Inggris!"
                 ),
             },
             {
                 "id": "rdg_beg_04",
-                "badge": "📖 Morning Bicycle Commute",
+                "badge": "📖 Descriptive: A Sweet Banana",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Elena rides her bicycle to work every morning. Her commute takes twenty-five minutes through a scenic park. She says cycling helps her wake up naturally without relying on multiple cups of strong espresso.\"</i>\n\n"
-                    "❓ <b>Question:</b> Why does Elena choose to cycle through the park each morning?\n\n"
-                    "👉 <b>Your Turn:</b> Write your response!"
+                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
+                    "<i>\"Banana is my favorite fruit. It is yellow when ripe. It is very sweet and healthy. Monkeys also love to eat bananas.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• fruit = buah\n"
+                    "• sweet = manis\n"
+                    "• healthy = sehat\n\n"
+                    "❓ <b>Pertanyaan:</b> Hewan apa yang suka makan pisang pada teks di atas?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>Monkeys</code>"
                 ),
             },
             {
                 "id": "rdg_beg_05",
-                "badge": "📖 Cooking Traditional Soup",
+                "badge": "📖 Descriptive: My Mother",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Marco's grandmother taught him that the secret to great chicken soup is simmering the broth gently for at least four hours. Boiling it too fast makes the stock cloudy and causes the vegetables to lose their vibrant flavor.\"</i>\n\n"
-                    "❓ <b>Question:</b> What happens to the soup if you boil it too quickly?\n\n"
-                    "👉 <b>Your Turn:</b> Reply in complete sentences!"
+                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
+                    "<i>\"My mother is very kind and pretty. She wakes up early every morning. She cooks delicious fried rice for breakfast. I love my mother very much.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• kind = baik hati\n"
+                    "• cooks = memasak\n"
+                    "• delicious = lezat / enak\n\n"
+                    "❓ <b>Pertanyaan:</b> Apa yang dimasak Ibu untuk sarapan?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>Fried rice</code>"
                 ),
             },
             {
                 "id": "rdg_beg_06",
-                "badge": "📖 The Backyard Greenhouse",
+                "badge": "📖 Descriptive: My Best Friend Budi",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"In his small backyard greenhouse, Liam grows cherry tomatoes and basil all winter. The glass roof traps radiant heat from the sun, maintaining an indoor temperature ten degrees warmer than the freezing outdoor air.\"</i>\n\n"
-                    "❓ <b>Question:</b> How does the greenhouse maintain a warm temperature during winter?\n\n"
-                    "👉 <b>Your Turn:</b> Send your answer!"
+                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
+                    "<i>\"Budi is my best friend. He is tall and smart. He sits next to me in class. We always share our crayons and help each other.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• best friend = sahabat\n"
+                    "• tall = tinggi\n"
+                    "• smart = pintar\n\n"
+                    "❓ <b>Pertanyaan:</b> Siapa nama sahabat dalam cerita di atas?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik nama sahabat tersebut!"
                 ),
             },
         ],
+        # Intermediate: Narrative Text (Fabel / Cerita Fiksi Pendek)
         config.LEVEL_INTERMEDIATE: [
             {
                 "id": "rdg_int_01",
-                "badge": "📖 The Pomodoro Technique",
+                "badge": "📖 Narrative: The Rabbit and the Turtle",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Developed by Francesco Cirillo in the late 1980s, the Pomodoro Technique utilizes a timer to divide work into 25-minute intervals, punctuated by 5-minute rest breaks. Neuroscientists suggest that these frequent pauses prevent mental fatigue and sustain dopamine levels, countering the urge to multitask.\"</i>\n\n"
-                    "❓ <b>Question:</b> According to neuroscientists, how do brief breaks benefit productivity?\n\n"
-                    "👉 <b>Your Turn:</b> Summarize the benefit in your own words!"
+                    "📄 <b>Cerita Fabel Pendek: Kelinci dan Kura-Kura</b>\n\n"
+                    "<i>\"One day, a rabbit ran very fast. The turtle walked very slow. The rabbit took a nap under a tree because he was arrogant. The turtle kept walking and won the race!\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• rabbit = kelinci | turtle = kura-kura\n"
+                    "• took a nap = tidur siang\n"
+                    "• won the race = memenangkan lomba\n\n"
+                    "❓ <b>Pertanyaan:</b> Siapa yang memenangkan lomba lari? (Who won the race?)\n\n"
+                    "👉 <b>Giliranmu:</b> Jawab: <code>The turtle</code>"
                 ),
             },
             {
                 "id": "rdg_int_02",
-                "badge": "📖 Urban Heat Islands",
+                "badge": "📖 Narrative: The Thirsty Bird",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Urban centers frequently experience temperatures 2 to 5 degrees Celsius higher than neighboring countryside—a condition called the Urban Heat Island effect. Concrete and asphalt absorb solar radiation by day and release it gradually at night. Rooftop vegetation helps reflect sunlight and cool ambient air.\"</i>\n\n"
-                    "❓ <b>Question:</b> What causes cities to retain warmth overnight compared to rural areas?\n\n"
-                    "👉 <b>Your Turn:</b> Answer based on the text!"
+                    "📄 <b>Cerita Fabel Pendek: Burung yang Haus</b>\n\n"
+                    "<i>\"A little bird was very thirsty. He saw a pitcher with a little water at the bottom. He dropped small stones into the pitcher one by one. The water rose up, and the bird drank happily.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• thirsty = haus\n"
+                    "• stones = batu-batu kecil\n"
+                    "• drank = minum\n\n"
+                    "❓ <b>Pertanyaan:</b> Apa yang dimasukkan burung ke dalam wadah air?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>Stones</code> (Batu)"
                 ),
             },
             {
                 "id": "rdg_int_03",
-                "badge": "📖 The Discovery of Coffee",
+                "badge": "📖 Narrative: Sang Kancil and the River",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Legend holds that Ethiopian goat herder Kaldi first discovered coffee around 850 AD. He noticed his herd became unusually energetic and refused to sleep after nibbling bright red berries from an unfamiliar shrub. Local monks subsequently brewed the berries into a decoction to sustain wakefulness during lengthy evening prayers.\"</i>\n\n"
-                    "❓ <b>Question:</b> What first alerted Kaldi to the stimulating properties of the berries?\n\n"
-                    "👉 <b>Your Turn:</b> Explain the discovery briefly!"
+                    "📄 <b>Cerita Fabel Pendek: Sang Kancil yang Cerdik</b>\n\n"
+                    "<i>\"Sang Kancil wanted to cross a wide river. He saw many crocodiles. He said, 'Line up! The King wants to count you.' The crocodiles lined up. Kancil jumped on their backs and safely crossed the river!\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• river = sungai\n"
+                    "• crocodiles = buaya-buaya\n"
+                    "• jumped = melompat\n\n"
+                    "❓ <b>Pertanyaan:</b> Hewan apa yang ada di sungai? (What animals were in the river?)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>Crocodiles</code>"
                 ),
             },
             {
                 "id": "rdg_int_04",
-                "badge": "📖 Sleep Cycles & Memory",
+                "badge": "📖 Narrative: The Ant and the Dove",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"During Rapid Eye Movement (REM) sleep, the human brain replays neural sequences recorded throughout waking hours. Researchers at Harvard demonstrated that individuals who enjoy uninterrupted REM cycles score significantly higher on complex problem-solving assessments compared to sleep-deprived subjects.\"</i>\n\n"
-                    "❓ <b>Question:</b> What crucial cognitive function occurs in the brain during REM sleep?\n\n"
-                    "👉 <b>Your Turn:</b> Reply with your analysis!"
+                    "📄 <b>Cerita Fabel Pendek: Semut dan Merpati</b>\n\n"
+                    "<i>\"A little ant fell into the water. A kind dove dropped a dry leaf into the water to save the ant. The ant climbed on the leaf. Later, the ant bit a hunter to save the dove.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• ant = semut\n"
+                    "• dove = burung merpati\n"
+                    "• leaf = daun\n\n"
+                    "❓ <b>Pertanyaan:</b> Benda apa yang dijatuhkan burung merpati untuk menolong semut?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>A leaf</code> (Daun)"
                 ),
             },
             {
                 "id": "rdg_int_05",
-                "badge": "📖 Electric Vehicles in Winter",
+                "badge": "📖 Narrative: The Honest Woodcutter",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Sub-zero temperatures diminish lithium-ion battery range by slowing chemical reactions and requiring substantial energy to heat the cabin. Modern automotive engineers mitigate this penalty by integrating heat pump exchangers that repurpose waste heat from the electric motor.\"</i>\n\n"
-                    "❓ <b>Question:</b> How do modern electric vehicles offset winter battery range degradation?\n\n"
-                    "👉 <b>Your Turn:</b> Send your answer!"
+                    "📄 <b>Cerita Dongeng: Penebang Kayu yang Jujur</b>\n\n"
+                    "<i>\"A poor woodcutter lost his iron axe in the lake. A magical fairy showed him a golden axe, but he said, 'No, that is not mine.' Because he was honest, the fairy gave him both the iron and golden axes!\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• woodcutter = penebang kayu\n"
+                    "• axe = kapak\n"
+                    "• honest = jujur\n\n"
+                    "❓ <b>Pertanyaan:</b> Mengapa peri memberi hadiah kedua kapak tersebut?\n\n"
+                    "👉 <b>Giliranmu:</b> Karena dia... <code>Honest</code> (Jujur)"
                 ),
             },
             {
                 "id": "rdg_int_06",
-                "badge": "📖 The Psychology of Clutter",
+                "badge": "📖 Narrative: The Lion and the Mouse",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"A crowded visual field competes for neural resources, elevating cortisol levels and impairing working memory. In a study involving 200 remote professionals, decluttering workspaces correlated with a measurable 28% drop in perceived daily stress.\"</i>\n\n"
-                    "❓ <b>Question:</b> Why does a cluttered physical environment impair cognitive performance?\n\n"
-                    "👉 <b>Your Turn:</b> State the psychological explanation!"
+                    "📄 <b>Cerita Fabel Pendek: Singa dan Tikus</b>\n\n"
+                    "<i>\"A big lion spared a tiny mouse's life. Later, the lion was caught in a hunter's net. The tiny mouse came and chewed the net with his sharp teeth. The lion was free!\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• lion = singa | mouse = tikus\n"
+                    "• net = jaring pemburu\n"
+                    "• chewed = menggigit / mengunyah\n\n"
+                    "❓ <b>Pertanyaan:</b> Siapa yang menolong singa lepas dari jaring?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>The mouse</code>"
                 ),
             },
         ],
+        # Advanced: Recount Text (Menceritakan Pengalaman Masa Lalu Sederhana)
         config.LEVEL_ADVANCED: [
             {
                 "id": "rdg_adv_01",
-                "badge": "📖 Cognitive Offloading",
+                "badge": "📖 Recount: Yesterday at the Beach",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Cognitive offloading—relying on digital algorithms and external memory aids to reduce mental exertion—sparks fierce scientific debate. Proponents argue that delegating rote computation liberates neural capacity for imaginative synthesis. Conversely, cognitive psychologists warn that chronic offloading atrophies intrinsic navigational mapping and deep analytical recall.\"</i>\n\n"
-                    "❓ <b>Question:</b> Contrast the primary argument supporting cognitive offloading with the hazard identified by psychologists.\n\n"
-                    "👉 <b>Your Turn:</b> Synthesize both perspectives critically!"
+                    "📄 <b>Recount Text (Pengalaman Kemarin):</b>\n\n"
+                    "<i>\"Yesterday was Sunday. My family and I went to the beach. The weather was sunny. My brother and I built a sandcastle. We ate fresh coconut water. It was a wonderful day!\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• went = pergi (bentuk lampau)\n"
+                    "• built = membangun\n"
+                    "• sandcastle = istana pasir\n\n"
+                    "❓ <b>Pertanyaan:</b> Kemanakah penulis dan keluarganya pergi kemarin?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>To the beach</code>"
                 ),
             },
             {
                 "id": "rdg_adv_02",
-                "badge": "📖 Deep-Sea Mining Dilemma",
+                "badge": "📖 Recount: Helping Father in the Garden",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Polymetallic nodules resting on the abyssal plains harbor dense concentrations of cobalt and nickel—elements indispensable for renewable battery manufacturing. Nonetheless, marine biologists caution that sediment plumes generated by robotic extraction may asphyxiate fragile benthic fauna adapted to millenia of undisturbed stability.\"</i>\n\n"
-                    "❓ <b>Question:</b> What fundamental ecological paradox characterizes the deep-sea mining debate?\n\n"
-                    "👉 <b>Your Turn:</b> Articulate the conflict between green technology and marine preservation!"
+                    "📄 <b>Recount Text (Pengalaman Kemarin):</b>\n\n"
+                    "<i>\"Last Saturday, I helped my father in the vegetable garden. We watered the chili plants and pulled out the grass. In the afternoon, father bought me sweet ice cream as a treat.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• helped = membantu\n"
+                    "• garden = kebun\n"
+                    "• watered = menyiram air\n\n"
+                    "❓ <b>Pertanyaan:</b> Makanan manis apa yang dibelikan ayah di sore hari?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>Ice cream</code>"
                 ),
             },
             {
                 "id": "rdg_adv_03",
-                "badge": "📖 Algorithmic Bias in Hiring",
+                "badge": "📖 Recount: Holiday at Grandfather's Village",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Automated candidate screening systems trained on historical promotion metrics often inadvertently codify legacy demographic disparities. When historical training corpora disproportionately feature homogeneous managerial cohorts, predictive models penalize unconventional career trajectories, masking systemic discrimination under an aura of mathematical objectivity.\"</i>\n\n"
-                    "❓ <b>Question:</b> How does reliance on historical corporate data perpetuate recruitment bias?\n\n"
-                    "👉 <b>Your Turn:</b> Formulate your analytical critique!"
+                    "📄 <b>Recount Text (Pengalaman Liburan):</b>\n\n"
+                    "<i>\"During the school holiday, I visited my grandparents in the village. The air was fresh and cool. I fed the chickens every morning and swam in the clean river with my cousins.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• visited = berkunjung\n"
+                    "• village = desa\n"
+                    "• fed the chickens = memberi makan ayam\n\n"
+                    "❓ <b>Pertanyaan:</b> Hewan apa yang diberi makan setiap pagi di desa?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>Chickens</code> (Ayam)"
                 ),
             },
             {
                 "id": "rdg_adv_04",
-                "badge": "📖 Biomimicry in Aviation",
+                "badge": "📖 Recount: Playing Football in the Rain",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Aeronautical engineers studying humpback whale flippers discovered that scalloped leading edges (tubercles) channel airflow into localized vortices, delaying stall angles by eight degrees while cutting aerodynamic drag by 32%. Adapting these biological geometries to turbine blades yields unprecedented fuel efficiencies.\"</i>\n\n"
-                    "❓ <b>Question:</b> In what technical manner do whale tubercles improve aerodynamic performance?\n\n"
-                    "👉 <b>Your Turn:</b> Summarize the biomechanical principle!"
+                    "📄 <b>Recount Text (Pengalaman Kemarin):</b>\n\n"
+                    "<i>\"Yesterday afternoon, it rained heavily. My friends and I played football in the rain. We were so happy and laughed a lot. After that, I took a warm shower at home.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• rained = hujan\n"
+                    "• laughed = tertawa\n"
+                    "• warm shower = mandi air hangat\n\n"
+                    "❓ <b>Pertanyaan:</b> Olahraga apa yang dimainkan saat hujan?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>Football</code> (Sepak bola)"
                 ),
             },
             {
                 "id": "rdg_adv_05",
-                "badge": "📖 The Architecture of Silence",
+                "badge": "📖 Recount: Cooking Fried Rice with Mother",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"Acoustic ecologists argue that anthropogenic ambient noise constitutes a pervasive pollutant, inducing chronic sympathetic nervous activation. Urban architects in Scandinavia increasingly incorporate acoustic baffle gardens—terraced moss walls and resonant water features—engineered to dissipate industrial frequencies into calming pink noise.\"</i>\n\n"
-                    "❓ <b>Question:</b> How do acoustic baffle gardens transform harsh urban soundscapes?\n\n"
-                    "👉 <b>Your Turn:</b> Send your interpretation!"
+                    "📄 <b>Recount Text (Pengalaman Memasak):</b>\n\n"
+                    "<i>\"Last night, I cooked fried rice with my mother. I helped slice the onions and crack two eggs. When it was ready, the whole family ate together happily.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• cooked = memasak\n"
+                    "• onions = bawang\n"
+                    "• eggs = telur\n\n"
+                    "❓ <b>Pertanyaan:</b> Berapa butir telur yang digunakan? (How many eggs?)\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik jumlahnya: <code>Two</code>"
                 ),
             },
             {
                 "id": "rdg_adv_06",
-                "badge": "📖 The Economics of Attention",
+                "badge": "📖 Recount: My First Day at School",
                 "prompt": (
-                    "📄 <b>Passage:</b>\n"
-                    "<i>\"In an information-abundant economy, human attention becomes the paramount scarce resource. Herbert Simon noted that a wealth of information creates a poverty of attention. Digital platforms engineer variable reward loops, trading enduring reflective cognition for transient micro-engagements monetized via algorithmic programmatic advertising.\"</i>\n\n"
-                    "❓ <b>Question:</b> According to Herbert Simon, what is the direct consequence of excessive information availability?\n\n"
-                    "👉 <b>Your Turn:</b> Explain the economic principle in your own words!"
+                    "📄 <b>Recount Text (Hari Pertama Masuk Sekolah):</b>\n\n"
+                    "<i>\"I remember my first day in elementary school. I wore a new uniform. I felt a little nervous at first, but my teacher smiled warmly and gave me a colorful badge.\"</i>\n\n"
+                    "💡 <b>Kamus Bantuan:</b>\n"
+                    "• uniform = seragam\n"
+                    "• nervous = gugup\n"
+                    "• smiled = tersenyum\n\n"
+                    "❓ <b>Pertanyaan:</b> Siapa yang tersenyum ramah kepada murid?\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik: <code>Teacher</code>"
                 ),
             },
         ],
     },
+
     # =========================================================================
     # 5. 🗣️ SPEAKING (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
+    # Latihan pengucapan kata dasar & sapaan anak dengan panduan cara baca
     # =========================================================================
     config.MODE_SPEAKING: {
         config.LEVEL_BEGINNER: [
             {
                 "id": "spk_beg_01",
-                "badge": "🗣️ Minimal Pairs: /b/ vs /v/",
+                "badge": "🗣️ Pengucapan: Sapaan Guru",
                 "prompt": (
-                    "🎙️ <b>Pronunciation Drill: Minimal Pairs</b>\n\n"
-                    "Say these pairs aloud three times:\n"
-                    "• <b>Berry</b> vs <b>Very</b>\n"
-                    "• <b>Boat</b> vs <b>Vote</b>\n"
-                    "• <b>Best</b> vs <b>Vest</b>\n\n"
-                    "💡 <b>Tip:</b> For /b/, close both lips firmly. For /v/, gently touch your top teeth to your lower lip.\n\n"
-                    "👉 <b>Your Turn:</b> Practice aloud and send a sentence containing both <i>'very'</i> and <i>'berry'</i>!"
+                    "🎙️ <b>Latihan Mengucapkan Kalimat Sapaan:</b>\n\n"
+                    "<i>\"Good morning, Teacher!\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Gud morniing, tii-cer!]</code>\n\n"
+                    "Artinya: <i>Selamat pagi, Guru!</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Kirim rekaman suara (voice note) mengucapkan kalimat di atas, atau ketik ulang kalimatnya!"
                 ),
             },
             {
                 "id": "spk_beg_02",
-                "badge": "🗣️ Minimal Pairs: /θ/ ('th') vs /s/",
+                "badge": "🗣️ Pengucapan: Anggota Tubuh",
                 "prompt": (
-                    "🎙️ <b>Pronunciation Drill: 'Th' Sounds</b>\n\n"
-                    "Practice saying these pairs aloud:\n"
-                    "• <b>Think</b> vs <b>Sink</b>\n"
-                    "• <b>Thing</b> vs <b>Sing</b>\n"
-                    "• <b>Theme</b> vs <b>Seem</b>\n\n"
-                    "💡 <b>Tip:</b> Put the tip of your tongue slightly between your front teeth for 'th'.\n\n"
-                    "👉 <b>Your Turn:</b> Practice aloud and type a sentence using <i>'think'</i> and <i>'sink'</i>!"
+                    "🎙️ <b>Latihan Mengucapkan Kata Anggota Tubuh:</b>\n\n"
+                    "<i>\"Head, Eyes, Nose, Mouth\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Hed, Ais, Nous, Maut]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan 4 kata anggota tubuh di atas melalui voice note atau ketik kembali!"
                 ),
             },
             {
                 "id": "spk_beg_03",
-                "badge": "🗣️ Ordering Breakfast",
+                "badge": "🗣️ Pengucapan: Menyebutkan Nama",
                 "prompt": (
-                    "🎙️ <b>Speaking Simulation:</b>\n\n"
-                    "Order two fried eggs, whole-wheat toast, and black coffee with sugar.\n\n"
-                    "💡 <b>Goal:</b> Speak in full sentences (<i>\"I'd like to have...\"</i>, <i>\"Could I please get...?\"</i>).\n\n"
-                    "👉 <b>Your Turn:</b> Send a voice note or type out your exact breakfast order!"
+                    "🎙️ <b>Latihan Memperkenalkan Diri:</b>\n\n"
+                    "<i>\"Hello! My name is Budi.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[He-low! Mai neim is Budi.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan kalimat di atas dengan menyebutkan namamu sendiri!"
                 ),
             },
             {
                 "id": "spk_beg_04",
-                "badge": "🗣️ Spelling Over the Phone",
+                "badge": "🗣️ Pengucapan: Terima Kasih",
                 "prompt": (
-                    "🎙️ <b>Clarity Drill:</b>\n\n"
-                    "Imagine spelling your email address over a poor telephone connection:\n"
-                    "<i>\"john.smith92@email.com\"</i>\n\n"
-                    "💡 <b>Tip:</b> Use phonetic markers (e.g., <i>'J as in January, S as in Sugar, dot, at sign'</i>).\n\n"
-                    "👉 <b>Your Turn:</b> Type how you clearly spell out your username or email!"
+                    "🎙️ <b>Latihan Mengucapkan Terima Kasih:</b>\n\n"
+                    "<i>\"Thank you very much!\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Teng-kyu ve-ri mac!]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Latihlah lidahmu mengucapkan kata terima kasih di atas!"
                 ),
             },
             {
                 "id": "spk_beg_05",
-                "badge": "🗣️ 30-Second Hobby Introduction",
+                "badge": "🗣️ Pengucapan: Perasaan Senang",
                 "prompt": (
-                    "🎙️ <b>Fluency Prompt:</b>\n\n"
-                    "Answer: <i>\"What is your favorite hobby and why do you enjoy it?\"</i>\n\n"
-                    "💡 <b>Challenge:</b> Speak smoothly without long pauses using words like <i>'because'</i> and <i>'also'</i>.\n\n"
-                    "👉 <b>Your Turn:</b> Send your 30-second response (voice message or text)!"
+                    "🎙️ <b>Latihan Mengucapkan Kalimat:</b>\n\n"
+                    "<i>\"I am very happy today!\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Ai em ve-ri he-pi tu-dei!]</code>\n\n"
+                    "Artinya: <i>Saya sangat senang hari ini!</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan kalimat bahagia ini dengan senyuman!"
                 ),
             },
             {
                 "id": "spk_beg_06",
-                "badge": "🗣️ Describing Your Hometown",
+                "badge": "🗣️ Pengucapan: Sampai Jumpa",
                 "prompt": (
-                    "🎙️ <b>Fluency Prompt:</b>\n\n"
-                    "Describe where you grew up: Is it quiet or bustling? What is the weather like?\n\n"
-                    "👉 <b>Your Turn:</b> Share 2–3 descriptive sentences about your hometown!"
+                    "🎙️ <b>Latihan Mengucapkan Perpisahan:</b>\n\n"
+                    "<i>\"See you tomorrow, friend!\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Sii yu tu-mo-rou, frend!]</code>\n\n"
+                    "Artinya: <i>Sampai jumpa besok, teman!</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan kalimat perpisahan di atas!"
                 ),
             },
         ],
         config.LEVEL_INTERMEDIATE: [
             {
                 "id": "spk_int_01",
-                "badge": "🗣️ Tongue Twister & Linked Sounds",
+                "badge": "🗣️ Kalimat Harian: Bangun Pagi",
                 "prompt": (
-                    "🎙️ <b>Articulation Challenge:</b>\n\n"
-                    "<i>\"She sells seashells on the seashore, and the shells she sells are seashore shells for sure.\"</i>\n\n"
-                    "🎯 <b>Focus:</b> Clean switching between /s/ and /ʃ/ ('sh') sounds.\n\n"
-                    "👉 <b>Your Turn:</b> Repeat 3 times at increasing speeds and write how it felt!"
+                    "🎙️ <b>Latihan Melafalkan Kalimat:</b>\n\n"
+                    "<i>\"I wake up early in the morning.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Ai weik ap er-li in de morniing.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Rekam suaramu atau ketik kalimat di atas!"
                 ),
             },
             {
                 "id": "spk_int_02",
-                "badge": "🗣️ 60-Second Impromptu Speech",
+                "badge": "🗣️ Kalimat Harian: Cuci Tangan",
                 "prompt": (
-                    "🎙️ <b>Speaking Challenge:</b>\n\n"
-                    "<b>Topic:</b> <i>\"If you could master any musical instrument overnight, which one would you choose and why?\"</i>\n\n"
-                    "💡 <b>Goal:</b> Use transition phrases (<i>\"To begin with...\", \"Furthermore...\"</i>).\n\n"
-                    "👉 <b>Your Turn:</b> Send your answer (voice or text) detailing your reasons!"
+                    "🎙️ <b>Latihan Melafalkan Kalimat:</b>\n\n"
+                    "<i>\"I wash my hands with soap.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Ai wos mai hends wit soup.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Latihlah membaca kalimat ini dengan jelas!"
                 ),
             },
             {
                 "id": "spk_int_03",
-                "badge": "🗣️ Expressing Polite Disagreement",
+                "badge": "🗣️ Kalimat Harian: Pergi Sekolah",
                 "prompt": (
-                    "🎙️ <b>Diplomatic Speech:</b>\n\n"
-                    "A friend says: <i>\"Watching movies with subtitles is completely pointless!\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Disagree politely using softening phrases like <i>'I see your point, but...'</i> or <i>'I look at it a bit differently because...'</i>!"
+                    "🎙️ <b>Latihan Melafalkan Kalimat:</b>\n\n"
+                    "<i>\"We go to school together.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Wii gou tu skuul tu-ge-der.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan kalimat di atas dengan lantang!"
                 ),
             },
             {
                 "id": "spk_int_04",
-                "badge": "🗣️ Linking Words in Connected Speech",
+                "badge": "🗣️ Kalimat Harian: Cinta Keluarga",
                 "prompt": (
-                    "🎙️ <b>Connected Speech Drill:</b>\n\n"
-                    "Practice linking consonant-to-vowel:\n"
-                    "• <i>\"Hold on\"</i> -> sounds like <b>\"Hol-don\"</b>\n"
-                    "• <i>\"Turn off\"</i> -> sounds like <b>\"Tur-noff\"</b>\n"
-                    "• <i>\"Pick it up\"</i> -> sounds like <b>\"Pi-ki-tup\"</b>\n\n"
-                    "👉 <b>Your Turn:</b> Say these aloud smoothly, then create a sentence linking two verbs!"
+                    "🎙️ <b>Latihan Melafalkan Kalimat:</b>\n\n"
+                    "<i>\"I love my father and mother.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Ai lav mai faa-der en ma-der.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Kirimkan ucapan kasih sayang untuk orang tua ini!"
                 ),
             },
             {
                 "id": "spk_int_05",
-                "badge": "🗣️ Explaining a Recipe Aloud",
+                "badge": "🗣️ Kalimat Harian: Belajar Seru",
                 "prompt": (
-                    "🎙️ <b>Instructional Speech:</b>\n\n"
-                    "Explain step-by-step how to prepare your favorite simple meal or hot drink.\n\n"
-                    "💡 <b>Focus:</b> Sequence markers (<i>'First', 'After that', 'Meanwhile', 'Finally'</i>).\n\n"
-                    "👉 <b>Your Turn:</b> Send your instructional steps!"
+                    "🎙️ <b>Latihan Melafalkan Kalimat:</b>\n\n"
+                    "<i>\"English is very fun and easy!\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Ing-glisy is ve-ri fan en ii-zi!]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan dengan semangat tinggi!"
                 ),
             },
             {
                 "id": "spk_int_06",
-                "badge": "🗣️ Intonation in Questions",
+                "badge": "🗣️ Kalimat Harian: Membaca Buku",
                 "prompt": (
-                    "🎙️ <b>Intonation Lab:</b>\n\n"
-                    "• Yes/No questions <b>rise</b> at the end: <i>\"Are you coming to the party? ↗\"</i>\n"
-                    "• Wh- questions <b>fall</b> at the end: <i>\"Where did you leave the keys? ↘\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Practice both intonations aloud and send one example of each!"
+                    "🎙️ <b>Latihan Melafalkan Kalimat:</b>\n\n"
+                    "<i>\"I like to read storybooks.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Ai laik tu riid stou-ri-buks.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Latihlah membaca kalimat ini dengan lancar!"
                 ),
             },
         ],
         config.LEVEL_ADVANCED: [
             {
                 "id": "spk_adv_01",
-                "badge": "🗣️ Contrastive Stress Shifts",
+                "badge": "🗣️ Sajak Berima: One, Two, Three",
                 "prompt": (
-                    "🎙️ <b>Vocal Stress Challenge:</b>\n\n"
-                    "Emphasize a different bold word to shift meaning:\n"
-                    "1. <i>\"<b>I</b> didn't say she stole my money.\"</i> (Someone else did)\n"
-                    "2. <i>\"I <b>DIDN'T</b> say she stole my money.\"</i> (Strong denial)\n"
-                    "3. <i>\"I didn't say <b>SHE</b> stole my money.\"</i> (Someone else stole it)\n"
-                    "4. <i>\"I didn't say she stole my <b>MONEY</b>.\"</i> (She stole something else)\n\n"
-                    "👉 <b>Your Turn:</b> Practice how stress changes English meaning and send your observations!"
+                    "🎙️ <b>Latihan Irama Kata (Nursery Rhyme):</b>\n\n"
+                    "<i>\"One, two, three, look at me!\n"
+                    "Four, five, six, pick up sticks!\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Wan, tu, trii, luk et mii!\n"
+                    "For, faif, siks, pik ap stiks!]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan sajak angka yang menyenangkan ini!"
                 ),
             },
             {
                 "id": "spk_adv_02",
-                "badge": "🗣️ 45-Second Debate Argument",
+                "badge": "🗣️ Sajak Warna: Red and Yellow",
                 "prompt": (
-                    "🎙️ <b>Persuasive Rhetoric:</b>\n\n"
-                    "<b>Motion:</b> <i>\"Should companies enforce a strict 4-day workweek?\"</i>\n\n"
-                    "💡 <b>Challenge:</b> Deliver a crisp opening statement featuring an impactful hook and strong conclusion.\n\n"
-                    "👉 <b>Your Turn:</b> Send your persuasive argument!"
+                    "🎙️ <b>Latihan Irama Warna:</b>\n\n"
+                    "<i>\"Red apple, yellow sun, blue sea,\n"
+                    "English is so good for me!\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Red e-pel, ye-low san, bluu sii,\n"
+                    "Ing-glisy is sou gud for mii!]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Latihlah intonasi dan pengucapan sajak ini!"
                 ),
             },
             {
                 "id": "spk_adv_03",
-                "badge": "🗣️ Rapid Articulation: Red Lorry, Yellow Lorry",
+                "badge": "🗣️ Cita-cita: Menjadi Pintar",
                 "prompt": (
-                    "🎙️ <b>Advanced Enunciation:</b>\n\n"
-                    "Repeat 5 times consecutively without hesitation:\n"
-                    "<i>\"Red lorry, yellow lorry, red lorry, yellow lorry.\"</i>\n\n"
-                    "🎯 <b>Focus:</b> Clean distinction between /r/ and /l/ liquid consonants.\n\n"
-                    "👉 <b>Your Turn:</b> Try this rapid tongue twister and report your speed!"
+                    "🎙️ <b>Latihan Berbicara Percaya Diri:</b>\n\n"
+                    "<i>\"I want to study hard and be smart.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Ai wont tu sta-di hard en bi smart.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Rekam suaramu dengan penuh keyakinan!"
                 ),
             },
             {
                 "id": "spk_adv_04",
-                "badge": "🗣️ Strategic Pauses & Executive Presence",
+                "badge": "🗣️ Membantu Orang Tua",
                 "prompt": (
-                    "🎙️ <b>Executive Communication:</b>\n\n"
-                    "Practice delivering this announcement with deliberate 1-second pauses at the slashes:\n"
-                    "<i>\"Our Q3 projections exceeded expectations / not by chance / but through disciplined engineering / and relentless customer focus.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Practice dramatic pacing and send a reflection on how pauses alter authority!"
+                    "🎙️ <b>Latihan Berbicara Percaya Diri:</b>\n\n"
+                    "<i>\"I help my parents at home every day.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Ai help mai pe-rents et houm ev-ri dei.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan kalimat perbuatan baik ini!"
                 ),
             },
             {
                 "id": "spk_adv_05",
-                "badge": "🗣️ Metaphorical Storytelling",
+                "badge": "🗣️ Bersyukur Hari Ini",
                 "prompt": (
-                    "🎙️ <b>Elevated Fluency:</b>\n\n"
-                    "Explain the concept of 'technical debt' or 'burnout' using an everyday metaphor (e.g., credit card interest, marathon pacing, or car maintenance).\n\n"
-                    "👉 <b>Your Turn:</b> Send your metaphorical explanation in 3–4 sentences!"
+                    "🎙️ <b>Latihan Berbicara Percaya Diri:</b>\n\n"
+                    "<i>\"Today is a bright and beautiful day.\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Tu-dei is e brait en byuu-ti-ful dei.]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan kalimat syukur di atas!"
                 ),
             },
             {
                 "id": "spk_adv_06",
-                "badge": "🗣️ Nuanced Hedging in High-Stakes Speech",
+                "badge": "🗣️ Yel-yel Bahasa Inggris",
                 "prompt": (
-                    "🎙️ <b>Diplomatic Phrasing:</b>\n\n"
-                    "Turn this blunt statement into a polished executive observation:\n"
-                    "Blunt: <i>\"This software architecture is terrible and will fail under heavy load.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Rephrase using sophisticated diplomatic hedging!"
+                    "🎙️ <b>Yel-yel Semangat Bahasa Inggris:</b>\n\n"
+                    "<i>\"Yes! I can speak English!\"</i>\n\n"
+                    "📖 <b>Panduan Cara Baca:</b>\n"
+                    "<code>[Yes! Ai ken spiik Ing-glisy!]</code>\n\n"
+                    "👉 <b>Giliranmu:</b> Ucapkan yel-yel penyemangat ini dengan gembira!"
                 ),
             },
         ],
     },
+
     # =========================================================================
     # 6. 🎮 ENGLISH CHALLENGE (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
+    # Sesuai revisi: DIMUDAHKAN!
+    # Beginner: Unscramble super mudah (seperti "i am a girl")
+    # Intermediate: Kuis to be (am / is / are)
+    # Advanced: Unscramble kata kerja aksi sehari-hari
     # =========================================================================
     config.MODE_CHALLENGE: {
+        # Beginner: Unscramble kata sangat mudah
         config.LEVEL_BEGINNER: [
             {
                 "id": "chg_beg_01",
-                "badge": "🎮 Word Unscramble: Morning Routine",
+                "badge": "🎮 Susun Kata: I am a girl",
                 "prompt": (
-                    "🧩 <b>Level 1: Unscramble the Word</b>\n\n"
-                    "Scrambled: <code>[ K - F - B - A - E - R - A - S - T ]</code>\n"
-                    "Hint: The first meal of the morning! 🍳\n\n"
-                    "👉 <b>Your Turn:</b> Reply with the unscrambled English word!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ girl / a / am / I ]</code>\n\n"
+                    "💡 <i>Petunjuk: Mulailah dengan kata 'I' (Saya)...</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!\n"
+                    "<i>(Jawaban: I am a girl)</i>"
                 ),
             },
             {
                 "id": "chg_beg_02",
-                "badge": "🎮 Odd One Out: Food Categories",
+                "badge": "🎮 Susun Kata: He is a boy",
                 "prompt": (
-                    "🧩 <b>Spot the odd word out:</b>\n\n"
-                    "<code>[ Apple, Banana, Carrot, Strawberry, Peach ]</code>\n\n"
-                    "👉 <b>Your Turn:</b> Which item doesn't belong and why?"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ boy / a / is / He ]</code>\n\n"
+                    "💡 <i>Petunjuk: Mulai dengan 'He' (Dia laki-laki)...</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_beg_03",
-                "badge": "🎮 Opposite Match",
+                "badge": "🎮 Susun Kata: This is a book",
                 "prompt": (
-                    "🧩 <b>Find the exact opposites:</b>\n\n"
-                    "1. <b>Ancient</b> -> ?\n"
-                    "2. <b>Generous</b> -> ?\n"
-                    "3. <b>Courageous</b> -> ?\n\n"
-                    "👉 <b>Your Turn:</b> Reply with antonyms for all three words!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ book / a / is / This ]</code>\n\n"
+                    "💡 <i>Petunjuk: Mulai dengan 'This' (Ini)...</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_beg_04",
-                "badge": "🎮 Missing Vowels Riddle",
+                "badge": "🎮 Susun Kata: It is a cat",
                 "prompt": (
-                    "🧩 <b>Fill in the missing vowels (A, E, I, O, U):</b>\n\n"
-                    "<code>[ B _ T T _ R F L Y ]</code> 🦋\n"
-                    "Hint: A colorful insect with delicate wings!\n\n"
-                    "👉 <b>Your Turn:</b> Send the completed word!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ cat / a / is / It ]</code>\n\n"
+                    "💡 <i>Petunjuk: Mulai dengan 'It' (Itu)...</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_beg_05",
-                "badge": "🎮 Category Sprint",
+                "badge": "🎮 Susun Kata: I am happy",
                 "prompt": (
-                    "🧩 <b>Fast Vocabulary Challenge:</b>\n\n"
-                    "Name <b>5 things found in a kitchen</b> that start with different letters!\n\n"
-                    "👉 <b>Your Turn:</b> List your five kitchen items below!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ happy / am / I ]</code>\n\n"
+                    "💡 <i>Petunjuk: Mulai dengan 'I' (Saya)...</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_beg_06",
-                "badge": "🎮 Rhyme Match",
+                "badge": "🎮 Susun Kata: She is a student",
                 "prompt": (
-                    "🧩 <b>Rhyming Riddle:</b>\n\n"
-                    "I rhyme with <b>'LIGHT'</b>, I happen during sleep, and stars appear when I arrive. What am I?\n\n"
-                    "👉 <b>Your Turn:</b> Send your answer!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ student / a / is / She ]</code>\n\n"
+                    "💡 <i>Petunjuk: Mulai dengan 'She' (Dia perempuan)...</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!"
                 ),
             },
         ],
+        # Intermediate: Kuis To Be (am, is, are)
         config.LEVEL_INTERMEDIATE: [
             {
                 "id": "chg_int_01",
-                "badge": "🎮 Idiom Riddle: Missing Animals",
+                "badge": "🎮 Kuis To Be: I am",
                 "prompt": (
-                    "🧩 <b>Complete the Famous Idioms:</b>\n\n"
-                    "1. <i>\"To kill two _______ with one stone.\"</i>\n"
-                    "2. <i>\"Let the _______ out of the bag.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Name the two missing animals and explain the meaning of either idiom!"
+                    "⭐ <b>Tantangan To Be:</b>\n\n"
+                    "Lengkapi kalimat ini:\n"
+                    "<code>I ___ a student.</code>\n\n"
+                    "Pilihan:\n"
+                    "A. am\n"
+                    "B. is\n"
+                    "C. are\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik pilihan to be yang tepat!"
                 ),
             },
             {
                 "id": "chg_int_02",
-                "badge": "🎮 Sentence Scramble: Idiom",
+                "badge": "🎮 Kuis To Be: She is",
                 "prompt": (
-                    "🧩 <b>Unscramble the words into a natural English idiom:</b>\n\n"
-                    "Words: <code>[ bite / bullet / have / the / we / to / will ]</code>\n\n"
-                    "👉 <b>Your Turn:</b> Rearrange the words and explain what this idiom means!"
+                    "⭐ <b>Tantangan To Be:</b>\n\n"
+                    "Lengkapi kalimat ini:\n"
+                    "<code>She ___ my kind teacher.</code>\n"
+                    "<i>(Dia adalah guruku yang baik)</i>\n\n"
+                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
                 ),
             },
             {
                 "id": "chg_int_03",
-                "badge": "🎮 Guess the Mystery Profession",
+                "badge": "🎮 Kuis To Be: They are",
                 "prompt": (
-                    "🧩 <b>Mystery Profession Riddle:</b>\n\n"
-                    "<i>\"I spend my days checking blueprints, calculating structural load thresholds, and ensuring bridges withstand seismic tremors. Without my calculations, skyscrapers could not stand.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> What is my profession?"
+                    "⭐ <b>Tantangan To Be:</b>\n\n"
+                    "Lengkapi kalimat ini:\n"
+                    "<code>They ___ my best friends.</code>\n"
+                    "<i>(Mereka adalah sahabat-sahabatku)</i>\n\n"
+                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
                 ),
             },
             {
                 "id": "chg_int_04",
-                "badge": "🎮 Phrasal Verb Swap",
+                "badge": "🎮 Kuis To Be: The dog",
                 "prompt": (
-                    "🧩 <b>Replace the formal verb with an everyday phrasal verb:</b>\n\n"
-                    "Formal: <i>\"The committee decided to <b>extinguish</b> the bonfire.\"</i>\n"
-                    "Formal: <i>\"They had to <b>postpone</b> the quarterly summit.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Supply the two phrasal verbs (Hint: both end in <i>'out'</i> or <i>'off'</i>)!"
+                    "⭐ <b>Tantangan To Be:</b>\n\n"
+                    "Lengkapi kalimat ini:\n"
+                    "<code>The little dog ___ very cute.</code>\n"
+                    "<i>(Anjing kecil itu sangat lucu)</i>\n\n"
+                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
                 ),
             },
             {
                 "id": "chg_int_05",
-                "badge": "🎮 Preposition Trap",
+                "badge": "🎮 Kuis To Be: We are",
                 "prompt": (
-                    "🧩 <b>Fill in the correct prepositions:</b>\n\n"
-                    "1. <i>\"She is proficient _______ data analysis.\"</i>\n"
-                    "2. <i>\"He apologized _______ his abrupt departure.\"</i>\n"
-                    "3. <i>\"We congratulated them _______ winning the championship.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Send the 3 correct prepositions in order!"
+                    "⭐ <b>Tantangan To Be:</b>\n\n"
+                    "Lengkapi kalimat ini:\n"
+                    "<code>We ___ studying in the classroom.</code>\n"
+                    "<i>(Kami sedang belajar di ruang kelas)</i>\n\n"
+                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
                 ),
             },
             {
                 "id": "chg_int_06",
-                "badge": "🎮 Fix the Malapropism",
+                "badge": "🎮 Kuis To Be: You are",
                 "prompt": (
-                    "🧩 <b>Correct the misused word:</b>\n\n"
-                    "❌ <code>\"He gave an illusion to Shakespeare in his opening speech.\"</code>\n"
-                    "Hint: It sounds like illusion, but means an indirect reference!\n\n"
-                    "👉 <b>Your Turn:</b> Send the correct word and its spelling!"
+                    "⭐ <b>Tantangan To Be:</b>\n\n"
+                    "Lengkapi kalimat ini:\n"
+                    "<code>You ___ very smart!</code>\n"
+                    "<i>(Kamu sangat pintar!)</i>\n\n"
+                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
                 ),
             },
         ],
+        # Advanced: Unscramble Kata Kerja Sehari-hari yang Mudah
         config.LEVEL_ADVANCED: [
             {
                 "id": "chg_adv_01",
-                "badge": "🎮 Synonym Intensity Gradient",
+                "badge": "🎮 Susun Kata: I like milk",
                 "prompt": (
-                    "🧩 <b>Intensity Gradient Challenge:</b>\n\n"
-                    "Arrange these synonyms in ascending order of intensity (from mildest to most extreme):\n"
-                    "<code>[ Furious, Annoyed, Livid, Irritated, Enraged ]</code>\n\n"
-                    "👉 <b>Your Turn:</b> Order the list from 1 (mildest) to 5 (most severe)!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ milk / like / I ]</code>\n\n"
+                    "💡 <i>Artinya: Saya suka susu.</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_adv_02",
-                "badge": "🎮 Etymology & Latin Roots",
+                "badge": "🎮 Susun Kata: He plays football",
                 "prompt": (
-                    "🧩 <b>Root Word Challenge:</b>\n\n"
-                    "The Latin root <b>'VERT / VERS'</b> means <i>'to turn'</i>.\n"
-                    "Identify words meaning:\n"
-                    "1. To turn away one's eyes: <b>A_______</b>\n"
-                    "2. To turn something completely upside down or inside out: <b>I_______</b>\n"
-                    "3. Capable of turning to many different tasks: <b>V_______</b>\n\n"
-                    "👉 <b>Your Turn:</b> Name all three words!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ football / plays / He ]</code>\n\n"
+                    "💡 <i>Artinya: Dia bermain sepak bola.</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_adv_03",
-                "badge": "🎮 Spot the Dangling Modifier",
+                "badge": "🎮 Susun Kata: We go to school",
                 "prompt": (
-                    "🧩 <b>Grammar Precision:</b>\n\n"
-                    "❌ <code>\"Walking into the conference hall, the PowerPoint presentation was already concluding.\"</code>\n\n"
-                    "👉 <b>Your Turn:</b> Explain why this sentence has a dangling modifier and provide the corrected version!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ to / We / school / go ]</code>\n\n"
+                    "💡 <i>Artinya: Kami pergi ke sekolah.</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_adv_04",
-                "badge": "🎮 Register Mismatch Correction",
+                "badge": "🎮 Susun Kata: They read books",
                 "prompt": (
-                    "🧩 <b>Stylistic Elevation:</b>\n\n"
-                    "Elevate this casual email sentence for an academic peer-reviewed journal:\n"
-                    "Casual: <i>\"Lots of folks think this theory is totally bogus because the numbers are all messed up.\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Rewrite using formal academic vocabulary and tone!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ books / read / They ]</code>\n\n"
+                    "💡 <i>Artinya: Mereka membaca buku.</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_adv_05",
-                "badge": "🎮 The Oxymoron Challenge",
+                "badge": "🎮 Susun Kata: She eats an apple",
                 "prompt": (
-                    "🧩 <b>Literary Device Riddle:</b>\n\n"
-                    "An oxymoron combines two contradictory terms (e.g., <i>'deafening silence'</i>).\n"
-                    "Formulate three original, evocative oxymorons describing modern life or technology!\n\n"
-                    "👉 <b>Your Turn:</b> Share your 3 creative oxymorons!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ an / apple / eats / She ]</code>\n\n"
+                    "💡 <i>Artinya: Dia memakan sebuah apel.</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
                 ),
             },
             {
                 "id": "chg_adv_06",
-                "badge": "🎮 Lateral Thinking Riddle",
+                "badge": "🎮 Susun Kata: The baby sleeps",
                 "prompt": (
-                    "🧩 <b>Linguistic Riddle:</b>\n\n"
-                    "<i>\"What English word begins with 'T', ends with 'T', and is filled with 'T'?\"</i>\n\n"
-                    "👉 <b>Your Turn:</b> Solve the riddle and send your answer!"
+                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
+                    "<code>[ sleeps / baby / The ]</code>\n\n"
+                    "💡 <i>Artinya: Bayi itu tidur.</i>\n\n"
+                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
                 ),
             },
         ],
@@ -1158,9 +1437,9 @@ def get_offline_exercise(
     if not level_dict:
         return {
             "id": "default_fallback",
-            "title": config.LEARNING_MODES.get(mode, {}).get("title", "English Practice"),
-            "badge": "Practice Exercise",
-            "prompt": "Practice forming a natural English sentence related to this topic and reply below!",
+            "title": config.LEARNING_MODES.get(mode, {}).get("title", "Latihan Bahasa Inggris"),
+            "badge": "Latihan Seru",
+            "prompt": "Yuk coba buat kalimat pendek dalam bahasa Inggris dan kirim ke sini!",
         }
 
     candidates = [ex for ex in level_dict if ex.get("id") != exclude_id]
@@ -1169,36 +1448,37 @@ def get_offline_exercise(
     mode_info = config.LEARNING_MODES.get(mode, {})
     return {
         "id": chosen.get("id"),
-        "title": mode_info.get("title", "English Practice"),
-        "badge": chosen.get("badge", "Practice Exercise"),
+        "title": mode_info.get("title", "Latihan Bahasa Inggris"),
+        "badge": chosen.get("badge", "Latihan"),
         "prompt": chosen.get("prompt", ""),
     }
 
 
 def get_offline_feedback(mode: str, level: str, safe_user_text: str) -> str:
     """
-    Returns encouraging, contextual feedback when the AI service is unavailable.
+    Returns encouraging, child-friendly feedback in Indonesian when AI service is unavailable.
     """
     level_info = config.LEVEL_INFO.get(level, config.LEVEL_INFO[config.DEFAULT_LEVEL])
     badge = level_info["badge"]
 
     templates = [
         (
-            f"✨ <b>English Buddy Feedback ({badge}):</b>\n\n"
-            f"You wrote: <i>\"{safe_user_text}\"</i>\n\n"
-            f"👏 <b>Great effort!</b> Your message is clear and expressive. "
-            f"Consistency is key—try tapping <b>🔄 Next Exercise</b> to keep your momentum going!"
+            f"✨ <b>English Buddy Note ({badge}):</b>\n\n"
+            f"Jawabanmu: <i>\"{safe_user_text}\"</i>\n\n"
+            f"🌟 <b>Hebat sekali!</b> Usahamu sangat luar biasa! Teruslah rajin berlatih ya. "
+            f"Tekan tombol <b>🔄 Next Exercise</b> untuk latihan seru berikutnya!"
         ),
         (
-            f"✨ <b>Coach Note ({badge}):</b>\n\n"
-            f"Received: <i>\"{safe_user_text}\"</i>\n\n"
-            f"💡 <b>Helpful Tip:</b> When practicing at the {level.capitalize()} level, focus on natural linking words "
-            f"(e.g., <i>'furthermore', 'on the other hand', 'specifically'</i>). Keep up the great work!"
+            f"✨ <b>Catatan Teman Belajar ({badge}):</b>\n\n"
+            f"Kamu menulis: <i>\"{safe_user_text}\"</i>\n\n"
+            f"👍 <b>Pintar!</b> Belajar bahasa Inggris itu mudah dan menyenangkan kan? "
+            f"Setiap kali mencoba, kamu jadi makin jago lho! Semangat terus ya!"
         ),
         (
-            f"✨ <b>English Buddy Insight ({badge}):</b>\n\n"
-            f"Your response: <i>\"{safe_user_text}\"</i>\n\n"
-            f"🎯 Excellent practice! Try reading your answer aloud once more to train your tongue on natural intonation."
+            f"✨ <b>Pujian dari English Buddy ({badge}):</b>\n\n"
+            f"Pesanmu: <i>\"{safe_user_text}\"</i>\n\n"
+            f"🎉 <b>Keren banget!</b> Jangan pernah takut salah ya, karena dari mencoba kita jadi bisa. "
+            f"Yuk lanjutkan ke tantangan berikutnya!"
         ),
     ]
 

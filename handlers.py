@@ -110,9 +110,9 @@ def get_main_menu_keyboard(current_level: str = config.DEFAULT_LEVEL) -> InlineK
 def get_level_selection_keyboard(current_level: str = config.DEFAULT_LEVEL) -> InlineKeyboardMarkup:
     """Builds the level selection keyboard."""
     levels = [
-        (config.LEVEL_BEGINNER, "🟢 Beginner (A1–A2)"),
-        (config.LEVEL_INTERMEDIATE, "🟡 Intermediate (B1–B2)"),
-        (config.LEVEL_ADVANCED, "🔴 Advanced (C1–C2)"),
+        (config.LEVEL_BEGINNER, config.LEVEL_INFO[config.LEVEL_BEGINNER]["badge"]),
+        (config.LEVEL_INTERMEDIATE, config.LEVEL_INFO[config.LEVEL_INTERMEDIATE]["badge"]),
+        (config.LEVEL_ADVANCED, config.LEVEL_INFO[config.LEVEL_ADVANCED]["badge"]),
     ]
     keyboard = []
     for level_key, label in levels:
@@ -125,7 +125,7 @@ def get_level_selection_keyboard(current_level: str = config.DEFAULT_LEVEL) -> I
         ])
 
     keyboard.append([
-        InlineKeyboardButton("🔙 Back to Menu", callback_data=config.ACTION_MAIN_MENU)
+        InlineKeyboardButton("🔙 Kembali ke Menu", callback_data=config.ACTION_MAIN_MENU)
     ])
     return InlineKeyboardMarkup(keyboard)
 
@@ -134,16 +134,17 @@ def get_mode_keyboard(mode_key: str) -> InlineKeyboardMarkup:
     """Builds inline action buttons: Next Exercise and Return to Main Menu."""
     keyboard = [
         [
-            InlineKeyboardButton("🔄 Next Exercise", callback_data=config.ACTION_NEXT_EXERCISE),
-            InlineKeyboardButton("🔙 Main Menu", callback_data=config.ACTION_MAIN_MENU),
+            InlineKeyboardButton("🔄 Latihan Lain (Next)", callback_data=config.ACTION_NEXT_EXERCISE),
+            InlineKeyboardButton("🔙 Menu Utama", callback_data=config.ACTION_MAIN_MENU),
         ]
     ]
     return InlineKeyboardMarkup(keyboard)
 
 
 WELCOME_MESSAGE: str = (
-    "Hi! I'm your English Buddy! 👋 What would you like to practice today?\n\n"
-    "Choose one of the learning tracks below or adjust your level anytime:"
+    "Halo adik-adik! Aku English Buddy, teman belajarmu! 👋✨\n\n"
+    "Belajar bahasa Inggris itu mudah dan seru lho! Jangan takut salah ya, di sini kita belajar bersama dari dasar.\n\n"
+    "Yuk pilih materi atau tantangan yang ingin kamu coba di bawah ini:"
 )
 
 
@@ -226,11 +227,11 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
     # 2. Level Selection Menu
     if data == config.ACTION_SELECT_LEVEL:
         level_text = (
-            "⚙️ <b>Select Your English Proficiency Level:</b>\n\n"
-            "• <b>🟢 Beginner (A1–A2):</b> Essential vocabulary, foundational grammar, simple daily chats.\n"
-            "• <b>🟡 Intermediate (B1–B2):</b> Idioms, phrasal verbs, complex sentences, varied discussions.\n"
-            "• <b>🔴 Advanced (C1–C2):</b> Subtle nuances, academic/business vocabulary, advanced sentence inversion.\n\n"
-            "Choose a level below:"
+            "⚙️ <b>Pilih Tingkat Kemampuan (Level):</b>\n\n"
+            "• <b>🟢 Pemula (Beginner):</b> To be (am/is/are), anggota tubuh, kata kerja dasar, & susun kata mudah.\n"
+            "• <b>🟡 Menengah (Intermediate):</b> Kegiatan sehari-hari, kata sifat, fabel pendek, & kuis to be.\n"
+            "• <b>🔴 Percaya Diri (Confident):</b> Mengenal jenis kata (part of speech), teks recount, & kalimat aktif.\n\n"
+            "Pilih tingkat belajar di bawah ini ya:"
         )
         try:
             await query.edit_message_text(
@@ -252,7 +253,7 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
             logger.info("User %s changed level to %s", update.effective_user.id if update.effective_user else 0, new_level)
             try:
                 await query.edit_message_text(
-                    text=f"✅ <b>Level updated to {level_name}!</b>\n\n{WELCOME_MESSAGE}",
+                    text=f"✅ <b>Level berhasil diubah ke {level_name}!</b>\n\n{WELCOME_MESSAGE}",
                     reply_markup=get_main_menu_keyboard(current_level),
                     parse_mode=constants.ParseMode.HTML,
                 )
