@@ -98,10 +98,10 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative overflow-hidden rounded-3xl border border-zinc-800/80 bg-zinc-950/80 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_20px_50px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
+        className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-zinc-950/80 p-4 sm:p-8 backdrop-blur-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_20px_50px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
       >
         {/* WebGL Shader Background behind card content */}
-        <div className="absolute inset-0 pointer-events-none opacity-30 -z-10 overflow-hidden rounded-3xl">
+        <div className="absolute inset-0 pointer-events-none opacity-30 -z-10 overflow-hidden rounded-2xl sm:rounded-3xl">
           <ShaderBackground className="w-full h-full" />
         </div>
 
@@ -113,19 +113,19 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
 
         {/* 1. HEADER SECTION */}
         <header className="flex flex-col gap-5 sm:gap-6 relative z-10">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
             {/* Live Status Pill Badge */}
             <motion.div
               variants={itemVariants}
               role="status"
               aria-label={`System status: ${statusText} with ${uptime} uptime`}
-              className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-3 py-1 text-xs font-medium text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.12)] transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/[0.12]"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-3 py-1 text-xs font-medium text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.12)] whitespace-nowrap transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/[0.12]"
             >
-              <span className="relative flex h-2 w-2" aria-hidden="true">
+              <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
-              <span className="tracking-tight font-medium">
+              <span className="tracking-tight font-medium whitespace-nowrap">
                 {statusText} • {uptime} Uptime
               </span>
             </motion.div>
@@ -136,7 +136,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
               onClick={handleCopyHandle}
               type="button"
               aria-label={`Copy Telegram bot handle @${telegramHandle}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-400 transition-colors hover:border-zinc-700 hover:bg-zinc-800/80 hover:text-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
+              className="inline-flex shrink-0 max-w-full items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-400 transition-colors hover:border-zinc-700 hover:bg-zinc-800/80 hover:text-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {copied ? (
@@ -158,8 +158,8 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="flex items-center gap-1"
                   >
-                    <Copy className="h-3 w-3 opacity-70" />
-                    <span>@{telegramHandle.replace(/^@/, "")}</span>
+                    <Copy className="h-3 w-3 shrink-0 opacity-70" />
+                    <span className="truncate max-w-[200px] xs:max-w-none">@{telegramHandle.replace(/^@/, "")}</span>
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -212,7 +212,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
           className="mt-6 sm:mt-7 relative z-10"
           aria-label="Engine Operational Status"
         >
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <h2 className="text-xs font-mono font-medium uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
                 <Layers className="h-3.5 w-3.5 text-emerald-400" />
@@ -224,12 +224,12 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
             </div>
 
             {/* Overarching Summary Pill: Only 1 Mode Active */}
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/[0.08] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.1)]">
-              <span className="relative flex h-2 w-2">
+            <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/[0.08] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.1)] whitespace-nowrap">
+              <span className="relative flex h-2 w-2 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-400" />
               </span>
-              <span className="font-medium">1 Mode Aktif (Content Bank)</span>
+              <span className="font-medium whitespace-nowrap">1 Mode Aktif (Content Bank)</span>
             </div>
           </div>
 
@@ -268,7 +268,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-zinc-400">Kapasitas:</span>
-                  <span className="font-mono text-zinc-200">108 Soal (6 Kategori)</span>
+                  <span className="font-mono text-zinc-200">90 Soal (5 Kategori)</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-zinc-400">Kecepatan:</span>
@@ -338,7 +338,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
                 Status Operasional Saat Ini: Hanya 1 Mode yang Aktif
               </p>
               <p className="text-zinc-400 text-[11px]">
-                Bot saat ini beroperasi penuh menggunakan <b>Mode Content Bank (Offline Engine)</b>. Semua 108 materi dan latihan aktif 100% tanpa risiko downtime atau kuota habis. Jika Anda memasukkan <code>GEMINI_API_KEY</code> di file <code>.env</code>, bot akan otomatis beralih menjadi <b>Hybrid Mode</b> (AI dinamis + fallback bank soal).
+                Bot saat ini beroperasi penuh menggunakan <b>Mode Content Bank (Offline Engine)</b>. Semua 90 materi dan latihan aktif 100% tanpa risiko downtime atau kuota habis. Jika Anda memasukkan <code>GEMINI_API_KEY</code> di file <code>.env</code>, bot akan otomatis beralih menjadi <b>Hybrid Mode</b> (AI dinamis + fallback bank soal).
               </p>
             </div>
           </div>

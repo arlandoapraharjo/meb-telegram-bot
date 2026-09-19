@@ -63,8 +63,10 @@ def sanitize_outgoing_text(text: str) -> str:
 
 
 def get_main_menu_keyboard(current_level: str = config.DEFAULT_LEVEL) -> InlineKeyboardMarkup:
-    """Builds the 6-mode inline keyboard in a clean 2-column grid with a level selector."""
-    level_badge = config.LEVEL_INFO.get(current_level, config.LEVEL_INFO[config.DEFAULT_LEVEL])["badge"]
+    """Builds the 5-mode inline keyboard in a clean, bubble-width aligned grid with a level selector."""
+    lvl = config.LEVEL_INFO.get(current_level, config.LEVEL_INFO[config.DEFAULT_LEVEL])
+    level_short = lvl.get("short", "Pemula")
+    level_icon = lvl.get("icon", "🟢")
 
     keyboard = [
         [
@@ -89,17 +91,13 @@ def get_main_menu_keyboard(current_level: str = config.DEFAULT_LEVEL) -> InlineK
         ],
         [
             InlineKeyboardButton(
-                config.LEARNING_MODES[config.MODE_SPEAKING]["button_text"],
-                callback_data=config.MODE_SPEAKING,
-            ),
-            InlineKeyboardButton(
                 config.LEARNING_MODES[config.MODE_CHALLENGE]["button_text"],
                 callback_data=config.MODE_CHALLENGE,
             ),
         ],
         [
             InlineKeyboardButton(
-                f"⚙️ Level: {level_badge} ▾",
+                f"⚙️ Level: {level_icon} {level_short} ▾",
                 callback_data=config.ACTION_SELECT_LEVEL,
             ),
         ],
@@ -134,7 +132,7 @@ def get_mode_keyboard(mode_key: str) -> InlineKeyboardMarkup:
     """Builds inline action buttons: Next Exercise and Return to Main Menu."""
     keyboard = [
         [
-            InlineKeyboardButton("🔄 Latihan Lain (Next)", callback_data=config.ACTION_NEXT_EXERCISE),
+            InlineKeyboardButton("🔄 Latihan Lain", callback_data=config.ACTION_NEXT_EXERCISE),
             InlineKeyboardButton("🔙 Menu Utama", callback_data=config.ACTION_MAIN_MENU),
         ]
     ]

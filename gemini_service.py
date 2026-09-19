@@ -97,7 +97,7 @@ async def generate_dynamic_exercise(mode: str, level: str) -> Optional[Dict[str,
         f"  * If Vocabulary: body parts (anggota tubuh) or daily activities (kegiatan sehari-hari).\n"
         f"  * If Reading: short narrative fable, descriptive text (cat, school), or recount text (yesterday).\n"
         f"  * If Challenge: easy sentence unscramble (like 'i am a girl') or 'to be' (am/is/are) blank.\n"
-        f"  * If Conversation/Speaking: simple school greetings, introducing name, polite daily phrases.\n"
+        f"  * If Conversation: simple school greetings, introducing name, polite daily phrases.\n"
         f"- Include clear Indonesian explanation/translation so a rural Indonesian child understands easily.\n\n"
         f"Return ONLY a JSON object with this exact schema:\n"
         f"{{\n"

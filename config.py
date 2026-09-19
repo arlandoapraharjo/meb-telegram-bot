@@ -84,18 +84,21 @@ LEVEL_INFO: Final[dict[str, dict[str, str]]] = {
     LEVEL_BEGINNER: {
         "title": "Pemula (Beginner)",
         "badge": "🟢 Pemula (Beginner)",
+        "short": "Pemula",
         "icon": "🟢",
         "description": "To be (am/is/are), anggota tubuh (body parts), kata kerja dasar, & susun kata mudah.",
     },
     LEVEL_INTERMEDIATE: {
         "title": "Menengah (Intermediate)",
         "badge": "🟡 Menengah (Intermediate)",
+        "short": "Menengah",
         "icon": "🟡",
         "description": "Kegiatan sehari-hari (daily activity), kata sifat, cerita pendek fabel, & kuis to be.",
     },
     LEVEL_ADVANCED: {
         "title": "Percaya Diri (Confident)",
         "badge": "🔴 Percaya Diri (Confident)",
+        "short": "Percaya Diri",
         "icon": "🔴",
         "description": "Mengenal jenis kata (part of speech), recount text (pengalaman kemarin), & kalimat aktif.",
     },
@@ -125,7 +128,7 @@ ACTION_SET_LEVEL_PREFIX: Final[str] = "action_set_level_"
 # --- Learning Modes Display Content ---
 LEARNING_MODES: Final[dict[str, dict[str, Any]]] = {
     MODE_DAILY_CONVERSATION: {
-        "button_text": "💬 Percakapan Harian",
+        "button_text": "💬 Percakapan",
         "title": "Percakapan Sehari-hari (Daily Conversation)",
         "badge": "💬 Sapaan & Perkenalan Diri",
         "prompt": (
@@ -138,7 +141,7 @@ LEARNING_MODES: Final[dict[str, dict[str, Any]]] = {
         ),
     },
     MODE_VOCABULARY: {
-        "button_text": "📚 Kosakata (Vocab)",
+        "button_text": "📚 Kosakata",
         "title": "Belajar Kosakata (Vocabularies)",
         "badge": "📚 Body Parts & Daily Activity",
         "prompt": (
@@ -152,7 +155,7 @@ LEARNING_MODES: Final[dict[str, dict[str, Any]]] = {
         ),
     },
     MODE_GRAMMAR: {
-        "button_text": "✏️ Tata Bahasa (Grammar)",
+        "button_text": "✏️ Tata Bahasa",
         "title": "Tata Bahasa Mudah (Grammar)",
         "badge": "✏️ Belajar 'To Be' (am, is, are)",
         "prompt": (
@@ -166,7 +169,7 @@ LEARNING_MODES: Final[dict[str, dict[str, Any]]] = {
         ),
     },
     MODE_READING: {
-        "button_text": "📖 Membaca (Reading)",
+        "button_text": "📖 Membaca",
         "title": "Membaca Teks Pendek (Reading)",
         "badge": "📖 Descriptive Text: My Cat",
         "prompt": (
@@ -178,20 +181,8 @@ LEARNING_MODES: Final[dict[str, dict[str, Any]]] = {
             "👉 <b>Giliranmu (Your Turn):</b> Jawab dengan nama kucing tersebut!"
         ),
     },
-    MODE_SPEAKING: {
-        "button_text": "🗣️ Berbicara (Speaking)",
-        "title": "Latihan Bicara (Speaking)",
-        "badge": "🗣️ Sapaan & Kata Dasar",
-        "prompt": (
-            "🎙️ <b>Latihan Mengucapkan Sapaan:</b>\n\n"
-            "<i>\"Good morning! How are you?\"</i>\n"
-            "<i>(Dibaca: Gud morniing! Hau ar yu?)</i>\n"
-            "<i>Artinya: Selamat pagi! Apa kabarmu?</i>\n\n"
-            "👉 <b>Giliranmu (Your Turn):</b> Kirim pesan suara (voice note) atau ketik kalimat sapaan di atas!"
-        ),
-    },
     MODE_CHALLENGE: {
-        "button_text": "🎮 Tantangan (Challenge)",
+        "button_text": "🎮 Tantangan",
         "title": "Tantangan Seru (English Challenge)",
         "badge": "🎮 Susun Kata (Unscramble)",
         "prompt": (
