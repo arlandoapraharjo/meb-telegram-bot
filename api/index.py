@@ -20,7 +20,7 @@ import secrets
 import sys
 
 from fastapi import FastAPI, Header, HTTPException, Request, status
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from telegram import Update
 from telegram.ext import (
     Application,
@@ -221,6 +221,22 @@ async def health_check(request: Request):
         return HTMLResponse(content=get_landing_html(), status_code=200)
 
     return {"status": "healthy"}
+
+
+@app.get("/mascot.png")
+@app.get("/icon.png")
+@app.get("/favicon.png")
+@app.get("/favicon.ico")
+async def get_brand_icon(request: Request):
+    """Serves brand mascot & favicon assets."""
+    filename = Path(request.url.path).name
+    target = ROOT_DIR / "public" / filename
+    if not target.is_file():
+        target = ROOT_DIR / "public" / "icon.png"
+    if target.is_file():
+        media_type = "image/x-icon" if target.suffix == ".ico" else "image/png"
+        return FileResponse(target, media_type=media_type)
+    raise HTTPException(status_code=404, detail="Asset not found")
 
 
 @app.post("/api/webhook")

@@ -21,12 +21,30 @@ declare namespace React {
   type FormEvent<T = any> = any;
   type ChangeEvent<T = any> = any;
   type CSSProperties = any;
+  type Ref<T = any> = any;
+  interface RefObject<T> {
+    readonly current: T | null;
+  }
+  interface MutableRefObject<T> {
+    current: T;
+  }
 
   function useState<T>(initialState: T | (() => T)): [T, (newState: T | ((prevState: T) => T)) => void];
+  function useState<T = any>(initialState?: any): [T, (newState: any) => void];
   function useEffect(effect: () => void | (() => void), deps?: readonly any[]): void;
+  function useLayoutEffect(effect: () => void | (() => void), deps?: readonly any[]): void;
   function useCallback<T extends (...args: any[]) => any>(callback: T, deps: readonly any[]): T;
   function useMemo<T>(factory: () => T, deps: readonly any[] | undefined): T;
-  function useRef<T>(initialValue: T): { current: T };
+  function useRef<T>(initialValue: T): MutableRefObject<T>;
+  function useRef<T>(initialValue: T | null): RefObject<T>;
+  function useRef<T = any>(initialValue?: any): MutableRefObject<T>;
+  function useContext<T = any>(context: any): T;
+  function useReducer<R extends (...args: any[]) => any>(reducer: R, initialState: any, init?: any): any;
+  function createContext<T = any>(defaultValue?: T): any;
+  function forwardRef<T = any, P = {}>(render: (props: P, ref: any) => any): any;
+  function memo<T = any>(Component: T): T;
+  const Fragment: any;
+  const Suspense: any;
 }
 
 // Ambient module for 'react'
@@ -41,12 +59,30 @@ declare module "react" {
   export type FormEvent<T = any> = any;
   export type ChangeEvent<T = any> = any;
   export type CSSProperties = any;
+  export interface RefObject<T> {
+    readonly current: T | null;
+  }
+  export interface MutableRefObject<T> {
+    current: T;
+  }
+  export type Ref<T = any> = any;
 
   export function useState<T>(initialState: T | (() => T)): [T, (newState: T | ((prevState: T) => T)) => void];
+  export function useState<T = any>(initialState?: any): [T, (newState: any) => void];
   export function useEffect(effect: () => void | (() => void), deps?: readonly any[]): void;
-  function useCallback<T extends (...args: any[]) => any>(callback: T, deps: readonly any[]): T;
-  function useMemo<T>(factory: () => T, deps: readonly any[] | undefined): T;
-  function useRef<T>(initialValue: T): { current: T };
+  export function useLayoutEffect(effect: () => void | (() => void), deps?: readonly any[]): void;
+  export function useCallback<T extends (...args: any[]) => any>(callback: T, deps: readonly any[]): T;
+  export function useMemo<T>(factory: () => T, deps: readonly any[] | undefined): T;
+  export function useRef<T>(initialValue: T): MutableRefObject<T>;
+  export function useRef<T>(initialValue: T | null): RefObject<T>;
+  export function useRef<T = any>(initialValue?: any): MutableRefObject<T>;
+  export function useContext<T = any>(context: any): T;
+  export function useReducer<R extends (...args: any[]) => any>(reducer: R, initialState: any, init?: any): any;
+  export function createContext<T = any>(defaultValue?: T): any;
+  export function forwardRef<T = any, P = {}>(render: (props: P, ref: any) => any): any;
+  export function memo<T = any>(Component: T): T;
+  export const Fragment: any;
+  export const Suspense: any;
 
   export namespace JSX {
     interface Element {
@@ -115,6 +151,17 @@ declare module "lucide-react" {
   export const Check: any;
   export const CheckCircle2: any;
   export const Cpu: any;
+  export const Database: any;
+  export const AlertCircle: any;
+  export const Clock: any;
+  export const Layers: any;
+  export const Activity: any;
+  export const ExternalLink: any;
+  export const Info: any;
+  export const Terminal: any;
+  export const RefreshCw: any;
+  export const Play: any;
   const icons: any;
   export default icons;
 }
+

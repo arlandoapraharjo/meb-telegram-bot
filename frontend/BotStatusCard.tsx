@@ -5,28 +5,18 @@ import {
   ArrowUpRight,
   Bot,
   Sparkles,
-  MessageSquare,
-  BookOpen,
-  PenTool,
-  BookMarked,
-  Mic,
-  Trophy,
   ShieldCheck,
   Server,
   Zap,
   Copy,
   Check,
+  Database,
+  Cpu,
+  CheckCircle2,
+  Clock,
+  Layers,
 } from "lucide-react";
-
-export interface LearningTrack {
-  id: string;
-  emoji: string;
-  title: string;
-  description: string;
-  level: string;
-  badgeText?: string;
-  icon: ElementType;
-}
+import { ShaderBackground } from "./components/ui/dotted-veil";
 
 export interface BotStatusCardProps {
   botName?: string;
@@ -37,90 +27,27 @@ export interface BotStatusCardProps {
   uptime?: string;
   status?: "operational" | "degraded" | "maintenance";
   statusText?: string;
-  tracks?: LearningTrack[];
   systemSpecs?: string[];
   className?: string;
+  contentBankActive?: boolean;
+  geminiActive?: boolean;
 }
 
-const DEFAULT_TRACKS: LearningTrack[] = [
-  {
-    id: "conversation",
-    emoji: "💬",
-    title: "Daily Conversation",
-    description: "Sapaan dan perkenalan sekolah sehari-hari yang ramah dan mudah dipahami.",
-    level: "A1–A2",
-    badgeText: "Sapaan",
-    icon: MessageSquare,
-  },
-  {
-    id: "vocabulary",
-    emoji: "📚",
-    title: "Vocabulary Builder",
-    description: "Kosakata anggota tubuh (body parts) & kegiatan sehari-hari (daily activity).",
-    level: "Dasar",
-    badgeText: "Kosakata",
-    icon: BookOpen,
-  },
-  {
-    id: "grammar",
-    emoji: "✏️",
-    title: "Grammar Lab",
-    description: "Aturan to be (am/is/are), kata kerja (verbs), kata sifat, & jenis kata.",
-    level: "Dasar",
-    badgeText: "Tata Bahasa",
-    icon: PenTool,
-  },
-  {
-    id: "reading",
-    emoji: "📖",
-    title: "Reading Corner",
-    description: "Teks deskripsi sederhana, fabel pendek (narrative), & pengalaman lampau (recount).",
-    level: "Cerita",
-    badgeText: "Membaca",
-    icon: BookMarked,
-  },
-  {
-    id: "speaking",
-    emoji: "🗣️",
-    title: "Speaking Practice",
-    description: "Pelafalan kata dasar dan kalimat sapaan dengan panduan cara baca.",
-    level: "Pengucapan",
-    badgeText: "Bicara",
-    icon: Mic,
-  },
-  {
-    id: "challenge",
-    emoji: "🎮",
-    title: "English Challenge",
-    description: "Susun kata mudah (seperti 'I am a girl') dan kuis to be seru tanpa bikin pusing.",
-    level: "Santai",
-    badgeText: "Tantangan",
-    icon: Trophy,
-  },
-];
-
-const DEFAULT_SPECS = [
-  "Vercel Serverless",
-  "Python Async Core",
-  "Zero Data Retention",
-  "Gemini Flash Hybrid",
-];
-
 export const BotStatusCard: FC<BotStatusCardProps> = ({
-  botName = "English Buddy",
-  subtitle = "Interactive Telegram Language Companion",
-  description = "A craft-engineered Telegram bot delivering CEFR-calibrated daily conversation, vocabulary drills, grammar coaching, and gamified challenges directly in your chat.",
+  botName = "Mandiri English Buddy",
+  subtitle = "AI & Offline English Tutor Bot",
+  description = "Bot Telegram edukasi bahasa Inggris adaptif untuk siswa Indonesia dengan sistem Dual Engine: Bank Soal Kurasi Offline dan AI Flash Engine.",
   telegramHandle = "EnglishBuddyBot",
   telegramUrl = "https://t.me/EnglishBuddyBot",
-  uptime = "99.9%",
+  uptime = "99.98%",
   status = "operational",
-  statusText = "Webhook Active",
-  tracks = DEFAULT_TRACKS,
-  systemSpecs = DEFAULT_SPECS,
+  statusText = "Online",
+  systemSpecs = ["FastAPI Webhook", "< 1ms Offline Fallback", "100% Free / No Key Req"],
   className = "",
+  contentBankActive = true,
+  geminiActive = false,
 }) => {
   const [copied, setCopied] = useState(false);
-  const [hoveredTrack, setHoveredTrack] = useState<string | null>(null);
 
   const handleCopyHandle = (e: MouseEvent) => {
     e.preventDefault();
@@ -159,28 +86,33 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
       {/* Subtle Ambient Radial Glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-500/[0.07] rounded-full blur-3xl"
+        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-500/[0.08] rounded-full blur-3xl"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-16 right-10 w-72 h-72 bg-zinc-700/[0.08] rounded-full blur-3xl"
+        className="pointer-events-none absolute -bottom-16 right-10 w-72 h-72 bg-emerald-700/[0.06] rounded-full blur-3xl"
       />
 
-      {/* Main Bento Card */}
+      {/* Main Bento Card with WebGL ShaderBackground embedded */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative overflow-hidden rounded-3xl border border-zinc-800/80 bg-zinc-950/70 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_20px_50px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
+        className="relative overflow-hidden rounded-3xl border border-zinc-800/80 bg-zinc-950/80 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_20px_50px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
       >
+        {/* WebGL Shader Background behind card content */}
+        <div className="absolute inset-0 pointer-events-none opacity-30 -z-10 overflow-hidden rounded-3xl">
+          <ShaderBackground className="w-full h-full" />
+        </div>
+
         {/* Subtle Top Accent Line */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent"
         />
 
         {/* 1. HEADER SECTION */}
-        <header className="flex flex-col gap-5 sm:gap-6">
+        <header className="flex flex-col gap-5 sm:gap-6 relative z-10">
           <div className="flex items-center justify-between gap-3">
             {/* Live Status Pill Badge */}
             <motion.div
@@ -237,8 +169,17 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
           {/* Bot Identity */}
           <motion.div variants={itemVariants} className="flex items-start gap-4 sm:gap-5">
             <div className="relative flex-shrink-0">
-              <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl border border-zinc-700/60 bg-gradient-to-br from-zinc-800 to-zinc-900 shadow-inner">
-                <Bot className="h-6 w-6 sm:h-7 sm:w-7 text-zinc-100" />
+              <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/[0.08] via-zinc-900 to-zinc-950 p-1 shadow-inner shadow-amber-500/10 ring-1 ring-white/[0.06] overflow-hidden">
+                <img
+                  src="/icon.png"
+                  alt={botName}
+                  className="h-full w-full object-contain drop-shadow select-none"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLElement;
+                    target.style.display = "none";
+                  }}
+                />
+                <Bot className="h-6 w-6 sm:h-7 sm:w-7 text-zinc-100 hidden" />
               </div>
               <div
                 aria-hidden="true"
@@ -265,85 +206,148 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
           </motion.div>
         </header>
 
-        {/* 2. LEARNING TRACKS (BENTO / PILL GRID) */}
+        {/* 2. DUAL ENGINE STATUS: CONTENT BANK VS GEMINI MODE */}
         <motion.section
           variants={itemVariants}
-          className="mt-6 sm:mt-7"
-          aria-label="Interactive Learning Tracks"
+          className="mt-6 sm:mt-7 relative z-10"
+          aria-label="Engine Operational Status"
         >
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400">
-              Core Learning Tracks
-            </h2>
-            <span className="text-[11px] font-mono text-zinc-500">
-              CEFR Aligned • 6 Modes
-            </span>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xs font-mono font-medium uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
+                <Layers className="h-3.5 w-3.5 text-emerald-400" />
+                <span>Dual Engine Status</span>
+              </h2>
+              <span className="inline-flex items-center rounded-md border border-zinc-800 bg-zinc-900/80 px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
+                2 Modes
+              </span>
+            </div>
+
+            {/* Overarching Summary Pill: Only 1 Mode Active */}
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/[0.08] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.1)]">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-400" />
+              </span>
+              <span className="font-medium">1 Mode Aktif (Content Bank)</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            {tracks.map((track) => {
-              const Icon = track.icon;
-              const isHovered = hoveredTrack === track.id;
-
-              return (
-                <motion.div
-                  key={track.id}
-                  variants={itemVariants}
-                  onMouseEnter={() => setHoveredTrack(track.id)}
-                  onMouseLeave={() => setHoveredTrack(null)}
-                  tabIndex={0}
-                  role="article"
-                  aria-label={`${track.title}: ${track.description}`}
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/30 p-3.5 transition-all duration-200 hover:border-zinc-700/80 hover:bg-zinc-900/70 hover:shadow-lg hover:shadow-black/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
-                >
-                  {/* Subtle hover gradient */}
-                  <div
-                    aria-hidden="true"
-                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br from-emerald-500/[0.04] to-transparent opacity-0 transition-opacity duration-200 ${
-                      isHovered ? "opacity-100" : ""
-                    }`}
-                  />
-
+          {/* Mode Comparison Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Mode 1: Content Bank (ACTIVE) */}
+            <div className="relative overflow-hidden rounded-2xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/[0.08] to-zinc-900/80 p-4 shadow-[0_0_20px_rgba(16,185,129,0.08)] backdrop-blur-md">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 shadow-sm">
+                    <Database className="h-4.5 w-4.5" />
+                  </div>
                   <div>
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-base" role="img" aria-hidden="true">
-                          {track.emoji}
-                        </span>
-                        <h3 className="text-xs sm:text-sm font-semibold tracking-tight text-zinc-200 transition-colors group-hover:text-zinc-100">
-                          {track.title}
-                        </h3>
-                      </div>
-
-                      <span className="inline-flex items-center rounded-md border border-zinc-800/80 bg-zinc-900/80 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-400 group-hover:border-zinc-700 group-hover:text-zinc-300">
-                        {track.level}
+                    <h3 className="text-xs font-semibold text-zinc-100 flex items-center gap-1.5">
+                      Content Bank Mode
+                      <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-mono font-medium text-emerald-300">
+                        Offline
                       </span>
-                    </div>
-
-                    <p className="mt-1.5 text-xs leading-relaxed text-zinc-400 transition-colors group-hover:text-zinc-300">
-                      {track.description}
-                    </p>
+                    </h3>
+                    <p className="text-[10px] text-zinc-400">Materi Terkurasi & Mandiri</p>
                   </div>
+                </div>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-zinc-800/40 pt-2 text-[11px] font-mono text-zinc-500">
-                    <span className="flex items-center gap-1">
-                      <Icon className="h-3 w-3 text-zinc-400 group-hover:text-emerald-400 transition-colors" />
-                      <span>{track.badgeText || "Active"}</span>
-                    </span>
-                    <span className="text-zinc-600 transition-colors group-hover:text-zinc-400">
-                      Instant Feedback
-                    </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  AKTIF
+                </span>
+              </div>
+
+              <div className="mt-3.5 space-y-1.5 text-[11px] border-t border-zinc-800/80 pt-2.5 font-sans">
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Status Mesin:</span>
+                  <span className="font-medium text-emerald-400 flex items-center gap-1">
+                    <CheckCircle2 className="h-3 w-3" /> Siap Melayani
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Kapasitas:</span>
+                  <span className="font-mono text-zinc-200">108 Soal (6 Kategori)</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Kecepatan:</span>
+                  <span className="font-mono text-emerald-400">&lt; 1 ms (Instan)</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Kebutuhan Kuota:</span>
+                  <span className="font-mono text-zinc-300">100% Gratis / No API Key</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Mode 2: Gemini Flash AI (STANDBY / INACTIVE) */}
+            <div className="relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-4 backdrop-blur-md">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-800/40 text-zinc-400">
+                    <Cpu className="h-4.5 w-4.5" />
                   </div>
-                </motion.div>
-              );
-            })}
+                  <div>
+                    <h3 className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+                      Gemini Flash Mode
+                      <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-[9px] font-mono font-medium text-zinc-400">
+                        Online AI
+                      </span>
+                    </h3>
+                    <p className="text-[10px] text-zinc-500">Dynamic AI Question & Feedback</p>
+                  </div>
+                </div>
+
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-700/60 bg-zinc-800/60 px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-500" />
+                  STANDBY
+                </span>
+              </div>
+
+              <div className="mt-3.5 space-y-1.5 text-[11px] border-t border-zinc-800/80 pt-2.5 font-sans">
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Status Mesin:</span>
+                  <span className="font-medium text-zinc-400 flex items-center gap-1">
+                    <Clock className="h-3 w-3 text-zinc-500" /> Menunggu API Key
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Kondisi .env:</span>
+                  <span className="font-mono text-amber-400/90">GEMINI_API_KEY kosong</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Kecepatan:</span>
+                  <span className="font-mono text-zinc-500">-- ms (Standby)</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-zinc-400">Aktivasi:</span>
+                  <span className="text-zinc-400">Isi API key di .env</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Operational Clarity Callout Banner */}
+          <div className="mt-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-3.5 text-xs leading-relaxed text-zinc-300 flex items-start gap-3">
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 mt-0.5">
+              <Check className="h-3 w-3" />
+            </div>
+            <div>
+              <p className="font-semibold text-zinc-100 mb-0.5">
+                Status Operasional Saat Ini: Hanya 1 Mode yang Aktif
+              </p>
+              <p className="text-zinc-400 text-[11px]">
+                Bot saat ini beroperasi penuh menggunakan <b>Mode Content Bank (Offline Engine)</b>. Semua 108 materi dan latihan aktif 100% tanpa risiko downtime atau kuota habis. Jika Anda memasukkan <code>GEMINI_API_KEY</code> di file <code>.env</code>, bot akan otomatis beralih menjadi <b>Hybrid Mode</b> (AI dinamis + fallback bank soal).
+              </p>
+            </div>
           </div>
         </motion.section>
 
         {/* 3. PRIMARY ACTION & COMMAND SHORTCUTS */}
         <motion.section
           variants={itemVariants}
-          className="mt-7 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-5 border-t border-zinc-800/80"
+          className="mt-7 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-5 border-t border-zinc-800/80 relative z-10"
         >
           {/* Quick command hints */}
           <div className="flex items-center gap-1.5 overflow-x-auto py-1 text-xs text-zinc-400 scrollbar-none">
@@ -359,7 +363,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
             </code>
           </div>
 
-          {/* Prominent Understated Action Button */}
+          {/* Prominent Action Button */}
           <motion.a
             href={telegramUrl}
             target="_blank"
@@ -368,7 +372,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
             whileTap={{ scale: 0.98 }}
             className="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-100 px-5 py-2.5 text-sm font-medium tracking-tight text-zinc-950 shadow-[0_1px_2px_rgba(0,0,0,0.1),0_0_12px_rgba(255,255,255,0.12)] transition-all duration-200 hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200"
           >
-            <span>Launch on Telegram</span>
+            <span>Buka di Telegram</span>
             <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </motion.a>
         </motion.section>
@@ -376,7 +380,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
         {/* 4. FOOTER SYSTEM METADATA */}
         <motion.footer
           variants={itemVariants}
-          className="mt-6 pt-4 border-t border-zinc-900 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-zinc-500"
+          className="mt-6 pt-4 border-t border-zinc-900 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-zinc-500 relative z-10"
         >
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1">
