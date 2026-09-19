@@ -44,7 +44,7 @@ vercel --prod
 Point Telegram to your Vercel deployment URL using the included helper utility:
 ```bash
 # Option A: Using the CLI helper (Recommended)
-python set_webhook.py set https://<your-vercel-domain>.vercel.app
+python scripts/set_webhook.py set https://<your-vercel-domain>.vercel.app
 
 # Option B: Using cURL
 curl -F "url=https://<your-vercel-domain>.vercel.app/api/webhook" \
@@ -54,7 +54,7 @@ curl -F "url=https://<your-vercel-domain>.vercel.app/api/webhook" \
 
 Verify webhook registration:
 ```bash
-python set_webhook.py info
+python scripts/set_webhook.py info
 # Or via curl:
 # curl https://api.telegram.org/bot<YOUR_TELEGRAM_BOT_TOKEN>/getWebhookInfo
 ```
@@ -78,7 +78,7 @@ cp .env.example .env
 pip install -r requirements.txt
 
 # 4. If webhook was previously set, unregister it for local polling:
-python set_webhook.py delete
+python scripts/set_webhook.py delete
 
 # 5. Run local polling
 python bot.py
@@ -104,15 +104,22 @@ python bot.py
 
 ```text
 ├── api/
-│   └── index.py        # FastAPI serverless entrypoint for Vercel Webhook
-├── bot.py              # Standalone entrypoint for local polling development
-├── set_webhook.py      # CLI utility to register, check, or delete Telegram Webhooks
-├── config.py           # Settings, track definitions & validations
-├── handlers.py         # Telegram commands, callback queries & text handler
-├── gemini_service.py   # Gemini 3.8 Flash AI integration & coach persona
-├── content_bank.py     # 108 curated offline exercises & fallback logic
-├── rate_limiter.py     # In-memory sliding window rate limiter (LRU)
-├── requirements.txt    # Pinned dependencies (fastapi, uvicorn, python-telegram-bot, etc.)
-├── vercel.json         # Vercel routing and rewrites configuration
-└── .env.example        # Environment variable template
+│   └── index.py            # FastAPI serverless entrypoint for Vercel Webhook
+├── public/
+│   └── index.html          # Web status & launch landing page (served by FastAPI)
+├── frontend/
+│   ├── BotStatusCard.tsx   # Craft React/Tailwind component
+│   ├── declarations.d.ts   # Ambient TypeScript declarations
+│   └── tsconfig.json       # TypeScript configuration for component
+├── scripts/
+│   └── set_webhook.py      # CLI utility to register, check, or delete Telegram Webhooks
+├── bot.py                  # Standalone entrypoint for local polling development
+├── config.py               # Settings, track definitions & validations
+├── handlers.py             # Telegram commands, callback queries & text handler
+├── gemini_service.py       # Gemini 3.8 Flash AI integration & coach persona
+├── content_bank.py         # 108 curated offline exercises & fallback logic
+├── rate_limiter.py         # In-memory sliding window rate limiter (LRU)
+├── requirements.txt        # Pinned dependencies (fastapi, uvicorn, python-telegram-bot, etc.)
+├── vercel.json             # Vercel routing and rewrites configuration
+└── .env.example            # Environment variable template
 ```

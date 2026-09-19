@@ -48,6 +48,12 @@ Thumbs.db
 .vercel/
 
 
+# Node / Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # Logs
 *.log
 logs/

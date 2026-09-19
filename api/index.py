@@ -20,7 +20,7 @@ import secrets
 import sys
 
 from fastapi import FastAPI, Header, HTTPException, Request, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from telegram import Update
 from telegram.ext import (
     Application,
@@ -171,16 +171,55 @@ app = FastAPI(
 )
 
 
+INDEX_HTML_PATH = ROOT_DIR / "public" / "index.html"
+if not INDEX_HTML_PATH.is_file() and (ROOT_DIR / "index.html").is_file():
+    INDEX_HTML_PATH = ROOT_DIR / "index.html"
+
+_cached_html: str | None = None
+
+
+def get_landing_html() -> str:
+    """Loads and caches the 21st.dev craft HTML status landing page."""
+    global _cached_html
+    if _cached_html is None:
+        if INDEX_HTML_PATH.is_file():
+            content = INDEX_HTML_PATH.read_text(encoding="utf-8")
+            bot_username = os.getenv("TELEGRAM_BOT_USERNAME", "").strip().lstrip("@")
+            if bot_username:
+                content = content.replace("EnglishBuddyBot", bot_username)
+            _cached_html = content
+        else:
+            _cached_html = (
+                "<!DOCTYPE html><html><body style='background:#09090b;color:#f4f4f5;"
+                "font-family:sans-serif;padding:40px;text-align:center;'>"
+                "<h1>English Buddy</h1><p style='color:#10b981;'>● Webhook Active &amp; Operational</p>"
+                "</body></html>"
+            )
+    return _cached_html
+
+
 @app.get("/")
 @app.get("/api")
 @app.get("/api/index")
 @app.get("/api/index.py")
 @app.get("/api/webhook")
-async def health_check():
+async def health_check(request: Request):
     """
-    Health check: Quick browser and uptime monitoring verification.
-    Matches all GET routes regardless of Vercel rewrite collapsing.
+    Health check & status dashboard:
+    - Returns rich 21st.dev craft HTML landing page when opened in a web browser (Accept: text/html).
+    - Returns fast JSON {"status": "healthy"} for automated uptime monitoring and API clients.
     """
+    accept = request.headers.get("accept", "").lower()
+    fmt = request.query_params.get("format", "").lower()
+
+    # Dedicated JSON response for monitoring probes, curl, or format=json
+    if fmt == "json" or "application/json" in accept or "curl" in request.headers.get("user-agent", "").lower():
+        return {"status": "healthy"}
+
+    # Browser navigation: return crafted minimal landing page
+    if "text/html" in accept or request.url.path in ("/", "/api"):
+        return HTMLResponse(content=get_landing_html(), status_code=200)
+
     return {"status": "healthy"}
 
 

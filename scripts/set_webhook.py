@@ -3,9 +3,9 @@ Convenience CLI utility to register, inspect, and manage Telegram Webhooks
 for the English Buddy Vercel Serverless Deployment.
 
 Usage:
-    python set_webhook.py set <VERCEL_URL>
-    python set_webhook.py info
-    python set_webhook.py delete
+    python scripts/set_webhook.py set <VERCEL_URL>
+    python scripts/set_webhook.py info
+    python scripts/set_webhook.py delete
 """
 
 from __future__ import annotations
@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+from pathlib import Path
 import ssl
 import sys
 import urllib.parse
@@ -24,8 +25,12 @@ from dotenv import load_dotenv
 if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-# Load credentials from .env
-load_dotenv()
+# Ensure repository root is accessible and load credentials from root .env
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+load_dotenv(ROOT_DIR / ".env")
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET", "").strip()
