@@ -215,13 +215,24 @@ async def health_check(request: Request):
 
     # Dedicated JSON response for monitoring probes, curl, or format=json
     if fmt == "json" or "application/json" in accept or "curl" in request.headers.get("user-agent", "").lower():
-        return {"status": "healthy"}
+        gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+        return {
+            "status": "healthy",
+            "gemini_active": bool(gemini_key),
+            "gemini_model": (os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.8-flash") if gemini_key else None,
+            "bot_username": os.getenv("TELEGRAM_BOT_USERNAME", "EnglishBuddy_Practice_Bot").lstrip("@"),
+            "content_bank_exercises": 360,
+        }
 
     # Browser navigation: return crafted minimal landing page
     if "text/html" in accept or request.url.path in ("/", "/api"):
         return HTMLResponse(content=get_landing_html(), status_code=200)
 
-    return {"status": "healthy"}
+    gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+    return {
+        "status": "healthy",
+        "gemini_active": bool(gemini_key),
+    }
 
 
 @app.get("/mascot.png")
