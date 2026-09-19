@@ -1,0 +1,406 @@
+"""
+Telegram Handlers Module for English Buddy Bot.
+
+Handles:
+- /start command with an inline keyboard menu (6 learning modes + level selector).
+- Level switching (Beginner, Intermediate, Advanced).
+- Dynamic exercise generation (Gemini Flash AI + offline curated fallback).
+- "🔄 Next Exercise" button to instantly roll new exercises within a track.
+- Conversational English Coach feedback with 300-character input guardrails.
+- Global application-level error handling with credential redaction.
+"""
+
+from __future__ import annotations
+
+import html
+import logging
+import re
+import traceback
+from typing import Any, Dict, Optional
+
+from telegram import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Update,
+    constants,
+)
+from telegram.ext import ContextTypes
+
+import config
+import content_bank
+import gemini_service
+from rate_limiter import rate_limited
+
+logger = logging.getLogger(__name__)
+
+# Credential patterns to scrub from all outgoing messages
+_SENSITIVE_PATTERNS = [
+    re.compile(r"\d{7,12}:[A-Za-z0-9_-]{30,50}"),  # Telegram Bot Token
+    re.compile(r"AIza[0-9A-Za-z-_]{30,45}"),      # Google AI API Key (typically AIzaSy... 39 chars)
+]
+
+
+def sanitize_outgoing_text(text: str) -> str:
+    """
+    Security Barrier: Guarantees zero credential leakage in outgoing messages.
+    Strips configured secrets and any token-like patterns before transmission.
+    """
+    if not text:
+        return text
+
+    sanitized = text
+    # 1. Scrub exact configured environment secrets
+    if config.TELEGRAM_BOT_TOKEN and config.TELEGRAM_BOT_TOKEN in sanitized:
+        sanitized = sanitized.replace(config.TELEGRAM_BOT_TOKEN, "[PROTECTED_CREDENTIAL]")
+    if config.GEMINI_API_KEY and config.GEMINI_API_KEY in sanitized:
+        sanitized = sanitized.replace(config.GEMINI_API_KEY, "[PROTECTED_CREDENTIAL]")
+
+    # 2. Scrub any regex patterns resembling API keys or bot tokens
+    for pattern in _SENSITIVE_PATTERNS:
+        sanitized = pattern.sub("[PROTECTED_CREDENTIAL]", sanitized)
+
+    return sanitized
+
+
+def get_main_menu_keyboard(current_level: str = config.DEFAULT_LEVEL) -> InlineKeyboardMarkup:
+    """Builds the 6-mode inline keyboard in a clean 2-column grid with a level selector."""
+    level_badge = config.LEVEL_INFO.get(current_level, config.LEVEL_INFO[config.DEFAULT_LEVEL])["badge"]
+
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                config.LEARNING_MODES[config.MODE_DAILY_CONVERSATION]["button_text"],
+                callback_data=config.MODE_DAILY_CONVERSATION,
+            ),
+            InlineKeyboardButton(
+                config.LEARNING_MODES[config.MODE_VOCABULARY]["button_text"],
+                callback_data=config.MODE_VOCABULARY,
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                config.LEARNING_MODES[config.MODE_GRAMMAR]["button_text"],
+                callback_data=config.MODE_GRAMMAR,
+            ),
+            InlineKeyboardButton(
+                config.LEARNING_MODES[config.MODE_READING]["button_text"],
+                callback_data=config.MODE_READING,
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                config.LEARNING_MODES[config.MODE_SPEAKING]["button_text"],
+                callback_data=config.MODE_SPEAKING,
+            ),
+            InlineKeyboardButton(
+                config.LEARNING_MODES[config.MODE_CHALLENGE]["button_text"],
+                callback_data=config.MODE_CHALLENGE,
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                f"⚙️ Level: {level_badge} ▾",
+                callback_data=config.ACTION_SELECT_LEVEL,
+            ),
+        ],
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+
+def get_level_selection_keyboard(current_level: str = config.DEFAULT_LEVEL) -> InlineKeyboardMarkup:
+    """Builds the level selection keyboard."""
+    levels = [
+        (config.LEVEL_BEGINNER, "🟢 Beginner (A1–A2)"),
+        (config.LEVEL_INTERMEDIATE, "🟡 Intermediate (B1–B2)"),
+        (config.LEVEL_ADVANCED, "🔴 Advanced (C1–C2)"),
+    ]
+    keyboard = []
+    for level_key, label in levels:
+        prefix = "✅ " if level_key == current_level else ""
+        keyboard.append([
+            InlineKeyboardButton(
+                f"{prefix}{label}",
+                callback_data=f"{config.ACTION_SET_LEVEL_PREFIX}{level_key}",
+            )
+        ])
+
+    keyboard.append([
+        InlineKeyboardButton("🔙 Back to Menu", callback_data=config.ACTION_MAIN_MENU)
+    ])
+    return InlineKeyboardMarkup(keyboard)
+
+
+def get_mode_keyboard(mode_key: str) -> InlineKeyboardMarkup:
+    """Builds inline action buttons: Next Exercise and Return to Main Menu."""
+    keyboard = [
+        [
+            InlineKeyboardButton("🔄 Next Exercise", callback_data=config.ACTION_NEXT_EXERCISE),
+            InlineKeyboardButton("🔙 Main Menu", callback_data=config.ACTION_MAIN_MENU),
+        ]
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+
+WELCOME_MESSAGE: str = (
+    "Hi! I'm your English Buddy! 👋 What would you like to practice today?\n\n"
+    "Choose one of the learning tracks below or adjust your level anytime:"
+)
+
+
+async def fetch_exercise(
+    mode: str,
+    level: str,
+    exclude_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Hybrid content fetcher:
+    Attempts real-time dynamic generation with Gemini Flash AI.
+    Falls back cleanly to the offline curated exercise bank if AI is disabled or fails.
+    """
+    ai_exercise = await gemini_service.generate_dynamic_exercise(mode, level)
+    if ai_exercise:
+        return ai_exercise
+
+    return content_bank.get_offline_exercise(mode, level, exclude_id)
+
+
+@rate_limited()
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Handles /start command.
+    Sends greeting and displays the 6 learning modes + level selector.
+    """
+    if update.message is None:
+        return
+
+    # Security: Restrict interactions to private chats only
+    if update.effective_chat and update.effective_chat.type != constants.ChatType.PRIVATE:
+        logger.info("Ignoring /start from non-private chat id=%s", update.effective_chat.id)
+        return
+
+    current_level = context.user_data.get("level", config.DEFAULT_LEVEL) if context.user_data else config.DEFAULT_LEVEL
+
+    await update.message.reply_text(
+        text=WELCOME_MESSAGE,
+        reply_markup=get_main_menu_keyboard(current_level),
+        parse_mode=constants.ParseMode.HTML,
+    )
+
+
+@rate_limited()
+async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Handles inline keyboard callbacks:
+    - Mode selection & initial dynamic challenge.
+    - '🔄 Next Exercise' generation.
+    - Level selection & level changes.
+    - '🔙 Main Menu' navigation.
+    """
+    query = update.callback_query
+    if query is None or query.data is None:
+        return
+
+    # Security: Restrict interactions to private chats only
+    if update.effective_chat and update.effective_chat.type != constants.ChatType.PRIVATE:
+        return
+
+    await query.answer()
+    data = query.data
+
+
+    user_data = context.user_data if context.user_data is not None else {}
+    current_level = user_data.get("level", config.DEFAULT_LEVEL)
+
+    # 1. Main Menu Navigation
+    if data == config.ACTION_MAIN_MENU:
+        try:
+            await query.edit_message_text(
+                text=WELCOME_MESSAGE,
+                reply_markup=get_main_menu_keyboard(current_level),
+                parse_mode=constants.ParseMode.HTML,
+            )
+        except Exception as exc:
+            logger.debug("Error returning to main menu: %s", exc)
+        return
+
+    # 2. Level Selection Menu
+    if data == config.ACTION_SELECT_LEVEL:
+        level_text = (
+            "⚙️ <b>Select Your English Proficiency Level:</b>\n\n"
+            "• <b>🟢 Beginner (A1–A2):</b> Essential vocabulary, foundational grammar, simple daily chats.\n"
+            "• <b>🟡 Intermediate (B1–B2):</b> Idioms, phrasal verbs, complex sentences, varied discussions.\n"
+            "• <b>🔴 Advanced (C1–C2):</b> Subtle nuances, academic/business vocabulary, advanced sentence inversion.\n\n"
+            "Choose a level below:"
+        )
+        try:
+            await query.edit_message_text(
+                text=level_text,
+                reply_markup=get_level_selection_keyboard(current_level),
+                parse_mode=constants.ParseMode.HTML,
+            )
+        except Exception as exc:
+            logger.debug("Error displaying level menu: %s", exc)
+        return
+
+    # 3. Apply Level Change
+    if data.startswith(config.ACTION_SET_LEVEL_PREFIX):
+        new_level = data[len(config.ACTION_SET_LEVEL_PREFIX):]
+        if new_level in config.LEVEL_INFO:
+            user_data["level"] = new_level
+            current_level = new_level
+            level_name = config.LEVEL_INFO[new_level]["title"]
+            logger.info("User %s changed level to %s", update.effective_user.id if update.effective_user else 0, new_level)
+            try:
+                await query.edit_message_text(
+                    text=f"✅ <b>Level updated to {level_name}!</b>\n\n{WELCOME_MESSAGE}",
+                    reply_markup=get_main_menu_keyboard(current_level),
+                    parse_mode=constants.ParseMode.HTML,
+                )
+            except Exception as exc:
+                logger.debug("Error confirming level change: %s", exc)
+        return
+
+    # 4. Next Exercise in Current Track
+    if data == config.ACTION_NEXT_EXERCISE:
+        active_mode = user_data.get("active_mode", config.MODE_DAILY_CONVERSATION)
+        last_id = user_data.get("last_exercise_id")
+
+        exercise = await fetch_exercise(active_mode, current_level, exclude_id=last_id)
+        user_data["last_exercise_id"] = exercise.get("id")
+        user_data["active_prompt"] = exercise.get("prompt", "")
+
+        mode_badge = exercise.get("badge", "Practice Challenge")
+        level_badge = config.LEVEL_INFO[current_level]["icon"]
+
+        message_text = (
+            f"<b>{html.escape(exercise['title'])}</b> [{level_badge}]\n"
+            f"<i>{html.escape(mode_badge)}</i>\n\n"
+            f"{exercise['prompt']}"
+        )
+        try:
+            await query.edit_message_text(
+                text=message_text,
+                reply_markup=get_mode_keyboard(active_mode),
+                parse_mode=constants.ParseMode.HTML,
+            )
+        except Exception as exc:
+            logger.debug("Error loading next exercise: %s", exc)
+        return
+
+    # 5. Selected Learning Mode
+    if data in config.LEARNING_MODES:
+        user_data["active_mode"] = data
+        exercise = await fetch_exercise(data, current_level)
+        user_data["last_exercise_id"] = exercise.get("id")
+        user_data["active_prompt"] = exercise.get("prompt", "")
+
+        level_badge = config.LEVEL_INFO[current_level]["icon"]
+        message_text = (
+            f"<b>{html.escape(exercise['title'])}</b> [{level_badge}]\n"
+            f"<i>{html.escape(exercise['badge'])}</i>\n\n"
+            f"{exercise['prompt']}"
+        )
+
+        try:
+            await query.edit_message_text(
+                text=message_text,
+                reply_markup=get_mode_keyboard(data),
+                parse_mode=constants.ParseMode.HTML,
+            )
+        except Exception as exc:
+            logger.debug("Error opening mode %s: %s", data, exc)
+
+
+@rate_limited()
+async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Handles student messages with input guardrails:
+    - Caps text at MAX_MESSAGE_LENGTH (300 characters).
+    - Evaluates student response using the Conversational English Coach persona (Gemini / Offline).
+    - Provides constructive feedback and inline next-exercise action buttons.
+    """
+    if update.message is None or not update.message.text:
+        return
+
+    # Security: Restrict interactions to private chats only
+    if update.effective_chat and update.effective_chat.type != constants.ChatType.PRIVATE:
+        return
+
+    raw_text = update.message.text.strip()
+
+    # --- Input Guardrail: Truncate incoming user text to MAX_MESSAGE_LENGTH (300 characters) ---
+    if len(raw_text) > config.MAX_MESSAGE_LENGTH:
+        logger.info(
+            "Input guardrail: Truncating message from user_id=%s (%d chars -> %d chars).",
+            update.effective_user.id if update.effective_user else 0,
+            len(raw_text),
+            config.MAX_MESSAGE_LENGTH,
+        )
+        user_text = raw_text[:config.MAX_MESSAGE_LENGTH]
+    else:
+        user_text = raw_text
+
+
+    user_data = context.user_data if context.user_data is not None else {}
+    active_mode = user_data.get("active_mode", config.MODE_DAILY_CONVERSATION)
+    current_level = user_data.get("level", config.DEFAULT_LEVEL)
+    active_prompt = user_data.get("active_prompt", "English practice exercise")
+
+    # Show typing indicator while coach evaluates
+    if update.effective_chat:
+        try:
+            await context.bot.send_chat_action(
+                chat_id=update.effective_chat.id,
+                action=constants.ChatAction.TYPING,
+            )
+        except Exception:
+            pass
+
+    # Conversational Coach Evaluation (Gemini Flash or Offline Fallback)
+    feedback_text = await gemini_service.evaluate_student_message(
+        mode=active_mode,
+        level=current_level,
+        active_prompt=active_prompt,
+        user_text=user_text,
+    )
+
+    await update.message.reply_text(
+        text=sanitize_outgoing_text(feedback_text),
+        reply_markup=get_mode_keyboard(active_mode),
+        parse_mode=constants.ParseMode.HTML,
+    )
+
+
+async def global_error_handler(update: Optional[object], context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Global error handler to catch exceptions cleanly.
+    - Sanitizes logs to prevent leaking bot tokens and API keys.
+    - Never exposes internal stack traces to end-users.
+    """
+    error = context.error
+    token = config.TELEGRAM_BOT_TOKEN
+    api_key = config.GEMINI_API_KEY
+
+    tb_lines = traceback.format_exception(None, error, error.__traceback__) if error else ["No exception info"]
+    tb_text = "".join(tb_lines)
+
+    # Redact sensitive credentials
+    if token and token in tb_text:
+        tb_text = tb_text.replace(token, "***REDACTED_BOT_TOKEN***")
+    if api_key and api_key in tb_text:
+        tb_text = tb_text.replace(api_key, "***REDACTED_GEMINI_API_KEY***")
+
+    logger.error("Exception while handling update: %s\n%s", error, tb_text)
+
+    if isinstance(update, Update) and update.effective_chat:
+        try:
+            await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=(
+                    "⚠️ <b>An unexpected error occurred.</b>\n\n"
+                    "Please tap /start or try again in a few moments."
+                ),
+                parse_mode=constants.ParseMode.HTML,
+            )
+        except Exception as notify_err:
+            logger.debug("Failed to send error notification to user: %s", notify_err)
