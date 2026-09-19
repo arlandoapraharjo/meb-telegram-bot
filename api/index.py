@@ -186,6 +186,7 @@ def get_landing_html() -> str:
             content = INDEX_HTML_PATH.read_text(encoding="utf-8")
             bot_username = os.getenv("TELEGRAM_BOT_USERNAME", "").strip().lstrip("@")
             if bot_username:
+                content = content.replace("EnglishBuddy_Practice_Bot", bot_username)
                 content = content.replace("EnglishBuddyBot", bot_username)
             _cached_html = content
         else:

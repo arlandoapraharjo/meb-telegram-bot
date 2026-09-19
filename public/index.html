@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My English Buddy — Dual Engine Status & Portal</title>
+  <title>My English Buddy — Status & Portal</title>
   <meta name="description"
-    content="Status operasional My English Buddy Telegram Bot. Dual engine status: Content Bank (Offline) vs Google Gemini Flash AI (Online)." />
+    content="Status operasional My English Buddy Telegram Bot. status: Content Bank (Offline) vs Google Gemini Flash AI (Online)." />
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" sizes="64x64" href="./favicon.png" />
@@ -103,14 +103,14 @@
           </div>
 
           <!-- Copy Bot Handle -->
-          <button id="copy-btn" type="button" aria-label="Copy Telegram handle @EnglishBuddyBot"
+          <button id="copy-btn" type="button" aria-label="Copy Telegram handle @EnglishBuddy_Practice_Bot"
             class="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-400 transition-colors hover:border-zinc-700 hover:bg-zinc-800/80 hover:text-zinc-200">
             <svg id="copy-icon" class="w-3 h-3 opacity-70" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
               <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
             </svg>
-            <span id="copy-text">@EnglishBuddyBot</span>
+            <span id="copy-text">@EnglishBuddy_Practice_Bot</span>
           </button>
         </div>
 
@@ -120,7 +120,8 @@
           <div class="relative flex-shrink-0 group">
             <div
               class="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/[0.08] via-zinc-900/90 to-zinc-950 p-1.5 shadow-inner shadow-amber-500/10 ring-1 ring-white/[0.06] transition-all duration-300 group-hover:scale-105 group-hover:border-amber-500/40">
-              <img src="./mascot.png" onerror="this.onerror=null; this.src='mascot.png';" alt="My English Buddy Mascot" class="h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(245,158,11,0.25)] select-none" />
+              <img src="./mascot.png" onerror="this.onerror=null; this.src='mascot.png';" alt="My English Buddy Mascot"
+                class="h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(245,158,11,0.25)] select-none" />
             </div>
             <div
               class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-zinc-900 bg-emerald-500 text-zinc-950 shadow-sm"
@@ -151,7 +152,7 @@
         </div>
       </header>
 
-      <!-- 2. DUAL ENGINE STATUS DISPLAY (CONTENT BANK VS GEMINI MODE) -->
+      <!-- 2.STATUS DISPLAY (CONTENT BANK VS GEMINI MODE) -->
       <section class="mt-6 sm:mt-7" aria-label="Status Mode Operasional Mesin">
 
         <!-- Section Header -->
@@ -164,7 +165,7 @@
                 <polyline points="2 17 12 22 22 17" />
                 <polyline points="2 12 12 17 22 12" />
               </svg>
-              <span>Dual Engine Status</span>
+              <span>Status</span>
             </h2>
             <span
               class="inline-flex items-center rounded-md border border-zinc-800 bg-zinc-900/80 px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
@@ -351,7 +352,7 @@
         </div>
 
         <!-- Prominent Launch Button -->
-        <a href="https://t.me/EnglishBuddyBot" target="_blank" rel="noopener noreferrer"
+        <a href="https://t.me/EnglishBuddy_Practice_Bot" target="_blank" rel="noopener noreferrer"
           class="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-100 px-5 py-2.5 text-sm font-medium tracking-tight text-zinc-950 shadow-[0_1px_2px_rgba(0,0,0,0.1),0_0_12px_rgba(255,255,255,0.12)] transition-all duration-200 hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200">
           <span>Buka di Telegram</span>
           <svg
@@ -433,11 +434,11 @@
 
     if (copyBtn) {
       copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText('@EnglishBuddyBot').then(() => {
-          showToast('Tersalin: @EnglishBuddyBot');
+        navigator.clipboard.writeText('@EnglishBuddy_Practice_Bot').then(() => {
+          showToast('Tersalin: @EnglishBuddy_Practice_Bot');
           copyText.textContent = 'Tersalin!';
           setTimeout(() => {
-            copyText.textContent = '@EnglishBuddyBot';
+            copyText.textContent = '@EnglishBuddy_Practice_Bot';
           }, 1800);
         });
       });
