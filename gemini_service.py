@@ -148,35 +148,52 @@ async def evaluate_student_message(
     level: str,
     active_prompt: str,
     user_text: str,
+    active_exercise: Optional[Dict[str, Any]] = None,
 ) -> str:
     """
     Evaluates student message using Gemini Conversational Coach persona.
-    Provides warm, encouraging Indonesian feedback with gentle corrections.
-    Falls back gracefully to offline templates if Gemini is unavailable.
+    Enforces honest, constructive pedagogical feedback without false praise.
+    Falls back gracefully to deterministic offline answer evaluation if Gemini is unavailable.
     """
     safe_user_text = html.escape(user_text)
-    client = get_genai_client()
 
+    # 1. Immediate input quality check
+    quality_status, quality_msg = content_bank.check_submission_quality(user_text)
+    if quality_msg:
+        return quality_msg
+
+    client = get_genai_client()
     if not client:
-        return content_bank.get_offline_feedback(mode, level, safe_user_text)
+        return content_bank.evaluate_offline_answer(user_text, active_exercise, mode, level)
 
     mode_info = config.LEARNING_MODES.get(mode, {})
     mode_title = mode_info.get("title", "English Practice")
     level_info = config.LEVEL_INFO.get(level, config.LEVEL_INFO[config.DEFAULT_LEVEL])
     level_label = level_info["badge"]
 
+    # Extract expected answer information if available
+    expected_info = ""
+    if active_exercise and active_exercise.get("primary_answer"):
+        primary = active_exercise.get("primary_answer")
+        exp_list = active_exercise.get("expected", [])
+        expected_info = (
+            f"\nCanonical Answer Key: {primary}\n"
+            f"Acceptable Variations: {', '.join(exp_list)}\n"
+        )
+
     evaluation_prompt = (
         f"The student is an Indonesian child practicing English ({mode_title} track at {level_label} level).\n\n"
-        f"Current Exercise/Prompt:\n{active_prompt}\n\n"
+        f"Current Exercise/Prompt:\n{active_prompt}\n"
+        f"{expected_info}\n"
         f"Student Submission:\n"
         f"<<<STUDENT_TEXT>>>\n"
         f"{user_text}\n"
         f"<<<END_STUDENT_TEXT>>>\n\n"
-        f"As their friendly English Coach:\n"
-        f"1. Warmly praise their effort in Indonesian (e.g., 'Hebat sekali! 🌟', 'Pintar! 👍').\n"
-        f"2. Check if their answer is correct. If correct, celebrate it! If there is a small mistake, gently explain the right answer in clear Indonesian with simple English.\n"
-        f"3. Keep the tone very encouraging, cheerful, and friendly for a young learner.\n"
-        f"Use only <b>, <i>, <code> tags. Keep response under 120 words."
+        f"As their friendly English Coach, evaluate honestly and constructively:\n"
+        f"1. ANTI-SUGARCOATING RULE: Do NOT give false praise ('Hebat', 'Pintar', 'Luar biasa', etc.) if the student's answer is off-topic, a single word/dot, or incorrect.\n"
+        f"2. If the answer is INCORRECT or inaccurate: Honestly and kindly state that it is not yet right, show the correct answer clearly ('Kunci Jawaban yang Benar: ...'), explain simply why in Indonesian, and encourage them to try again.\n"
+        f"3. If the answer is CORRECT: Celebrate their genuine achievement warmly and encourage them to continue.\n"
+        f"4. Keep explanations short, simple, and polite for young learners. Use only <b>, <i>, <code> tags. Keep response under 120 words."
     )
 
     try:
@@ -186,18 +203,18 @@ async def evaluate_student_message(
                 contents=evaluation_prompt,
                 config=types.GenerateContentConfig(
                     system_instruction=COACH_SYSTEM_INSTRUCTION,
-                    temperature=0.7,
+                    temperature=0.6,
                 ),
             ),
             timeout=config.GEMINI_TIMEOUT_SECONDS,
         )
         if response.text and response.text.strip():
             return response.text.strip()
-        return content_bank.get_offline_feedback(mode, level, safe_user_text)
+        return content_bank.evaluate_offline_answer(user_text, active_exercise, mode, level)
 
     except asyncio.TimeoutError:
         logger.warning("Gemini evaluation timed out (>%.1fs). Using offline feedback.", config.GEMINI_TIMEOUT_SECONDS)
-        return content_bank.get_offline_feedback(mode, level, safe_user_text)
+        return content_bank.evaluate_offline_answer(user_text, active_exercise, mode, level)
     except Exception as exc:
         logger.warning("Gemini evaluation failed: %s. Using offline feedback.", exc)
-        return content_bank.get_offline_feedback(mode, level, safe_user_text)
+        return content_bank.evaluate_offline_answer(user_text, active_exercise, mode, level)

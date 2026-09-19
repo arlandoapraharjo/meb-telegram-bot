@@ -267,6 +267,7 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
         exercise = await fetch_exercise(active_mode, current_level, exclude_id=last_id)
         user_data["last_exercise_id"] = exercise.get("id")
         user_data["active_prompt"] = exercise.get("prompt", "")
+        user_data["active_exercise"] = exercise
 
         mode_badge = exercise.get("badge", "Practice Challenge")
         level_badge = config.LEVEL_INFO[current_level]["icon"]
@@ -292,6 +293,7 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
         exercise = await fetch_exercise(data, current_level)
         user_data["last_exercise_id"] = exercise.get("id")
         user_data["active_prompt"] = exercise.get("prompt", "")
+        user_data["active_exercise"] = exercise
 
         level_badge = config.LEVEL_INFO[current_level]["icon"]
         message_text = (
@@ -316,6 +318,7 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     Handles student messages with input guardrails:
     - Caps text at MAX_MESSAGE_LENGTH (300 characters).
     - Evaluates student response using the Conversational English Coach persona (Gemini / Offline).
+    - Enforces honest, constructive pedagogical feedback without false praise.
     - Provides constructive feedback and inline next-exercise action buttons.
     """
     if update.message is None or not update.message.text:
@@ -344,6 +347,7 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     active_mode = user_data.get("active_mode", config.MODE_DAILY_CONVERSATION)
     current_level = user_data.get("level", config.DEFAULT_LEVEL)
     active_prompt = user_data.get("active_prompt", "English practice exercise")
+    active_exercise = user_data.get("active_exercise")
 
     # Show typing indicator while coach evaluates
     if update.effective_chat:
@@ -361,6 +365,7 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         level=current_level,
         active_prompt=active_prompt,
         user_text=user_text,
+        active_exercise=active_exercise,
     )
 
     await update.message.reply_text(

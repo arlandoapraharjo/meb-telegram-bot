@@ -268,7 +268,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-zinc-400">Kapasitas:</span>
-                  <span className="font-mono text-zinc-200">90 Soal (5 Kategori)</span>
+                  <span className="font-mono text-zinc-200">360 Soal (5 Kategori)</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-zinc-400">Kecepatan:</span>
@@ -338,7 +338,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
                 Status Operasional Saat Ini: Hanya 1 Mode yang Aktif
               </p>
               <p className="text-zinc-400 text-[11px]">
-                Bot saat ini beroperasi penuh menggunakan <b>Mode Content Bank (Offline Engine)</b>. Semua 90 materi dan latihan aktif 100% tanpa risiko downtime atau kuota habis. Jika Anda memasukkan <code>GEMINI_API_KEY</code> di file <code>.env</code>, bot akan otomatis beralih menjadi <b>Hybrid Mode</b> (AI dinamis + fallback bank soal).
+                Bot saat ini beroperasi penuh menggunakan <b>Mode Content Bank (Offline Engine)</b>. Semua 360 materi dan latihan aktif 100% tanpa risiko downtime atau kuota habis. Jika Anda memasukkan <code>GEMINI_API_KEY</code> di file <code>.env</code>, bot akan otomatis beralih menjadi <b>Hybrid Mode</b> (AI dinamis + fallback bank soal).
               </p>
             </div>
           </div>

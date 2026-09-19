@@ -6,7 +6,7 @@
 [![Telegram Bot API](https://img.shields.io/badge/telegram--bot--api-v21%2B%20(async)-0088cc?logo=telegram&logoColor=white)](https://python-telegram-bot.org/)
 [![Google GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%203.8%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 
-An interactive Telegram bot for English learners built with **FastAPI** and **python-telegram-bot (v21+ async)**, featuring **Gemini 3.8 Flash AI coaching**, an instant **curated offline fallback bank** (90 exercises), and ready for zero-maintenance deployment on **Vercel Serverless Functions**.
+An interactive Telegram bot for English learners built with **FastAPI** and **python-telegram-bot (v21+ async)**, featuring **Gemini 3.8 Flash AI coaching**, an instant **curated offline fallback bank** (360 exercises across 5 tracks), and ready for zero-maintenance deployment on **Vercel Serverless Functions**.
 
 ---
 
@@ -117,7 +117,7 @@ python bot.py
 ├── config.py               # Settings, track definitions & validations
 ├── handlers.py             # Telegram commands, callback queries & text handler
 ├── gemini_service.py       # Gemini 3.8 Flash AI integration & coach persona
-├── content_bank.py         # 90 curated offline exercises & fallback logic
+├── content_bank.py         # 360 curated offline exercises (5 tracks x 3 levels x 24) & anti-sugarcoat logic
 ├── rate_limiter.py         # In-memory sliding window rate limiter (LRU)
 ├── requirements.txt        # Pinned dependencies (fastapi, uvicorn, python-telegram-bot, etc.)
 ├── vercel.json             # Vercel routing and rewrites configuration

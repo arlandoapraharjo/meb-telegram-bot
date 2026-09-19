@@ -5,1201 +5,80 @@ Specially designed for Indonesian children and students from rural areas
 who are starting English from ground zero.
 
 Features:
-- Exactly 90 bite-sized, ultra-accessible exercises (5 tracks x 3 levels x 6 exercises).
-- Grammar: to be (am/is/are), verbs, adjectives, part of speech.
-- Vocabs: body parts (anggota tubuh), daily activities (kegiatan sehari-hari).
-- Reading: descriptive text, narrative text (fables), recount text (pengalaman lampau).
-- English Challenge (dimudahkan): easy unscramble ('I am a girl') & 'to be' fill-in-the-blank quizzes.
+- Exactly 360 curated, bite-sized exercises (5 tracks x 3 levels x 24 exercises).
+- Track 1: 💬 Daily Conversation (72 exercises)
+- Track 2: 📚 Vocabulary Builder (72 exercises)
+- Track 3: 📝 Grammar Master (72 exercises)
+- Track 4: 📖 Reading Comprehension (72 exercises)
+- Track 5: 🎮 Weekly Challenge & Word Quizzes (72 exercises)
 - Sub-millisecond O(1) in-memory retrieval.
 - Consecutive duplicate suppression with exclude_id tracking.
-- Contextual, encouraging Indonesian offline feedback.
+- Deterministic answer keys (expected & primary_answer) for accurate offline evaluation.
+- Intelligent anti-sugarcoat validation: catches punctuation, dots, spam, and incorrect answers
+  with polite, constructive feedback.
 """
 
 from __future__ import annotations
 
 import random
-from typing import Any, Dict, List, Optional
+import re
+import string
+from typing import Any, Dict, List, Optional, Tuple
 
 import config
 
 EXERCISE_BANK: Dict[str, Dict[str, List[Dict[str, Any]]]] = {
     # =========================================================================
-    # 1. 💬 DAILY CONVERSATION (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
-    # Sapaan & percakapan sehari-hari yang mudah untuk anak sekolah di Indonesia
+    # 1. 💬 DAILY CONVERSATION (72 exercises: 24 Beg, 24 Int, 24 Adv)
     # =========================================================================
     config.MODE_DAILY_CONVERSATION: {
-        config.LEVEL_BEGINNER: [
-            {
-                "id": "conv_beg_01",
-                "badge": "💬 Sapaan Pagi (Morning Greeting)",
-                "prompt": (
-                    "<b>☀️ Situasi:</b> Kamu bertemu teman di depan gerbang sekolah pada pagi hari.\n\n"
-                    "<b>Teman:</b> <i>\"Good morning! How are you today?\"</i>\n"
-                    "<i>(Selamat pagi! Apa kabarmu hari ini?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Balas dengan mengetik:\n"
-                    "<code>Good morning! I am fine, thank you.</code>\n"
-                    "<i>(Artinya: Selamat pagi! Saya baik-baik saja, terima kasih.)</i>"
-                ),
-            },
-            {
-                "id": "conv_beg_02",
-                "badge": "💬 Berkenalan Nama (Introducing Yourself)",
-                "prompt": (
-                    "<b>👋 Situasi:</b> Ada murid baru di kelasmu yang ingin berkenalan.\n\n"
-                    "<b>Murid Baru:</b> <i>\"Hello! My name is Budi. What is your name?\"</i>\n"
-                    "<i>(Halo! Nama saya Budi. Siapa namamu?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik namamu dalam bahasa Inggris:\n"
-                    "<code>My name is [namamu]</code>\n"
-                    "<i>(Contoh: My name is Siti)</i>"
-                ),
-            },
-            {
-                "id": "conv_beg_03",
-                "badge": "💬 Menanyakan Umur (Asking Age)",
-                "prompt": (
-                    "<b>🎂 Situasi:</b> Temanmu bertanya berapa umurmu sekarang.\n\n"
-                    "<b>Teman:</b> <i>\"How old are you?\"</i>\n"
-                    "<i>(Berapa usiamu?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Jawab dengan angka umurmu:\n"
-                    "<code>I am 10 years old.</code>\n"
-                    "<i>(Ganti angka 10 sesuai umurmu ya!)</i>"
-                ),
-            },
-            {
-                "id": "conv_beg_04",
-                "badge": "💬 Meminjam Pensil (Borrowing a Pencil)",
-                "prompt": (
-                    "<b>✏️ Situasi:</b> Pensilmu tertinggal di rumah, kamu ingin meminjam pensil teman.\n\n"
-                    "<b>Kamu:</b> <i>\"Can I borrow your pencil, please?\"</i>\n"
-                    "<i>(Bolehkah saya meminjam pensilmu?)</i>\n\n"
-                    "<b>Teman:</b> <i>\"Sure! Here you are.\"</i> <i>(Tentu! Ini dia.)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ucapkan terima kasih dengan mengetik:\n"
-                    "<code>Thank you very much!</code>"
-                ),
-            },
-            {
-                "id": "conv_beg_05",
-                "badge": "💬 Sama-sama (You're Welcome)",
-                "prompt": (
-                    "<b>🤝 Situasi:</b> Kamu membantu teman mengambilkan buku yang jatuh.\n\n"
-                    "<b>Teman:</b> <i>\"Thank you for helping me!\"</i>\n"
-                    "<i>(Terima kasih sudah membantuku!)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Jawab 'sama-sama' dengan mengetik:\n"
-                    "<code>You are welcome!</code>"
-                ),
-            },
-            {
-                "id": "conv_beg_06",
-                "badge": "💬 Berpamitan (Saying Goodbye)",
-                "prompt": (
-                    "<b>🔔 Situasi:</b> Bel pulang sekolah berbunyi, kamu berpamitan pada teman.\n\n"
-                    "<b>Teman:</b> <i>\"Goodbye! See you tomorrow!\"</i>\n"
-                    "<i>(Selamat tinggal! Sampai jumpa besok!)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Balas ucapan perpisahan dengan mengetik:\n"
-                    "<code>Goodbye! See you!</code>"
-                ),
-            },
-        ],
-        config.LEVEL_INTERMEDIATE: [
-            {
-                "id": "conv_int_01",
-                "badge": "💬 Warna Kesukaan (Favorite Color)",
-                "prompt": (
-                    "<b>🎨 Situasi:</b> Kamu dan teman sedang mewarnai gambar di kelas.\n\n"
-                    "<b>Teman:</b> <i>\"What is your favorite color?\"</i>\n"
-                    "<i>(Apa warna kesukaanmu?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Jawab warna kesukaanmu (blue/red/green/yellow):\n"
-                    "<code>My favorite color is blue.</code>"
-                ),
-            },
-            {
-                "id": "conv_int_02",
-                "badge": "💬 Makanan Kesukaan (Favorite Food)",
-                "prompt": (
-                    "<b>🍛 Situasi:</b> Waktu istirahat makan siang di sekolah.\n\n"
-                    "<b>Teman:</b> <i>\"What do you like to eat?\"</i>\n"
-                    "<i>(Kamu suka makan apa?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Beritahu makanan kesukaanmu:\n"
-                    "<code>I like fried rice.</code> <i>(Saya suka nasi goreng)</i>\n"
-                    "<i>Atau: I like noodles / chicken.</i>"
-                ),
-            },
-            {
-                "id": "conv_int_03",
-                "badge": "💬 Hobi Bermain (Hobbies)",
-                "prompt": (
-                    "<b>⚽ Situasi:</b> Mengobrol tentang kegemaran di sore hari.\n\n"
-                    "<b>Teman:</b> <i>\"What is your hobby?\"</i>\n"
-                    "<i>(Apa hobimu?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Pilih salah satu hobi dan ketik:\n"
-                    "<code>My hobby is playing football.</code> <i>(Sepak bola)</i>\n"
-                    "<i>Atau: My hobby is reading books / drawing.</i>"
-                ),
-            },
-            {
-                "id": "conv_int_04",
-                "badge": "💬 Saudara di Rumah (Family)",
-                "prompt": (
-                    "<b>👨‍👩‍👧 Situasi:</b> Bercerita tentang keluarga.\n\n"
-                    "<b>Teman:</b> <i>\"Do you have a brother or sister?\"</i>\n"
-                    "<i>(Apakah kamu punya saudara laki-laki atau perempuan?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Jawab dengan mudah:\n"
-                    "<code>I have one brother.</code> <i>(1 saudara laki-laki)</i>\n"
-                    "<i>Atau: I have one sister.</i>"
-                ),
-            },
-            {
-                "id": "conv_int_05",
-                "badge": "💬 Beli Jajan di Kantin (Canteen)",
-                "prompt": (
-                    "<b>🍞 Situasi:</b> Kamu membeli roti di kantin sekolah.\n\n"
-                    "<b>Ibu Kantin:</b> <i>\"Hello! What do you want to buy?\"</i>\n"
-                    "<i>(Halo! Kamu mau beli apa?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Pesan satu roti dengan sopan:\n"
-                    "<code>One bread, please. Thank you!</code>"
-                ),
-            },
-            {
-                "id": "conv_int_06",
-                "badge": "💬 Pulang Bersama (Walking Home)",
-                "prompt": (
-                    "<b>🚶 Situasi:</b> Mengajak teman pulang jalan kaki bersama.\n\n"
-                    "<b>Kamu:</b> <i>\"Let's walk home together!\"</i>\n"
-                    "<i>(Ayo kita jalan pulang bersama!)</i>\n\n"
-                    "<b>Teman:</b> <i>\"Okay, let's go!\"</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kalimat ajakan di atas untuk latihan:\n"
-                    "<code>Let's go home together!</code>"
-                ),
-            },
-        ],
-        config.LEVEL_ADVANCED: [
-            {
-                "id": "conv_adv_01",
-                "badge": "💬 Hewan Peliharaan (Pets)",
-                "prompt": (
-                    "<b>🐱 Situasi:</b> Temanmu bertanya tentang hewan di rumahmu.\n\n"
-                    "<b>Teman:</b> <i>\"Do you have a pet at home?\"</i>\n"
-                    "<i>(Apakah kamu punya hewan peliharaan di rumah?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ceritakan hewanmu:\n"
-                    "<code>Yes, I have a cute cat. His name is Milo.</code>\n"
-                    "<i>(Atau: I have a cute bird / rabbit.)</i>"
-                ),
-            },
-            {
-                "id": "conv_adv_02",
-                "badge": "💬 Kegiatan Hari Minggu (Sunday Routine)",
-                "prompt": (
-                    "<b>🌱 Situasi:</b> Menceritakan kegiatan di hari libur.\n\n"
-                    "<b>Teman:</b> <i>\"What do you do on Sunday?\"</i>\n"
-                    "<i>(Apa yang kamu lakukan di hari Minggu?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Jawab kegiatan membantumu di rumah:\n"
-                    "<code>I help my parents in the garden.</code>\n"
-                    "<i>(Saya membantu orang tua di kebun.)</i>"
-                ),
-            },
-            {
-                "id": "conv_adv_03",
-                "badge": "💬 Belajar PR Bersama (Study Together)",
-                "prompt": (
-                    "<b>📚 Situasi:</b> Kamu mengajak teman belajar PR bahasa Inggris bersama.\n\n"
-                    "<b>Teman:</b> <i>\"This English homework is a bit difficult.\"</i>\n"
-                    "<i>(PR bahasa Inggris ini agak sulit.)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ajak teman belajar bareng:\n"
-                    "<code>Don't worry, let's study together!</code>"
-                ),
-            },
-            {
-                "id": "conv_adv_04",
-                "badge": "💬 Cuaca Hari Ini (The Weather)",
-                "prompt": (
-                    "<b>🌧️ Situasi:</b> Hujan mulai turun saat pulang sekolah.\n\n"
-                    "<b>Teman:</b> <i>\"Oh, look! It is raining outside.\"</i>\n"
-                    "<i>(Oh, lihat! Di luar sedang hujan.)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ingatkan tentang payung:\n"
-                    "<code>Yes, bring your umbrella!</code> <i>(Bawa payungmu!)</i>"
-                ),
-            },
-            {
-                "id": "conv_adv_05",
-                "badge": "💬 Bertamu ke Rumah Teman (Visiting a Friend)",
-                "prompt": (
-                    "<b>🏡 Situasi:</b> Kamu berkunjung ke rumah temanmu di desa.\n\n"
-                    "<b>Teman:</b> <i>\"Welcome to my house! Please come in.\"</i>\n"
-                    "<i>(Selamat datang di rumahku! Silakan masuk.)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Puji rumahnya dengan sopan:\n"
-                    "<code>Thank you! Your house is very clean.</code>"
-                ),
-            },
-            {
-                "id": "conv_adv_06",
-                "badge": "💬 Cita-citaku (My Dream)",
-                "prompt": (
-                    "<b>⭐ Situasi:</b> Guru bertanya cita-citamu saat besar nanti.\n\n"
-                    "<b>Guru:</b> <i>\"What do you want to be when you grow up?\"</i>\n"
-                    "<i>(Kamu ingin jadi apa saat sudah besar nanti?)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Sebutkan cita-citamu (teacher/doctor/policeman/farmer):\n"
-                    "<code>I want to be a teacher.</code> <i>(Guru)</i>\n"
-                    "<i>Atau: I want to be a doctor. (Dokter)</i>"
-                ),
-            },
-        ],
+        config.LEVEL_BEGINNER: [{'id': 'conv_beg_01', 'badge': '💬 Sapaan Pagi (Morning Greeting)', 'prompt': '<b>☀️ Situasi:</b> Kamu bertemu teman di depan gerbang sekolah pada pagi hari.\n\n<b>Teman:</b> <i>"Good morning! How are you today?"</i>\n<i>(Selamat pagi! Apa kabarmu hari ini?)</i>\n\n👉 <b>Giliranmu:</b> Balas dengan mengetik:\n<code>Good morning! I am fine, thank you.</code>\n<i>(Artinya: Selamat pagi! Saya baik-baik saja, terima kasih.)</i>', 'expected': ['good morning i am fine thank you', 'good morning! i am fine, thank you.', "good morning i'm fine thank you", 'good morning, i am fine', 'good morning i am fine', 'i am fine thank you', 'good morning'], 'primary_answer': 'Good morning! I am fine, thank you.'}, {'id': 'conv_beg_02', 'badge': '💬 Berkenalan Nama (Introducing Yourself)', 'prompt': '<b>👋 Situasi:</b> Ada murid baru di kelasmu yang ingin berkenalan.\n\n<b>Murid Baru:</b> <i>"Hello! My name is Budi. What is your name?"</i>\n<i>(Halo! Nama saya Budi. Siapa namamu?)</i>\n\n👉 <b>Giliranmu:</b> Jawab dengan nama panggilanmu (contoh jika namamu Siti):\n<code>My name is Siti.</code>\n<i>(Boleh ganti Siti dengan namamu sendiri ya!)</i>', 'expected': ['my name is', 'i am', "my name's"], 'primary_answer': 'My name is [namamu].'}, {'id': 'conv_beg_03', 'badge': '💬 Berterima Kasih (Saying Thank You)', 'prompt': '<b>🎁 Situasi:</b> Teman sebangkumu meminjamkan penghapus kepadamu.\n\n<b>Teman:</b> <i>"Here is the eraser for you."</i>\n<i>(Ini penghapus untukmu.)</i>\n\n👉 <b>Giliranmu:</b> Ucapkan terima kasih dengan sopan:\n<code>Thank you very much!</code>\n<i>(Artinya: Terima kasih banyak!)</i>', 'expected': ['thank you very much', 'thank you very much!', 'thank you so much', 'thank you', 'thanks'], 'primary_answer': 'Thank you very much!'}, {'id': 'conv_beg_04', 'badge': '💬 Menanyakan Kabar (Asking How Are You)', 'prompt': '<b>🤝 Situasi:</b> Kamu bertemu sahabatmu saat jam istirahat sekolah.\n\nKamu ingin bertanya apa kabarnya hari ini dalam bahasa Inggris.\n\n👉 <b>Giliranmu:</b> Ketik pertanyaan sapaan ini:\n<code>How are you, my friend?</code>\n<i>(Artinya: Apa kabarmu, temanku?)</i>', 'expected': ['how are you my friend', 'how are you, my friend?', 'how are you my friend?', 'how are you', 'how are you?'], 'primary_answer': 'How are you, my friend?'}, {'id': 'conv_beg_05', 'badge': '💬 Berpamitan Pulang (Saying Goodbye)', 'prompt': '<b>🏫 Situasi:</b> Bel pulang sekolah berbunyi, kamu berpamitan pada teman.\n\n<b>Teman:</b> <i>"See you tomorrow!"</i>\n<i>(Sampai jumpa besok!)</i>\n\n👉 <b>Giliranmu:</b> Balas ucapan perpisahan ramah ini:\n<code>Goodbye! See you!</code>\n<i>(Artinya: Selamat tinggal! Sampai jumpa!)</i>', 'expected': ['goodbye see you', 'goodbye! see you!', 'goodbye', 'bye see you', 'see you', 'bye'], 'primary_answer': 'Goodbye! See you!'}, {'id': 'conv_beg_06', 'badge': '💬 Perasaan Senang (Feeling Happy)', 'prompt': '<b>🌟 Situasi:</b> Gurumu memberikan pujian karena kamu rajin belajar.\n\nKamu merasa sangat gembira hari ini.\n\n👉 <b>Giliranmu:</b> Ungkapkan perasaan bahagiamu:\n<code>I am very happy today.</code>\n<i>(Artinya: Saya sangat senang hari ini.)</i>', 'expected': ['i am very happy today', 'i am very happy today.', "i'm very happy today", 'i am happy today', 'i am happy'], 'primary_answer': 'I am very happy today.'}, {'id': 'conv_beg_07', 'badge': '💬 Sapaan Siang (Good Afternoon)', 'prompt': '<b>☀️ Situasi:</b> Pukul 13.00 siang, kamu berpapasan dengan teman di perpustakaan.\n\n👉 <b>Giliranmu:</b> Sapa temanmu dengan ucapan selamat siang:\n<code>Good afternoon!</code>\n<i>(Artinya: Selamat siang!)</i>', 'expected': ['good afternoon', 'good afternoon!', 'good afternoon, friend'], 'primary_answer': 'Good afternoon!'}, {'id': 'conv_beg_08', 'badge': '💬 Menyebutkan Umur (Stating Age)', 'prompt': '<b>🎂 Situasi:</b> Teman barumu bertanya: <i>"How old are you?"</i> (Berapa umurmu?).\n\n👉 <b>Giliranmu:</b> Jawab umurmu (contoh: 10 tahun):\n<code>I am ten years old.</code>\n<i>(Atau gunakan angka umurmu: nine / eleven / twelve)</i>', 'expected': ['i am ten years old', 'i am 10 years old', "i'm ten years old", "i'm 10 years old", 'years old', 'i am'], 'primary_answer': 'I am ten years old.'}, {'id': 'conv_beg_09', 'badge': '💬 Meminta Tolong (Saying Please)', 'prompt': "<b>🙏 Situasi:</b> Kamu kesulitan membuka tutup botol minum dan minta bantuan teman.\n\n👉 <b>Giliranmu:</b> Minta tolong dengan kata santun 'Please':\n<code>Please help me.</code>\n<i>(Artinya: Tolong bantu saya.)</i>", 'expected': ['please help me', 'please help me.', 'help me please', 'please help'], 'primary_answer': 'Please help me.'}, {'id': 'conv_beg_10', 'badge': '💬 Meminta Maaf (Saying Sorry)', 'prompt': '<b>🕊️ Situasi:</b> Kamu tidak sengaja menjatuhkan penggaris teman.\n\n👉 <b>Giliranmu:</b> Minta maaf secara tulus dalam bahasa Inggris:\n<code>I am sorry.</code>\n<i>(Artinya: Saya minta maaf.)</i>', 'expected': ['i am sorry', 'i am sorry.', "i'm sorry", 'sorry'], 'primary_answer': 'I am sorry.'}, {'id': 'conv_beg_11', 'badge': '💬 Sama-sama (You Are Welcome)', 'prompt': '<b>🌸 Situasi:</b> Teman mengucapkan: <i>"Thank you for the candy!"</i>\n\n👉 <b>Giliranmu:</b> Balas ucapan terima kasih dengan ungkapan \'sama-sama\':\n<code>You are welcome.</code>\n<i>(Artinya: Sama-sama / terima kasih kembali.)</i>', 'expected': ['you are welcome', 'you are welcome.', "you're welcome", 'youre welcome'], 'primary_answer': 'You are welcome.'}, {'id': 'conv_beg_12', 'badge': '💬 Menanyakan Nama Teman (Asking Name)', 'prompt': '<b>❓ Situasi:</b> Ada teman sebaya yang duduk di sebelahmu di taman baca.\n\n👉 <b>Giliranmu:</b> Tanyakan siapa namanya dengan sopan:\n<code>What is your name?</code>\n<i>(Artinya: Siapa namamu?)</i>', 'expected': ['what is your name', 'what is your name?', "what's your name", "what's your name?"], 'primary_answer': 'What is your name?'}, {'id': 'conv_beg_13', 'badge': '💬 Senang Berkenalan (Nice to Meet You)', 'prompt': '<b>🤝 Situasi:</b> Kamu baru saja saling menyebutkan nama dengan murid baru.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu senang berkenalan dengannya:\n<code>Nice to meet you!</code>\n<i>(Artinya: Senang berkenalan denganmu!)</i>', 'expected': ['nice to meet you', 'nice to meet you!', 'glad to meet you'], 'primary_answer': 'Nice to meet you!'}, {'id': 'conv_beg_14', 'badge': '💬 Asal Negara (Where Are You From)', 'prompt': '<b>🇮🇩 Situasi:</b> Teman bertanya dari mana asal negaramu.\n\n👉 <b>Giliranmu:</b> Jawab bahwa kamu berasal dari Indonesia:\n<code>I am from Indonesia.</code>\n<i>(Artinya: Saya berasal dari Indonesia.)</i>', 'expected': ['i am from indonesia', 'i am from indonesia.', "i'm from indonesia", 'from indonesia'], 'primary_answer': 'I am from Indonesia.'}, {'id': 'conv_beg_15', 'badge': '💬 Menyapa Bapak/Ibu Guru (Greeting Teacher)', 'prompt': '<b>👩\u200d🏫 Situasi:</b> Ibu Guru masuk ke dalam kelas di pagi hari.\n\n👉 <b>Giliranmu:</b> Beri salam hormat kepada gurumu:\n<code>Good morning, Teacher!</code>\n<i>(Artinya: Selamat pagi, Guru!)</i>', 'expected': ['good morning, teacher', 'good morning teacher', 'good morning, teacher!', 'good morning teacher!'], 'primary_answer': 'Good morning, Teacher!'}, {'id': 'conv_beg_16', 'badge': '💬 Permisi / Maaf Menyela (Excuse Me)', 'prompt': '<b>🚶 Situasi:</b> Kamu ingin lewat di antara dua orang yang sedang berdiri.\n\n👉 <b>Giliranmu:</b> Ucapkan kata permisi yang santun:\n<code>Excuse me.</code>\n<i>(Artinya: Permisi.)</i>', 'expected': ['excuse me', 'excuse me.'], 'primary_answer': 'Excuse me.'}, {'id': 'conv_beg_17', 'badge': '💬 Izin Cuci Tangan (May I)', 'prompt': '<b>💧 Situasi:</b> Tanganmu kotor setelah menggambar dan ingin minta izin cuci tangan.\n\n👉 <b>Giliranmu:</b> Minta izin kepada guru dengan sopan:\n<code>May I wash my hands?</code>\n<i>(Artinya: Bolehkah saya mencuci tangan?)</i>', 'expected': ['may i wash my hands', 'may i wash my hands?', 'may i wash hands'], 'primary_answer': 'May I wash my hands?'}, {'id': 'conv_beg_18', 'badge': '💬 Memberi Selamat (Congratulations)', 'prompt': '<b>🏆 Situasi:</b> Temanmu baru saja memenangkan lomba membaca puisi.\n\n👉 <b>Giliranmu:</b> Ucapkan selamat kepadanya:\n<code>Congratulations, my friend!</code>\n<i>(Artinya: Selamat ya, sahabatku!)</i>', 'expected': ['congratulations, my friend', 'congratulations my friend', 'congratulations, my friend!', 'congratulations', 'congrats'], 'primary_answer': 'Congratulations, my friend!'}, {'id': 'conv_beg_19', 'badge': '💬 Menjawab Kabar Baik (I am Fine)', 'prompt': '<b>😊 Situasi:</b> Guru bertanya kabarmu: <i>"How are you?"</i>\n\n👉 <b>Giliranmu:</b> Jawab bahwa kamu dalam keadaan baik:\n<code>I am fine, thank you.</code>\n<i>(Artinya: Saya baik-baik saja, terima kasih.)</i>', 'expected': ['i am fine, thank you', 'i am fine thank you', "i'm fine thank you", 'i am fine', 'fine thank you'], 'primary_answer': 'I am fine, thank you.'}, {'id': 'conv_beg_20', 'badge': '💬 Sapaan Sore Hari (Good Evening)', 'prompt': '<b>🌇 Situasi:</b> Pukul 18.00 saat matahari terbenam, kamu bertemu tetangga.\n\n👉 <b>Giliranmu:</b> Ucapkan salam sore/petang:\n<code>Good evening!</code>\n<i>(Artinya: Selamat sore / petang!)</i>', 'expected': ['good evening', 'good evening!'], 'primary_answer': 'Good evening!'}, {'id': 'conv_beg_21', 'badge': '💬 Ucapan Selamat Malam (Good Night)', 'prompt': '<b>🌙 Situasi:</b> Kamu hendak tidur malam dan berpamitan pada Ibu.\n\n👉 <b>Giliranmu:</b> Ucapkan selamat tidur kepada Ibu:\n<code>Good night, Mom!</code>\n<i>(Artinya: Selamat malam / selamat tidur, Ibu!)</i>', 'expected': ['good night, mom', 'good night mom', 'good night, mom!', 'good night', 'good night, mother'], 'primary_answer': 'Good night, Mom!'}, {'id': 'conv_beg_22', 'badge': '💬 Menyambut Teman Baru (Welcome)', 'prompt': '<b>🎉 Situasi:</b> Ada teman baru yang baru saja masuk ke kelasmu.\n\n👉 <b>Giliranmu:</b> Ucapkan selamat datang dengan ramah:\n<code>Welcome to our class!</code>\n<i>(Artinya: Selamat datang di kelas kami!)</i>', 'expected': ['welcome to our class', 'welcome to our class!', 'welcome to class'], 'primary_answer': 'Welcome to our class!'}, {'id': 'conv_beg_23', 'badge': "💬 Mengajak Bermain (Let's Play)", 'prompt': "<b>⚽ Situasi:</b> Waktu istirahat tiba, kamu ingin mengajak teman bermain bersama.\n\n👉 <b>Giliranmu:</b> Ajak temanmu bermain:\n<code>Let's play together!</code>\n<i>(Artinya: Ayo kita bermain bersama!)</i>", 'expected': ["let's play together", "let's play together!", 'lets play together', 'let us play together'], 'primary_answer': "Let's play together!"}, {'id': 'conv_beg_24', 'badge': '💬 Menjawab Sampai Jumpa (See You Later)', 'prompt': '<b>👋 Situasi:</b> Temanmu melambaikan tangan saat hendak pulang sekolah.\n\n👉 <b>Giliranmu:</b> Balas dengan ucapan sampai jumpa lagi:\n<code>See you later!</code>\n<i>(Artinya: Sampai jumpa lagi!)</i>', 'expected': ['see you later', 'see you later!', 'see you'], 'primary_answer': 'See you later!'}],
+        config.LEVEL_INTERMEDIATE: [{'id': 'conv_int_01', 'badge': '💬 Hobi Membaca Buku (Reading Hobby)', 'prompt': '<b>📚 Situasi:</b> Temanmu bertanya tentang kegiatan favoritmu: <i>"What do you like to do in your free time?"</i>\n\n👉 <b>Giliranmu:</b> Jawab bahwa kamu suka membaca buku cerita:\n<code>I like reading storybooks in my free time.</code>\n<i>(Artinya: Saya suka membaca buku cerita di waktu luang.)</i>', 'expected': ['i like reading storybooks in my free time', 'i like reading storybooks', 'i like reading books', 'i like reading', 'reading storybooks'], 'primary_answer': 'I like reading storybooks in my free time.'}, {'id': 'conv_int_02', 'badge': '💬 Memesan Sarapan (Ordering Breakfast)', 'prompt': '<b>🍳 Situasi:</b> Ibu bertanya kamu mau sarapan apa pagi ini.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu ingin makan nasi goreng dan minum susu:\n<code>I want fried rice and milk for breakfast.</code>\n<i>(Artinya: Saya mau nasi goreng dan susu untuk sarapan.)</i>', 'expected': ['i want fried rice and milk for breakfast', 'i want fried rice and milk', 'fried rice and milk', 'i want fried rice'], 'primary_answer': 'I want fried rice and milk for breakfast.'}, {'id': 'conv_int_03', 'badge': '💬 Menanyakan Lokasi Perpustakaan (Asking Directions)', 'prompt': '<b>📖 Situasi:</b> Kamu sedang mencari ruang perpustakaan di sekolah baru.\n\n👉 <b>Giliranmu:</b> Tanyakan kepada kakak kelas di mana letak perpustakaan:\n<code>Where is the school library?</code>\n<i>(Artinya: Di mana perpustakaan sekolah?)</i>', 'expected': ['where is the school library', 'where is the school library?', 'where is the library', 'where is the library?'], 'primary_answer': 'Where is the school library?'}, {'id': 'conv_int_04', 'badge': '💬 Menceritakan Kucing Peliharaan (Talking About Pets)', 'prompt': '<b>🐱 Situasi:</b> Temanmu bertanya apakah kamu memelihara hewan di rumah.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu memiliki seekor kucing lucu bernama Milo:\n<code>I have a cute cat named Milo.</code>\n<i>(Artinya: Saya punya seekor kucing lucu bernama Milo.)</i>', 'expected': ['i have a cute cat named milo', 'i have a cute cat', 'i have a cat named milo', 'i have a cat'], 'primary_answer': 'I have a cute cat named Milo.'}, {'id': 'conv_int_05', 'badge': '💬 Cuaca Hari Ini (Talking About Weather)', 'prompt': '<b>☀️ Situasi:</b> Kamu melihat ke luar jendela kelas dan cuaca sangat cerah.\n\n👉 <b>Giliranmu:</b> Katakan pada teman bahwa cuaca hari ini cerah:\n<code>The weather is sunny and bright today.</code>\n<i>(Artinya: Cuaca hari ini cerah dan terang.)</i>', 'expected': ['the weather is sunny and bright today', 'the weather is sunny today', 'it is sunny today', 'sunny and bright'], 'primary_answer': 'The weather is sunny and bright today.'}, {'id': 'conv_int_06', 'badge': '💬 Menanyakan Jam (Asking What Time It Is)', 'prompt': '<b>⏰ Situasi:</b> Kamu ingin tahu apakah jam istirahat sudah tiba.\n\n👉 <b>Giliranmu:</b> Tanyakan jam berapa sekarang kepada teman sebangkumu:\n<code>What time is it now?</code>\n<i>(Artinya: Jam berapa sekarang?)</i>', 'expected': ['what time is it now', 'what time is it now?', 'what time is it', 'what time is it?'], 'primary_answer': 'What time is it now?'}, {'id': 'conv_int_07', 'badge': '💬 Rencana Akhir Pekan (Weekend Plans)', 'prompt': '<b>🏡 Situasi:</b> Temanmu bertanya apa rencanamu di hari Minggu.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu akan mengunjungi kakek dan nenek:\n<code>I will visit my grandparents this weekend.</code>\n<i>(Artinya: Saya akan mengunjungi kakek-nenek akhir pekan ini.)</i>', 'expected': ['i will visit my grandparents this weekend', 'i will visit my grandparents', 'visit my grandparents', 'i visit my grandparents'], 'primary_answer': 'I will visit my grandparents this weekend.'}, {'id': 'conv_int_08', 'badge': '💬 Meminjam Pensil (Borrowing a Pencil)', 'prompt': '<b>✏️ Situasi:</b> Pensilmu patah dan kamu ingin meminjam pensil teman.\n\n👉 <b>Giliranmu:</b> Minta izin meminjam pensil dengan sopan:\n<code>Can I borrow your pencil, please?</code>\n<i>(Artinya: Bolehkah saya meminjam pensilmu?)</i>', 'expected': ['can i borrow your pencil, please', 'can i borrow your pencil please', 'can i borrow your pencil', 'may i borrow your pencil'], 'primary_answer': 'Can I borrow your pencil, please?'}, {'id': 'conv_int_09', 'badge': '💬 Warna Favorit (Favorite Color)', 'prompt': '<b>🎨 Situasi:</b> Saat pelajaran menggambar, teman bertanya warna kesukaanmu.\n\n👉 <b>Giliranmu:</b> Katakan bahwa warna favoritmu adalah biru (atau warna lain):\n<code>My favorite color is blue.</code>\n<i>(Artinya: Warna favorit saya adalah biru.)</i>', 'expected': ['my favorite color is blue', 'my favourite color is blue', 'favorite color is blue', 'color is blue', 'blue'], 'primary_answer': 'My favorite color is blue.'}, {'id': 'conv_int_10', 'badge': '💬 Pelajaran Favorit (Favorite Subject)', 'prompt': '<b>📐 Situasi:</b> Temanmu bertanya pelajaran apa yang paling kamu sukai di sekolah.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu menyukai pelajaran bahasa Inggris dan Matematika:\n<code>I like English and Mathematics.</code>\n<i>(Artinya: Saya menyukai bahasa Inggris dan Matematika.)</i>', 'expected': ['i like english and mathematics', 'i like english and math', 'english and mathematics', 'english and math'], 'primary_answer': 'I like English and Mathematics.'}, {'id': 'conv_int_11', 'badge': '💬 Mengajak Makan Siang (Lunch at Canteen)', 'prompt': "<b>🍱 Situasi:</b> Waktu istirahat kedua tiba, perutmu terasa lapar.\n\n👉 <b>Giliranmu:</b> Ajak temanmu makan siang bersama di kantin sekolah:\n<code>Let's eat lunch together at the canteen!</code>\n<i>(Artinya: Ayo kita makan siang bersama di kantin!)</i>", 'expected': ["let's eat lunch together at the canteen", "let's eat lunch together", 'lets eat lunch together', 'eat lunch together'], 'primary_answer': "Let's eat lunch together at the canteen!"}, {'id': 'conv_int_12', 'badge': '💬 Menawarkan Bantuan (Offering Help)', 'prompt': '<b>📦 Situasi:</b> Temanmu tampak kerepotan membawa banyak buku paket.\n\n👉 <b>Giliranmu:</b> Tawarkan bantuan dengan ramah:\n<code>Can I help you carry the books?</code>\n<i>(Artinya: Bolehkah saya membantumu membawa buku-buku itu?)</i>', 'expected': ['can i help you carry the books', 'can i help you carry the books?', 'can i help you', 'may i help you'], 'primary_answer': 'Can I help you carry the books?'}, {'id': 'conv_int_13', 'badge': '💬 Jumlah Saudara (Talking About Siblings)', 'prompt': '<b>👨\u200d👩\u200d👧\u200d👦 Situasi:</b> Temanmu bertanya: <i>"How many brothers or sisters do you have?"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu punya satu saudara laki-laki dan satu perempuan:\n<code>I have one brother and one sister.</code>\n<i>(Artinya: Saya punya satu saudara laki-laki dan satu saudara perempuan.)</i>', 'expected': ['i have one brother and one sister', 'one brother and one sister', 'i have a brother and a sister', 'brother and sister'], 'primary_answer': 'I have one brother and one sister.'}, {'id': 'conv_int_14', 'badge': '💬 Mengingatkan Payung (Rainy Weather)', 'prompt': "<b>🌧️ Situasi:</b> Hujan mulai turun rintik-rintik menjelang jam pulang sekolah.\n\n👉 <b>Giliranmu:</b> Ingatkan temanmu untuk membawa payung:\n<code>It is raining outside, don't forget your umbrella!</code>\n<i>(Artinya: Di luar sedang hujan, jangan lupa payungmu!)</i>", 'expected': ["it is raining outside, don't forget your umbrella", 'it is raining outside', "don't forget your umbrella", 'dont forget your umbrella'], 'primary_answer': "It is raining outside, don't forget your umbrella!"}, {'id': 'conv_int_15', 'badge': '💬 Hobi Berolahraga (Playing Football)', 'prompt': '<b>⚽ Situasi:</b> Kamu senang berolahraga di lapangan bersama kawan-kawan.\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa kamu bermain sepak bola setiap sore:\n<code>I play football with my friends every afternoon.</code>\n<i>(Artinya: Saya bermain sepak bola bersama teman-teman setiap sore.)</i>', 'expected': ['i play football with my friends every afternoon', 'i play football with my friends', 'i play football every afternoon', 'play football'], 'primary_answer': 'I play football with my friends every afternoon.'}, {'id': 'conv_int_16', 'badge': '💬 Ucapan Ulang Tahun (Birthday Wishes)', 'prompt': '<b>🎂 Situasi:</b> Sahabatmu hari ini merayakan hari ulang tahunnya.\n\n👉 <b>Giliranmu:</b> Ucapkan selamat ulang tahun dengan doa kebaikan:\n<code>Happy birthday! I wish you all the best.</code>\n<i>(Artinya: Selamat ulang tahun! Semoga yang terbaik untukmu.)</i>', 'expected': ['happy birthday! i wish you all the best', 'happy birthday i wish you all the best', 'happy birthday', 'all the best'], 'primary_answer': 'Happy birthday! I wish you all the best.'}, {'id': 'conv_int_17', 'badge': '💬 Memuji Gambar Teman (Giving a Compliment)', 'prompt': '<b>🖼️ Situasi:</b> Temanmu menggambar pemandangan gunung yang sangat indah.\n\n👉 <b>Giliranmu:</b> Berikan pujian tulus atas karyanya:\n<code>Your drawing is very beautiful!</code>\n<i>(Artinya: Gambarmu sangat indah!)</i>', 'expected': ['your drawing is very beautiful', 'your drawing is very beautiful!', 'your drawing is beautiful', 'very beautiful'], 'primary_answer': 'Your drawing is very beautiful!'}, {'id': 'conv_int_18', 'badge': '💬 Meminta Pengulangan Ucapan (Pardon Me)', 'prompt': '<b>👂 Situasi:</b> Guru memberikan instruksi tetapi suaranya kurang terdengar jelas olehmu.\n\n👉 <b>Giliranmu:</b> Minta guru mengulangi kalimatnya dengan sangat santun:\n<code>Could you please repeat that, Teacher?</code>\n<i>(Artinya: Bisakah Ibu/Bapak Guru mengulanginya?)</i>', 'expected': ['could you please repeat that', 'could you please repeat that, teacher', 'could you repeat that', 'please repeat that'], 'primary_answer': 'Could you please repeat that, Teacher?'}, {'id': 'conv_int_19', 'badge': '💬 Seragam Sekolah (School Uniform)', 'prompt': '<b>👔 Situasi:</b> Kamu menceritakan pakaian yang kamu kenakan di hari Senin.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu memakai seragam merah putih:\n<code>I wear a red and white uniform on Monday.</code>\n<i>(Artinya: Saya memakai seragam merah putih pada hari Senin.)</i>', 'expected': ['i wear a red and white uniform on monday', 'i wear a red and white uniform', 'red and white uniform', 'wear uniform'], 'primary_answer': 'I wear a red and white uniform on Monday.'}, {'id': 'conv_int_20', 'badge': '💬 Antusias Karya Wisata (School Trip)', 'prompt': '<b>🚌 Situasi:</b> Besok kelasmu akan pergi karya wisata ke kebun binatang.\n\n👉 <b>Giliranmu:</b> Ungkapkan rasa semangatmu menyambut perjalanan besok:\n<code>I am very excited about our school trip tomorrow!</code>\n<i>(Artinya: Saya sangat bersemangat menyambut karya wisata sekolah kita besok!)</i>', 'expected': ['i am very excited about our school trip tomorrow', 'i am very excited about our school trip', 'excited about our school trip', 'excited school trip'], 'primary_answer': 'I am very excited about our school trip tomorrow!'}, {'id': 'conv_int_21', 'badge': '💬 Menanyakan Hobi Teman (Asking Hobby)', 'prompt': '<b>🎯 Situasi:</b> Kamu ingin lebih akrab dengan teman baru saat istirahat.\n\n👉 <b>Giliranmu:</b> Tanyakan apa hobi favoritnya:\n<code>What is your favorite hobby?</code>\n<i>(Artinya: Apa hobi kesukaanmu?)</i>', 'expected': ['what is your favorite hobby', 'what is your favorite hobby?', 'what is your favourite hobby', "what's your favorite hobby"], 'primary_answer': 'What is your favorite hobby?'}, {'id': 'conv_int_22', 'badge': '💬 Memilih Minuman (Expressing Preference)', 'prompt': '<b>🍊 Situasi:</b> Di warung makan, teman bertanya kamu ingin minum jus jeruk atau teh.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu lebih suka jus jeruk:\n<code>I prefer fresh orange juice, please.</code>\n<i>(Artinya: Saya lebih memilih jus jeruk segar.)</i>', 'expected': ['i prefer fresh orange juice, please', 'i prefer orange juice', 'orange juice please', 'orange juice'], 'primary_answer': 'I prefer fresh orange juice, please.'}, {'id': 'conv_int_23', 'badge': '💬 Mengajak Belajar Bersama (Study Together)', 'prompt': '<b>📖 Situasi:</b> Ada tugas kelompok bahasa Inggris yang harus dikerjakan.\n\n👉 <b>Giliranmu:</b> Ajak kawanmu belajar bersama di rumahmu sore nanti:\n<code>Would you like to study English together this afternoon?</code>\n<i>(Artinya: Maukah kamu belajar bahasa Inggris bersama sore ini?)</i>', 'expected': ['would you like to study english together this afternoon', 'would you like to study english together', 'study english together', 'study together'], 'primary_answer': 'Would you like to study English together this afternoon?'}, {'id': 'conv_int_24', 'badge': '💬 Terima Kasih Bantuan PR (Thanking for Homework Help)', 'prompt': '<b>🌟 Situasi:</b> Sahabatmu dengan sabar mengajarimu cara mengerjakan PR Matematika.\n\n👉 <b>Giliranmu:</b> Ucapkan terima kasih atas bantuannya yang berharga:\n<code>Thank you for helping me with my homework!</code>\n<i>(Artinya: Terima kasih sudah membantuku mengerjakan PR!)</i>', 'expected': ['thank you for helping me with my homework', 'thank you for helping me', 'thank you helping homework', 'thanks for helping'], 'primary_answer': 'Thank you for helping me with my homework!'}],
+        config.LEVEL_ADVANCED: [{'id': 'conv_adv_01', 'badge': '💬 Cita-cita Mulia (Dream Career)', 'prompt': '<b>🩺 Situasi:</b> Guru meminta murid menceritakan cita-cita di masa depan.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu ingin menjadi dokter untuk menolong orang sakit di desa:\n<code>I want to be a doctor to help sick people in my village.</code>\n<i>(Artinya: Saya ingin menjadi dokter untuk menolong orang sakit di desaku.)</i>', 'expected': ['i want to be a doctor to help sick people in my village', 'i want to be a doctor to help sick people', 'i want to be a doctor', 'doctor to help sick people'], 'primary_answer': 'I want to be a doctor to help sick people in my village.'}, {'id': 'conv_adv_02', 'badge': '💬 Menjaga Lingkungan (Protecting Environment)', 'prompt': '<b>🌱 Situasi:</b> Kamu sedang berdiskusi tentang cara menjaga kebersihan bumi.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kita harus menanam pohon dan membuang sampah pada tempatnya:\n<code>We should plant more trees and keep our surroundings clean.</code>\n<i>(Artinya: Kita harus menanam lebih banyak pohon dan menjaga lingkungan tetap bersih.)</i>', 'expected': ['we should plant more trees and keep our surroundings clean', 'we should plant more trees', 'plant trees and keep clean', 'plant more trees'], 'primary_answer': 'We should plant more trees and keep our surroundings clean.'}, {'id': 'conv_adv_03', 'badge': '💬 Menceritakan Liburan Desa (Describing Vacation)', 'prompt': '<b>🌾 Situasi:</b> Temanmu bertanya bagaimana liburan sekolahmu kemarin.\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa kamu mengunjungi kakekmu dan memberi makan kambing di desa:\n<code>Last holiday, I visited my grandfather and fed his goats in the village.</code>\n<i>(Artinya: Liburan lalu, saya mengunjungi kakek dan memberi makan kambing-kambingnya di desa.)</i>', 'expected': ['last holiday, i visited my grandfather and fed his goats in the village', 'last holiday i visited my grandfather and fed his goats', 'visited my grandfather and fed his goats', 'visited my grandfather'], 'primary_answer': 'Last holiday, I visited my grandfather and fed his goats in the village.'}, {'id': 'conv_adv_04', 'badge': '💬 Merekomendasikan Buku Cerita (Book Recommendation)', 'prompt': '<b>📚 Situasi:</b> Kamu baru saja selesai membaca cerita fabel yang penuh pesan moral.\n\n👉 <b>Giliranmu:</b> Rekomendasikan buku tersebut kepada temanmu:\n<code>You should read this fable because it teaches us about honesty.</code>\n<i>(Artinya: Kamu harus membaca fabel ini karena ia mengajarkan kita tentang kejujuran.)</i>', 'expected': ['you should read this fable because it teaches us about honesty', 'you should read this fable', 'teaches us about honesty', 'read this fable'], 'primary_answer': 'You should read this fable because it teaches us about honesty.'}, {'id': 'conv_adv_05', 'badge': '💬 Menasihati Teman yang Sakit (Giving Healthy Advice)', 'prompt': '<b>💊 Situasi:</b> Teman sebangkumu tampak pucat dan mengeluh pusing setelah upacara.\n\n👉 <b>Giliranmu:</b> Beri saran agar ia minum air putih dan istirahat di ruang UKS:\n<code>You should drink plenty of water and rest in the clinic room.</code>\n<i>(Artinya: Kamu sebaiknya minum banyak air dan beristirahat di ruang UKS.)</i>', 'expected': ['you should drink plenty of water and rest in the clinic room', 'you should drink plenty of water and rest', 'drink plenty of water and rest', 'drink water and rest'], 'primary_answer': 'You should drink plenty of water and rest in the clinic room.'}, {'id': 'conv_adv_06', 'badge': '💬 Berbakti Kepada Orang Tua (Gratitude to Parents)', 'prompt': "<b>❤️ Situasi:</b> Guru meminta murid menuliskan ungkapan rasa syukur terhadap orang tua.\n\n👉 <b>Giliranmu:</b> Tuliskan bahwa kamu bersyukur atas kasih sayang tulus orang tuamu:\n<code>I am truly grateful for my parents' unconditional love and care.</code>\n<i>(Artinya: Saya sungguh bersyukur atas kasih sayang dan perhatian tulus kedua orang tua saya.)</i>", 'expected': ["i am truly grateful for my parents' unconditional love and care", 'i am truly grateful for my parents', "grateful for my parents' love", 'grateful for my parents'], 'primary_answer': "I am truly grateful for my parents' unconditional love and care."}, {'id': 'conv_adv_07', 'badge': '💬 Kuliner Khas Nusantara (Indonesian Traditional Food)', 'prompt': '<b>🍛 Situasi:</b> Teman bertukar cerita tentang masakan daerah favorit di Indonesia.\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa Rendang adalah makanan daging lezat kaya rempah dari Sumatera Barat:\n<code>Rendang is a delicious spicy beef dish from West Sumatra.</code>\n<i>(Artinya: Rendang adalah masakan daging sapi pedas yang lezat dari Sumatera Barat.)</i>', 'expected': ['rendang is a delicious spicy beef dish from west sumatra', 'rendang is a delicious spicy beef dish', 'rendang is delicious spicy beef', 'delicious spicy beef dish'], 'primary_answer': 'Rendang is a delicious spicy beef dish from West Sumatra.'}, {'id': 'conv_adv_08', 'badge': '💬 Pentingnya Belajar Bahasa Inggris (Why Learn English)', 'prompt': '<b>🌏 Situasi:</b> Dalam diskusi kelas, kamu ditanya mengapa kita perlu belajar bahasa Inggris.\n\n👉 <b>Giliranmu:</b> Jelaskan bahwa bahasa Inggris membuka wawasan dan jendela ke dunia luar:\n<code>Learning English opens doors to knowledge and global friendships.</code>\n<i>(Artinya: Belajar bahasa Inggris membuka pintu pengetahuan dan persahabatan global.)</i>', 'expected': ['learning english opens doors to knowledge and global friendships', 'learning english opens doors to knowledge', 'learning english opens doors', 'opens doors to knowledge'], 'primary_answer': 'Learning English opens doors to knowledge and global friendships.'}, {'id': 'conv_adv_09', 'badge': '💬 Pola Hidup Sehat (Healthy Lifestyle Habits)', 'prompt': '<b>🍎 Situasi:</b> Kamu diminta membagikan tips agar tubuh tetap bugar dan berenergi di sekolah.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa makan sayuran dan tidur 8 jam membuat tubuh bugar:\n<code>Eating fresh vegetables and sleeping eight hours keep our body strong.</code>\n<i>(Artinya: Makan sayuran segar dan tidur delapan jam menjaga tubuh kita tetap kuat.)</i>', 'expected': ['eating fresh vegetables and sleeping eight hours keep our body strong', 'eating vegetables and sleeping eight hours', 'vegetables and sleeping eight hours', 'keep our body strong'], 'primary_answer': 'Eating fresh vegetables and sleeping eight hours keep our body strong.'}, {'id': 'conv_adv_10', 'badge': '💬 Jangan Takut Membuat Kesalahan (Overcoming Mistakes)', 'prompt': '<b>💡 Situasi:</b> Temanmu merasa malu karena salah menjawab soal di papan tulis.\n\n👉 <b>Giliranmu:</b> Hibur kawanmu bahwa membuat kesalahan adalah bagian alami dari proses belajar:\n<code>Making mistakes is a normal step in learning something new.</code>\n<i>(Artinya: Membuat kesalahan adalah langkah wajar dalam mempelajari hal baru.)</i>', 'expected': ['making mistakes is a normal step in learning something new', 'making mistakes is a normal step in learning', 'making mistakes is a normal step', 'mistakes is a normal step'], 'primary_answer': 'Making mistakes is a normal step in learning something new.'}, {'id': 'conv_adv_11', 'badge': '💬 Manfaat Komputer & Belajar (Technology in Education)', 'prompt': '<b>💻 Situasi:</b> Kamu sedang belajar di laboratorium komputer sekolah.\n\n👉 <b>Giliranmu:</b> Katakan bahwa komputer membantu siswa mencari ilmu dengan cepat:\n<code>Computers help students explore useful knowledge very quickly.</code>\n<i>(Artinya: Komputer membantu para siswa menjelajahi ilmu bermanfaat dengan sangat cepat.)</i>', 'expected': ['computers help students explore useful knowledge very quickly', 'computers help students explore useful knowledge', 'help students explore useful knowledge', 'computers help students'], 'primary_answer': 'Computers help students explore useful knowledge very quickly.'}, {'id': 'conv_adv_12', 'badge': '💬 Gotong Royong Warga (Community Cooperation)', 'prompt': '<b>🤝 Situasi:</b> Warga desamu mengadakan kerja bakti membersihkan selokan di hari Minggu.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa gotong royong membuat lingkungan bersih dan rukun:\n<code>Cooperation makes our neighborhood clean, safe, and peaceful.</code>\n<i>(Artinya: Gotong royong membuat lingkungan kita bersih, aman, dan damai.)</i>', 'expected': ['cooperation makes our neighborhood clean, safe, and peaceful', 'cooperation makes our neighborhood clean', 'clean safe and peaceful', 'neighborhood clean'], 'primary_answer': 'Cooperation makes our neighborhood clean, safe, and peaceful.'}, {'id': 'conv_adv_13', 'badge': '💬 Rencana Jenjang Sekolah (Entering Junior High)', 'prompt': '<b>🎓 Situasi:</b> Guru bertanya apa rencanamu setelah lulus dari Sekolah Dasar (SD).\n\n👉 <b>Giliranmu:</b> Sampaikan tekadmu untuk melanjutkan ke SMP dengan giat belajar:\n<code>After graduating from primary school, I will enter junior high school.</code>\n<i>(Artinya: Setelah lulus dari sekolah dasar, saya akan masuk sekolah menengah pertama.)</i>', 'expected': ['after graduating from primary school, i will enter junior high school', 'after graduating from primary school i will enter junior high school', 'enter junior high school', 'junior high school'], 'primary_answer': 'After graduating from primary school, I will enter junior high school.'}, {'id': 'conv_adv_14', 'badge': '💬 Hari Kemerdekaan Indonesia (Independence Day)', 'prompt': '<b>🇮🇩 Situasi:</b> Kamu menceritakan kemeriahan lomba 17 Agustus di kampungmu.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa Indonesia merayakan kemerdekaan setiap tanggal 17 Agustus:\n<code>We celebrate Indonesian Independence Day on the seventeenth of August.</code>\n<i>(Artinya: Kita merayakan Hari Kemerdekaan Indonesia pada tanggal 17 Agustus.)</i>', 'expected': ['we celebrate indonesian independence day on the seventeenth of august', 'we celebrate indonesian independence day', 'independence day on the seventeenth of august', 'seventeenth of august'], 'primary_answer': 'We celebrate Indonesian Independence Day on the seventeenth of August.'}, {'id': 'conv_adv_15', 'badge': '💬 Rasa Hormat Kepada Guru (Respect for Teachers)', 'prompt': '<b>💐 Situasi:</b> Pada peringatan Hari Guru, kamu ingin menyampaikan rasa hormatmu.\n\n👉 <b>Giliranmu:</b> Katakan bahwa bapak dan ibu guru membimbing kita dengan sabar:\n<code>Our teachers guide us with boundless patience and wisdom.</code>\n<i>(Artinya: Guru-guru kita membimbing kita dengan kesabaran dan kebijaksanaan tanpa batas.)</i>', 'expected': ['our teachers guide us with boundless patience and wisdom', 'our teachers guide us with patience and wisdom', 'teachers guide us with patience', 'patience and wisdom'], 'primary_answer': 'Our teachers guide us with boundless patience and wisdom.'}, {'id': 'conv_adv_16', 'badge': '💬 Menghibur Teman Sedih (Showing Empathy)', 'prompt': "<b>🤗 Situasi:</b> Temanmu tampak bersedih karena kehilangan buku catatan kesayangannya.\n\n👉 <b>Giliranmu:</b> Berikan dukungan hangat bahwa kamu siap membantunya mencari:\n<code>Don't be sad, I will help you look for your notebook.</code>\n<i>(Artinya: Jangan sedih ya, saya akan membantumu mencari buku catatanmu.)</i>", 'expected': ["don't be sad, i will help you look for your notebook", "don't be sad i will help you look for your notebook", 'dont be sad i will help you', 'i will help you look for your notebook'], 'primary_answer': "Don't be sad, I will help you look for your notebook."}, {'id': 'conv_adv_17', 'badge': '💬 Kekuatan Kerja Kelompok (Power of Teamwork)', 'prompt': '<b>🧩 Situasi:</b> Kelompok belajarmu baru saja berhasil menyelesaikan tugas poster besar.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kerja sama membuat tugas yang sulit menjadi ringan:\n<code>Teamwork makes difficult challenges feel much easier and lighter.</code>\n<i>(Artinya: Kerja sama tim membuat tantangan sulit terasa jauh lebih mudah dan ringan.)</i>', 'expected': ['teamwork makes difficult challenges feel much easier and lighter', 'teamwork makes difficult challenges feel easier', 'teamwork makes difficult challenges easier', 'teamwork makes challenges easier'], 'primary_answer': 'Teamwork makes difficult challenges feel much easier and lighter.'}, {'id': 'conv_adv_18', 'badge': '💬 Keindahan Alam Pedesaan (Beauty of Nature)', 'prompt': '<b>🌄 Situasi:</b> Kamu berdiri di atas bukit desa memandangi matahari terbit di sawah.\n\n👉 <b>Giliranmu:</b> Ungkapkan kekagumanmu pada keindahan alam ciptaan Tuhan:\n<code>The golden sunrise over the green rice fields is breathtaking.</code>\n<i>(Artinya: Matahari terbit keemasan di atas persawahan hijau sungguh menakjubkan.)</i>', 'expected': ['the golden sunrise over the green rice fields is breathtaking', 'the golden sunrise over the green rice fields', 'golden sunrise over the green rice fields', 'sunrise over green rice fields'], 'primary_answer': 'The golden sunrise over the green rice fields is breathtaking.'}, {'id': 'conv_adv_19', 'badge': '💬 Kebiasaan Menabung (Saving Pocket Money)', 'prompt': '<b>💰 Situasi:</b> Kamu memiliki celengan ayam di kamar untuk menyisihkan uang saku.\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa kamu menyisihkan uang saku setiap hari:\n<code>I save some of my pocket money in my piggy bank every day.</code>\n<i>(Artinya: Saya menyisihkan sebagian uang saku di celengan setiap hari.)</i>', 'expected': ['i save some of my pocket money in my piggy bank every day', 'i save some of my pocket money in my piggy bank', 'save pocket money in piggy bank', 'save some pocket money'], 'primary_answer': 'I save some of my pocket money in my piggy bank every day.'}, {'id': 'conv_adv_20', 'badge': '💬 Tokoh Pendidikan Indonesia (Ki Hajar Dewantara)', 'prompt': '<b>🏫 Situasi:</b> Di kelas sejarah, guru membahas pahlawan nasional bidang pendidikan.\n\n👉 <b>Giliranmu:</b> Sebutkan bahwa Ki Hajar Dewantara adalah bapak pendidikan kita:\n<code>Ki Hajar Dewantara is the revered father of education in Indonesia.</code>\n<i>(Artinya: Ki Hajar Dewantara adalah bapak pendidikan yang dihormati di Indonesia.)</i>', 'expected': ['ki hajar dewantara is the revered father of education in indonesia', 'ki hajar dewantara is the father of education in indonesia', 'father of education in indonesia', 'ki hajar dewantara'], 'primary_answer': 'Ki Hajar Dewantara is the revered father of education in Indonesia.'}, {'id': 'conv_adv_21', 'badge': '💬 Disiplin Waktu Belajar (Time Management)', 'prompt': '<b>⏰ Situasi:</b> Temanmu kagum karena kamu selalu mengumpulkan PR tepat waktu.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kamu selalu menyelesaikan PR sebelum bermain:\n<code>I always finish all my school homework before playing games.</code>\n<i>(Artinya: Saya selalu menyelesaikan semua PR sekolah sebelum bermain game.)</i>', 'expected': ['i always finish all my school homework before playing games', 'i always finish my homework before playing games', 'finish homework before playing games', 'finish all homework before playing'], 'primary_answer': 'I always finish all my school homework before playing games.'}, {'id': 'conv_adv_22', 'badge': '💬 Kesantunan di Tempat Umum (Public Manners)', 'prompt': '<b>🚌 Situasi:</b> Kamu antre bersama teman saat hendak menaiki bus sekolah.\n\n👉 <b>Giliranmu:</b> Ingatkan teman agar selalu tertib mengantre dengan sabar:\n<code>Always queue patiently and speak politely in public places.</code>\n<i>(Artinya: Selalulah mengantre dengan sabar dan berbicara sopan di tempat umum.)</i>', 'expected': ['always queue patiently and speak politely in public places', 'queue patiently and speak politely in public places', 'queue patiently and speak politely', 'speak politely in public places'], 'primary_answer': 'Always queue patiently and speak politely in public places.'}, {'id': 'conv_adv_23', 'badge': '💬 Mengembangkan Bakat Seni (Expressing Creativity)', 'prompt': '<b>🎨 Situasi:</b> Kamu gemar melukis dan menulis cerita di buku harianmu.\n\n👉 <b>Giliranmu:</b> Katakan bahwa melukis dan menulis membantumu menuangkan ide:\n<code>Painting and writing help me express my imagination freely.</code>\n<i>(Artinya: Melukis dan menulis membantuku mengekspresikan imajinasi dengan bebas.)</i>', 'expected': ['painting and writing help me express my imagination freely', 'painting and writing help me express my imagination', 'express my imagination freely', 'express imagination'], 'primary_answer': 'Painting and writing help me express my imagination freely.'}, {'id': 'conv_adv_24', 'badge': '💬 Motivasi Terus Belajar (Lifelong Learning)', 'prompt': '<b>🌟 Situasi:</b> Kamu membagikan kata mutiara motivasi di papan majalah dinding kelas.\n\n👉 <b>Giliranmu:</b> Tuliskan semboyan bahwa kita tidak boleh berhenti belajar:\n<code>Never stop learning because life never stops teaching us.</code>\n<i>(Artinya: Jangan pernah berhenti belajar karena hidup tidak pernah berhenti mengajar kita.)</i>', 'expected': ['never stop learning because life never stops teaching us', 'never stop learning because life never stops teaching', 'never stop learning', 'life never stops teaching us'], 'primary_answer': 'Never stop learning because life never stops teaching us.'}],
     },
-
     # =========================================================================
-    # 2. 📚 VOCABULARY (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
-    # Sesuai revisi: Body Parts & Daily Activity
+    # 2. 📚 VOCABULARY BUILDER (72 exercises: 24 Beg, 24 Int, 24 Adv)
     # =========================================================================
     config.MODE_VOCABULARY: {
-        config.LEVEL_BEGINNER: [
-            {
-                "id": "voc_beg_01",
-                "badge": "📚 Body Parts: Kepala & Rambut",
-                "prompt": (
-                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
-                    "• <b>Head</b> <i>[hed]</i> = Kepala\n"
-                    "• <b>Hair</b> <i>[her]</i> = Rambut\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I have black hair.\"</i> (Saya punya rambut hitam)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Kepala'</b>!"
-                ),
-            },
-            {
-                "id": "voc_beg_02",
-                "badge": "📚 Body Parts: Mata & Hidung",
-                "prompt": (
-                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
-                    "• <b>Eyes</b> <i>[ais]</i> = Mata (dua mata)\n"
-                    "• <b>Nose</b> <i>[nous]</i> = Hidung\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I see with my eyes.\"</i> (Saya melihat dengan mata)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Mata'</b>!"
-                ),
-            },
-            {
-                "id": "voc_beg_03",
-                "badge": "📚 Body Parts: Mulut & Gigi",
-                "prompt": (
-                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
-                    "• <b>Mouth</b> <i>[maut]</i> = Mulut\n"
-                    "• <b>Teeth</b> <i>[tiit]</i> = Gigi\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I brush my teeth.\"</i> (Saya menggosok gigi)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Gigi'</b>!"
-                ),
-            },
-            {
-                "id": "voc_beg_04",
-                "badge": "📚 Body Parts: Telinga & Leher",
-                "prompt": (
-                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
-                    "• <b>Ears</b> <i>[irs]</i> = Telinga\n"
-                    "• <b>Neck</b> <i>[nek]</i> = Leher\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I hear sounds with my ears.\"</i> (Saya mendengar dengan telinga)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Telinga'</b>!"
-                ),
-            },
-            {
-                "id": "voc_beg_05",
-                "badge": "📚 Body Parts: Tangan & Jari",
-                "prompt": (
-                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
-                    "• <b>Hands</b> <i>[hends]</i> = Tangan\n"
-                    "• <b>Fingers</b> <i>[fing-gers]</i> = Jari tangan\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I wash my hands with soap.\"</i> (Saya mencuci tangan dengan sabun)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Tangan'</b>!"
-                ),
-            },
-            {
-                "id": "voc_beg_06",
-                "badge": "📚 Body Parts: Kaki & Lutut",
-                "prompt": (
-                    "🌟 <b>Anggota Tubuh (Body Parts):</b>\n\n"
-                    "• <b>Legs</b> <i>[legs]</i> = Kaki (tungkai kaki)\n"
-                    "• <b>Foot</b> <i>[fut]</i> = Telapak kaki\n"
-                    "• <b>Knees</b> <i>[niis]</i> = Lutut\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I kick the ball with my foot.\"</i> (Saya menendang bola dengan kaki)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Kaki'</b>!"
-                ),
-            },
-        ],
-        config.LEVEL_INTERMEDIATE: [
-            {
-                "id": "voc_int_01",
-                "badge": "📚 Daily Activity: Bangun Pagi",
-                "prompt": (
-                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
-                    "• <b>Wake up</b> = Bangun tidur\n"
-                    "• <b>Wash face</b> = Cuci muka\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I wake up at five in the morning.\"</i> (Saya bangun jam 5 pagi)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Bangun tidur'</b>!"
-                ),
-            },
-            {
-                "id": "voc_int_02",
-                "badge": "📚 Daily Activity: Mandi & Sarapan",
-                "prompt": (
-                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
-                    "• <b>Take a bath</b> = Mandi\n"
-                    "• <b>Eat breakfast</b> = Sarapan (makan pagi)\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I eat breakfast with my family.\"</i> (Saya sarapan bersama keluarga)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Sarapan'</b>!"
-                ),
-            },
-            {
-                "id": "voc_int_03",
-                "badge": "📚 Daily Activity: Pergi ke Sekolah",
-                "prompt": (
-                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
-                    "• <b>Go to school</b> = Pergi ke sekolah\n"
-                    "• <b>Study English</b> = Belajar bahasa Inggris\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"We go to school on foot.\"</i> (Kami pergi ke sekolah jalan kaki)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Pergi ke sekolah'</b>!"
-                ),
-            },
-            {
-                "id": "voc_int_04",
-                "badge": "📚 Daily Activity: Bermain Sore",
-                "prompt": (
-                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
-                    "• <b>Play football</b> = Bermain sepak bola\n"
-                    "• <b>Ride a bicycle</b> = Naik sepeda\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"In the afternoon, I play football.\"</i> (Di sore hari, saya main bola)\n\n"
-                    "👉 <b>Giliranmu:</b> Tulis kegiatan yang kamu suka lakukan di sore hari!"
-                ),
-            },
-            {
-                "id": "voc_int_05",
-                "badge": "📚 Daily Activity: Mengerjakan PR",
-                "prompt": (
-                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
-                    "• <b>Do homework</b> = Mengerjakan PR\n"
-                    "• <b>Read a book</b> = Membaca buku\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I do my homework at seven o'clock.\"</i> (Saya mengerjakan PR jam 7)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Membaca buku'</b>!"
-                ),
-            },
-            {
-                "id": "voc_int_06",
-                "badge": "📚 Daily Activity: Tidur Malam",
-                "prompt": (
-                    "🌟 <b>Kegiatan Sehari-hari (Daily Activity):</b>\n\n"
-                    "• <b>Go to sleep</b> = Pergi tidur\n"
-                    "• <b>Good night</b> = Selamat malam / selamat tidur\n\n"
-                    "<b>Contoh Kalimat:</b> <i>\"I go to sleep at nine o'clock.\"</i> (Saya tidur jam 9 malam)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk <b>'Selamat malam'</b>!"
-                ),
-            },
-        ],
-        config.LEVEL_ADVANCED: [
-            {
-                "id": "voc_adv_01",
-                "badge": "📚 Kalimat: Mencuci Tangan",
-                "prompt": (
-                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
-                    "<i>\"Before eating, I wash my <b>hands</b>.\"</i>\n"
-                    "<i>(Sebelum makan, saya mencuci tangan saya.)</i>\n\n"
-                    "• wash = mencuci\n"
-                    "• hands = tangan\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik ulang kalimat bahasa Inggris di atas!"
-                ),
-            },
-            {
-                "id": "voc_adv_02",
-                "badge": "📚 Kalimat: Menggosok Gigi",
-                "prompt": (
-                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
-                    "<i>\"Before sleeping, we brush our <b>teeth</b>.\"</i>\n"
-                    "<i>(Sebelum tidur, kita menggosok gigi.)</i>\n\n"
-                    "• brush = menyikat / menggosok\n"
-                    "• teeth = gigi\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik ulang kalimat bahasa Inggris di atas!"
-                ),
-            },
-            {
-                "id": "voc_adv_03",
-                "badge": "📚 Kalimat: Menyisir Rambut",
-                "prompt": (
-                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
-                    "<i>\"Every morning, she combs her <b>hair</b>.\"</i>\n"
-                    "<i>(Setiap pagi, dia menyisir rambutnya.)</i>\n\n"
-                    "• combs = menyisir\n"
-                    "• hair = rambut\n\n"
-                    "👉 <b>Giliranmu:</b> Kata <b>'hair'</b> artinya apa dalam bahasa Indonesia?"
-                ),
-            },
-            {
-                "id": "voc_adv_04",
-                "badge": "📚 Kalimat: Membaca dengan Mata",
-                "prompt": (
-                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
-                    "<i>\"We use our <b>eyes</b> to read storybooks.\"</i>\n"
-                    "<i>(Kita menggunakan mata kita untuk membaca buku cerita.)</i>\n\n"
-                    "• eyes = mata\n"
-                    "• read = membaca\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'Mata'</b>!"
-                ),
-            },
-            {
-                "id": "voc_adv_05",
-                "badge": "📚 Kalimat: Berlari di Lapangan",
-                "prompt": (
-                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
-                    "<i>\"The boys run with their <b>legs</b> in the field.\"</i>\n"
-                    "<i>(Anak-anak laki-laki berlari dengan kaki mereka di lapangan.)</i>\n\n"
-                    "• run = berlari\n"
-                    "• legs = kaki\n\n"
-                    "👉 <b>Giliranmu:</b> Kata <b>'run'</b> artinya apa dalam bahasa Indonesia?"
-                ),
-            },
-            {
-                "id": "voc_adv_06",
-                "badge": "📚 Kalimat: Berbicara Bahasa Inggris",
-                "prompt": (
-                    "🌟 <b>Gabungan Kata (Body & Activity):</b>\n\n"
-                    "<i>\"I open my <b>mouth</b> to speak English with confidence!\"</i>\n"
-                    "<i>(Saya membuka mulut untuk berbicara bahasa Inggris dengan percaya diri!)</i>\n\n"
-                    "• mouth = mulut\n"
-                    "• speak = berbicara\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kalimat penyemangat ini: <code>I speak English!</code>"
-                ),
-            },
-        ],
+        config.LEVEL_BEGINNER: [{'id': 'voc_beg_01', 'badge': '📚 Anggota Tubuh: Head', 'prompt': "🌟 <b>Kosakata Anggota Tubuh:</b>\n\n• <b>Head</b> = Kepala\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Kepala':\n<code>Head</code>", 'expected': ['head', 'head = kepala'], 'primary_answer': 'Head'}, {'id': 'voc_beg_02', 'badge': '📚 Anggota Tubuh: Eyes', 'prompt': "🌟 <b>Kosakata Anggota Tubuh:</b>\n\n• <b>Eyes</b> = Mata\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Mata':\n<code>Eyes</code>", 'expected': ['eyes', 'eye', 'eyes = mata'], 'primary_answer': 'Eyes'}, {'id': 'voc_beg_03', 'badge': '📚 Anggota Tubuh: Nose', 'prompt': "🌟 <b>Kosakata Anggota Tubuh:</b>\n\n• <b>Nose</b> = Hidung\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Hidung':\n<code>Nose</code>", 'expected': ['nose', 'nose = hidung'], 'primary_answer': 'Nose'}, {'id': 'voc_beg_04', 'badge': '📚 Anggota Tubuh: Mouth', 'prompt': "🌟 <b>Kosakata Anggota Tubuh:</b>\n\n• <b>Mouth</b> = Mulut\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Mulut':\n<code>Mouth</code>", 'expected': ['mouth', 'mouth = mulut'], 'primary_answer': 'Mouth'}, {'id': 'voc_beg_05', 'badge': '📚 Anggota Tubuh: Ears', 'prompt': "🌟 <b>Kosakata Anggota Tubuh:</b>\n\n• <b>Ears</b> = Telinga\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Telinga':\n<code>Ears</code>", 'expected': ['ears', 'ear', 'ears = telinga'], 'primary_answer': 'Ears'}, {'id': 'voc_beg_06', 'badge': '📚 Anggota Tubuh: Hands', 'prompt': "🌟 <b>Kosakata Anggota Tubuh:</b>\n\n• <b>Hands</b> = Tangan\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Tangan':\n<code>Hands</code>", 'expected': ['hands', 'hand', 'hands = tangan'], 'primary_answer': 'Hands'}, {'id': 'voc_beg_07', 'badge': '📚 Anggota Tubuh: Feet', 'prompt': "🌟 <b>Kosakata Anggota Tubuh:</b>\n\n• <b>Feet</b> = Kaki\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Kaki':\n<code>Feet</code>", 'expected': ['feet', 'foot', 'feet = kaki'], 'primary_answer': 'Feet'}, {'id': 'voc_beg_08', 'badge': '📚 Warna Dasar: Red', 'prompt': "🎨 <b>Kosakata Warna (Colors):</b>\n\n• <b>Red</b> = Merah\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk warna 'Merah':\n<code>Red</code>", 'expected': ['red', 'red = merah'], 'primary_answer': 'Red'}, {'id': 'voc_beg_09', 'badge': '📚 Warna Dasar: Blue', 'prompt': "🎨 <b>Kosakata Warna (Colors):</b>\n\n• <b>Blue</b> = Biru\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk warna 'Biru':\n<code>Blue</code>", 'expected': ['blue', 'blue = biru'], 'primary_answer': 'Blue'}, {'id': 'voc_beg_10', 'badge': '📚 Warna Dasar: Green', 'prompt': "🎨 <b>Kosakata Warna (Colors):</b>\n\n• <b>Green</b> = Hijau\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk warna 'Hijau':\n<code>Green</code>", 'expected': ['green', 'green = hijau'], 'primary_answer': 'Green'}, {'id': 'voc_beg_11', 'badge': '📚 Warna Dasar: Yellow', 'prompt': "🎨 <b>Kosakata Warna (Colors):</b>\n\n• <b>Yellow</b> = Kuning\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk warna 'Kuning':\n<code>Yellow</code>", 'expected': ['yellow', 'yellow = kuning'], 'primary_answer': 'Yellow'}, {'id': 'voc_beg_12', 'badge': '📚 Angka: One', 'prompt': "🔢 <b>Kosakata Angka (Numbers):</b>\n\n• <b>One</b> = Satu (1)\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk angka '1':\n<code>One</code>", 'expected': ['one', '1', 'one = satu'], 'primary_answer': 'One'}, {'id': 'voc_beg_13', 'badge': '📚 Angka: Two', 'prompt': "🔢 <b>Kosakata Angka (Numbers):</b>\n\n• <b>Two</b> = Dua (2)\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk angka '2':\n<code>Two</code>", 'expected': ['two', '2', 'two = dua'], 'primary_answer': 'Two'}, {'id': 'voc_beg_14', 'badge': '📚 Angka: Three', 'prompt': "🔢 <b>Kosakata Angka (Numbers):</b>\n\n• <b>Three</b> = Tiga (3)\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk angka '3':\n<code>Three</code>", 'expected': ['three', '3', 'three = tiga'], 'primary_answer': 'Three'}, {'id': 'voc_beg_15', 'badge': '📚 Benda Kelas: Book', 'prompt': "🎒 <b>Benda di Sekolah (Classroom Objects):</b>\n\n• <b>Book</b> = Buku\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Buku':\n<code>Book</code>", 'expected': ['book', 'a book', 'book = buku'], 'primary_answer': 'Book'}, {'id': 'voc_beg_16', 'badge': '📚 Benda Kelas: Pencil', 'prompt': "🎒 <b>Benda di Sekolah (Classroom Objects):</b>\n\n• <b>Pencil</b> = Pensil\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Pensil':\n<code>Pencil</code>", 'expected': ['pencil', 'a pencil', 'pencil = pensil'], 'primary_answer': 'Pencil'}, {'id': 'voc_beg_17', 'badge': '📚 Benda Kelas: Table', 'prompt': "🎒 <b>Benda di Sekolah (Classroom Objects):</b>\n\n• <b>Table</b> = Meja\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Meja':\n<code>Table</code>", 'expected': ['table', 'a table', 'table = meja'], 'primary_answer': 'Table'}, {'id': 'voc_beg_18', 'badge': '📚 Benda Kelas: Chair', 'prompt': "🎒 <b>Benda di Sekolah (Classroom Objects):</b>\n\n• <b>Chair</b> = Kursi\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Kursi':\n<code>Chair</code>", 'expected': ['chair', 'a chair', 'chair = kursi'], 'primary_answer': 'Chair'}, {'id': 'voc_beg_19', 'badge': '📚 Hewan Ramah: Cat', 'prompt': "🐾 <b>Nama Hewan (Animals):</b>\n\n• <b>Cat</b> = Kucing\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Kucing':\n<code>Cat</code>", 'expected': ['cat', 'a cat', 'cat = kucing'], 'primary_answer': 'Cat'}, {'id': 'voc_beg_20', 'badge': '📚 Hewan Ramah: Dog', 'prompt': "🐾 <b>Nama Hewan (Animals):</b>\n\n• <b>Dog</b> = Anjing\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Anjing':\n<code>Dog</code>", 'expected': ['dog', 'a dog', 'dog = anjing'], 'primary_answer': 'Dog'}, {'id': 'voc_beg_21', 'badge': '📚 Hewan Ramah: Bird', 'prompt': "🐾 <b>Nama Hewan (Animals):</b>\n\n• <b>Bird</b> = Burung\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Burung':\n<code>Bird</code>", 'expected': ['bird', 'a bird', 'bird = burung'], 'primary_answer': 'Bird'}, {'id': 'voc_beg_22', 'badge': '📚 Hewan Ramah: Fish', 'prompt': "🐾 <b>Nama Hewan (Animals):</b>\n\n• <b>Fish</b> = Ikan\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Ikan':\n<code>Fish</code>", 'expected': ['fish', 'a fish', 'fish = ikan'], 'primary_answer': 'Fish'}, {'id': 'voc_beg_23', 'badge': '📚 Keluarga: Mother', 'prompt': "👨\u200d👩\u200d👧 <b>Keluarga Saya (My Family):</b>\n\n• <b>Mother</b> = Ibu\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Ibu':\n<code>Mother</code>", 'expected': ['mother', 'mom', 'mother = ibu'], 'primary_answer': 'Mother'}, {'id': 'voc_beg_24', 'badge': '📚 Keluarga: Father', 'prompt': "👨\u200d👩\u200d👧 <b>Keluarga Saya (My Family):</b>\n\n• <b>Father</b> = Ayah\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Ayah':\n<code>Father</code>", 'expected': ['father', 'dad', 'father = ayah'], 'primary_answer': 'Father'}],
+        config.LEVEL_INTERMEDIATE: [{'id': 'voc_int_01', 'badge': '📚 Rutinitas: Wake Up', 'prompt': "⏰ <b>Rutinitas Pagi (Daily Routines):</b>\n\n• <b>Wake up</b> = Bangun tidur\n\n👉 <b>Giliranmu:</b> Tulis frasa bahasa Inggris untuk 'Bangun tidur':\n<code>Wake up</code>", 'expected': ['wake up', 'wake up = bangun tidur'], 'primary_answer': 'Wake up'}, {'id': 'voc_int_02', 'badge': '📚 Rutinitas: Take a Bath', 'prompt': "🚿 <b>Kebersihan Diri (Hygiene):</b>\n\n• <b>Take a bath</b> = Mandi\n\n👉 <b>Giliranmu:</b> Tulis frasa bahasa Inggris untuk 'Mandi':\n<code>Take a bath</code>", 'expected': ['take a bath', 'take a shower', 'take a bath = mandi'], 'primary_answer': 'Take a bath'}, {'id': 'voc_int_03', 'badge': '📚 Rutinitas: Brush Teeth', 'prompt': "🪥 <b>Kebersihan Gigi:</b>\n\n• <b>Brush teeth</b> = Menggosok gigi\n\n👉 <b>Giliranmu:</b> Tulis frasa bahasa Inggris untuk 'Menggosok gigi':\n<code>Brush teeth</code>", 'expected': ['brush teeth', 'brush my teeth', 'brush teeth = menggosok gigi'], 'primary_answer': 'Brush teeth'}, {'id': 'voc_int_04', 'badge': '📚 Makanan Pagi: Breakfast', 'prompt': "🍳 <b>Waktu Makan (Meals):</b>\n\n• <b>Breakfast</b> = Sarapan pagi\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Sarapan pagi':\n<code>Breakfast</code>", 'expected': ['breakfast', 'eat breakfast', 'breakfast = sarapan'], 'primary_answer': 'Breakfast'}, {'id': 'voc_int_05', 'badge': '📚 Rutinitas: Go to School', 'prompt': "🎒 <b>Kegiatan Sekolah:</b>\n\n• <b>Go to school</b> = Pergi ke sekolah\n\n👉 <b>Giliranmu:</b> Tulis frasa bahasa Inggris untuk 'Pergi ke sekolah':\n<code>Go to school</code>", 'expected': ['go to school', 'go to school = pergi ke sekolah'], 'primary_answer': 'Go to school'}, {'id': 'voc_int_06', 'badge': '📚 Belajar Giat: Study Hard', 'prompt': "📖 <b>Semangat Belajar:</b>\n\n• <b>Study hard</b> = Belajar giat / rajin belajar\n\n👉 <b>Giliranmu:</b> Tulis frasa bahasa Inggris untuk 'Belajar giat':\n<code>Study hard</code>", 'expected': ['study hard', 'study hard = belajar giat'], 'primary_answer': 'Study hard'}, {'id': 'voc_int_07', 'badge': '📚 Buah Sehat: Apple', 'prompt': "🍎 <b>Buah-buahan (Fruits):</b>\n\n• <b>Apple</b> = Apel\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk buah 'Apel':\n<code>Apple</code>", 'expected': ['apple', 'an apple', 'apple = apel'], 'primary_answer': 'Apple'}, {'id': 'voc_int_08', 'badge': '📚 Buah Manis: Banana', 'prompt': "🍌 <b>Buah-buahan (Fruits):</b>\n\n• <b>Banana</b> = Pisang\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk buah 'Pisang':\n<code>Banana</code>", 'expected': ['banana', 'a banana', 'banana = pisang'], 'primary_answer': 'Banana'}, {'id': 'voc_int_09', 'badge': '📚 Minuman Sehat: Milk', 'prompt': "🥛 <b>Minuman (Drinks):</b>\n\n• <b>Milk</b> = Susu\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Susu':\n<code>Milk</code>", 'expected': ['milk', 'glass of milk', 'milk = susu'], 'primary_answer': 'Milk'}, {'id': 'voc_int_10', 'badge': '📚 Air Bersih: Water', 'prompt': "💧 <b>Minuman Alami:</b>\n\n• <b>Water</b> = Air putih\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Air':\n<code>Water</code>", 'expected': ['water', 'mineral water', 'water = air'], 'primary_answer': 'Water'}, {'id': 'voc_int_11', 'badge': '📚 Makanan Pokok: Rice', 'prompt': "🍚 <b>Makanan (Food):</b>\n\n• <b>Rice</b> = Nasi\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Nasi':\n<code>Rice</code>", 'expected': ['rice', 'white rice', 'rice = nasi'], 'primary_answer': 'Rice'}, {'id': 'voc_int_12', 'badge': '📚 Pakaian: Shirt', 'prompt': "👔 <b>Pakaian (Clothes):</b>\n\n• <b>Shirt</b> = Kemeja / baju berkerah\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Kemeja':\n<code>Shirt</code>", 'expected': ['shirt', 'a shirt', 'shirt = kemeja'], 'primary_answer': 'Shirt'}, {'id': 'voc_int_13', 'badge': '📚 Alas Kaki: Shoes', 'prompt': "👟 <b>Pakaian & Sepatu:</b>\n\n• <b>Shoes</b> = Sepatu\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Sepatu':\n<code>Shoes</code>", 'expected': ['shoes', 'shoe', 'a pair of shoes', 'shoes = sepatu'], 'primary_answer': 'Shoes'}, {'id': 'voc_int_14', 'badge': '📚 Perlengkapan: Bag', 'prompt': "🎒 <b>Peralatan Sekolah:</b>\n\n• <b>Bag</b> = Tas sekolah\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Tas':\n<code>Bag</code>", 'expected': ['bag', 'a bag', 'school bag', 'bag = tas'], 'primary_answer': 'Bag'}, {'id': 'voc_int_15', 'badge': '📚 Cuaca Cerah: Sunny', 'prompt': "☀️ <b>Kondisi Cuaca (Weather):</b>\n\n• <b>Sunny</b> = Cerah berawan matahari\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk cuaca 'Cerah':\n<code>Sunny</code>", 'expected': ['sunny', 'sunny day', 'sunny = cerah'], 'primary_answer': 'Sunny'}, {'id': 'voc_int_16', 'badge': '📚 Cuaca Hujan: Rainy', 'prompt': "🌧️ <b>Kondisi Cuaca (Weather):</b>\n\n• <b>Rainy</b> = Hujan\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk cuaca 'Hujan':\n<code>Rainy</code>", 'expected': ['rainy', 'rain', 'rainy day', 'rainy = hujan'], 'primary_answer': 'Rainy'}, {'id': 'voc_int_17', 'badge': '📚 Kendaraan: Bicycle', 'prompt': "🚲 <b>Transportasi (Transportation):</b>\n\n• <b>Bicycle</b> = Sepeda\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Sepeda':\n<code>Bicycle</code>", 'expected': ['bicycle', 'bike', 'a bicycle', 'bicycle = sepeda'], 'primary_answer': 'Bicycle'}, {'id': 'voc_int_18', 'badge': '📚 Kendaraan Umum: Bus', 'prompt': "🚌 <b>Transportasi Umum:</b>\n\n• <b>Bus</b> = Bus sekolah\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Bus':\n<code>Bus</code>", 'expected': ['bus', 'a bus', 'school bus', 'bus = bus'], 'primary_answer': 'Bus'}, {'id': 'voc_int_19', 'badge': '📚 Ruang Tamu: Living Room', 'prompt': "🛋️ <b>Bagian Rumah (Parts of a House):</b>\n\n• <b>Living room</b> = Ruang tamu / ruang keluarga\n\n👉 <b>Giliranmu:</b> Tulis frasa bahasa Inggris untuk 'Ruang tamu':\n<code>Living room</code>", 'expected': ['living room', 'living room = ruang tamu'], 'primary_answer': 'Living room'}, {'id': 'voc_int_20', 'badge': '📚 Kamar Tidur: Bedroom', 'prompt': "🛏️ <b>Bagian Rumah (Parts of a House):</b>\n\n• <b>Bedroom</b> = Kamar tidur\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Kamar tidur':\n<code>Bedroom</code>", 'expected': ['bedroom', 'a bedroom', 'bedroom = kamar tidur'], 'primary_answer': 'Bedroom'}, {'id': 'voc_int_21', 'badge': '📚 Dapur: Kitchen', 'prompt': "🍳 <b>Tempat Memasak:</b>\n\n• <b>Kitchen</b> = Dapur\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Dapur':\n<code>Kitchen</code>", 'expected': ['kitchen', 'a kitchen', 'kitchen = dapur'], 'primary_answer': 'Kitchen'}, {'id': 'voc_int_22', 'badge': '📚 Tempat Umum: Hospital', 'prompt': "🏥 <b>Tempat Umum (Public Places):</b>\n\n• <b>Hospital</b> = Rumah sakit\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Rumah sakit':\n<code>Hospital</code>", 'expected': ['hospital', 'a hospital', 'hospital = rumah sakit'], 'primary_answer': 'Hospital'}, {'id': 'voc_int_23', 'badge': '📚 Tempat Belanja: Market', 'prompt': "🛒 <b>Tempat Umum (Public Places):</b>\n\n• <b>Market</b> = Pasar\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Pasar':\n<code>Market</code>", 'expected': ['market', 'traditional market', 'market = pasar'], 'primary_answer': 'Market'}, {'id': 'voc_int_24', 'badge': '📚 Taman Kota: Park', 'prompt': "🌳 <b>Tempat Bermain Terbuka:</b>\n\n• <b>Park</b> = Taman bermain / taman kota\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Taman':\n<code>Park</code>", 'expected': ['park', 'a park', 'park = taman'], 'primary_answer': 'Park'}],
+        config.LEVEL_ADVANCED: [{'id': 'voc_adv_01', 'badge': '📚 Profesi: Doctor', 'prompt': "🩺 <b>Profesi (Professions):</b>\n\n• <b>Doctor</b> = Dokter (orang yang mengobati pasien)\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Dokter':\n<code>Doctor</code>", 'expected': ['doctor', 'a doctor', 'doctor = dokter'], 'primary_answer': 'Doctor'}, {'id': 'voc_adv_02', 'badge': '📚 Profesi: Teacher', 'prompt': "👩\u200d🏫 <b>Profesi (Professions):</b>\n\n• <b>Teacher</b> = Guru (orang yang mengajar di sekolah)\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Guru':\n<code>Teacher</code>", 'expected': ['teacher', 'a teacher', 'teacher = guru'], 'primary_answer': 'Teacher'}, {'id': 'voc_adv_03', 'badge': '📚 Profesi: Police Officer', 'prompt': "👮 <b>Profesi (Professions):</b>\n\n• <b>Police officer</b> = Polisi (menjaga ketertiban)\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Polisi':\n<code>Police officer</code>", 'expected': ['police officer', 'police', 'policeman', 'police officer = polisi'], 'primary_answer': 'Police officer'}, {'id': 'voc_adv_04', 'badge': '📚 Profesi: Farmer', 'prompt': "🌾 <b>Profesi Mulia:</b>\n\n• <b>Farmer</b> = Petani (menanam padi dan sayuran)\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Petani':\n<code>Farmer</code>", 'expected': ['farmer', 'a farmer', 'farmer = petani'], 'primary_answer': 'Farmer'}, {'id': 'voc_adv_05', 'badge': '📚 Profesi Berani: Firefighter', 'prompt': "🚒 <b>Penyelamat Kebakaran:</b>\n\n• <b>Firefighter</b> = Pemadam kebakaran\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Pemadam kebakaran':\n<code>Firefighter</code>", 'expected': ['firefighter', 'fireman', 'firefighter = pemadam kebakaran'], 'primary_answer': 'Firefighter'}, {'id': 'voc_adv_06', 'badge': '📚 Profesi Memasak: Chef', 'prompt': "👨\u200d🍳 <b>Juru Masak Profesional:</b>\n\n• <b>Chef</b> = Koki / juru masak\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Koki':\n<code>Chef</code>", 'expected': ['chef', 'a chef', 'cook', 'chef = koki'], 'primary_answer': 'Chef'}, {'id': 'voc_adv_07', 'badge': '📚 Sifat Terpuji: Honest', 'prompt': "✨ <b>Sifat Karakter (Adjectives):</b>\n\n• <b>Honest</b> = Jujur (selalu berkata benar)\n\n👉 <b>Giliranmu:</b> Tulis kata sifat bahasa Inggris untuk 'Jujur':\n<code>Honest</code>", 'expected': ['honest', 'honest = jujur'], 'primary_answer': 'Honest'}, {'id': 'voc_adv_08', 'badge': '📚 Sifat Santun: Polite', 'prompt': "🌸 <b>Tata Krama:</b>\n\n• <b>Polite</b> = Sopan / santun bertutur kata\n\n👉 <b>Giliranmu:</b> Tulis kata sifat bahasa Inggris untuk 'Sopan':\n<code>Polite</code>", 'expected': ['polite', 'polite = sopan'], 'primary_answer': 'Polite'}, {'id': 'voc_adv_09', 'badge': '📚 Sifat Kesatria: Brave', 'prompt': "🦁 <b>Keteguhan Hati:</b>\n\n• <b>Brave</b> = Berani (tidak takut menghadapi rintangan)\n\n👉 <b>Giliranmu:</b> Tulis kata sifat bahasa Inggris untuk 'Berani':\n<code>Brave</code>", 'expected': ['brave', 'brave = berani'], 'primary_answer': 'Brave'}, {'id': 'voc_adv_10', 'badge': '📚 Sikap Tenang: Patient', 'prompt': "🕊️ <b>Kesabaran:</b>\n\n• <b>Patient</b> = Sabar (mampu menahan emosi dan antre tertib)\n\n👉 <b>Giliranmu:</b> Tulis kata sifat bahasa Inggris untuk 'Sabar':\n<code>Patient</code>", 'expected': ['patient', 'patient = sabar'], 'primary_answer': 'Patient'}, {'id': 'voc_adv_11', 'badge': '📚 Rajin Belajar: Diligent', 'prompt': "🐝 <b>Kerja Keras:</b>\n\n• <b>Diligent</b> = Rajin / tekun berusaha\n\n👉 <b>Giliranmu:</b> Tulis kata sifat bahasa Inggris untuk 'Rajin':\n<code>Diligent</code>", 'expected': ['diligent', 'diligent = rajin'], 'primary_answer': 'Diligent'}, {'id': 'voc_adv_12', 'badge': '📚 Suka Berbagi: Generous', 'prompt': "🎁 <b>Kedermawanan:</b>\n\n• <b>Generous</b> = Dermawan / suka menolong sesama\n\n👉 <b>Giliranmu:</b> Tulis kata sifat bahasa Inggris untuk 'Dermawan':\n<code>Generous</code>", 'expected': ['generous', 'generous = dermawan'], 'primary_answer': 'Generous'}, {'id': 'voc_adv_13', 'badge': '📚 Kata Kerja Aksi: Climb', 'prompt': "🧗 <b>Kata Kerja Fisik (Action Verbs):</b>\n\n• <b>Climb</b> = Memanjat (seperti memanjat pohon)\n\n👉 <b>Giliranmu:</b> Tulis kata kerja bahasa Inggris untuk 'Memanjat':\n<code>Climb</code>", 'expected': ['climb', 'to climb', 'climb = memanjat'], 'primary_answer': 'Climb'}, {'id': 'voc_adv_14', 'badge': '📚 Bicara Lembut: Whisper', 'prompt': "🤫 <b>Suara Halus:</b>\n\n• <b>Whisper</b> = Berbisik dengan suara lirih\n\n👉 <b>Giliranmu:</b> Tulis kata kerja bahasa Inggris untuk 'Berbisik':\n<code>Whisper</code>", 'expected': ['whisper', 'to whisper', 'whisper = berbisik'], 'primary_answer': 'Whisper'}, {'id': 'voc_adv_15', 'badge': '📚 Melindungi Sesama: Protect', 'prompt': "🛡️ <b>Perlindungan:</b>\n\n• <b>Protect</b> = Melindungi / menjaga keamanan\n\n👉 <b>Giliranmu:</b> Tulis kata kerja bahasa Inggris untuk 'Melindungi':\n<code>Protect</code>", 'expected': ['protect', 'to protect', 'protect = melindungi'], 'primary_answer': 'Protect'}, {'id': 'voc_adv_16', 'badge': '📚 Menemukan Hal Baru: Discover', 'prompt': "🔍 <b>Eksplorasi Ilmu:</b>\n\n• <b>Discover</b> = Menemukan pengetahuan baru\n\n👉 <b>Giliranmu:</b> Tulis kata kerja bahasa Inggris untuk 'Menemukan':\n<code>Discover</code>", 'expected': ['discover', 'to discover', 'discover = menemukan'], 'primary_answer': 'Discover'}, {'id': 'voc_adv_17', 'badge': '📚 Alam: Forest', 'prompt': "🌲 <b>Bentang Alam (Geographical Terms):</b>\n\n• <b>Forest</b> = Hutan lebat\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Hutan':\n<code>Forest</code>", 'expected': ['forest', 'a forest', 'forest = hutan'], 'primary_answer': 'Forest'}, {'id': 'voc_adv_18', 'badge': '📚 Aliran Air: River', 'prompt': "🌊 <b>Air Mengalir:</b>\n\n• <b>River</b> = Sungai\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Sungai':\n<code>River</code>", 'expected': ['river', 'a river', 'river = sungai'], 'primary_answer': 'River'}, {'id': 'voc_adv_19', 'badge': '📚 Puncak Tinggi: Mountain', 'prompt': "⛰️ <b>Ketinggian Alam:</b>\n\n• <b>Mountain</b> = Gunung yang tinggi\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Gunung':\n<code>Mountain</code>", 'expected': ['mountain', 'a mountain', 'mountain = gunung'], 'primary_answer': 'Mountain'}, {'id': 'voc_adv_20', 'badge': '📚 Tanah Nusantara: Island', 'prompt': "🏝️ <b>Wilayah Kepulauan:</b>\n\n• <b>Island</b> = Pulau yang dikelilingi laut\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Pulau':\n<code>Island</code>", 'expected': ['island', 'an island', 'island = pulau'], 'primary_answer': 'Island'}, {'id': 'voc_adv_21', 'badge': '📚 Kesehatan: Healthy', 'prompt': "💪 <b>Kebugaran Fisik:</b>\n\n• <b>Healthy</b> = Sehat walafiat\n\n👉 <b>Giliranmu:</b> Tulis kata sifat bahasa Inggris untuk 'Sehat':\n<code>Healthy</code>", 'expected': ['healthy', 'healthy = sehat'], 'primary_answer': 'Healthy'}, {'id': 'voc_adv_22', 'badge': '📚 Obat Penyembuh: Medicine', 'prompt': "💊 <b>Kesehatan & Farmasi:</b>\n\n• <b>Medicine</b> = Obat penyembuh penyakit\n\n👉 <b>Giliranmu:</b> Tulis kata benda bahasa Inggris untuk 'Obat':\n<code>Medicine</code>", 'expected': ['medicine', 'medicine = obat'], 'primary_answer': 'Medicine'}, {'id': 'voc_adv_23', 'badge': '📚 Wawasan Berharga: Knowledge', 'prompt': "💡 <b>Pendidikan & Pikiran:</b>\n\n• <b>Knowledge</b> = Pengetahuan / ilmu yang bermanfaat\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Pengetahuan':\n<code>Knowledge</code>", 'expected': ['knowledge', 'knowledge = pengetahuan'], 'primary_answer': 'Knowledge'}, {'id': 'voc_adv_24', 'badge': '📚 Persatuan Warga: Community', 'prompt': "🤝 <b>Kehidupan Bersama:</b>\n\n• <b>Community</b> = Komunitas / paguyuban masyarakat\n\n👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk 'Komunitas':\n<code>Community</code>", 'expected': ['community', 'community = masyarakat', 'community = komunitas'], 'primary_answer': 'Community'}],
     },
-
     # =========================================================================
-    # 3. ✏️ GRAMMAR (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
-    # Sesuai revisi: verbs, to be, adjective, part of speech
+    # 3. 📝 GRAMMAR MASTER (72 exercises: 24 Beg, 24 Int, 24 Adv)
     # =========================================================================
     config.MODE_GRAMMAR: {
-        config.LEVEL_BEGINNER: [
-            {
-                "id": "grm_beg_01",
-                "badge": "✏️ To Be: Belajar 'am'",
-                "prompt": (
-                    "🔍 <b>Aturan 'To Be':</b>\n\n"
-                    "Kata <b>I</b> (Saya) pasangannya SELALU <b>am</b>!\n\n"
-                    "Contoh:\n"
-                    "• <i>I am a student.</i> (Saya seorang murid)\n"
-                    "• <i>I am happy.</i> (Saya bahagia)\n\n"
-                    "❓ <b>Lengkapi kalimat ini:</b>\n"
-                    "<code>I ___ a good boy/girl.</code> (am / is / are)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik to be yang tepat!"
-                ),
-            },
-            {
-                "id": "grm_beg_02",
-                "badge": "✏️ To Be: Belajar 'is'",
-                "prompt": (
-                    "🔍 <b>Aturan 'To Be':</b>\n\n"
-                    "Untuk orang tunggal (dia/itu):\n"
-                    "• <b>He</b> (dia laki-laki) ➡️ <b>is</b>\n"
-                    "• <b>She</b> (dia perempuan) ➡️ <b>is</b>\n"
-                    "• <b>It</b> (hewan/benda) ➡️ <b>is</b>\n\n"
-                    "Contoh: <i>She is my sister.</i> (Dia adalah adik/kakak perempuanku)\n\n"
-                    "❓ <b>Lengkapi kalimat ini:</b>\n"
-                    "<code>He ___ my teacher.</code> (am / is / are)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik to be yang tepat!"
-                ),
-            },
-            {
-                "id": "grm_beg_03",
-                "badge": "✏️ To Be: Belajar 'are'",
-                "prompt": (
-                    "🔍 <b>Aturan 'To Be':</b>\n\n"
-                    "Untuk orang jamak (banyak) dan 'kamu':\n"
-                    "• <b>You</b> (kamu) ➡️ <b>are</b>\n"
-                    "• <b>They</b> (mereka) ➡️ <b>are</b>\n"
-                    "• <b>We</b> (kita / kami) ➡️ <b>are</b>\n\n"
-                    "Contoh: <i>We are friends.</i> (Kita berteman)\n\n"
-                    "❓ <b>Lengkapi kalimat ini:</b>\n"
-                    "<code>They ___ happy today.</code> (am / is / are)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik to be yang tepat!"
-                ),
-            },
-            {
-                "id": "grm_beg_04",
-                "badge": "✏️ Kuis To Be: I am a girl",
-                "prompt": (
-                    "🔍 <b>Latihan Soal To Be:</b>\n\n"
-                    "Perhatikan kalimat ini:\n"
-                    "<code>I ___ a girl.</code>\n\n"
-                    "Pilihannya:\n"
-                    "A. am\n"
-                    "B. is\n"
-                    "C. are\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik jawaban yang benar (am / is / are)!"
-                ),
-            },
-            {
-                "id": "grm_beg_05",
-                "badge": "✏️ Kuis To Be: The Cat",
-                "prompt": (
-                    "🔍 <b>Latihan Soal To Be:</b>\n\n"
-                    "Perhatikan kalimat ini:\n"
-                    "<code>The cat ___ very cute.</code>\n"
-                    "<i>(Kucing itu sangat lucu)</i>\n\n"
-                    "💡 <i>Petunjuk: Karena kucingnya cuma 1 (it), kita gunakan 'is'.</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Tulis to be yang benar: <b>am</b>, <b>is</b>, atau <b>are</b>?"
-                ),
-            },
-            {
-                "id": "grm_beg_06",
-                "badge": "✏️ Kuis To Be: We are happy",
-                "prompt": (
-                    "🔍 <b>Latihan Soal To Be:</b>\n\n"
-                    "Lengkapi kalimat ini:\n"
-                    "<code>We ___ studying English.</code>\n"
-                    "<i>(Kami sedang belajar bahasa Inggris)</i>\n\n"
-                    "💡 <i>Petunjuk: 'We' (kami) pasangannya adalah 'are'.</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik jawaban yang benar!"
-                ),
-            },
-        ],
-        config.LEVEL_INTERMEDIATE: [
-            {
-                "id": "grm_int_01",
-                "badge": "✏️ Verbs: Mengenal Kata Kerja",
-                "prompt": (
-                    "🏃 <b>Apa itu Verb (Kata Kerja)?</b>\n"
-                    "Verb adalah kata yang menunjukkan aksi atau kegiatan.\n\n"
-                    "Contoh Verb sehari-hari:\n"
-                    "• <b>eat</b> = makan\n"
-                    "• <b>drink</b> = minum\n"
-                    "• <b>sleep</b> = tidur\n"
-                    "• <b>play</b> = bermain\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata kerja bahasa Inggris untuk <b>'makan'</b>!"
-                ),
-            },
-            {
-                "id": "grm_int_02",
-                "badge": "✏️ Verbs: Membuat Kalimat Aksi",
-                "prompt": (
-                    "🏃 <b>Kalimat Sederhana dengan Verb:</b>\n\n"
-                    "Susunannya mudah: <b>Subjek + Kata Kerja + Benda</b>\n"
-                    "• <i>I eat rice.</i> (Saya makan nasi)\n"
-                    "• <i>I drink milk.</i> (Saya minum susu)\n\n"
-                    "❓ <b>Lengkapi kalimat:</b>\n"
-                    "<code>I ___ football with my friends.</code>\n"
-                    "<i>(Pilihan kata kerja: drink / play / sleep)</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata kerja yang tepat!"
-                ),
-            },
-            {
-                "id": "grm_int_03",
-                "badge": "✏️ Adjectives: Mengenal Kata Sifat",
-                "prompt": (
-                    "🌸 <b>Apa itu Adjective (Kata Sifat)?</b>\n"
-                    "Adjective adalah kata yang menggambarkan keadaan atau perasaan.\n\n"
-                    "Contoh Adjective:\n"
-                    "• <b>happy</b> = senang / gembira\n"
-                    "• <b>sad</b> = sedih\n"
-                    "• <b>big</b> = besar\n"
-                    "• <b>small</b> = kecil\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik bahasa Inggris untuk kata sifat <b>'senang'</b>!"
-                ),
-            },
-            {
-                "id": "grm_int_04",
-                "badge": "✏️ Adjectives: Besar dan Kecil",
-                "prompt": (
-                    "🐘 <b>Contoh Penggunaan Kata Sifat:</b>\n\n"
-                    "• <i>The elephant is <b>big</b>.</i> (Gajah itu besar)\n"
-                    "• <i>The ant is <b>small</b>.</i> (Semut itu kecil)\n\n"
-                    "❓ <b>Pilih kata sifat yang cocok:</b>\n"
-                    "Rumah itu luas dan besar ➡️ <code>The house is ___ (big / small)</code>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata sifat yang tepat!"
-                ),
-            },
-            {
-                "id": "grm_int_05",
-                "badge": "✏️ Adjectives: Bersih dan Baik",
-                "prompt": (
-                    "✨ <b>Kata Sifat Kebaikan & Kebersihan:</b>\n\n"
-                    "• <b>clean</b> = bersih\n"
-                    "• <b>kind</b> = baik hati\n"
-                    "• <b>smart</b> = pintar\n\n"
-                    "Contoh: <i>My teacher is kind.</i> (Guruku baik hati)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata bahasa Inggris untuk <b>'pintar'</b>!"
-                ),
-            },
-            {
-                "id": "grm_int_06",
-                "badge": "✏️ Verbs: Membaca dan Menulis",
-                "prompt": (
-                    "📖 <b>Kata Kerja Belajar:</b>\n\n"
-                    "• <b>read</b> = membaca\n"
-                    "• <b>write</b> = menulis\n\n"
-                    "Contoh: <i>I read an English story.</i> (Saya membaca cerita bahasa Inggris)\n\n"
-                    "👉 <b>Giliranmu:</b> Tulis kata bahasa Inggris untuk <b>'menulis'</b>!"
-                ),
-            },
-        ],
-        config.LEVEL_ADVANCED: [
-            {
-                "id": "grm_adv_01",
-                "badge": "✏️ Part of Speech: Noun (Kata Benda)",
-                "prompt": (
-                    "📦 <b>Part of Speech: Mengenal NOUN (Kata Benda)</b>\n\n"
-                    "Noun adalah nama benda, orang, hewan, atau tempat.\n"
-                    "Contoh:\n"
-                    "• <b>book</b> (buku)\n"
-                    "• <b>cat</b> (kucing)\n"
-                    "• <b>school</b> (sekolah)\n\n"
-                    "❓ Manakah yang merupakan NOUN (kata benda)?\n"
-                    "A. run (berlari)\n"
-                    "B. apple (apel)\n"
-                    "C. happy (senang)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik huruf jawaban yang benar!"
-                ),
-            },
-            {
-                "id": "grm_adv_02",
-                "badge": "✏️ Part of Speech: Verb (Kata Kerja)",
-                "prompt": (
-                    "🏃 <b>Part of Speech: Mengenal VERB (Kata Kerja)</b>\n\n"
-                    "Verb adalah kata yang menunjukkan kegiatan atau tindakan.\n\n"
-                    "❓ Pada kalimat ini, manakah yang merupakan VERB (kata kerja)?\n"
-                    "<code>\"The children play in the garden.\"</code>\n"
-                    "<i>(Anak-anak bermain di taman)</i>\n\n"
-                    "💡 Pilihan: children / play / garden\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata kerjanya!"
-                ),
-            },
-            {
-                "id": "grm_adv_03",
-                "badge": "✏️ Part of Speech: Adjective (Kata Sifat)",
-                "prompt": (
-                    "🌸 <b>Part of Speech: Mengenal ADJECTIVE (Kata Sifat)</b>\n\n"
-                    "Adjective menjelaskan sifat atau keadaan suatu benda.\n\n"
-                    "❓ Pada kalimat ini, manakah yang merupakan ADJECTIVE (kata sifat)?\n"
-                    "<code>\"My sister has a beautiful doll.\"</code>\n"
-                    "<i>(Adikku memiliki boneka yang cantik)</i>\n\n"
-                    "💡 Pilihan: sister / beautiful / doll\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kata sifatnya!"
-                ),
-            },
-            {
-                "id": "grm_adv_04",
-                "badge": "✏️ Part of Speech: Tebak Kategori",
-                "prompt": (
-                    "🎯 <b>Tebak Kategori Kata:</b>\n\n"
-                    "Kata: <b>\"SLEEP\"</b> (tidur)\n\n"
-                    "Apakah kata 'sleep' termasuk:\n"
-                    "A. Noun (kata benda)\n"
-                    "B. Verb (kata kerja)\n"
-                    "C. Adjective (kata sifat)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik A, B, atau C!"
-                ),
-            },
-            {
-                "id": "grm_adv_05",
-                "badge": "✏️ Part of Speech: Tebak Kategori",
-                "prompt": (
-                    "🎯 <b>Tebak Kategori Kata:</b>\n\n"
-                    "Kata: <b>\"HAPPY\"</b> (bahagia / senang)\n\n"
-                    "Apakah kata 'happy' termasuk:\n"
-                    "A. Noun (kata benda)\n"
-                    "B. Verb (kata kerja)\n"
-                    "C. Adjective (kata sifat)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik A, B, atau C!"
-                ),
-            },
-            {
-                "id": "grm_adv_06",
-                "badge": "✏️ Kalimat Lengkap (Noun + Verb + Adj)",
-                "prompt": (
-                    "🌟 <b>Menyusun Kalimat Lengkap:</b>\n\n"
-                    "Perhatikan kalimat ini:\n"
-                    "<code>\"The cute cat sleeps.\"</code>\n"
-                    "• <b>cute</b> = Adjective (lucu)\n"
-                    "• <b>cat</b> = Noun (kucing)\n"
-                    "• <b>sleeps</b> = Verb (tidur)\n\n"
-                    "👉 <b>Giliranmu:</b> Terjemahkan ke bahasa Indonesia dengan mengetik:\n"
-                    "<i>Kucing lucu itu tidur.</i>"
-                ),
-            },
-        ],
+        config.LEVEL_BEGINNER: [{'id': 'grm_beg_01', 'badge': '📝 To Be: I am', 'prompt': '✨ <b>Grammar Dasar: To Be (Subjek I)</b>\n\nGunakan <b>am</b> untuk subjek <b>I</b>.\nContoh: <i>I am a student.</i> (Saya seorang murid.)\n\n👉 <b>Lengkapi kalimat ini:</b>\n"I ___ happy today."', 'expected': ['am', 'i am happy today', 'i am', 'am happy today'], 'primary_answer': 'am'}, {'id': 'grm_beg_02', 'badge': '📝 To Be: You are', 'prompt': '✨ <b>Grammar Dasar: To Be (Subjek You)</b>\n\nGunakan <b>are</b> untuk subjek <b>You</b>.\nContoh: <i>You are smart.</i> (Kamu pintar.)\n\n👉 <b>Lengkapi kalimat ini:</b>\n"You ___ my best friend."', 'expected': ['are', 'you are my best friend', 'you are', 'are my best friend'], 'primary_answer': 'are'}, {'id': 'grm_beg_03', 'badge': '📝 To Be: He is', 'prompt': '✨ <b>Grammar Dasar: To Be (Subjek He)</b>\n\nGunakan <b>is</b> untuk <b>He</b> (dia laki-laki).\nContoh: <i>He is tall.</i> (Dia tinggi.)\n\n👉 <b>Lengkapi kalimat ini:</b>\n"He ___ a doctor."', 'expected': ['is', 'he is a doctor', 'he is', 'is a doctor'], 'primary_answer': 'is'}, {'id': 'grm_beg_04', 'badge': '📝 To Be: She is', 'prompt': '✨ <b>Grammar Dasar: To Be (Subjek She)</b>\n\nGunakan <b>is</b> untuk <b>She</b> (dia perempuan).\nContoh: <i>She is kind.</i> (Dia baik hati.)\n\n👉 <b>Lengkapi kalimat ini:</b>\n"She ___ a teacher."', 'expected': ['is', 'she is a teacher', 'she is', 'is a teacher'], 'primary_answer': 'is'}, {'id': 'grm_beg_05', 'badge': '📝 To Be: It is', 'prompt': '✨ <b>Grammar Dasar: To Be (Subjek It)</b>\n\nGunakan <b>is</b> untuk <b>It</b> (benda atau hewan tunggal).\nContoh: <i>It is a cat.</i> (Itu seekor kucing.)\n\n👉 <b>Lengkapi kalimat ini:</b>\n"It ___ a cute rabbit."', 'expected': ['is', 'it is a cute rabbit', 'it is', 'is a cute rabbit'], 'primary_answer': 'is'}, {'id': 'grm_beg_06', 'badge': '📝 To Be: We are', 'prompt': '✨ <b>Grammar Dasar: To Be (Subjek We)</b>\n\nGunakan <b>are</b> untuk subjek <b>We</b> (kami/kita).\nContoh: <i>We are ready.</i> (Kita sudah siap.)\n\n👉 <b>Lengkapi kalimat ini:</b>\n"We ___ good friends."', 'expected': ['are', 'we are good friends', 'we are', 'are good friends'], 'primary_answer': 'are'}, {'id': 'grm_beg_07', 'badge': '📝 To Be: They are', 'prompt': '✨ <b>Grammar Dasar: To Be (Subjek They)</b>\n\nGunakan <b>are</b> untuk subjek <b>They</b> (mereka).\nContoh: <i>They are happy.</i> (Mereka bahagia.)\n\n👉 <b>Lengkapi kalimat ini:</b>\n"They ___ students."', 'expected': ['are', 'they are students', 'they are', 'are students'], 'primary_answer': 'are'}, {'id': 'grm_beg_08', 'badge': '📝 Kata Kerja: I eat', 'prompt': '🍚 <b>Simple Present: Subjek I</b>\n\nUntuk subjek <b>I</b>, kata kerja bentuk dasar tanpa akhiran \'s\'.\n\n👉 <b>Pilih kata yang benar (eat / eats):</b>\n"I (eat/eats) rice every morning."', 'expected': ['eat', 'i eat', 'i eat rice every morning', 'eat rice every morning'], 'primary_answer': 'eat'}, {'id': 'grm_beg_09', 'badge': '📝 Kata Kerja: He eats', 'prompt': '🍎 <b>Simple Present: Subjek He</b>\n\nUntuk subjek <b>He/She/It</b>, kata kerja ditambah akhiran <b>-s</b> atau <b>-es</b>.\n\n👉 <b>Pilih kata yang tepat (eat / eats):</b>\n"Budi (eat/eats) an apple."', 'expected': ['eats', 'budi eats an apple', 'he eats', 'eats an apple'], 'primary_answer': 'eats'}, {'id': 'grm_beg_10', 'badge': '📝 Kata Kerja: She drinks', 'prompt': '🥛 <b>Simple Present: Subjek She</b>\n\nSubjek tunggal perempuan (She/Siti) membutuhkan akhiran <b>-s</b> pada verb.\n\n👉 <b>Pilih kata yang tepat (drink / drinks):</b>\n"She (drink/drinks) fresh milk."', 'expected': ['drinks', 'she drinks fresh milk', 'she drinks', 'drinks fresh milk'], 'primary_answer': 'drinks'}, {'id': 'grm_beg_11', 'badge': '📝 Kata Kerja Jamak: They play', 'prompt': '⚽ <b>Simple Present: Subjek They</b>\n\nUntuk subjek jamak <b>They/We</b>, kata kerja kembali ke bentuk dasar tanpa \'s\'.\n\n👉 <b>Pilih kata yang tepat (play / plays):</b>\n"They (play/plays) soccer in the yard."', 'expected': ['play', 'they play soccer in the yard', 'they play', 'play soccer'], 'primary_answer': 'play'}, {'id': 'grm_beg_12', 'badge': '📝 Kata Kerja Jamak: We study', 'prompt': '📖 <b>Simple Present: Subjek We</b>\n\nUntuk <b>We</b>, gunakan kata kerja dasar.\n\n👉 <b>Pilih kata yang tepat (study / studies):</b>\n"We (study/studies) English together."', 'expected': ['study', 'we study english together', 'we study', 'study english'], 'primary_answer': 'study'}, {'id': 'grm_beg_13', 'badge': '📍 Preposisi: in', 'prompt': '🎒 <b>Preposisi Tempat: in (di dalam)</b>\n\nGunakan <b>in</b> untuk menunjukkan posisi di dalam ruangan/wadah.\n\n👉 <b>Lengkapi dengan preposisi yang tepat (in / on):</b>\n"The pencil is ___ the bag."', 'expected': ['in', 'the pencil is in the bag', 'is in the bag'], 'primary_answer': 'in'}, {'id': 'grm_beg_14', 'badge': '📍 Preposisi: on', 'prompt': '🪑 <b>Preposisi Tempat: on (di atas permukaan)</b>\n\nGunakan <b>on</b> untuk benda yang menempel di atas permukaan meja, lantai, dll.\n\n👉 <b>Lengkapi kalimat ini (in / on):</b>\n"The book is ___ the table."', 'expected': ['on', 'the book is on the table', 'is on the table'], 'primary_answer': 'on'}, {'id': 'grm_beg_15', 'badge': '📍 Preposisi: under', 'prompt': '🐱 <b>Preposisi Tempat: under (di bawah)</b>\n\nGunakan <b>under</b> bila letak benda berada di bawah sesuatu.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"The cat is sleeping ___ the bed." (di bawah ranjang)', 'expected': ['under', 'the cat is sleeping under the bed', 'sleeping under the bed'], 'primary_answer': 'under'}, {'id': 'grm_beg_16', 'badge': '📍 Preposisi: at', 'prompt': '🏫 <b>Preposisi Tempat: at (di titik lokasi tertentu)</b>\n\nGunakan <b>at</b> untuk lokasi spesifik seperti rumah atau sekolah.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"I am ___ school right now."', 'expected': ['at', 'i am at school right now', 'at school'], 'primary_answer': 'at'}, {'id': 'grm_beg_17', 'badge': '👉 Penunjuk Tunggal Dekat: This', 'prompt': '✏️ <b>Kata Tunjuk Tunggal: This is (Ini)</b>\n\nGunakan <b>This is</b> untuk satu benda yang berada dekat.\n\n👉 <b>Pilih kata yang tepat (This / These):</b>\n"___ is my new pen."', 'expected': ['this', 'this is my new pen', 'this is'], 'primary_answer': 'This'}, {'id': 'grm_beg_18', 'badge': '👉 Penunjuk Tunggal Jauh: That', 'prompt': '🏠 <b>Kata Tunjuk Tunggal: That is (Itu)</b>\n\nGunakan <b>That is</b> untuk satu benda yang berjarak jauh.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"___ is my house over there." (Itu rumahku)', 'expected': ['that', 'that is my house over there', 'that is'], 'primary_answer': 'That'}, {'id': 'grm_beg_19', 'badge': '👉 Penunjuk Jamak Dekat: These', 'prompt': '👟 <b>Kata Tunjuk Jamak: These are (Ini banyak)</b>\n\nGunakan <b>These are</b> untuk lebih dari satu benda di dekat kita.\n\n👉 <b>Pilih kata yang tepat (This / These):</b>\n"___ are my shoes."', 'expected': ['these', 'these are my shoes', 'these are'], 'primary_answer': 'These'}, {'id': 'grm_beg_20', 'badge': '👉 Penunjuk Jamak Jauh: Those', 'prompt': '🐦 <b>Kata Tunjuk Jamak: Those are (Itu banyak)</b>\n\nGunakan <b>Those are</b> untuk banyak benda yang jauh.\n\n👉 <b>Pilih kata yang tepat (That / Those):</b>\n"___ are beautiful birds in the sky."', 'expected': ['those', 'those are beautiful birds in the sky', 'those are'], 'primary_answer': 'Those'}, {'id': 'grm_beg_21', 'badge': '❌ Kalimat Negatif: is not', 'prompt': '🚫 <b>Kalimat Negatif: is not (bukan/tidak)</b>\n\nTambahkan <b>not</b> setelah to be untuk menyatakan penyangkalan.\n\n👉 <b>Lengkapi kalimat negatif ini:</b>\n"He is ___ tired today."', 'expected': ['not', 'he is not tired today', 'is not tired'], 'primary_answer': 'not'}, {'id': 'grm_beg_22', 'badge': '❌ Kalimat Negatif: are not', 'prompt': '🚫 <b>Kalimat Negatif: are not</b>\n\nPenyangkalan untuk subjek jamak: are + not (aren\'t).\n\n👉 <b>Lengkapi kalimat ini:</b>\n"We are ___ late for class."', 'expected': ['not', 'we are not late for class', 'are not late'], 'primary_answer': 'not'}, {'id': 'grm_beg_23', 'badge': '❓ Kalimat Tanya: Do you...?', 'prompt': '❓ <b>Pertanyaan Present Tense: Do you</b>\n\nGunakan kata bantu <b>Do</b> untuk bertanya pada subjek You/They/We.\n\n👉 <b>Lengkapi pertanyaan ini (Do / Does):</b>\n"___ you like ice cream?"', 'expected': ['do', 'do you like ice cream', 'do you like ice cream?'], 'primary_answer': 'Do'}, {'id': 'grm_beg_24', 'badge': '❓ Kalimat Tanya: Does he...?', 'prompt': '❓ <b>Pertanyaan Present Tense: Does</b>\n\nGunakan kata bantu <b>Does</b> untuk bertanya pada subjek He/She/It.\n\n👉 <b>Pilih kata bantu yang tepat (Do / Does):</b>\n"___ he have a bicycle?"', 'expected': ['does', 'does he have a bicycle', 'does he have a bicycle?'], 'primary_answer': 'Does'}],
+        config.LEVEL_INTERMEDIATE: [{'id': 'grm_int_01', 'badge': '⏳ Regular Past Tense: played', 'prompt': '⚽ <b>Simple Past Tense: Regular Verb (-ed)</b>\n\nKata kerja beraturan di masa lampau diakhiri <b>-ed</b>.\nContoh: play ➔ played.\n\n👉 <b>Ubah kata \'play\' ke bentuk lampau:</b>\n"Yesterday, they (play) ___ football in the stadium."', 'expected': ['played', 'they played', 'played football'], 'primary_answer': 'played'}, {'id': 'grm_int_02', 'badge': '⏳ Regular Past Tense: watched', 'prompt': '📺 <b>Simple Past Tense: Regular Verb (-ed)</b>\n\nWatch ➔ Watched (menonton).\n\n👉 <b>Tulis bentuk lampau dari kata \'watch\':</b>\n"Last night, I ___ an interesting movie."', 'expected': ['watched', 'i watched', 'watched an interesting movie'], 'primary_answer': 'watched'}, {'id': 'grm_int_03', 'badge': '⏳ Regular Past Tense: cooked', 'prompt': '🍳 <b>Simple Past Tense: Regular Verb (-ed)</b>\n\nCook ➔ Cooked (memasak).\n\n👉 <b>Lengkapi kalimat bentuk lampau ini:</b>\n"Mother ___ delicious fried chicken this morning."', 'expected': ['cooked', 'mother cooked', 'cooked delicious fried chicken'], 'primary_answer': 'cooked'}, {'id': 'grm_int_04', 'badge': '🔄 Irregular Past: went', 'prompt': '🚗 <b>Simple Past: Irregular Verb (Go ➔ Went)</b>\n\nKata kerja tidak beraturan berubah bentuk.\nContoh: Go ➔ Went (pergi).\n\n👉 <b>Tulis bentuk lampau dari \'go\':</b>\n"Two days ago, we ___ to the beach."', 'expected': ['went', 'we went', 'went to the beach'], 'primary_answer': 'went'}, {'id': 'grm_int_05', 'badge': '🔄 Irregular Past: ate', 'prompt': '🍜 <b>Simple Past: Irregular Verb (Eat ➔ Ate)</b>\n\nEat ➔ Ate (makan di masa lampau).\n\n👉 <b>Lengkapi dengan bentuk lampau dari \'eat\':</b>\n"Budi ___ noodles for breakfast this morning."', 'expected': ['ate', 'budi ate', 'ate noodles'], 'primary_answer': 'ate'}, {'id': 'grm_int_06', 'badge': '🔄 Irregular Past: bought', 'prompt': '🛍️ <b>Simple Past: Irregular Verb (Buy ➔ Bought)</b>\n\nBuy ➔ Bought (membeli).\n\n👉 <b>Ubah kata kerja \'buy\' ke past tense:</b>\n"She ___ a new backpack yesterday."', 'expected': ['bought', 'she bought', 'bought a new backpack'], 'primary_answer': 'bought'}, {'id': 'grm_int_07', 'badge': '🔄 Irregular Past: saw', 'prompt': '👀 <b>Simple Past: Irregular Verb (See ➔ Saw)</b>\n\nSee ➔ Saw (melihat).\n\n👉 <b>Lengkapi kalimat ini dengan past tense dari \'see\':</b>\n"We ___ a beautiful rainbow after the rain."', 'expected': ['saw', 'we saw', 'saw a beautiful rainbow'], 'primary_answer': 'saw'}, {'id': 'grm_int_08', 'badge': '🕰️ Past To Be: was', 'prompt': '🛌 <b>Past To Be: was</b>\n\nGunakan <b>was</b> untuk subjek I, He, She, It di masa lampau.\n\n👉 <b>Pilih to be lampau yang tepat (was / were):</b>\n"I ___ very tired yesterday."', 'expected': ['was', 'i was', 'i was very tired yesterday'], 'primary_answer': 'was'}, {'id': 'grm_int_09', 'badge': '🕰️ Past To Be: were', 'prompt': '👥 <b>Past To Be: were</b>\n\nGunakan <b>were</b> untuk subjek You, We, They di masa lampau.\n\n👉 <b>Pilih to be lampau yang tepat (was / were):</b>\n"They ___ at the library yesterday afternoon."', 'expected': ['were', 'they were', 'they were at the library'], 'primary_answer': 'were'}, {'id': 'grm_int_10', 'badge': '🕰️ Past To Be Negatif: was not', 'prompt': '🏥 <b>Past To Be Negatif: was not</b>\n\nBentuk negatif lampau tunggal: was not / wasn\'t.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"She was ___ at school yesterday because she visited her grandmother."', 'expected': ['not', 'was not', 'she was not'], 'primary_answer': 'not'}, {'id': 'grm_int_11', 'badge': '💪 Modal Verb: can', 'prompt': '🏊 <b>Modal: can (bisa / mampu)</b>\n\nModal \'can\' diikuti kata kerja bentuk dasar tanpa \'to\'.\n\n👉 <b>Lengkapi dengan kata modal \'can\':</b>\n"He ___ swim across the pool easily."', 'expected': ['can', 'he can', 'can swim'], 'primary_answer': 'can'}, {'id': 'grm_int_12', 'badge': '💪 Modal Negatif: cannot', 'prompt': '🚫 <b>Modal Negatif: cannot / can\'t (tidak bisa)</b>\n\nMenyatakan ketidakmampuan.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"Penguins ___ fly in the air, but they swim very fast."', 'expected': ['cannot', "can't", 'cant', 'cannot fly', "can't fly"], 'primary_answer': 'cannot'}, {'id': 'grm_int_13', 'badge': '📋 Modal Kewajiban: must', 'prompt': '🚦 <b>Modal Kewajiban: must (harus / wajib)</b>\n\nGunakan <b>must</b> untuk menyatakan keharusan mutlak.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"Drivers ___ stop when the traffic light is red."', 'expected': ['must', 'drivers must', 'must stop'], 'primary_answer': 'must'}, {'id': 'grm_int_14', 'badge': '💡 Modal Saran: should', 'prompt': '💤 <b>Modal Saran: should (sebaiknya)</b>\n\nGunakan <b>should</b> untuk memberi nasihat atau anjuran.\n\n👉 <b>Lengkapi kalimat nasihat ini:</b>\n"You ___ drink plenty of water when doing sports."', 'expected': ['should', 'you should', 'should drink'], 'primary_answer': 'should'}, {'id': 'grm_int_15', 'badge': '⚖️ Perbandingan: taller than', 'prompt': '🦒 <b>Comparative Adjective (-er than)</b>\n\nUntuk membandingkan 2 hal dengan kata sifat pendek: kata sifat + er + than.\n\n👉 <b>Ubah kata \'tall\' menjadi bentuk perbandingan:</b>\n"A giraffe is (tall) ___ than a horse."', 'expected': ['taller', 'taller than', 'is taller than'], 'primary_answer': 'taller'}, {'id': 'grm_int_16', 'badge': '⚖️ Perbandingan: faster than', 'prompt': '🐆 <b>Comparative Adjective: faster than</b>\n\nFast ➔ Faster than (lebih cepat daripada).\n\n👉 <b>Lengkapi kalimat ini:</b>\n"A cheetah runs ___ than a lion." (lebih cepat)', 'expected': ['faster', 'faster than'], 'primary_answer': 'faster'}, {'id': 'grm_int_17', 'badge': '💎 Perbandingan Panjang: more expensive', 'prompt': '🚗 <b>Comparative Adjective: more + adjective</b>\n\nUntuk kata sifat panjang (3 suku kata atau lebih), gunakan <b>more</b>.\n\n👉 <b>Lengkapi kalimat perbandingan ini:</b>\n"A car is ___ expensive than a bicycle."', 'expected': ['more', 'more expensive', 'more expensive than'], 'primary_answer': 'more'}, {'id': 'grm_int_18', 'badge': '🌺 Perbandingan Panjang: more beautiful', 'prompt': '🌸 <b>Comparative Adjective: more beautiful</b>\n\nBeautiful ➔ More beautiful than.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"This flower garden is ___ beautiful than before."', 'expected': ['more', 'more beautiful'], 'primary_answer': 'more'}, {'id': 'grm_int_19', 'badge': '⚡ Sedang Terjadi: is reading', 'prompt': '📚 <b>Present Continuous Tense (am/is/are + V-ing)</b>\n\nMenyatakan aktivitas yang sedang berlangsung saat ini.\n\n👉 <b>Lengkapi bentuk verb \'read\':</b>\n"Rani is ___ a storybook in the living room right now."', 'expected': ['reading', 'is reading', 'reading a storybook'], 'primary_answer': 'reading'}, {'id': 'grm_int_20', 'badge': '⚡ Sedang Terjadi: are playing', 'prompt': '⚽ <b>Present Continuous: are playing</b>\n\nSubjek jamak (They/The boys) menggunakan <b>are</b> + V-ing.\n\n👉 <b>Lengkapi bentuk verb \'play\':</b>\n"The children are ___ games outside."', 'expected': ['playing', 'are playing'], 'primary_answer': 'playing'}, {'id': 'grm_int_21', 'badge': '⚡ Sedang Terjadi: is cooking', 'prompt': '🍳 <b>Present Continuous: is cooking</b>\n\nGunakan is + cooking untuk subjek tunggal yang sedang memasak.\n\n👉 <b>Lengkapi dengan kata kerja bentuk -ing dari \'cook\':</b>\n"Mother is ___ lunch in the kitchen."', 'expected': ['cooking', 'is cooking'], 'primary_answer': 'cooking'}, {'id': 'grm_int_22', 'badge': '🔗 Kata Hubung Sebab: because', 'prompt': '💧 <b>Conjunction: because (karena)</b>\n\nGunakan <b>because</b> untuk menjelaskan alasan/sebab.\n\n👉 <b>Lengkapi kalimat ini (because / but):</b>\n"I drink plenty of water ___ I feel thirsty."', 'expected': ['because', 'because i feel thirsty'], 'primary_answer': 'because'}, {'id': 'grm_int_23', 'badge': '🔗 Kata Hubung Kontras: but', 'prompt': '⚖️ <b>Conjunction: but (tetapi / namun)</b>\n\nGunakan <b>but</b> untuk menghubungkan dua pernyataan yang berlawanan.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"He studied diligently, ___ he still needs more practice."', 'expected': ['but', 'but he still'], 'primary_answer': 'but'}, {'id': 'grm_int_24', 'badge': '🔗 Kata Hubung Akibat: so', 'prompt': '☔ <b>Conjunction: so (sehingga / maka)</b>\n\nGunakan <b>so</b> untuk menunjukkan hasil atau akibat logis.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"It is raining heavily outside, ___ I brought an umbrella."', 'expected': ['so', 'so i brought an umbrella'], 'primary_answer': 'so'}],
+        config.LEVEL_ADVANCED: [{'id': 'grm_adv_01', 'badge': '🏆 Present Perfect: has lived', 'prompt': '🏡 <b>Present Perfect Tense (have/has + V3)</b>\n\nMenyatakan kejadian masa lalu yang dampaknya terasa hingga kini.\n\n👉 <b>Pilih kata bantu yang benar (have / has):</b>\n"She ___ lived in this town for five years."', 'expected': ['has', 'she has', 'has lived'], 'primary_answer': 'has'}, {'id': 'grm_adv_02', 'badge': '🏆 Present Perfect: have visited', 'prompt': '✈️ <b>Present Perfect: have + V3</b>\n\nSubjek I, You, We, They menggunakan <b>have</b>.\n\n👉 <b>Lengkapi kalimat pengalaman ini:</b>\n"I ___ visited the National Museum three times."', 'expected': ['have', 'i have', 'have visited'], 'primary_answer': 'have'}, {'id': 'grm_adv_03', 'badge': '🏆 Present Perfect: have finished', 'prompt': '📝 <b>Present Perfect: have finished</b>\n\nFinish ➔ Finished (V3).\n\n👉 <b>Lengkapi kalimat ini:</b>\n"We ___ already finished our science project."', 'expected': ['have', 'we have', 'have already finished'], 'primary_answer': 'have'}, {'id': 'grm_adv_04', 'badge': '🏆 Present Perfect: has eaten', 'prompt': '🍽️ <b>Present Perfect: irregular V3 (eaten)</b>\n\nEat ➔ Ate (V2) ➔ Eaten (V3).\n\n👉 <b>Tulis bentuk V3 dari kata \'eat\':</b>\n"He has ___ breakfast already."', 'expected': ['eaten', 'has eaten'], 'primary_answer': 'eaten'}, {'id': 'grm_adv_05', 'badge': '🔄 Kalimat Pasif: is cleaned', 'prompt': '🧹 <b>Passive Voice (Present: is/are + V3)</b>\n\nFokus pada objek yang menerima tindakan.\n\n👉 <b>Lengkapi bentuk pasif dari \'clean\':</b>\n"The classroom is ___ by students every afternoon."', 'expected': ['cleaned', 'is cleaned'], 'primary_answer': 'cleaned'}, {'id': 'grm_adv_06', 'badge': '🔄 Kalimat Pasif Jamak: are made', 'prompt': '🍰 <b>Passive Voice: are made</b>\n\nObjek jamak (These cakes) menggunakan <b>are</b> + V3.\n\n👉 <b>Lengkapi dengan to be yang tepat (is / are):</b>\n"These delicious cookies ___ made with organic honey."', 'expected': ['are', 'are made'], 'primary_answer': 'are'}, {'id': 'grm_adv_07', 'badge': '🔄 Kalimat Pasif Lampau: was written', 'prompt': '📜 <b>Past Passive Voice: was/were + V3</b>\n\nWrite ➔ Wrote ➔ Written (V3).\n\n👉 <b>Tulis bentuk V3 dari \'write\' dalam kalimat pasif ini:</b>\n"The historic novel was ___ by a renowned author in 1945."', 'expected': ['written', 'was written'], 'primary_answer': 'written'}, {'id': 'grm_adv_08', 'badge': '🔄 Kalimat Pasif Lampau: was built', 'prompt': '🌉 <b>Past Passive: was built</b>\n\nBuild ➔ Built (V3).\n\n👉 <b>Lengkapi kalimat pasif lampau ini:</b>\n"The suspension bridge ___ built ten years ago." (was / were)', 'expected': ['was', 'was built'], 'primary_answer': 'was'}, {'id': 'grm_adv_09', 'badge': '🌧️ Pengandaian Tipe 1: First Conditional', 'prompt': '☔ <b>First Conditional (If + Present, will + V1)</b>\n\nMenyatakan kemungkinan nyata di masa depan.\n\n👉 <b>Lengkapi klausa hasil dengan modal masa depan (will):</b>\n"If it rains tomorrow, I ___ stay at home."', 'expected': ['will', 'will stay', 'i will'], 'primary_answer': 'will'}, {'id': 'grm_adv_10', 'badge': '🎓 Pengandaian Tipe 1: If you study', 'prompt': '📚 <b>First Conditional: Klausa Syarat</b>\n\nBagian setelah \'if\' menggunakan Simple Present Tense.\n\n👉 <b>Pilih bentuk verb yang tepat (study / studied):</b>\n"If you ___ diligently, you will pass the scholarship examination."', 'expected': ['study', 'if you study'], 'primary_answer': 'study'}, {'id': 'grm_adv_11', 'badge': '⏰ Pengandaian Tipe 1: will not miss', 'prompt': '🚌 <b>First Conditional: Negasi</b>\n\nWill not = won\'t.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"If we leave early, we ___ not arrive late."', 'expected': ['will', 'will not', "won't", 'wont'], 'primary_answer': 'will'}, {'id': 'grm_adv_12', 'badge': '💭 Pengandaian Tipe 2: would fly', 'prompt': '🦅 <b>Second Conditional (If + Past, would + V1)</b>\n\nMenyatakan imajinasi/khayalan yang tidak nyata saat ini.\n\n👉 <b>Lengkapi klausa hasil dengan kata \'would\':</b>\n"If I had wings, I ___ travel across the continents."', 'expected': ['would', 'i would', 'would travel'], 'primary_answer': 'would'}, {'id': 'grm_adv_13', 'badge': '💭 Pengandaian Tipe 2: If she were', 'prompt': '🩺 <b>Second Conditional: To Be \'were\'</b>\n\nDalam pengandaian formal tipe 2, semua subjek menggunakan <b>were</b>.\n\n👉 <b>Lengkapi dengan to be pengandaian:</b>\n"If she ___ the president, she would build more free hospitals."', 'expected': ['were', 'was', 'if she were'], 'primary_answer': 'were'}, {'id': 'grm_adv_14', 'badge': '👤 Relative Pronoun: who (orang)', 'prompt': '👩\u200d🏫 <b>Relative Pronoun: who</b>\n\nGunakan <b>who</b> untuk merujuk pada subjek manusia.\n\n👉 <b>Lengkapi kalimat ini (who / which):</b>\n"The young girl ___ won the English speech contest is my sister."', 'expected': ['who', 'who won'], 'primary_answer': 'who'}, {'id': 'grm_adv_15', 'badge': '📦 Relative Pronoun: which (benda)', 'prompt': '💻 <b>Relative Pronoun: which / that</b>\n\nGunakan <b>which</b> atau <b>that</b> untuk merujuk pada benda/hewan.\n\n👉 <b>Lengkapi dengan \'which\':</b>\n"The laptop ___ broke down yesterday has been repaired."', 'expected': ['which', 'that'], 'primary_answer': 'which'}, {'id': 'grm_adv_16', 'badge': '🏷️ Relative Pronoun: whose (kepemilikan)', 'prompt': '🎒 <b>Relative Pronoun: whose (milik siapa)</b>\n\nGunakan <b>whose</b> untuk menunjukkan kepemilikan.\n\n👉 <b>Lengkapi kalimat ini:</b>\n"The student ___ project received first prize gave an inspiring speech."', 'expected': ['whose', 'whose project'], 'primary_answer': 'whose'}, {'id': 'grm_adv_17', 'badge': "❓ Question Tag Positif-Negatif: isn't he?", 'prompt': '👨\u200d⚕️ <b>Question Tag: Kalimat Positif ➔ Tag Negatif</b>\n\nContoh: He is kind, <i>isn\'t he?</i>\n\n👉 <b>Lengkapi tag pertanyaan ini:</b>\n"Mr. Hendra is a surgeon, ___ he?"', 'expected': ["isn't", 'is not', 'isnt', "isn't he", 'isnt he?'], 'primary_answer': "isn't"}, {'id': 'grm_adv_18', 'badge': "❓ Question Tag: aren't you?", 'prompt': '😊 <b>Question Tag: You are</b>\n\nYou are ready, <i>aren\'t you?</i>\n\n👉 <b>Lengkapi question tag ini:</b>\n"You are enjoying this learning journey, ___ you?"', 'expected': ["aren't", 'are not', 'arent', "aren't you", 'arent you?'], 'primary_answer': "aren't"}, {'id': 'grm_adv_19', 'badge': "❓ Question Tag Lampau: didn't they?", 'prompt': '🚌 <b>Question Tag: Simple Past</b>\n\nKalimat past tense menggunakan kata bantu \'did\'. Tag negatifnya: <b>didn\'t</b>.\n\n👉 <b>Lengkapi question tag ini:</b>\n"They arrived on time, ___ they?"', 'expected': ["didn't", 'did not', 'didnt', "didn't they", 'didnt they?'], 'primary_answer': "didn't"}, {'id': 'grm_adv_20', 'badge': '🌅 Kebiasaan Masa Lalu: used to', 'prompt': '🚴 <b>Habitual Past: used to (dulu terbiasa)</b>\n\nMenyatakan kebiasaan masa lalu yang sudah tidak dilakukan lagi sekarang.\n\n👉 <b>Lengkapi kalimat kebiasaan ini:</b>\n"I ___ to ride my bicycle to school every morning."', 'expected': ['used', 'used to'], 'primary_answer': 'used'}, {'id': 'grm_adv_21', 'badge': '🌅 Kebiasaan Tinggal: used to live', 'prompt': '🏙️ <b>Used to + Verb dasar</b>\n\nDiikuti kata kerja bentuk pertama.\n\n👉 <b>Lengkapi kata kerja dasar \'live\':</b>\n"She used to ___ in Surabaya before moving to Jakarta."', 'expected': ['live', 'used to live'], 'primary_answer': 'live'}, {'id': 'grm_adv_22', 'badge': '🎨 Gerund: enjoy + V-ing', 'prompt': '📖 <b>Gerund setelah kata kerja tertentu (enjoy)</b>\n\nKata \'enjoy\' harus diikuti kata kerja bentuk <b>-ing</b>.\n\n👉 <b>Ubah kata kerja \'read\' menjadi gerund:</b>\n"I truly enjoy ___ mystery novels on rainy weekends."', 'expected': ['reading', 'enjoy reading'], 'primary_answer': 'reading'}, {'id': 'grm_adv_23', 'badge': '🎯 Infinitive: decided to', 'prompt': '🎓 <b>Infinitive setelah kata kerja (decide)</b>\n\nKata \'decide\' diikuti <b>to + V1</b>.\n\n👉 <b>Lengkapi dengan \'to\':</b>\n"She decided ___ enroll in an advanced public speaking workshop."', 'expected': ['to', 'decided to'], 'primary_answer': 'to'}, {'id': 'grm_adv_24', 'badge': '🛡️ Gerund Larangan: avoid + V-ing', 'prompt': '🥗 <b>Gerund: avoid + V-ing</b>\n\nKata \'avoid\' (menghindari) diikuti gerund (-ing).\n\n👉 <b>Ubah kata \'eat\' ke bentuk gerund:</b>\n"Athletes strictly avoid ___ excessive processed sugars before a match."', 'expected': ['eating', 'avoid eating'], 'primary_answer': 'eating'}],
     },
-
     # =========================================================================
-    # 4. 📖 READING (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
-    # Sesuai revisi: descriptive, narrative, recount text
+    # 4. 📖 READING COMPREHENSION (72 exercises: 24 Beg, 24 Int, 24 Adv)
     # =========================================================================
     config.MODE_READING: {
-        # Beginner: Descriptive Text (Mendeskripsikan hewan peliharaan, sekolah, dsb)
-        config.LEVEL_BEGINNER: [
-            {
-                "id": "rdg_beg_01",
-                "badge": "📖 Descriptive: My Cat Milo",
-                "prompt": (
-                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
-                    "<i>\"I have a pet cat. His name is Milo. He is yellow and white. He has big green eyes. Milo likes to eat fish and sleep on the sofa.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• pet cat = kucing peliharaan\n"
-                    "• big green eyes = mata hijau besar\n"
-                    "• fish = ikan\n\n"
-                    "❓ <b>Pertanyaan:</b> Apa warna mata Milo? (What color are Milo's eyes?)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik warnanya (green / yellow / white)!"
-                ),
-            },
-            {
-                "id": "rdg_beg_02",
-                "badge": "📖 Descriptive: My School (Sekolahku)",
-                "prompt": (
-                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
-                    "<i>\"My school is clean and beautiful. There are six classrooms. There is a big yard in front of the school. We play football in the yard.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• clean = bersih\n"
-                    "• yard = halaman\n"
-                    "• play football = bermain bola\n\n"
-                    "❓ <b>Pertanyaan:</b> Apa yang dilakukan anak-anak di halaman sekolah?\n\n"
-                    "👉 <b>Giliranmu:</b> Jawab: <code>Play football</code>"
-                ),
-            },
-            {
-                "id": "rdg_beg_03",
-                "badge": "📖 Descriptive: My Bicycle (Sepedaku)",
-                "prompt": (
-                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
-                    "<i>\"I have a new bicycle. It is bright red. It has two black wheels and a small bell. I ride my bicycle to school every day.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• bicycle = sepeda\n"
-                    "• red = merah\n"
-                    "• bell = bel\n\n"
-                    "❓ <b>Pertanyaan:</b> Apa warna sepeda itu? (What color is the bicycle?)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik warna sepedanya dalam bahasa Inggris!"
-                ),
-            },
-            {
-                "id": "rdg_beg_04",
-                "badge": "📖 Descriptive: A Sweet Banana",
-                "prompt": (
-                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
-                    "<i>\"Banana is my favorite fruit. It is yellow when ripe. It is very sweet and healthy. Monkeys also love to eat bananas.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• fruit = buah\n"
-                    "• sweet = manis\n"
-                    "• healthy = sehat\n\n"
-                    "❓ <b>Pertanyaan:</b> Hewan apa yang suka makan pisang pada teks di atas?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>Monkeys</code>"
-                ),
-            },
-            {
-                "id": "rdg_beg_05",
-                "badge": "📖 Descriptive: My Mother",
-                "prompt": (
-                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
-                    "<i>\"My mother is very kind and pretty. She wakes up early every morning. She cooks delicious fried rice for breakfast. I love my mother very much.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• kind = baik hati\n"
-                    "• cooks = memasak\n"
-                    "• delicious = lezat / enak\n\n"
-                    "❓ <b>Pertanyaan:</b> Apa yang dimasak Ibu untuk sarapan?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>Fried rice</code>"
-                ),
-            },
-            {
-                "id": "rdg_beg_06",
-                "badge": "📖 Descriptive: My Best Friend Budi",
-                "prompt": (
-                    "📄 <b>Bacalah teks pendek ini:</b>\n\n"
-                    "<i>\"Budi is my best friend. He is tall and smart. He sits next to me in class. We always share our crayons and help each other.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• best friend = sahabat\n"
-                    "• tall = tinggi\n"
-                    "• smart = pintar\n\n"
-                    "❓ <b>Pertanyaan:</b> Siapa nama sahabat dalam cerita di atas?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik nama sahabat tersebut!"
-                ),
-            },
-        ],
-        # Intermediate: Narrative Text (Fabel / Cerita Fiksi Pendek)
-        config.LEVEL_INTERMEDIATE: [
-            {
-                "id": "rdg_int_01",
-                "badge": "📖 Narrative: The Rabbit and the Turtle",
-                "prompt": (
-                    "📄 <b>Cerita Fabel Pendek: Kelinci dan Kura-Kura</b>\n\n"
-                    "<i>\"One day, a rabbit ran very fast. The turtle walked very slow. The rabbit took a nap under a tree because he was arrogant. The turtle kept walking and won the race!\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• rabbit = kelinci | turtle = kura-kura\n"
-                    "• took a nap = tidur siang\n"
-                    "• won the race = memenangkan lomba\n\n"
-                    "❓ <b>Pertanyaan:</b> Siapa yang memenangkan lomba lari? (Who won the race?)\n\n"
-                    "👉 <b>Giliranmu:</b> Jawab: <code>The turtle</code>"
-                ),
-            },
-            {
-                "id": "rdg_int_02",
-                "badge": "📖 Narrative: The Thirsty Bird",
-                "prompt": (
-                    "📄 <b>Cerita Fabel Pendek: Burung yang Haus</b>\n\n"
-                    "<i>\"A little bird was very thirsty. He saw a pitcher with a little water at the bottom. He dropped small stones into the pitcher one by one. The water rose up, and the bird drank happily.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• thirsty = haus\n"
-                    "• stones = batu-batu kecil\n"
-                    "• drank = minum\n\n"
-                    "❓ <b>Pertanyaan:</b> Apa yang dimasukkan burung ke dalam wadah air?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>Stones</code> (Batu)"
-                ),
-            },
-            {
-                "id": "rdg_int_03",
-                "badge": "📖 Narrative: Sang Kancil and the River",
-                "prompt": (
-                    "📄 <b>Cerita Fabel Pendek: Sang Kancil yang Cerdik</b>\n\n"
-                    "<i>\"Sang Kancil wanted to cross a wide river. He saw many crocodiles. He said, 'Line up! The King wants to count you.' The crocodiles lined up. Kancil jumped on their backs and safely crossed the river!\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• river = sungai\n"
-                    "• crocodiles = buaya-buaya\n"
-                    "• jumped = melompat\n\n"
-                    "❓ <b>Pertanyaan:</b> Hewan apa yang ada di sungai? (What animals were in the river?)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>Crocodiles</code>"
-                ),
-            },
-            {
-                "id": "rdg_int_04",
-                "badge": "📖 Narrative: The Ant and the Dove",
-                "prompt": (
-                    "📄 <b>Cerita Fabel Pendek: Semut dan Merpati</b>\n\n"
-                    "<i>\"A little ant fell into the water. A kind dove dropped a dry leaf into the water to save the ant. The ant climbed on the leaf. Later, the ant bit a hunter to save the dove.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• ant = semut\n"
-                    "• dove = burung merpati\n"
-                    "• leaf = daun\n\n"
-                    "❓ <b>Pertanyaan:</b> Benda apa yang dijatuhkan burung merpati untuk menolong semut?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>A leaf</code> (Daun)"
-                ),
-            },
-            {
-                "id": "rdg_int_05",
-                "badge": "📖 Narrative: The Honest Woodcutter",
-                "prompt": (
-                    "📄 <b>Cerita Dongeng: Penebang Kayu yang Jujur</b>\n\n"
-                    "<i>\"A poor woodcutter lost his iron axe in the lake. A magical fairy showed him a golden axe, but he said, 'No, that is not mine.' Because he was honest, the fairy gave him both the iron and golden axes!\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• woodcutter = penebang kayu\n"
-                    "• axe = kapak\n"
-                    "• honest = jujur\n\n"
-                    "❓ <b>Pertanyaan:</b> Mengapa peri memberi hadiah kedua kapak tersebut?\n\n"
-                    "👉 <b>Giliranmu:</b> Karena dia... <code>Honest</code> (Jujur)"
-                ),
-            },
-            {
-                "id": "rdg_int_06",
-                "badge": "📖 Narrative: The Lion and the Mouse",
-                "prompt": (
-                    "📄 <b>Cerita Fabel Pendek: Singa dan Tikus</b>\n\n"
-                    "<i>\"A big lion spared a tiny mouse's life. Later, the lion was caught in a hunter's net. The tiny mouse came and chewed the net with his sharp teeth. The lion was free!\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• lion = singa | mouse = tikus\n"
-                    "• net = jaring pemburu\n"
-                    "• chewed = menggigit / mengunyah\n\n"
-                    "❓ <b>Pertanyaan:</b> Siapa yang menolong singa lepas dari jaring?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>The mouse</code>"
-                ),
-            },
-        ],
-        # Advanced: Recount Text (Menceritakan Pengalaman Masa Lalu Sederhana)
-        config.LEVEL_ADVANCED: [
-            {
-                "id": "rdg_adv_01",
-                "badge": "📖 Recount: Yesterday at the Beach",
-                "prompt": (
-                    "📄 <b>Recount Text (Pengalaman Kemarin):</b>\n\n"
-                    "<i>\"Yesterday was Sunday. My family and I went to the beach. The weather was sunny. My brother and I built a sandcastle. We ate fresh coconut water. It was a wonderful day!\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• went = pergi (bentuk lampau)\n"
-                    "• built = membangun\n"
-                    "• sandcastle = istana pasir\n\n"
-                    "❓ <b>Pertanyaan:</b> Kemanakah penulis dan keluarganya pergi kemarin?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>To the beach</code>"
-                ),
-            },
-            {
-                "id": "rdg_adv_02",
-                "badge": "📖 Recount: Helping Father in the Garden",
-                "prompt": (
-                    "📄 <b>Recount Text (Pengalaman Kemarin):</b>\n\n"
-                    "<i>\"Last Saturday, I helped my father in the vegetable garden. We watered the chili plants and pulled out the grass. In the afternoon, father bought me sweet ice cream as a treat.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• helped = membantu\n"
-                    "• garden = kebun\n"
-                    "• watered = menyiram air\n\n"
-                    "❓ <b>Pertanyaan:</b> Makanan manis apa yang dibelikan ayah di sore hari?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>Ice cream</code>"
-                ),
-            },
-            {
-                "id": "rdg_adv_03",
-                "badge": "📖 Recount: Holiday at Grandfather's Village",
-                "prompt": (
-                    "📄 <b>Recount Text (Pengalaman Liburan):</b>\n\n"
-                    "<i>\"During the school holiday, I visited my grandparents in the village. The air was fresh and cool. I fed the chickens every morning and swam in the clean river with my cousins.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• visited = berkunjung\n"
-                    "• village = desa\n"
-                    "• fed the chickens = memberi makan ayam\n\n"
-                    "❓ <b>Pertanyaan:</b> Hewan apa yang diberi makan setiap pagi di desa?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>Chickens</code> (Ayam)"
-                ),
-            },
-            {
-                "id": "rdg_adv_04",
-                "badge": "📖 Recount: Playing Football in the Rain",
-                "prompt": (
-                    "📄 <b>Recount Text (Pengalaman Kemarin):</b>\n\n"
-                    "<i>\"Yesterday afternoon, it rained heavily. My friends and I played football in the rain. We were so happy and laughed a lot. After that, I took a warm shower at home.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• rained = hujan\n"
-                    "• laughed = tertawa\n"
-                    "• warm shower = mandi air hangat\n\n"
-                    "❓ <b>Pertanyaan:</b> Olahraga apa yang dimainkan saat hujan?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>Football</code> (Sepak bola)"
-                ),
-            },
-            {
-                "id": "rdg_adv_05",
-                "badge": "📖 Recount: Cooking Fried Rice with Mother",
-                "prompt": (
-                    "📄 <b>Recount Text (Pengalaman Memasak):</b>\n\n"
-                    "<i>\"Last night, I cooked fried rice with my mother. I helped slice the onions and crack two eggs. When it was ready, the whole family ate together happily.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• cooked = memasak\n"
-                    "• onions = bawang\n"
-                    "• eggs = telur\n\n"
-                    "❓ <b>Pertanyaan:</b> Berapa butir telur yang digunakan? (How many eggs?)\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik jumlahnya: <code>Two</code>"
-                ),
-            },
-            {
-                "id": "rdg_adv_06",
-                "badge": "📖 Recount: My First Day at School",
-                "prompt": (
-                    "📄 <b>Recount Text (Hari Pertama Masuk Sekolah):</b>\n\n"
-                    "<i>\"I remember my first day in elementary school. I wore a new uniform. I felt a little nervous at first, but my teacher smiled warmly and gave me a colorful badge.\"</i>\n\n"
-                    "💡 <b>Kamus Bantuan:</b>\n"
-                    "• uniform = seragam\n"
-                    "• nervous = gugup\n"
-                    "• smiled = tersenyum\n\n"
-                    "❓ <b>Pertanyaan:</b> Siapa yang tersenyum ramah kepada murid?\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik: <code>Teacher</code>"
-                ),
-            },
-        ],
+        config.LEVEL_BEGINNER: [{'id': 'rdg_beg_01', 'badge': '📖 Kucing Snowy: Nama', 'prompt': '🐈 <b>Baca teks pendek berikut:</b>\n"My cat is white and fluffy. Her name is <b>Snowy</b>. She likes to drink warm milk."\n\n👉 <b>Pertanyaan:</b> What is the cat\'s name? (Siapa nama kucing itu?)', 'expected': ['snowy', 'her name is snowy', "the cat's name is snowy"], 'primary_answer': 'Snowy'}, {'id': 'rdg_beg_02', 'badge': '📖 Kucing Snowy: Minuman', 'prompt': '🥛 <b>Baca teks pendek berikut:</b>\n"Snowy is a friendly cat. She loves to sit on the sofa and drink <b>warm milk</b> every morning."\n\n👉 <b>Pertanyaan:</b> What does Snowy like to drink? (Apa minuman kesukaan Snowy?)', 'expected': ['warm milk', 'milk', 'she likes warm milk', 'she drinks warm milk'], 'primary_answer': 'warm milk'}, {'id': 'rdg_beg_03', 'badge': '🚲 Sepeda Budi: Warna', 'prompt': '🚲 <b>Baca teks pendek berikut:</b>\n"Budi has a new bicycle. The bicycle is <b>blue</b>. He rides it to school every day."\n\n👉 <b>Pertanyaan:</b> What color is Budi\'s bicycle? (Apa warna sepeda Budi?)', 'expected': ['blue', 'the bicycle is blue', 'it is blue'], 'primary_answer': 'blue'}, {'id': 'rdg_beg_04', 'badge': '🚲 Sepeda Budi: Lokasi', 'prompt': '🌳 <b>Baca teks pendek berikut:</b>\n"On Sunday afternoons, Budi rides his blue bicycle in the <b>park</b> with his friends."\n\n👉 <b>Pertanyaan:</b> Where does Budi ride his bicycle on Sunday? (Di mana Budi bersepeda?)', 'expected': ['in the park', 'park', 'the park', 'at the park'], 'primary_answer': 'in the park'}, {'id': 'rdg_beg_05', 'badge': '🌹 Kebun Sarah: Bunga', 'prompt': '🌸 <b>Baca teks pendek berikut:</b>\n"Sarah has a lovely garden behind her house. There are red <b>roses</b> and yellow sunflowers."\n\n👉 <b>Pertanyaan:</b> What color are the roses in Sarah\'s garden? (Apa warna bunga mawar di kebun Sarah?)', 'expected': ['red', 'red roses', 'they are red'], 'primary_answer': 'red'}, {'id': 'rdg_beg_06', 'badge': '🌹 Kebun Sarah: Penyiram', 'prompt': '💧 <b>Baca teks pendek berikut:</b>\n"Every morning before school, <b>Sarah</b> waters the flowers carefully with a green watering can."\n\n👉 <b>Pertanyaan:</b> Who waters the flowers every morning? (Siapa yang menyiram bunga setiap pagi?)', 'expected': ['sarah', 'sarah does', 'sarah waters them'], 'primary_answer': 'Sarah'}, {'id': 'rdg_beg_07', 'badge': '📚 Perpustakaan Sekolah: Buku', 'prompt': '📖 <b>Baca teks pendek berikut:</b>\n"Our school library is very spacious. It has more than one thousand <b>books</b> on tall wooden shelves."\n\n👉 <b>Pertanyaan:</b> What are on the tall wooden shelves? (Apa yang ada di rak kayu yang tinggi?)', 'expected': ['books', 'thousand books', 'more than one thousand books'], 'primary_answer': 'books'}, {'id': 'rdg_beg_08', 'badge': '📚 Perpustakaan Sekolah: Aturan', 'prompt': '🤫 <b>Baca teks pendek berikut:</b>\n"When students enter the school library, they must keep <b>quiet</b> so everyone can read in peace."\n\n👉 <b>Pertanyaan:</b> How must students behave in the library? (Bagaimana siswa harus bersikap di perpustakaan?)', 'expected': ['quiet', 'keep quiet', 'be quiet', 'silent'], 'primary_answer': 'quiet'}, {'id': 'rdg_beg_09', 'badge': '🥞 Sarapan Ahmad: Menu', 'prompt': '🥞 <b>Baca teks pendek berikut:</b>\n"Ahmad wakes up at six o\'clock. For breakfast, his mother cooks delicious sweet <b>pancakes</b>."\n\n👉 <b>Pertanyaan:</b> What does mother cook for breakfast? (Apa yang dimasak ibu untuk sarapan?)', 'expected': ['pancakes', 'pancake', 'sweet pancakes', 'delicious pancakes'], 'primary_answer': 'pancakes'}, {'id': 'rdg_beg_10', 'badge': '🍊 Sarapan Ahmad: Minuman', 'prompt': '🍹 <b>Baca teks pendek berikut:</b>\n"Along with his pancakes, Ahmad drinks a cold glass of fresh <b>orange juice</b>."\n\n👉 <b>Pertanyaan:</b> What does Ahmad drink with his pancakes? (Apa yang diminum Ahmad bersama pancake?)', 'expected': ['orange juice', 'juice', 'fresh orange juice', 'a glass of orange juice'], 'primary_answer': 'orange juice'}, {'id': 'rdg_beg_11', 'badge': '🐕 Anjing Leo: Bola', 'prompt': '🎾 <b>Baca teks pendek berikut:</b>\n"Leo is a golden puppy. His favorite toy is a small <b>yellow</b> ball."\n\n👉 <b>Pertanyaan:</b> What color is Leo\'s favorite toy ball? (Apa warna bola mainan kesukaan Leo?)', 'expected': ['yellow', 'yellow ball', 'it is yellow'], 'primary_answer': 'yellow'}, {'id': 'rdg_beg_12', 'badge': '🐕 Anjing Leo: Suara', 'prompt': '🐶 <b>Baca teks pendek berikut:</b>\n"Whenever the mail carrier arrives at the front gate, Leo <b>barks</b> happily to greet him."\n\n👉 <b>Pertanyaan:</b> What does Leo do when the mail carrier arrives? (Apa yang dilakukan Leo saat pengantar surat tiba?)', 'expected': ['barks', 'he barks', 'bark', 'barks happily'], 'primary_answer': 'barks'}, {'id': 'rdg_beg_13', 'badge': '🍎 Pasar Minggu: Buah', 'prompt': '🛍️ <b>Baca teks pendek berikut:</b>\n"Mom visits the traditional market. She buys fresh sweet <b>apples</b> and crunchy carrots."\n\n👉 <b>Pertanyaan:</b> Which fruit does Mom buy at the market? (Buah apa yang dibeli Ibu di pasar?)', 'expected': ['apples', 'apple', 'fresh apples', 'sweet apples'], 'primary_answer': 'apples'}, {'id': 'rdg_beg_14', 'badge': '🗓️ Pasar Minggu: Hari', 'prompt': '📅 <b>Baca teks pendek berikut:</b>\n"The family goes shopping together every <b>Sunday</b> morning."\n\n👉 <b>Pertanyaan:</b> On what day does the family go shopping together? (Pada hari apa keluarga berbelanja bersama?)', 'expected': ['sunday', 'on sunday', 'sunday morning'], 'primary_answer': 'Sunday'}, {'id': 'rdg_beg_15', 'badge': '🚌 Bus Merah: Tujuan', 'prompt': '🏙️ <b>Baca teks pendek berikut:</b>\n"The big red bus stops at our street. It takes passengers directly to the <b>city center</b>."\n\n👉 <b>Pertanyaan:</b> Where does the red bus take passengers? (Ke mana bus merah membawa penumpang?)', 'expected': ['city center', 'to the city center', 'city'], 'primary_answer': 'city center'}, {'id': 'rdg_beg_16', 'badge': '🚌 Bus Merah: Sopir', 'prompt': '👨\u200d✈️ <b>Baca teks pendek berikut:</b>\n"The driver of the red bus is <b>Mr. John</b>. He is always polite and smiles at everyone."\n\n👉 <b>Pertanyaan:</b> Who drives the red bus? (Siapa pengemudi bus merah?)', 'expected': ['mr. john', 'mr john', 'john'], 'primary_answer': 'Mr. John'}, {'id': 'rdg_beg_17', 'badge': '🎨 Hobi Nina: Melukis', 'prompt': '🎨 <b>Baca teks pendek berikut:</b>\n"Nina is an artistic girl. Her favorite hobby is <b>painting</b> landscapes on canvas."\n\n👉 <b>Pertanyaan:</b> What is Nina\'s favorite hobby? (Apa hobi kesukaan Nina?)', 'expected': ['painting', 'painting landscapes', 'her hobby is painting'], 'primary_answer': 'painting'}, {'id': 'rdg_beg_18', 'badge': '🎨 Hobi Nina: Warna Favorit', 'prompt': '🌿 <b>Baca teks pendek berikut:</b>\n"Nina loves nature, so her favorite color to paint trees and hills is <b>green</b>."\n\n👉 <b>Pertanyaan:</b> What is Nina\'s favorite color for trees? (Apa warna kesukaan Nina untuk pohon?)', 'expected': ['green', 'it is green'], 'primary_answer': 'green'}, {'id': 'rdg_beg_19', 'badge': '🦒 Kebun Binatang: Hewan Tertinggi', 'prompt': '🦒 <b>Baca teks pendek berikut:</b>\n"At the city zoo, visitors gaze up at the <b>giraffe</b>. It is the tallest animal in the enclosure."\n\n👉 <b>Pertanyaan:</b> Which animal is the tallest in the zoo? (Hewan mana yang paling tinggi di kebun binatang?)', 'expected': ['giraffe', 'the giraffe'], 'primary_answer': 'giraffe'}, {'id': 'rdg_beg_20', 'badge': '🍌 Kebun Binatang: Monyet', 'prompt': '🐒 <b>Baca teks pendek berikut:</b>\n"The mischievous monkeys swing from branches and eat ripe sweet <b>bananas</b>."\n\n👉 <b>Pertanyaan:</b> What food do the monkeys eat? (Makanan apa yang dimakan para monyet?)', 'expected': ['bananas', 'banana', 'sweet bananas', 'ripe bananas'], 'primary_answer': 'bananas'}, {'id': 'rdg_beg_21', 'badge': '🌧️ Hari Hujan: Jas Hujan', 'prompt': '🧥 <b>Baca teks pendek berikut:</b>\n"When heavy raindrops begin falling, Tommy puts on his blue <b>raincoat</b> and waterproof boots."\n\n👉 <b>Pertanyaan:</b> What garment does Tommy put on when it rains? (Pakaian apa yang dipakai Tommy saat hujan?)', 'expected': ['raincoat', 'blue raincoat', 'a raincoat'], 'primary_answer': 'raincoat'}, {'id': 'rdg_beg_22', 'badge': '🌧️ Hari Hujan: Payung', 'prompt': '☂️ <b>Baca teks pendek berikut:</b>\n"Tommy\'s sister carries a bright <b>yellow</b> umbrella to stay completely dry."\n\n👉 <b>Pertanyaan:</b> What color is her umbrella? (Apa warna payungnya?)', 'expected': ['yellow', 'bright yellow', 'it is yellow'], 'primary_answer': 'yellow'}, {'id': 'rdg_beg_23', 'badge': '🎂 Kue Ulang Tahun: Lilin', 'prompt': '🕯️ <b>Baca teks pendek berikut:</b>\n"Today is Maya\'s birthday party. There are <b>seven</b> candles on top of her birthday cake."\n\n👉 <b>Pertanyaan:</b> How many candles are on Maya\'s cake? (Berapa banyak lilin di atas kue Maya?)', 'expected': ['seven', '7', 'seven candles', '7 candles'], 'primary_answer': 'seven'}, {'id': 'rdg_beg_24', 'badge': '🎂 Kue Ulang Tahun: Rasa', 'prompt': '🍫 <b>Baca teks pendek berikut:</b>\n"Maya\'s birthday cake is delicious. It has a rich layer of dark <b>chocolate</b> and sweet strawberries."\n\n👉 <b>Pertanyaan:</b> What is the main flavor of the cake? (Apa rasa utama kue tersebut?)', 'expected': ['chocolate', 'dark chocolate'], 'primary_answer': 'chocolate'}],
+        config.LEVEL_INTERMEDIATE: [{'id': 'rdg_int_01', 'badge': '🐢 Dongeng Kura-kura: Pemenang', 'prompt': '🏁 <b>Baca fabel klasik berikut:</b>\n"The speedy hare boasted that no one could beat him in a footrace. The slow tortoise accepted the challenge. While the hare took a nap under an oak tree, the tortoise kept walking steadily and crossed the finish line first."\n\n👉 <b>Pertanyaan:</b> Who won the footrace? (Siapa pemenang lomba lari tersebut?)', 'expected': ['tortoise', 'the tortoise', 'the slow tortoise'], 'primary_answer': 'the tortoise'}, {'id': 'rdg_int_02', 'badge': '🐇 Dongeng Kura-kura: Kesalahan Kelinci', 'prompt': '😴 <b>Baca fabel klasik berikut:</b>\n"Confident of an easy victory, the hare stopped halfway and decided to take a <b>nap</b> under a shady tree. Because he fell asleep, he lost the race."\n\n👉 <b>Pertanyaan:</b> What did the hare do that caused him to lose? (Apa yang kelinci lakukan sehingga ia kalah?)', 'expected': ['slept', 'take a nap', 'nap', 'he slept', 'fell asleep', 'he took a nap'], 'primary_answer': 'took a nap'}, {'id': 'rdg_int_03', 'badge': '☀️ Tata Surya: Planet Terdekat', 'prompt': '🪐 <b>Baca teks sains berikut:</b>\n"Our solar system contains eight planets orbiting the sun. <b>Mercury</b> is the planet closest to the sun, making its daytime temperatures scorching hot."\n\n👉 <b>Pertanyaan:</b> Which planet is closest to the sun? (Planet mana yang paling dekat dengan matahari?)', 'expected': ['mercury', 'planet mercury'], 'primary_answer': 'Mercury'}, {'id': 'rdg_int_04', 'badge': '🌙 Tata Surya: Satelit Bumi', 'prompt': '🌕 <b>Baca teks sains berikut:</b>\n"Earth has only one natural satellite: the <b>Moon</b>. It orbits Earth once every twenty-seven days and causes ocean tides."\n\n👉 <b>Pertanyaan:</b> What is Earth\'s only natural satellite? (Apa satu-satunya satelit alami Bumi?)', 'expected': ['the moon', 'moon'], 'primary_answer': 'the Moon'}, {'id': 'rdg_int_05', 'badge': '🐝 Lebah Madu: Hasil Produksi', 'prompt': '🍯 <b>Baca teks biologi berikut:</b>\n"Honeybees are essential pollinators in nature. They gather sweet nectar from blooming wildflowers and transform it into golden <b>honey</b> inside their comb."\n\n👉 <b>Pertanyaan:</b> What do bees produce from nectar? (Apa yang dihasilkan lebah dari nektar?)', 'expected': ['honey', 'golden honey'], 'primary_answer': 'honey'}, {'id': 'rdg_int_06', 'badge': '🐝 Lebah Madu: Tempat Tinggal', 'prompt': '🏡 <b>Baca teks biologi berikut:</b>\n"A colony of thousands of worker bees and one queen bee resides together in a complex structure called a <b>beehive</b>."\n\n👉 <b>Pertanyaan:</b> Where does a bee colony live? (Di mana koloni lebah tinggal?)', 'expected': ['beehive', 'hive', 'in a beehive', 'a beehive'], 'primary_answer': 'beehive'}, {'id': 'rdg_int_07', 'badge': '🏕️ Berkemah di Hutan: Tempat Tidur', 'prompt': '⛺ <b>Baca catatan perjalanan berikut:</b>\n"During our weekend expedition in the pine forest, we pitched a waterproof <b>tent</b> on high ground to keep dry and safe overnight."\n\n👉 <b>Pertanyaan:</b> Where did the campers sleep? (Di mana para peserta kemah tidur?)', 'expected': ['tent', 'in a tent', 'waterproof tent', 'a tent'], 'primary_answer': 'in a tent'}, {'id': 'rdg_int_08', 'badge': '🏕️ Berkemah di Hutan: Makanan Api Unggun', 'prompt': '🔥 <b>Baca catatan perjalanan berikut:</b>\n"Around the campfire at night, the students sang songs and roasted sweet white <b>marshmallows</b> on wooden sticks."\n\n👉 <b>Pertanyaan:</b> What sweet treat did they roast over the campfire? (Camilan manis apa yang mereka panggang?)', 'expected': ['marshmallows', 'marshmallow', 'white marshmallows'], 'primary_answer': 'marshmallows'}, {'id': 'rdg_int_09', 'badge': '🔬 Pameran Sains: Model Eka', 'prompt': '🌋 <b>Baca teks kegiatan sekolah:</b>\n"At the annual school science exhibition, Eka constructed a working model of a miniature <b>volcano</b> using baking soda and red food coloring to simulate lava."\n\n👉 <b>Pertanyaan:</b> What did Eka build for the science exhibition? (Apa yang dibuat Eka untuk pameran sains?)', 'expected': ['volcano', 'a volcano', 'miniature volcano'], 'primary_answer': 'a volcano'}, {'id': 'rdg_int_10', 'badge': '🔬 Pameran Sains: Medali Pemenang', 'prompt': '🥇 <b>Baca teks kegiatan sekolah:</b>\n"The science judges were thoroughly impressed by the creative presentation and awarded the team a shiny <b>gold</b> medal."\n\n👉 <b>Pertanyaan:</b> What type of medal did the team win? (Jenis medali apa yang dimenangkan tim?)', 'expected': ['gold', 'gold medal', 'a gold medal'], 'primary_answer': 'gold medal'}, {'id': 'rdg_int_11', 'badge': '🐬 Lumba-lumba: Golongan Hewan', 'prompt': '🌊 <b>Baca teks zoologi berikut:</b>\n"Although dolphins spend their entire lives swimming in oceans, they are not fish. Dolphins are warm-blooded <b>mammals</b> that give birth to live calves."\n\n👉 <b>Pertanyaan:</b> What biological group do dolphins belong to? (Golongan hewan apakah lumba-lumba?)', 'expected': ['mammal', 'mammals', 'warm-blooded mammals'], 'primary_answer': 'mammal'}, {'id': 'rdg_int_12', 'badge': '🐬 Lumba-lumba: Organ Pernapasan', 'prompt': '💨 <b>Baca teks zoologi berikut:</b>\n"Dolphins come up to the ocean surface to inhale air through a special hole on top of their heads called a <b>blowhole</b>."\n\n👉 <b>Pertanyaan:</b> What is the breathing hole on top of a dolphin\'s head called? (Apa nama lubang pernapasan di kepala lumba-lumba?)', 'expected': ['blowhole', 'a blowhole'], 'primary_answer': 'blowhole'}, {'id': 'rdg_int_13', 'badge': '🎨 Kain Batik: Asal Negara', 'prompt': '🇮🇩 <b>Baca teks warisan budaya berikut:</b>\n"Batik is a revered traditional textile technique celebrated globally. It originated and flourished across <b>Indonesia</b>, recognized as UNESCO intangible heritage."\n\n👉 <b>Pertanyaan:</b> From which country does traditional batik originate? (Dari negara mana batik tradisional berasal?)', 'expected': ['indonesia', 'from indonesia'], 'primary_answer': 'Indonesia'}, {'id': 'rdg_int_14', 'badge': '🎨 Kain Batik: Alat Canting', 'prompt': '🖋️ <b>Baca teks warisan budaya berikut:</b>\n"Artisans use a small copper spouted instrument called a <b>canting</b> to apply hot liquid wax onto fine cotton fabric."\n\n👉 <b>Pertanyaan:</b> What is the copper tool used to draw wax called? (Apa nama alat tembaga untuk menorehkan malam lilin?)', 'expected': ['canting', 'a canting'], 'primary_answer': 'canting'}, {'id': 'rdg_int_15', 'badge': '🏰 Kastil Kuno: Penguasa', 'prompt': '👑 <b>Baca teks sejarah berikut:</b>\n"Perched high on the rocky cliff, the medieval stone fortress served as the majestic residence of the wise <b>king</b> and his court."\n\n👉 <b>Pertanyaan:</b> Who lived in the medieval fortress? (Siapa yang tinggal di benteng batu abad pertengahan tersebut?)', 'expected': ['king', 'the king', 'the wise king', 'a king'], 'primary_answer': 'the king'}, {'id': 'rdg_int_16', 'badge': '🏰 Kastil Kuno: Parit Pertahanan', 'prompt': '🛡️ <b>Baca teks sejarah berikut:</b>\n"To prevent invaders from reaching the main gateway, the castle was encircled by a deep wide channel filled with water called a <b>moat</b>."\n\n👉 <b>Pertanyaan:</b> What is the defensive water trench around the castle called? (Apa sebutan parit berair di sekeliling benteng?)', 'expected': ['moat', 'a moat'], 'primary_answer': 'moat'}, {'id': 'rdg_int_17', 'badge': '☀️ Energi Terbarukan: Tenaga Surya', 'prompt': '⚡ <b>Baca teks energi hijau berikut:</b>\n"Solar panels installed on rooftops absorb radiant sunlight and transform it into clean <b>electricity</b> without emitting harmful smoke."\n\n👉 <b>Pertanyaan:</b> What do solar panels generate from sunlight? (Apa yang dihasilkan panel surya dari sinar matahari?)', 'expected': ['electricity', 'clean electricity', 'power'], 'primary_answer': 'electricity'}, {'id': 'rdg_int_18', 'badge': '💨 Energi Terbarukan: Kincir Angin', 'prompt': '🍃 <b>Baca teks energi hijau berikut:</b>\n"Giant wind turbines built across breezy coastal hills harness kinetic energy from the <b>wind</b> to drive modern electrical generators."\n\n👉 <b>Pertanyaan:</b> What natural force turns wind turbines? (Kekuatan alam apa yang memutar turbin kincir angin?)', 'expected': ['wind', 'the wind', 'kinetic energy of wind'], 'primary_answer': 'wind'}, {'id': 'rdg_int_19', 'badge': '🌋 Wisata Gunung Bromo: Waktu Bangun', 'prompt': '⏰ <b>Baca teks pariwisata berikut:</b>\n"To catch the breathtaking dawn over the active caldera, tourists must wake up very early at <b>three</b> in the morning."\n\n👉 <b>Pertanyaan:</b> At what hour in the morning do tourists wake up? (Jam berapa di pagi hari para wisatawan bangun?)', 'expected': ['three', '3', '3 am', '3:00 am', 'three in the morning'], 'primary_answer': '3 AM'}, {'id': 'rdg_int_20', 'badge': '🌄 Wisata Gunung Bromo: Pemandangan', 'prompt': '🌅 <b>Baca teks pariwisata berikut:</b>\n"From the summit of Mount Penanjakan, travelers witness a legendary golden <b>sunrise</b> rising above the sea of sand."\n\n👉 <b>Pertanyaan:</b> What natural morning spectacle do travelers witness? (Pemandangan pagi hari apa yang disaksikan wisatawan?)', 'expected': ['sunrise', 'golden sunrise', 'the sunrise'], 'primary_answer': 'sunrise'}, {'id': 'rdg_int_21', 'badge': '🦅 Burung Gagak yang Pintar: Batu Kerikil', 'prompt': '🪨 <b>Baca fabel klasik berikut:</b>\n"A thirsty crow saw a jar with water at the bottom. Unable to reach it, the bird dropped small <b>pebbles</b> into the jar until the water level rose to the brim."\n\n👉 <b>Pertanyaan:</b> What did the crow drop into the jar? (Benda apa yang dimasukkan burung gagak ke dalam bejana?)', 'expected': ['pebbles', 'pebble', 'stones', 'small pebbles'], 'primary_answer': 'pebbles'}, {'id': 'rdg_int_22', 'badge': '🦅 Burung Gagak yang Pintar: Wadah Air', 'prompt': '🏺 <b>Baca fabel klasik berikut:</b>\n"The clever crow found an earthenware <b>jar</b> in the backyard that contained a small amount of fresh water."\n\n👉 <b>Pertanyaan:</b> What container held the fresh water? (Wadah apa yang berisi air tawar tersebut?)', 'expected': ['jar', 'a jar', 'pitcher'], 'primary_answer': 'jar'}, {'id': 'rdg_int_23', 'badge': '🪸 Terumbu Karang: Julukan', 'prompt': '🌊 <b>Baca teks ekologi kelautan:</b>\n"Due to their astonishing wealth of aquatic biodiversity, coral reefs are often affectionately nicknamed the <b>rainforests</b> of the sea."\n\n👉 <b>Pertanyaan:</b> Coral reefs are nicknamed the \'what\' of the sea? (Terumbu karang dijuluki sebagai apa di lautan?)', 'expected': ['rainforests', 'rainforest', 'rainforests of the sea'], 'primary_answer': 'rainforests'}, {'id': 'rdg_int_24', 'badge': '🪸 Terumbu Karang: Ancaman', 'prompt': '🌡️ <b>Baca teks ekologi kelautan:</b>\n"Rising sea water temperatures and chemical <b>pollution</b> represent severe threats causing extensive coral bleaching."\n\n👉 <b>Pertanyaan:</b> Name one major threat to coral reefs mentioned: (Sebutkan salah satu ancaman utama bagi terumbu karang:)', 'expected': ['pollution', 'temperature', 'rising temperatures', 'chemical pollution'], 'primary_answer': 'pollution'}],
+        config.LEVEL_ADVANCED: [{'id': 'rdg_adv_01', 'badge': '🤖 AI di Bidang Medis: Manfaat Utama', 'prompt': '🩺 <b>Baca teks teknologi medis:</b>\n"Artificial Intelligence algorithms trained on millions of radiological scans assist physicians in achieving accurate <b>early diagnosis</b> of complex conditions, thereby drastically increasing patient survival rates."\n\n👉 <b>Pertanyaan:</b> What key diagnostic benefit does AI provide according to the passage? (Manfaat diagnostik utama apa yang diberikan AI?)', 'expected': ['early diagnosis', 'accurate early diagnosis', 'diagnosis'], 'primary_answer': 'early diagnosis'}, {'id': 'rdg_adv_02', 'badge': '🤖 AI di Bidang Medis: Pengawasan Dokter', 'prompt': '👩\u200d⚕️ <b>Baca teks teknologi medis:</b>\n"Despite automated machine precision, medical ethicists emphasize that final clinical decisions must always remain under competent human <b>oversight</b>."\n\n👉 <b>Pertanyaan:</b> Final clinical decisions must always remain under human what? (Keputusan klinis akhir harus selalu di bawah apa dari manusia?)', 'expected': ['oversight', 'supervision', 'human oversight'], 'primary_answer': 'oversight'}, {'id': 'rdg_adv_03', 'badge': '🏭 Revolusi Industri: Sumber Tenaga', 'prompt': '⚙️ <b>Baca teks sejarah modern:</b>\n"The transformation from agrarian handcrafting to mechanized manufacturing was propelled by James Watt\'s refinement of the commercial <b>steam</b> engine."\n\n👉 <b>Pertanyaan:</b> What type of engine powered the mechanization of manufacturing? (Mesin bertenaga apakah yang mendorong mekanisasi manufaktur?)', 'expected': ['steam', 'steam engine', 'the steam engine'], 'primary_answer': 'steam engine'}, {'id': 'rdg_adv_04', 'badge': '🏭 Revolusi Industri: Abad Dimulai', 'prompt': '📜 <b>Baca teks sejarah modern:</b>\n"The first wave of the Industrial Revolution unfolded initially in Great Britain during the latter half of the <b>eighteenth</b> century."\n\n👉 <b>Pertanyaan:</b> In which century did the first industrial revolution begin? (Pada abad ke berapa revolusi industri pertama dimulai?)', 'expected': ['eighteenth', '18th', '18th century', 'eighteenth century'], 'primary_answer': '18th century'}, {'id': 'rdg_adv_05', 'badge': '🌳 Hutan Amazon: Persentase Oksigen', 'prompt': '🌿 <b>Baca teks biosfer global:</b>\n"Often referred to as the green lungs of our planet, the Amazon Basin rainforest produces roughly <b>twenty</b> percent of Earth\'s total terrestrial oxygen."\n\n👉 <b>Pertanyaan:</b> What percentage of terrestrial oxygen does the Amazon produce? (Berapa persen oksigen daratan yang dihasilkan Amazon?)', 'expected': ['twenty', '20', '20 percent', '20%', 'twenty percent'], 'primary_answer': '20%'}, {'id': 'rdg_adv_06', 'badge': '🌳 Hutan Amazon: Ancaman Deforestasi', 'prompt': '🚜 <b>Baca teks biosfer global:</b>\n"Unchecked illegal logging and expansive cattle ranching drive rapid <b>deforestation</b>, threatening countless indigenous wildlife species with extinction."\n\n👉 <b>Pertanyaan:</b> What ecological crisis is caused by logging and ranching? (Krisis ekologis apa yang disebabkan oleh penebangan dan peternakan?)', 'expected': ['deforestation', 'forest loss'], 'primary_answer': 'deforestation'}, {'id': 'rdg_adv_07', 'badge': '☢️ Marie Curie: Penemuan Radium', 'prompt': '🔬 <b>Baca teks biografi saintis:</b>\n"Through relentless isolation of pitchblende minerals, physicist Marie Curie discovered two new radioactive elements: polonium and <b>radium</b>."\n\n👉 <b>Pertanyaan:</b> In addition to polonium, what radioactive element did Marie Curie discover? (Selain polonium, unsur radioaktif apa yang ditemukan Marie Curie?)', 'expected': ['radium', 'element radium'], 'primary_answer': 'radium'}, {'id': 'rdg_adv_08', 'badge': '☢️ Marie Curie: Jumlah Nobel', 'prompt': '🏆 <b>Baca teks biografi saintis:</b>\n"Marie Curie remains the only historic figure to have achieved <b>two</b> Nobel Prizes across two completely distinct scientific disciplines: Physics and Chemistry."\n\n👉 <b>Pertanyaan:</b> How many Nobel Prizes did Marie Curie win? (Berapa banyak Hadiah Nobel yang diraih Marie Curie?)', 'expected': ['two', '2', 'two nobel prizes', '2 nobel prizes'], 'primary_answer': 'two'}, {'id': 'rdg_adv_09', 'badge': '🌊 Laut Dalam: Kemosintesis', 'prompt': '🔦 <b>Baca teks oseanografi:</b>\n"In the pitch-black abyssal trenches devoid of sunlight, specialized benthic bacteria sustain life via <b>chemosynthesis</b> rather than photosynthetic solar energy."\n\n👉 <b>Pertanyaan:</b> What process replaces photosynthesis in total deep-sea darkness? (Proses apa yang menggantikan fotosintesis dalam kegelapan laut dalam?)', 'expected': ['chemosynthesis', 'bacterial chemosynthesis'], 'primary_answer': 'chemosynthesis'}, {'id': 'rdg_adv_10', 'badge': '🌊 Laut Dalam: Ventilasi Hidrotermal', 'prompt': '🌋 <b>Baca teks oseanografi:</b>\n"Deep hydrothermal vents spew mineral-rich water heated by subterranean volcanic <b>magma</b>, sustaining astonishing alien-like biological colonies."\n\n👉 <b>Pertanyaan:</b> What subterranean substance heats hydrothermal vents? (Zat bawah tanah apa yang memanaskan ventilasi hidrotermal?)', 'expected': ['magma', 'volcanic magma', 'heat'], 'primary_answer': 'magma'}, {'id': 'rdg_adv_11', 'badge': '🧱 Tembok Besar Cina: Tujuan Utama', 'prompt': '🏯 <b>Baca teks sejarah arsitektur:</b>\n"Stretching thousands of miles across northern ridges, the monumental fortifications were erected for border <b>defense</b> against nomadic incursions."\n\n👉 <b>Pertanyaan:</b> What was the primary military function of the Great Wall? (Apa fungsi pertahanan militer utama dari Tembok Besar?)', 'expected': ['defense', 'defence', 'border defense', 'protection'], 'primary_answer': 'defense'}, {'id': 'rdg_adv_12', 'badge': '🧱 Tembok Besar Cina: Bahan Bangunan', 'prompt': '🧗 <b>Baca teks sejarah arsitektur:</b>\n"The enduring Ming dynasty sections of the wall were fortified utilizing quarried granite <b>stone</b> and kiln-fired bricks bonded with sticky rice mortar."\n\n👉 <b>Pertanyaan:</b> What masonry materials were primarily used besides bricks? (Material bebatuan apa yang digunakan selain batu bata?)', 'expected': ['stone', 'granite', 'granite stone'], 'primary_answer': 'stone'}, {'id': 'rdg_adv_13', 'badge': '🧊 Mencairnya Gletser: Efek Permukaan Laut', 'prompt': '🌊 <b>Baca teks klimatologi:</b>\n"Accelerated melting of polar ice caps and continental glaciers discharges trillions of tons of freshwater, resulting in alarming global sea level <b>rise</b>."\n\n👉 <b>Pertanyaan:</b> What happens to global sea levels when glaciers melt? (Apa yang terjadi pada permukaan laut global saat gletser mencair?)', 'expected': ['rise', 'sea level rise', 'they rise', 'it rises'], 'primary_answer': 'rise'}, {'id': 'rdg_adv_14', 'badge': '🧊 Mencairnya Gletser: Gas Rumah Kaca', 'prompt': '🏭 <b>Baca teks klimatologi:</b>\n"Anthropogenic emissions of <b>carbon dioxide</b> trap thermal infrared radiation within the atmosphere, driving unprecedented thermal acceleration."\n\n👉 <b>Pertanyaan:</b> What greenhouse gas is highlighted as trapping heat? (Gas rumah kaca apa yang disorot karena memerangkap panas?)', 'expected': ['carbon dioxide', 'co2', 'carbon dioxide (co2)'], 'primary_answer': 'carbon dioxide'}, {'id': 'rdg_adv_15', 'badge': '🎨 Era Renaisans: Tempat Lahir', 'prompt': '🏛️ <b>Baca teks sejarah seni:</b>\n"Marking the cultural rebirth of European classical philosophy and realistic humanism, the Renaissance blossomed during the fourteenth century in <b>Italy</b>."\n\n👉 <b>Pertanyaan:</b> In which European country did the Renaissance originate? (Di negara Eropa mana masa Renaisans bermula?)', 'expected': ['italy', 'in italy'], 'primary_answer': 'Italy'}, {'id': 'rdg_adv_16', 'badge': '🎨 Era Renaisans: Sang Polimatik', 'prompt': '🖼️ <b>Baca teks sejarah seni:</b>\n"Embodying the supreme Renaissance polymath, <b>Leonardo da Vinci</b> achieved immortal acclaim through masterpieces such as the Mona Lisa."\n\n👉 <b>Pertanyaan:</b> Who painted the Mona Lisa and embodied the Renaissance genius? (Siapa pelukis Mona Lisa yang mencerminkan kejeniusan Renaisans?)', 'expected': ['leonardo da vinci', 'da vinci', 'leonardo'], 'primary_answer': 'Leonardo da Vinci'}, {'id': 'rdg_adv_17', 'badge': '🚀 Eksplorasi Mars: Target Misi', 'prompt': '🪐 <b>Baca teks eksplorasi antariksa:</b>\n"Equipped with advanced spectrometer instruments, robotic planetary rovers analyze ancient lakebed sediments to uncover biosignature signs of past microbial <b>life</b>."\n\n👉 <b>Pertanyaan:</b> What signs are planetary rovers seeking in Martian sediments? (Tanda-tanda apa yang dicari oleh penjelajah robotik di sedimen Mars?)', 'expected': ['life', 'microbial life', 'signs of life', 'past life'], 'primary_answer': 'life'}, {'id': 'rdg_adv_18', 'badge': '🚀 Eksplorasi Mars: Nama Rover', 'prompt': '🤖 <b>Baca teks eksplorasi antariksa:</b>\n"NASA\'s car-sized robotic rover named <b>Perseverance</b> successfully touched down inside Jezero Crater to collect pristine rock core samples."\n\n👉 <b>Pertanyaan:</b> What is the name of NASA\'s rover in Jezero Crater? (Apa nama robot penjelajah NASA di Kawah Jezero?)', 'expected': ['perseverance', 'perseverance rover'], 'primary_answer': 'Perseverance'}, {'id': 'rdg_adv_19', 'badge': '🌊 Mikroplastik Laut: Ukuran', 'prompt': '🔬 <b>Baca teks biologi kelautan:</b>\n"Marine scientists classify synthetic polymer fragments measuring less than <b>five</b> millimeters in length as hazardous microplastics."\n\n👉 <b>Pertanyaan:</b> Microplastics measure less than how many millimeters? (Mikroplastik berukuran kurang dari berapa milimeter?)', 'expected': ['five', '5', '5 mm', '5 millimeters', 'five millimeters'], 'primary_answer': '5 millimeters'}, {'id': 'rdg_adv_20', 'badge': '🌊 Mikroplastik Laut: Dampak Hewan', 'prompt': '🐟 <b>Baca teks biologi kelautan:</b>\n"Because of their microscopic size, microplastics are frequently mistaken for food and undergo accidental <b>ingestion</b> by plankton and fish."\n\n👉 <b>Pertanyaan:</b> What happens when aquatic creatures mistake plastic for food? (Apa yang terjadi saat hewan air mengira plastik sebagai makanan?)', 'expected': ['ingestion', 'they eat it', 'swallowed', 'consumption'], 'primary_answer': 'ingestion'}, {'id': 'rdg_adv_21', 'badge': '🎭 Drama Shakespeare: Teater Globe', 'prompt': '🎪 <b>Baca teks sastra klasik:</b>\n"Many of William Shakespeare\'s immortal theatrical plays premiered at London\'s open-air polygonal wooden playhouse known as the <b>Globe</b> Theatre."\n\n👉 <b>Pertanyaan:</b> What was the name of the famous London theatre? (Apa nama teater terbuka terkenal di London tersebut?)', 'expected': ['globe', 'the globe', 'globe theatre', 'the globe theatre'], 'primary_answer': 'the Globe'}, {'id': 'rdg_adv_22', 'badge': '🎭 Drama Shakespeare: Tragedi Terkenal', 'prompt': '👑 <b>Baca teks sastra klasik:</b>\n"Exploring profound existential dilemmas and revenge, the tragedy of Prince <b>Hamlet</b> of Denmark remains one of world literature\'s most quoted dramas."\n\n👉 <b>Pertanyaan:</b> Which Danish prince is the central protagonist of Shakespeare\'s celebrated tragedy? (Pangeran Denmark manakah yang menjadi tokoh utama drama tragedi tersebut?)', 'expected': ['hamlet', 'prince hamlet'], 'primary_answer': 'Hamlet'}, {'id': 'rdg_adv_23', 'badge': '💻 Komputasi Kuantum: Qubit', 'prompt': '⚛️ <b>Baca teks komputasi mutakhir:</b>\n"Unlike classical silicon bits constrained strictly to binary 0 or 1, quantum computers exploit superposition utilizing the quantum bit or <b>qubit</b>."\n\n👉 <b>Pertanyaan:</b> What fundamental quantum unit replaces the classical bit? (Unit kuantum dasar apakah yang menggantikan bit klasik?)', 'expected': ['qubit', 'quantum bit'], 'primary_answer': 'qubit'}, {'id': 'rdg_adv_24', 'badge': '💻 Komputasi Kuantum: Kemampuan Kecepatan', 'prompt': '🚀 <b>Baca teks komputasi mutakhir:</b>\n"By calculating through quantum entanglement, quantum processors solve hyper-complex cryptographic puzzles drastically <b>faster</b> than standard supercomputers."\n\n👉 <b>Pertanyaan:</b> Compared to classical computers, how do quantum computers perform complex calculations? (Dibandingkan komputer biasa, seberapa cepat komputer kuantum menyelesaikan perhitungan rumit?)', 'expected': ['faster', 'drastically faster', 'much faster'], 'primary_answer': 'faster'}],
     },
-
     # =========================================================================
-    # 5. 🎮 ENGLISH CHALLENGE (18 exercises: 6 Beginner, 6 Intermediate, 6 Advanced)
-    # Sesuai revisi: DIMUDAHKAN!
-    # Beginner: Unscramble super mudah (seperti "i am a girl")
-    # Intermediate: Kuis to be (am / is / are)
-    # Advanced: Unscramble kata kerja aksi sehari-hari
+    # 5. 🎮 WEEKLY CHALLENGE (72 exercises: 24 Beg, 24 Int, 24 Adv)
     # =========================================================================
     config.MODE_CHALLENGE: {
-        # Beginner: Unscramble kata sangat mudah
-        config.LEVEL_BEGINNER: [
-            {
-                "id": "chg_beg_01",
-                "badge": "🎮 Susun Kata: I am a girl",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ girl / a / am / I ]</code>\n\n"
-                    "💡 <i>Petunjuk: Mulailah dengan kata 'I' (Saya)...</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!\n"
-                    "<i>(Jawaban: I am a girl)</i>"
-                ),
-            },
-            {
-                "id": "chg_beg_02",
-                "badge": "🎮 Susun Kata: He is a boy",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ boy / a / is / He ]</code>\n\n"
-                    "💡 <i>Petunjuk: Mulai dengan 'He' (Dia laki-laki)...</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_beg_03",
-                "badge": "🎮 Susun Kata: This is a book",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ book / a / is / This ]</code>\n\n"
-                    "💡 <i>Petunjuk: Mulai dengan 'This' (Ini)...</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_beg_04",
-                "badge": "🎮 Susun Kata: It is a cat",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ cat / a / is / It ]</code>\n\n"
-                    "💡 <i>Petunjuk: Mulai dengan 'It' (Itu)...</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_beg_05",
-                "badge": "🎮 Susun Kata: I am happy",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ happy / am / I ]</code>\n\n"
-                    "💡 <i>Petunjuk: Mulai dengan 'I' (Saya)...</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_beg_06",
-                "badge": "🎮 Susun Kata: She is a student",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ student / a / is / She ]</code>\n\n"
-                    "💡 <i>Petunjuk: Mulai dengan 'She' (Dia perempuan)...</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik kalimat yang benar!"
-                ),
-            },
-        ],
-        # Intermediate: Kuis To Be (am, is, are)
-        config.LEVEL_INTERMEDIATE: [
-            {
-                "id": "chg_int_01",
-                "badge": "🎮 Kuis To Be: I am",
-                "prompt": (
-                    "⭐ <b>Tantangan To Be:</b>\n\n"
-                    "Lengkapi kalimat ini:\n"
-                    "<code>I ___ a student.</code>\n\n"
-                    "Pilihan:\n"
-                    "A. am\n"
-                    "B. is\n"
-                    "C. are\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik pilihan to be yang tepat!"
-                ),
-            },
-            {
-                "id": "chg_int_02",
-                "badge": "🎮 Kuis To Be: She is",
-                "prompt": (
-                    "⭐ <b>Tantangan To Be:</b>\n\n"
-                    "Lengkapi kalimat ini:\n"
-                    "<code>She ___ my kind teacher.</code>\n"
-                    "<i>(Dia adalah guruku yang baik)</i>\n\n"
-                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
-                ),
-            },
-            {
-                "id": "chg_int_03",
-                "badge": "🎮 Kuis To Be: They are",
-                "prompt": (
-                    "⭐ <b>Tantangan To Be:</b>\n\n"
-                    "Lengkapi kalimat ini:\n"
-                    "<code>They ___ my best friends.</code>\n"
-                    "<i>(Mereka adalah sahabat-sahabatku)</i>\n\n"
-                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
-                ),
-            },
-            {
-                "id": "chg_int_04",
-                "badge": "🎮 Kuis To Be: The dog",
-                "prompt": (
-                    "⭐ <b>Tantangan To Be:</b>\n\n"
-                    "Lengkapi kalimat ini:\n"
-                    "<code>The little dog ___ very cute.</code>\n"
-                    "<i>(Anjing kecil itu sangat lucu)</i>\n\n"
-                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
-                ),
-            },
-            {
-                "id": "chg_int_05",
-                "badge": "🎮 Kuis To Be: We are",
-                "prompt": (
-                    "⭐ <b>Tantangan To Be:</b>\n\n"
-                    "Lengkapi kalimat ini:\n"
-                    "<code>We ___ studying in the classroom.</code>\n"
-                    "<i>(Kami sedang belajar di ruang kelas)</i>\n\n"
-                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
-                ),
-            },
-            {
-                "id": "chg_int_06",
-                "badge": "🎮 Kuis To Be: You are",
-                "prompt": (
-                    "⭐ <b>Tantangan To Be:</b>\n\n"
-                    "Lengkapi kalimat ini:\n"
-                    "<code>You ___ very smart!</code>\n"
-                    "<i>(Kamu sangat pintar!)</i>\n\n"
-                    "Pilih salah satu: <b>am</b> / <b>is</b> / <b>are</b>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik to be yang benar!"
-                ),
-            },
-        ],
-        # Advanced: Unscramble Kata Kerja Sehari-hari yang Mudah
-        config.LEVEL_ADVANCED: [
-            {
-                "id": "chg_adv_01",
-                "badge": "🎮 Susun Kata: I like milk",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ milk / like / I ]</code>\n\n"
-                    "💡 <i>Artinya: Saya suka susu.</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_adv_02",
-                "badge": "🎮 Susun Kata: He plays football",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ football / plays / He ]</code>\n\n"
-                    "💡 <i>Artinya: Dia bermain sepak bola.</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_adv_03",
-                "badge": "🎮 Susun Kata: We go to school",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ to / We / school / go ]</code>\n\n"
-                    "💡 <i>Artinya: Kami pergi ke sekolah.</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_adv_04",
-                "badge": "🎮 Susun Kata: They read books",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ books / read / They ]</code>\n\n"
-                    "💡 <i>Artinya: Mereka membaca buku.</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_adv_05",
-                "badge": "🎮 Susun Kata: She eats an apple",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ an / apple / eats / She ]</code>\n\n"
-                    "💡 <i>Artinya: Dia memakan sebuah apel.</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
-                ),
-            },
-            {
-                "id": "chg_adv_06",
-                "badge": "🎮 Susun Kata: The baby sleeps",
-                "prompt": (
-                    "🧩 <b>Susun kata acak menjadi kalimat yang benar:</b>\n\n"
-                    "<code>[ sleeps / baby / The ]</code>\n\n"
-                    "💡 <i>Artinya: Bayi itu tidur.</i>\n\n"
-                    "👉 <b>Giliranmu:</b> Ketik susunan kalimat yang benar!"
-                ),
-            },
-        ],
+        config.LEVEL_BEGINNER: [{'id': 'chg_beg_01', 'badge': '🔤 Susun Huruf: C-A-T', 'prompt': '🐱 <b>Word Scramble: Hewan Peliharaan</b>\n\nSusun huruf acak ini menjadi nama hewan berbulu yang mengeong:\n<b>[ T - C - A ]</b>\n\n👉 <b>Tulis kata yang benar:</b>', 'expected': ['cat', 'a cat'], 'primary_answer': 'cat'}, {'id': 'chg_beg_02', 'badge': '🔤 Susun Huruf: D-O-G', 'prompt': '🐶 <b>Word Scramble: Sahabat Setia</b>\n\nSusun huruf acak ini menjadi nama hewan yang menggonggong:\n<b>[ G - D - O ]</b>\n\n👉 <b>Tulis kata yang benar:</b>', 'expected': ['dog', 'a dog'], 'primary_answer': 'dog'}, {'id': 'chg_beg_03', 'badge': '🔤 Susun Huruf: B-O-O-K', 'prompt': '📖 <b>Word Scramble: Benda Belajar</b>\n\nSusun huruf ini menjadi benda yang kita baca:\n<b>[ O - B - K - O ]</b>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['book', 'a book'], 'primary_answer': 'book'}, {'id': 'chg_beg_04', 'badge': '🔤 Susun Huruf: B-A-L-L', 'prompt': '⚽ <b>Word Scramble: Mainan Olahraga</b>\n\nSusun huruf ini menjadi benda bulat yang ditendang saat bermain bola:\n<b>[ L - B - L - A ]</b>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['ball', 'a ball'], 'primary_answer': 'ball'}, {'id': 'chg_beg_05', 'badge': '🔤 Susun Huruf: S-U-N', 'prompt': '☀️ <b>Word Scramble: Di Langit Siang</b>\n\nSusun huruf ini menjadi benda langit penerang bumi:\n<b>[ N - U - S ]</b>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['sun', 'the sun'], 'primary_answer': 'sun'}, {'id': 'chg_beg_06', 'badge': '🔤 Susun Huruf: T-R-E-E', 'prompt': '🌳 <b>Word Scramble: Tumbuhan Rimbun</b>\n\nSusun huruf ini menjadi nama tumbuhan berkayu dan berdaun:\n<b>[ E - E - T - R ]</b>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['tree', 'a tree'], 'primary_answer': 'tree'}, {'id': 'chg_beg_07', 'badge': '🔤 Susun Huruf: F-I-S-H', 'prompt': '🐟 <b>Word Scramble: Hewan Air</b>\n\nSusun huruf ini menjadi nama hewan yang berenang di air:\n<b>[ H - S - I - F ]</b>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['fish', 'a fish'], 'primary_answer': 'fish'}, {'id': 'chg_beg_08', 'badge': '🔤 Susun Huruf: S-T-A-R', 'prompt': '⭐ <b>Word Scramble: Di Langit Malam</b>\n\nSusun huruf ini menjadi benda langit yang berkelap-kelip di malam hari:\n<b>[ R - T - A - S ]</b>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['star', 'a star'], 'primary_answer': 'star'}, {'id': 'chg_beg_09', 'badge': '🧩 Susun Kalimat: She is happy', 'prompt': '😊 <b>Sentence Unscramble (3 kata):</b>\n\nSusun kata-kata acak berikut menjadi kalimat yang benar:\n<b>[ is / She / happy ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['she is happy', 'she is happy.'], 'primary_answer': 'She is happy'}, {'id': 'chg_beg_10', 'badge': '🧩 Susun Kalimat: I drink milk', 'prompt': '🥛 <b>Sentence Unscramble (3 kata):</b>\n\nSusun kata-kata ini menjadi kalimat yang benar:\n<b>[ drink / I / milk ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['i drink milk', 'i drink milk.'], 'primary_answer': 'I drink milk'}, {'id': 'chg_beg_11', 'badge': '🧩 Susun Kalimat: The sky is blue', 'prompt': '🌤️ <b>Sentence Unscramble (4 kata):</b>\n\nSusun kata-kata ini menjadi kalimat yang tepat:\n<b>[ blue / The / is / sky ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['the sky is blue', 'the sky is blue.'], 'primary_answer': 'The sky is blue'}, {'id': 'chg_beg_12', 'badge': '🧩 Susun Kalimat: We have a cat', 'prompt': '🐈 <b>Sentence Unscramble (4 kata):</b>\n\nSusun kata-kata ini menjadi kalimat yang benar:\n<b>[ a / We / cat / have ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['we have a cat', 'we have a cat.'], 'primary_answer': 'We have a cat'}, {'id': 'chg_beg_13', 'badge': '🧩 Susun Kalimat: He runs fast', 'prompt': '🏃 <b>Sentence Unscramble (3 kata):</b>\n\nSusun kata-kata ini menjadi kalimat yang benar:\n<b>[ fast / He / runs ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['he runs fast', 'he runs fast.'], 'primary_answer': 'He runs fast'}, {'id': 'chg_beg_14', 'badge': '🧩 Susun Kalimat: I love my mom', 'prompt': '❤️ <b>Sentence Unscramble (4 kata):</b>\n\nSusun kata-kata ini menjadi kalimat kasih sayang:\n<b>[ mom / love / I / my ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['i love my mom', 'i love my mom.'], 'primary_answer': 'I love my mom'}, {'id': 'chg_beg_15', 'badge': '🧩 Susun Kalimat: It is cold', 'prompt': '❄️ <b>Sentence Unscramble (3 kata):</b>\n\nSusun kata-kata ini menjadi kalimat cuaca:\n<b>[ cold / It / is ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['it is cold', 'it is cold.'], 'primary_answer': 'It is cold'}, {'id': 'chg_beg_16', 'badge': '🧩 Susun Kalimat: They play football', 'prompt': '⚽ <b>Sentence Unscramble (3 kata):</b>\n\nSusun kata-kata ini menjadi kalimat yang padu:\n<b>[ football / play / They ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['they play football', 'they play football.'], 'primary_answer': 'They play football'}, {'id': 'chg_beg_17', 'badge': '❓ Tebak Kata: Hewan Meow', 'prompt': '🐱 <b>Riddle Ringan:</b>\n\n"I have four soft paws, sharp claws, and I say \'Meow\'. What animal am I?"\n\n👉 <b>Tebak nama hewannya:</b>', 'expected': ['cat', 'a cat'], 'primary_answer': 'cat'}, {'id': 'chg_beg_18', 'badge': '❓ Tebak Kata: Buah Kuning', 'prompt': '🍌 <b>Riddle Ringan:</b>\n\n"I am long and yellow. Monkeys love to eat me and I peel easily. What fruit am I?"\n\n👉 <b>Tulis nama buahnya:</b>', 'expected': ['banana', 'a banana'], 'primary_answer': 'banana'}, {'id': 'chg_beg_19', 'badge': '❓ Tebak Kata: Air Hujan', 'prompt': '🌧️ <b>Riddle Ringan:</b>\n\n"I fall from dark gray clouds in drops when the sky gets stormy. What am I?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['rain', 'water'], 'primary_answer': 'rain'}, {'id': 'chg_beg_20', 'badge': '❓ Tebak Kata: Pintu Rumah', 'prompt': '🚪 <b>Riddle Ringan:</b>\n\n"You turn my handle and open me to enter a room. What am I?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['door', 'a door'], 'primary_answer': 'door'}, {'id': 'chg_beg_21', 'badge': '❓ Tebak Kata: Bulan di Malam Hari', 'prompt': '🌙 <b>Riddle Ringan:</b>\n\n"I am round and silver in the night sky. What am I?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['moon', 'the moon'], 'primary_answer': 'moon'}, {'id': 'chg_beg_22', 'badge': '❓ Tebak Kata: Kaus Kaki', 'prompt': '🧦 <b>Riddle Ringan:</b>\n\n"You put me on your feet before you wear your shoes. What am I?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['socks', 'sock', 'a sock'], 'primary_answer': 'socks'}, {'id': 'chg_beg_23', 'badge': '❓ Tebak Kata: Jam Penunjuk Waktu', 'prompt': '⏰ <b>Riddle Ringan:</b>\n\n"I have numbers from 1 to 12 and two hands that tick, showing the exact time. What am I?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['clock', 'a clock', 'watch'], 'primary_answer': 'clock'}, {'id': 'chg_beg_24', 'badge': '❓ Tebak Kata: Buah Apel', 'prompt': '🍎 <b>Riddle Ringan:</b>\n\n"There is a saying: \'An ___ a day keeps the doctor away.\' What crunchy red fruit is this?"\n\n👉 <b>Tulis nama buahnya:</b>', 'expected': ['apple', 'an apple'], 'primary_answer': 'apple'}],
+        config.LEVEL_INTERMEDIATE: [{'id': 'chg_int_01', 'badge': '🧩 Susun Kalimat Sedang: Sarah reads a book', 'prompt': '📖 <b>Sentence Unscramble:</b>\n\nSusun kata-kata ini menjadi kalimat yang tepat:\n<b>[ every / Sarah / reads / book / a / morning ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['sarah reads a book every morning', 'sarah reads a book every morning.'], 'primary_answer': 'Sarah reads a book every morning'}, {'id': 'chg_int_02', 'badge': '🧩 Susun Kalimat Sedang: We went to the beach', 'prompt': '🏖️ <b>Sentence Unscramble:</b>\n\nSusun kata-kata lampau ini menjadi kalimat yang benar:\n<b>[ yesterday / to / We / beach / the / went ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['we went to the beach yesterday', 'we went to the beach yesterday.'], 'primary_answer': 'We went to the beach yesterday'}, {'id': 'chg_int_03', 'badge': '🧩 Susun Kalimat Sedang: My brother plays the guitar', 'prompt': '🎸 <b>Sentence Unscramble:</b>\n\nSusun kata-kata ini menjadi kalimat yang benar:\n<b>[ brother / My / guitar / the / plays / well ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['my brother plays the guitar well', 'my brother plays the guitar well.'], 'primary_answer': 'My brother plays the guitar well'}, {'id': 'chg_int_04', 'badge': '🧩 Susun Kalimat Sedang: Mom is cooking soup', 'prompt': '🍲 <b>Sentence Unscramble:</b>\n\nSusun kata-kata present continuous ini:\n<b>[ cooking / My / mother / delicious / soup / is ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['my mother is cooking delicious soup', 'my mother is cooking delicious soup.'], 'primary_answer': 'My mother is cooking delicious soup'}, {'id': 'chg_int_05', 'badge': '🧩 Susun Kalimat Sedang: We love to study English', 'prompt': '📚 <b>Sentence Unscramble:</b>\n\nSusun kata-kata ini menjadi kalimat yang benar:\n<b>[ love / We / together / study / English / to ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['we love to study english together', 'we love to study english together.'], 'primary_answer': 'We love to study English together'}, {'id': 'chg_int_06', 'badge': '🧩 Susun Kalimat Sedang: He bought new shoes', 'prompt': '👟 <b>Sentence Unscramble:</b>\n\nSusun kata-kata lampau ini:\n<b>[ new / bought / yesterday / shoes / He ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['he bought new shoes yesterday', 'he bought new shoes yesterday.'], 'primary_answer': 'He bought new shoes yesterday'}, {'id': 'chg_int_07', 'badge': '🧩 Susun Kalimat Sedang: They ran around the park', 'prompt': '🏃 <b>Sentence Unscramble:</b>\n\nSusun kata-kata ini menjadi kalimat yang rapi:\n<b>[ park / the / around / ran / They ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['they ran around the park', 'they ran around the park.'], 'primary_answer': 'They ran around the park'}, {'id': 'chg_int_08', 'badge': '🧩 Susun Kalimat Sedang: She speaks three languages', 'prompt': '🗣️ <b>Sentence Unscramble:</b>\n\nSusun kata-kata ini menjadi kalimat yang tepat:\n<b>[ languages / fluently / speaks / three / She ]</b>\n\n👉 <b>Tulis kalimat lengkapnya:</b>', 'expected': ['she speaks three languages fluently', 'she speaks three languages fluently.'], 'primary_answer': 'She speaks three languages fluently'}, {'id': 'chg_int_09', 'badge': '↔️ Antonim: Lawan kata Difficult', 'prompt': '💡 <b>Kuis Antonim:</b>\n\nApa lawan kata dari <b>difficult</b> (sulit)?\n<i>(Petunjuk: 4 huruf, berawalan E)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['easy', 'it is easy'], 'primary_answer': 'easy'}, {'id': 'chg_int_10', 'badge': '↔️ Antonim: Lawan kata Safe', 'prompt': '⚠️ <b>Kuis Antonim:</b>\n\nApa lawan kata dari <b>safe</b> (aman)?\n<i>(Petunjuk: berawalan huruf D)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['dangerous'], 'primary_answer': 'dangerous'}, {'id': 'chg_int_11', 'badge': '🔄 Sinonim: Persamaan kata Intelligent', 'prompt': '🧠 <b>Kuis Sinonim:</b>\n\nApa sinonim dari kata <b>intelligent</b> (cerdas)?\n<i>(Petunjuk: 5 huruf, berawalan S)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['smart', 'clever'], 'primary_answer': 'smart'}, {'id': 'chg_int_12', 'badge': '↔️ Antonim: Lawan kata Noisy', 'prompt': '🤫 <b>Kuis Antonim:</b>\n\nApa lawan kata dari <b>noisy</b> (bising/gaduh)?\n<i>(Petunjuk: 5 huruf, berawalan Q)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['quiet', 'silent'], 'primary_answer': 'quiet'}, {'id': 'chg_int_13', 'badge': '🔄 Sinonim: Persamaan kata Begin', 'prompt': '🏁 <b>Kuis Sinonim:</b>\n\nApa sinonim dari kata <b>begin</b> (memulai)?\n<i>(Petunjuk: 5 huruf, berawalan S)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['start'], 'primary_answer': 'start'}, {'id': 'chg_int_14', 'badge': '↔️ Antonim: Lawan kata Cheap', 'prompt': '💎 <b>Kuis Antonim:</b>\n\nApa lawan kata dari <b>cheap</b> (murah)?\n<i>(Petunjuk: berawalan huruf E)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['expensive'], 'primary_answer': 'expensive'}, {'id': 'chg_int_15', 'badge': '🔄 Sinonim: Persamaan kata Huge', 'prompt': '🐘 <b>Kuis Sinonim:</b>\n\nApa sinonim dari <b>huge</b> (sangat besar)?\n<i>(Petunjuk: 5 huruf, berawalan L)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['large', 'giant', 'enormous'], 'primary_answer': 'large'}, {'id': 'chg_int_16', 'badge': '↔️ Antonim: Lawan kata Polite', 'prompt': '😠 <b>Kuis Antonim:</b>\n\nApa lawan kata dari <b>polite</b> (sopan)?\n<i>(Petunjuk: 4 huruf, berawalan R)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['rude', 'impolite'], 'primary_answer': 'rude'}, {'id': 'chg_int_17', 'badge': '🕵️ Teka-Teki Logika: Kegelapan', 'prompt': '🌑 <b>Riddle Menarik:</b>\n\n"The more of me there is, the less you can see. What am I?"\n<i>(Petunjuk: berawalan huruf D)</i>\n\n👉 <b>Tulis jawabannya:</b>', 'expected': ['darkness', 'dark'], 'primary_answer': 'darkness'}, {'id': 'chg_int_18', 'badge': '🕵️ Teka-Teki Logika: Sisir Rambut', 'prompt': '💈 <b>Riddle Menarik:</b>\n\n"I have many teeth, but I cannot eat or bite anything. What am I?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['comb', 'a comb'], 'primary_answer': 'comb'}, {'id': 'chg_int_19', 'badge': '🕵️ Teka-Teki Logika: Botol Minum', 'prompt': '🍾 <b>Riddle Menarik:</b>\n\n"I have a long neck, but I have no head. What am I?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['bottle', 'a bottle'], 'primary_answer': 'bottle'}, {'id': 'chg_int_20', 'badge': '🕵️ Teka-Teki Logika: Handuk Mandi', 'prompt': '🚿 <b>Riddle Menarik:</b>\n\n"What gets wetter the more it dries your body?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['towel', 'a towel'], 'primary_answer': 'towel'}, {'id': 'chg_int_21', 'badge': '🕵️ Teka-Teki Logika: Jarum Jam', 'prompt': '⌚ <b>Riddle Menarik:</b>\n\n"What has two hands and a face, but cannot clap or smile?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['clock', 'a clock', 'watch'], 'primary_answer': 'clock'}, {'id': 'chg_int_22', 'badge': '🕵️ Teka-Teki Logika: Perangko Surat', 'prompt': '✉️ <b>Riddle Menarik:</b>\n\n"What can travel all around the world while remaining firmly in a corner?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['stamp', 'a stamp', 'postage stamp'], 'primary_answer': 'stamp'}, {'id': 'chg_int_23', 'badge': '🕵️ Teka-Teki Logika: Papan Ketik Komputer', 'prompt': '⌨️ <b>Riddle Menarik:</b>\n\n"I have keys with no locks, and space with no room. You can enter, but cannot go outside. What am I?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['keyboard', 'a keyboard'], 'primary_answer': 'keyboard'}, {'id': 'chg_int_24', 'badge': '🕵️ Teka-Teki Logika: Teko Teh', 'prompt': '🫖 <b>Riddle Menarik:</b>\n\n"What begins with \'T\', ends with \'T\', and is filled with \'T\' (tea)?"\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['teapot', 'a teapot'], 'primary_answer': 'teapot'}],
+        config.LEVEL_ADVANCED: [{'id': 'chg_adv_01', 'badge': '🎭 Idiom Bahasa Inggris: Piece of cake', 'prompt': '🍰 <b>Idiom Populer:</b>\n\nUngkapan untuk sesuatu yang sangat mudah dikerjakan:\n"That exam was a piece of ___!"\n\n👉 <b>Lengkapi kata yang hilang:</b>', 'expected': ['cake', 'piece of cake'], 'primary_answer': 'cake'}, {'id': 'chg_adv_02', 'badge': '🎭 Idiom Bahasa Inggris: Break a leg', 'prompt': '🎬 <b>Idiom Populer:</b>\n\nUngkapan untuk mendoakan keberhasilan pertunjukan panggung:\n"Before entering the auditorium, the director said: \'Break a ___!\'"\n\n👉 <b>Lengkapi kata yang hilang:</b>', 'expected': ['leg', 'break a leg'], 'primary_answer': 'leg'}, {'id': 'chg_adv_03', 'badge': '🎭 Idiom Bahasa Inggris: Under the weather', 'prompt': '🤒 <b>Idiom Populer:</b>\n\nUngkapan saat sedang merasa kurang enak badan atau sakit ringan:\n"I will stay home today because I feel under the ___."\n\n👉 <b>Lengkapi kata yang hilang:</b>', 'expected': ['weather', 'under the weather'], 'primary_answer': 'weather'}, {'id': 'chg_adv_04', 'badge': '🎭 Idiom Bahasa Inggris: Cost an arm and a leg', 'prompt': '💸 <b>Idiom Populer:</b>\n\nUngkapan untuk barang yang harganya selangit (sangat mahal):\n"Buying that sports car would cost an arm and a ___."\n\n👉 <b>Lengkapi kata yang hilang:</b>', 'expected': ['leg'], 'primary_answer': 'leg'}, {'id': 'chg_adv_05', 'badge': '🎭 Idiom Bahasa Inggris: Bite the bullet', 'prompt': '🎯 <b>Idiom Populer:</b>\n\nMenghadapi situasi yang sulit atau menyakitkan dengan penuh keberanian:\n"You have been avoiding that dentist visit; it is time to bite the ___."\n\n👉 <b>Lengkapi kata yang hilang:</b>', 'expected': ['bullet'], 'primary_answer': 'bullet'}, {'id': 'chg_adv_06', 'badge': '🎭 Idiom Bahasa Inggris: Spill the beans', 'prompt': '🫘 <b>Idiom Populer:</b>\n\nMembocorkan rahasia atau kejutan yang belum seharusnya diketahui:\n"Don\'t tell Alex about the surprise party; he might spill the ___!"\n\n👉 <b>Lengkapi kata yang hilang:</b>', 'expected': ['beans', 'bean'], 'primary_answer': 'beans'}, {'id': 'chg_adv_07', 'badge': '🎭 Idiom Bahasa Inggris: See eye to eye', 'prompt': '🤝 <b>Idiom Populer:</b>\n\nSepakat atau sependapat secara penuh dengan orang lain:\n"We rarely see eye to ___ on politics, but we remain great friends."\n\n👉 <b>Lengkapi kata yang hilang:</b>', 'expected': ['eye', 'see eye to eye'], 'primary_answer': 'eye'}, {'id': 'chg_adv_08', 'badge': '🎭 Idiom Bahasa Inggris: Once in a blue moon', 'prompt': '🌕 <b>Idiom Populer:</b>\n\nSesuatu peristiwa yang sangat langka terjadi:\n"He only treats us to a restaurant once in a ___ moon."\n\n👉 <b>Lengkapi warna yang hilang:</b>', 'expected': ['blue', 'once in a blue moon'], 'primary_answer': 'blue'}, {'id': 'chg_adv_09', 'badge': '🏢 Profesi: Perancang Bangunan', 'prompt': '📐 <b>Kosakata Profesi Tingkat Lanjut:</b>\n\n"A licensed professional who designs buildings and oversees their construction is an ___."\n<i>(Petunjuk: berawalan huruf A)</i>\n\n👉 <b>Tulis nama profesinya:</b>', 'expected': ['architect', 'an architect'], 'primary_answer': 'architect'}, {'id': 'chg_adv_10', 'badge': '🔭 Profesi: Peneliti Antariksa', 'prompt': '🌌 <b>Kosakata Profesi Tingkat Lanjut:</b>\n\n"A scientist who studies celestial bodies, stars, planets, and galaxies is an ___."\n<i>(Petunjuk: berawalan huruf A)</i>\n\n👉 <b>Tulis nama profesinya:</b>', 'expected': ['astronomer', 'an astronomer'], 'primary_answer': 'astronomer'}, {'id': 'chg_adv_11', 'badge': '🕊️ Diplomasi: Perjanjian Damai', 'prompt': '📜 <b>Hubungan Internasional:</b>\n\n"A formal written agreement between sovereign nations to end conflict is a peace ___."\n<i>(Petunjuk: 6 huruf, berawalan T)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['treaty', 'treaties', 'accord'], 'primary_answer': 'treaty'}, {'id': 'chg_adv_12', 'badge': '📖 Literasi: Kamus Kata', 'prompt': '📚 <b>Referensi Bahasa:</b>\n\n"A comprehensive reference book containing words arranged alphabetically with meanings and pronunciations is a ___."\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['dictionary', 'a dictionary'], 'primary_answer': 'dictionary'}, {'id': 'chg_adv_13', 'badge': '❤️ Psikologi: Kemampuan Empati', 'prompt': '🫂 <b>Kecerdasan Emosional:</b>\n\n"The psychological capacity to understand and intimately feel what another person is experiencing is called ___."\n<i>(Petunjuk: berawalan E)</i>\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['empathy'], 'primary_answer': 'empathy'}, {'id': 'chg_adv_14', 'badge': '🛂 Dokumen Perjalanan: Paspor', 'prompt': '✈️ <b>Dokumen Internasional:</b>\n\n"An official government travel document certifying citizenship used when crossing foreign borders is a ___."\n\n👉 <b>Tulis kata bahasa Inggrisnya:</b>', 'expected': ['passport', 'a passport'], 'primary_answer': 'passport'}, {'id': 'chg_adv_15', 'badge': '🗣️ Bahasa: Penerjemah Lisan', 'prompt': '🎧 <b>Komunikasi Multibahasa:</b>\n\n"A person who translates spoken speech in real-time between international dignitaries is an ___."\n<i>(Petunjuk: berawalan I)</i>\n\n👉 <b>Tulis nama profesinya:</b>', 'expected': ['interpreter', 'an interpreter'], 'primary_answer': 'interpreter'}, {'id': 'chg_adv_16', 'badge': '💊 Farmakologi: Obat Antibiotik', 'prompt': '🧪 <b>Dunia Kedokteran:</b>\n\n"A pharmacological substance that inhibits the growth of or destroys harmful bacteria is an ___."\n<i>(Petunjuk: berawalan A)</i>\n\n👉 <b>Tulis istilah medisnya:</b>', 'expected': ['antibiotic', 'an antibiotic'], 'primary_answer': 'antibiotic'}, {'id': 'chg_adv_17', 'badge': '🔄 Transformasi Pasif: Written', 'prompt': "📜 <b>Sentence Transformation: Aktif ke Pasif</b>\n\nAktif: <i>William Shakespeare wrote Hamlet.</i>\nPasif: <i>Hamlet was ___ by William Shakespeare.</i>\n\n👉 <b>Tulis bentuk V3 dari kata 'write':</b>", 'expected': ['written', 'was written'], 'primary_answer': 'written'}, {'id': 'chg_adv_18', 'badge': '🔤 Pembentukan Kata: Happy ➔ Kebahagiaan', 'prompt': '✨ <b>Word Formation (Nominalization):</b>\n\nUbah kata sifat <b>happy</b> menjadi kata benda (kebahagiaan):\n<i>(Petunjuk: akhiran -ness)</i>\n\n👉 <b>Tulis kata bendanya:</b>', 'expected': ['happiness'], 'primary_answer': 'happiness'}, {'id': 'chg_adv_19', 'badge': '🔤 Pembentukan Kata: Decide ➔ Keputusan', 'prompt': '🎯 <b>Word Formation (Nominalization):</b>\n\nUbah kata kerja <b>decide</b> menjadi kata benda (keputusan):\n<i>(Petunjuk: 8 huruf, berakhiran -sion)</i>\n\n👉 <b>Tulis kata bendanya:</b>', 'expected': ['decision', 'a decision'], 'primary_answer': 'decision'}, {'id': 'chg_adv_20', 'badge': '🔤 Pembentukan Kata: Quick ➔ Adverb', 'prompt': '⚡ <b>Word Formation: Adjective to Adverb</b>\n\nUbah kata sifat <b>quick</b> (cepat) menjadi kata keterangan cara (dengan cepat):\n<i>(Petunjuk: tambahkan akhiran -ly)</i>\n\n👉 <b>Tulis kata keterangannya:</b>', 'expected': ['quickly'], 'primary_answer': 'quickly'}, {'id': 'chg_adv_21', 'badge': '🔤 Prefiks Negatif: Possible ➔ Mustahil', 'prompt': "🚫 <b>Negative Prefix:</b>\n\nTambahkan awalan pada kata <b>possible</b> (mungkin) agar bermakna 'mustahil / tidak mungkin':\n\n👉 <b>Tulis kata lengkapnya:</b>", 'expected': ['impossible'], 'primary_answer': 'impossible'}, {'id': 'chg_adv_22', 'badge': '🔤 Prefiks Negatif: Agree ➔ Tidak Setuju', 'prompt': "❌ <b>Negative Prefix:</b>\n\nTambahkan awalan pada kata <b>agree</b> (setuju) agar bermakna 'tidak setuju':\n\n👉 <b>Tulis kata lengkapnya:</b>", 'expected': ['disagree'], 'primary_answer': 'disagree'}, {'id': 'chg_adv_23', 'badge': '🧩 Permainan Huruf: Ice to Rice', 'prompt': "🍚 <b>Word Play Challenge:</b>\n\nKata untuk 'air beku' adalah <b>ICE</b>.\nTambahkan satu huruf di depannya untuk menghasilkan kata yang berarti 'butir beras/nasi':\n\n👉 <b>Tulis kata baru tersebut:</b>", 'expected': ['rice'], 'primary_answer': 'rice'}, {'id': 'chg_adv_24', 'badge': '📜 Peribahasa Bijak: Louder than words', 'prompt': '🗣️ <b>Famous Proverb:</b>\n\nLengkapi peribahasa terkenal tentang perbuatan nyata:\n"Actions speak louder than ___."\n\n👉 <b>Tulis kata yang hilang:</b>', 'expected': ['words', 'word'], 'primary_answer': 'words'}],
     },
 }
+
+
+def get_exercise_by_id(exercise_id: str) -> Optional[Dict[str, Any]]:
+    """Lookup an exercise by its unique ID across all modes and levels."""
+    for mode_dict in EXERCISE_BANK.values():
+        for level_list in mode_dict.values():
+            for ex in level_list:
+                if ex.get("id") == exercise_id:
+                    return ex
+    return None
 
 
 def get_offline_exercise(
@@ -1222,6 +101,8 @@ def get_offline_exercise(
             "title": config.LEARNING_MODES.get(mode, {}).get("title", "Latihan Bahasa Inggris"),
             "badge": "Latihan Seru",
             "prompt": "Yuk coba buat kalimat pendek dalam bahasa Inggris dan kirim ke sini!",
+            "expected": [],
+            "primary_answer": "",
         }
 
     candidates = [ex for ex in level_dict if ex.get("id") != exclude_id]
@@ -1233,35 +114,160 @@ def get_offline_exercise(
         "title": mode_info.get("title", "Latihan Bahasa Inggris"),
         "badge": chosen.get("badge", "Latihan"),
         "prompt": chosen.get("prompt", ""),
+        "expected": chosen.get("expected", []),
+        "primary_answer": chosen.get("primary_answer", ""),
     }
 
 
-def get_offline_feedback(mode: str, level: str, safe_user_text: str) -> str:
+def check_submission_quality(user_text: str) -> Tuple[str, Optional[str]]:
     """
-    Returns encouraging, child-friendly feedback in Indonesian when AI service is unavailable.
+    Evaluates raw user input to guard against false praise.
+    Returns a tuple of (status, polite_guidance_message).
+    
+    Status values:
+    - 'empty_punct': string is empty or contains only punctuation/dots (e.g. '.', '...', '??')
+    - 'too_short': string length is less than 2 alphanumeric characters
+    - 'gibberish': keyboard mash or unnatural character repetition (e.g. 'asdfgh', 'aaaaa')
+    - 'valid': normal text submission suitable for pedagogical evaluation
     """
-    level_info = config.LEVEL_INFO.get(level, config.LEVEL_INFO[config.DEFAULT_LEVEL])
-    badge = level_info["badge"]
+    stripped = user_text.strip()
+    if not stripped:
+        return (
+            "empty_punct",
+            (
+                "Halo! Sepertinya pesanmu kosong. 😊\n\n"
+                "Yuk coba ketik jawaban untuk soal latihan di atas ya! Jangan khawatir salah, mari kita coba sama-sama."
+            )
+        )
 
-    templates = [
-        (
-            f"✨ <b>English Buddy Note ({badge}):</b>\n\n"
-            f"Jawabanmu: <i>\"{safe_user_text}\"</i>\n\n"
-            f"🌟 <b>Hebat sekali!</b> Usahamu sangat luar biasa! Teruslah rajin berlatih ya. "
-            f"Tekan tombol <b>🔄 Next Exercise</b> untuk latihan seru berikutnya!"
-        ),
-        (
-            f"✨ <b>Catatan Teman Belajar ({badge}):</b>\n\n"
-            f"Kamu menulis: <i>\"{safe_user_text}\"</i>\n\n"
-            f"👍 <b>Pintar!</b> Belajar bahasa Inggris itu mudah dan menyenangkan kan? "
-            f"Setiap kali mencoba, kamu jadi makin jago lho! Semangat terus ya!"
-        ),
-        (
-            f"✨ <b>Pujian dari English Buddy ({badge}):</b>\n\n"
-            f"Pesanmu: <i>\"{safe_user_text}\"</i>\n\n"
-            f"🎉 <b>Keren banget!</b> Jangan pernah takut salah ya, karena dari mencoba kita jadi bisa. "
-            f"Yuk lanjutkan ke tantangan berikutnya!"
-        ),
+    # Check if text consists exclusively of punctuation, symbols, or whitespace
+    punct_set = set(string.punctuation + " \t\n\r…•—–-~`!@#$%^&*()_+={}[]|\\:;\"'<>,.?/")
+    if all(ch in punct_set for ch in stripped):
+        return (
+            "empty_punct",
+            (
+                "Halo! Sepertinya kamu hanya mengetik tanda baca atau titik (<code>.</code>). 😊\n\n"
+                "Yuk coba jawab soal latihan di atas dengan kata atau kalimat bahasa Inggris. Jangan ragu ya!"
+            )
+        )
+
+    # Extract alphanumeric characters only
+    alphanumeric_only = re.sub(r'[^a-zA-Z0-9]', '', stripped)
+    if len(alphanumeric_only) < 2 and not stripped.isdigit():
+        return (
+            "too_short",
+            (
+                "Halo! Jawabanmu terlalu singkat. 😊\n\n"
+                "Yuk coba ketik kata atau kalimat lengkap sesuai latihan di atas agar belajarmu semakin maksimal!"
+            )
+        )
+
+    # Check for excessive character repetition (e.g. 'aaaaa', 'zzzzzz', 'dddd')
+    if re.search(r'(.)\1{4,}', stripped.lower()):
+        return (
+            "gibberish",
+            (
+                "Halo! Jawaban yang kamu ketik terlihat seperti pengulangan huruf acak. 😊\n\n"
+                "Yuk baca kembali petunjuk soal di atas dan coba ketik kata bahasa Inggris yang sesuai ya!"
+            )
+        )
+
+    # Check for keyboard mash patterns
+    mash_patterns = [
+        r'^[asdfghjkl]{5,}$',
+        r'^[qwertyuiop]{5,}$',
+        r'^[zxcvbnm]{5,}$',
     ]
+    for pat in mash_patterns:
+        if re.match(pat, stripped.lower()):
+            return (
+                "gibberish",
+                (
+                    "Halo! Jawaban yang kamu ketik belum terbaca sebagai kata bahasa Inggris. 😊\n\n"
+                    "Yuk coba ketik jawaban sesuai instruksi soal di atas!"
+                )
+            )
 
-    return random.choice(templates)
+    return ("valid", None)
+
+
+def _normalize_answer(text: str) -> str:
+    """Helper to clean string for comparison."""
+    clean = text.lower().strip()
+    clean = re.sub(r'^[^\w]+|[^\w]+$', '', clean)
+    clean = re.sub(r'\s+', ' ', clean)
+    return clean
+
+
+def evaluate_offline_answer(
+    user_text: str,
+    active_exercise: Optional[Dict[str, Any]],
+    mode: str = config.MODE_DAILY_CONVERSATION,
+    level: str = config.DEFAULT_LEVEL,
+) -> str:
+    """
+    Pedagogically evaluates a student's answer without sugarcoating.
+    - If user enters '.', spam, or gibberish: politely reminds without praise.
+    - If user gives wrong answer: clearly states it is not yet correct, shows the answer key, and motivates.
+    - If user is correct: praises accurately.
+    """
+    quality_status, quality_msg = check_submission_quality(user_text)
+    if quality_msg:
+        return quality_msg
+
+    level_info = config.LEVEL_INFO.get(level, config.LEVEL_INFO[config.DEFAULT_LEVEL])
+    badge = level_info.get("badge", "Level")
+    safe_user_text = user_text.strip()
+
+    # If no active exercise or no expected keys provided, give constructive fallback
+    if not active_exercise or not active_exercise.get("expected"):
+        return (
+            f"✨ <b>Catatan Belajar ({badge}):</b>\n\n"
+            f"Jawabanmu: <i>\"{safe_user_text}\"</i>\n\n"
+            f"👍 Terima kasih sudah mencoba berlatih! "
+            f"Yuk tekan <b>🔄 Next Exercise</b> untuk melanjutkan latihan dengan soal terarah."
+        )
+
+    expected_list = active_exercise.get("expected", [])
+    primary_answer = active_exercise.get("primary_answer", expected_list[0] if expected_list else "")
+    norm_user = _normalize_answer(safe_user_text)
+
+    is_correct = False
+    for exp in expected_list:
+        norm_exp = _normalize_answer(exp)
+        if norm_user == norm_exp:
+            is_correct = True
+            break
+        # Also check if normalized expected is contained cleanly within user answer or vice versa
+        if len(norm_exp) >= 3 and (norm_exp in norm_user or norm_user in norm_exp):
+            is_correct = True
+            break
+
+    if is_correct:
+        return (
+            f"🎉 <b>Jawabanmu Tepat Sekali! ({badge})</b>\n\n"
+            f"📝 Jawabanmu: <code>{safe_user_text}</code>\n"
+            f"✅ Kunci: <b>{primary_answer}</b>\n\n"
+            f"🌟 Kerja bagus! Pemahamanmu sangat tepat. "
+            f"Tekan <b>🔄 Next Exercise</b> untuk melanjutkan ke tantangan berikutnya!"
+        )
+    else:
+        return (
+            f"💡 <b>Sedikit Lagi, Yuk Kita Koreksi! ({badge})</b>\n\n"
+            f"📝 Jawabanmu: <i>\"{safe_user_text}\"</i>\n"
+            f"🔑 <b>Kunci Jawaban yang Benar:</b> <code>{primary_answer}</code>\n\n"
+            f"Jangan berkecil hati ya, salah itu wajar saat belajar! 😊 "
+            f"Yuk coba ketik kunci jawaban di atas, atau tekan <b>🔄 Next Exercise</b> untuk mencoba soal baru!"
+        )
+
+
+def get_offline_feedback(
+    mode: str,
+    level: str,
+    safe_user_text: str,
+    active_exercise: Optional[Dict[str, Any]] = None,
+) -> str:
+    """
+    Backwards-compatible wrapper delegating to evaluate_offline_answer.
+    """
+    return evaluate_offline_answer(safe_user_text, active_exercise, mode, level)
