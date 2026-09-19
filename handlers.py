@@ -163,11 +163,30 @@ async def fetch_exercise(
     return content_bank.get_offline_exercise(mode, level, exclude_id)
 
 
+async def strip_previous_reply_markup(
+    context: ContextTypes.DEFAULT_TYPE,
+    chat_id: Optional[int],
+    message_id: Optional[int],
+) -> None:
+    """Safely removes inline keyboard from a previous message so old buttons do not dangle."""
+    if not chat_id or not message_id:
+        return
+    try:
+        await context.bot.edit_message_reply_markup(
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=None,
+        )
+    except Exception as exc:
+        logger.debug("Could not strip previous reply markup (chat_id=%s, msg_id=%s): %s", chat_id, message_id, exc)
+
+
 @rate_limited()
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     Handles /start command.
     Sends greeting and displays the 6 learning modes + level selector.
+    Cleans up any dangling buttons from previous interactive sessions.
     """
     if update.message is None:
         return
@@ -177,13 +196,20 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         logger.info("Ignoring /start from non-private chat id=%s", update.effective_chat.id)
         return
 
-    current_level = context.user_data.get("level", config.DEFAULT_LEVEL) if context.user_data else config.DEFAULT_LEVEL
+    user_data = context.user_data if context.user_data is not None else {}
+    current_level = user_data.get("level", config.DEFAULT_LEVEL)
 
-    await update.message.reply_text(
+    # Clean buttons from any previous interactive message
+    last_msg_id = user_data.get("last_interactive_msg_id")
+    if last_msg_id and update.effective_chat:
+        await strip_previous_reply_markup(context, update.effective_chat.id, last_msg_id)
+
+    sent_msg = await update.message.reply_text(
         text=WELCOME_MESSAGE,
         reply_markup=get_main_menu_keyboard(current_level),
         parse_mode=constants.ParseMode.HTML,
     )
+    user_data["last_interactive_msg_id"] = sent_msg.message_id
 
 
 @rate_limited()
@@ -206,9 +232,12 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
     await query.answer()
     data = query.data
 
-
     user_data = context.user_data if context.user_data is not None else {}
     current_level = user_data.get("level", config.DEFAULT_LEVEL)
+
+    # In-place editing: Keep track of current interactive message
+    if query.message:
+        user_data["last_interactive_msg_id"] = query.message.message_id
 
     # 1. Main Menu Navigation
     if data == config.ACTION_MAIN_MENU:
@@ -349,6 +378,11 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     active_prompt = user_data.get("active_prompt", "English practice exercise")
     active_exercise = user_data.get("active_exercise")
 
+    # Clean buttons from the previous interactive message so old buttons do not dangle
+    last_msg_id = user_data.get("last_interactive_msg_id")
+    if last_msg_id and update.effective_chat:
+        await strip_previous_reply_markup(context, update.effective_chat.id, last_msg_id)
+
     # Show typing indicator while coach evaluates
     if update.effective_chat:
         try:
@@ -368,11 +402,12 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         active_exercise=active_exercise,
     )
 
-    await update.message.reply_text(
+    sent_msg = await update.message.reply_text(
         text=sanitize_outgoing_text(feedback_text),
         reply_markup=get_mode_keyboard(active_mode),
         parse_mode=constants.ParseMode.HTML,
     )
+    user_data["last_interactive_msg_id"] = sent_msg.message_id
 
 
 async def global_error_handler(update: Optional[object], context: ContextTypes.DEFAULT_TYPE) -> None:
