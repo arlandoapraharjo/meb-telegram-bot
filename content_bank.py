@@ -20,6 +20,7 @@ Features:
 
 from __future__ import annotations
 
+import difflib
 import random
 import re
 import string
@@ -232,33 +233,60 @@ def evaluate_offline_answer(
     primary_answer = active_exercise.get("primary_answer", expected_list[0] if expected_list else "")
     norm_user = _normalize_answer(safe_user_text)
 
-    is_correct = False
+    # 1. Exact Match (permits case differences and surrounding punctuation)
     for exp in expected_list:
         norm_exp = _normalize_answer(exp)
         if norm_user == norm_exp:
-            is_correct = True
-            break
-        # Also check if normalized expected is contained cleanly within user answer or vice versa
-        if len(norm_exp) >= 3 and (norm_exp in norm_user or norm_user in norm_exp):
-            is_correct = True
-            break
+            return (
+                f"🎉 <b>Jawabanmu Tepat Sekali! ({badge})</b>\n\n"
+                f"📝 Jawabanmu: <code>{safe_user_text}</code>\n"
+                f"✅ Kunci: <b>{primary_answer}</b>\n\n"
+                f"🌟 Kerja bagus! Ejaan dan kalimatmu sudah 100% tepat. "
+                f"Tekan <b>🔄 Next Exercise</b> untuk tantangan berikutnya!"
+            )
 
-    if is_correct:
+    # 2. Minor Mistake & Typo Guard (detects near-misses, typos, extra letters, pronoun slips)
+    best_ratio = 0.0
+    best_exp_str = _normalize_answer(primary_answer)
+    for exp in expected_list:
+        n_exp = _normalize_answer(exp)
+        ratio = difflib.SequenceMatcher(None, norm_user, n_exp).ratio()
+        if ratio > best_ratio:
+            best_ratio = ratio
+            best_exp_str = n_exp
+
+    if best_ratio >= 0.70:
+        u_words = norm_user.split()
+        e_words = best_exp_str.split()
+        diff_points: List[str] = []
+
+        if len(u_words) == len(e_words):
+            for u_w, e_w in zip(u_words, e_words):
+                if u_w != e_w:
+                    diff_points.append(f"• Gunakan kata <b>{e_w}</b> (bukan <i>{u_w}</i>).")
+        elif len(u_words) > 0 and len(e_words) > 0:
+            diff_points.append(f"• Perhatikan ejaan yang benar: <b>{primary_answer}</b>.")
+
+        diff_text = "\n".join(diff_points)
+        if diff_text:
+            diff_text = f"💡 <b>Perhatikan koreksi agar tidak salah kaprah ya:</b>\n{diff_text}\n\n"
+
         return (
-            f"🎉 <b>Jawabanmu Tepat Sekali! ({badge})</b>\n\n"
+            f"⚠️ <b>Hampir Benar, Tapi Ada Sedikit Typo / Salah Ketik! ({badge})</b>\n\n"
             f"📝 Jawabanmu: <code>{safe_user_text}</code>\n"
-            f"✅ Kunci: <b>{primary_answer}</b>\n\n"
-            f"🌟 Kerja bagus! Pemahamanmu sangat tepat. "
-            f"Tekan <b>🔄 Next Exercise</b> untuk melanjutkan ke tantangan berikutnya!"
+            f"✅ Kunci yang Benar: <b>{primary_answer}</b>\n\n"
+            f"{diff_text}"
+            f"Yuk coba ketik sekali lagi jawaban yang benar di atas agar tidak menjadi kebiasaan salah ketik ya! Semangat! 😊"
         )
-    else:
-        return (
-            f"💡 <b>Sedikit Lagi, Yuk Kita Koreksi! ({badge})</b>\n\n"
-            f"📝 Jawabanmu: <i>\"{safe_user_text}\"</i>\n"
-            f"🔑 <b>Kunci Jawaban yang Benar:</b> <code>{primary_answer}</code>\n\n"
-            f"Jangan berkecil hati ya, salah itu wajar saat belajar! 😊 "
-            f"Yuk coba ketik kunci jawaban di atas, atau tekan <b>🔄 Next Exercise</b> untuk mencoba soal baru!"
-        )
+
+    # 3. Completely Incorrect or Far Off
+    return (
+        f"💡 <b>Sedikit Lagi, Yuk Kita Koreksi! ({badge})</b>\n\n"
+        f"📝 Jawabanmu: <i>\"{safe_user_text}\"</i>\n"
+        f"🔑 <b>Kunci Jawaban yang Benar:</b> <code>{primary_answer}</code>\n\n"
+        f"Jawabanmu masih belum tepat untuk soal ini. Jangan berkecil hati ya, salah itu wajar saat belajar! 😊\n"
+        f"Yuk coba ketik kunci jawaban di atas, atau tekan <b>🔄 Next Exercise</b> untuk mencoba soal baru!"
+    )
 
 
 def get_offline_feedback(

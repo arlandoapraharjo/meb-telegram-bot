@@ -72,7 +72,8 @@ MAX_MESSAGE_LENGTH: Final[int] = int(os.getenv("MAX_MESSAGE_LENGTH", "300"))
 # --- Gemini AI Configuration (Optional Hybrid Mode) ---
 GEMINI_API_KEY: Final[str] = os.getenv("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL: Final[str] = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
-GEMINI_TIMEOUT_SECONDS: Final[float] = 7.0
+# Timeout threshold for Gemini Flash calls before falling back to offline bank
+GEMINI_TIMEOUT_SECONDS: Final[float] = 9.5
 
 # --- Difficulty Levels (CEFR) ---
 LEVEL_BEGINNER: Final[str] = "beginner"
