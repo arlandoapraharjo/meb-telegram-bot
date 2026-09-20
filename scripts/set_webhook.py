@@ -38,7 +38,10 @@ WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET", "").strip()
 
 def get_ssl_context():
     try:
-        return ssl.create_default_context(cafile=certifi.where())
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        return ctx
     except Exception:
         return ssl._create_unverified_context()
 
