@@ -122,6 +122,8 @@ async def generate_dynamic_exercise(mode: str, level: str) -> Optional[Dict[str,
                 config=types.GenerateContentConfig(
                     system_instruction=get_coach_system_instruction(),
                     temperature=0.8,
+                    max_output_tokens=300,
+                    thinking_config=types.ThinkingConfig(thinking_budget=0),
                     response_mime_type="application/json",
                 ),
             ),
@@ -169,6 +171,13 @@ async def evaluate_student_message(
     if quality_msg:
         return quality_msg
 
+    # 2. Fast-Path: Deterministic exact match check (0ms latency, zero API cost)
+    if active_exercise and active_exercise.get("expected"):
+        norm_user = content_bank._normalize_answer(user_text)
+        for exp in active_exercise["expected"]:
+            if norm_user == content_bank._normalize_answer(exp):
+                return content_bank.evaluate_offline_answer(user_text, active_exercise, mode, level)
+
     client = get_genai_client()
     if not client:
         return content_bank.evaluate_offline_answer(user_text, active_exercise, mode, level)
@@ -214,6 +223,8 @@ async def evaluate_student_message(
                 config=types.GenerateContentConfig(
                     system_instruction=get_coach_system_instruction(),
                     temperature=0.6,
+                    max_output_tokens=300,
+                    thinking_config=types.ThinkingConfig(thinking_budget=0),
                 ),
             ),
             timeout=config.GEMINI_TIMEOUT_SECONDS,

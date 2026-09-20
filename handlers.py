@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import html
 import logging
+import os
 import re
 import traceback
 from typing import Any, Dict, Optional
@@ -237,36 +238,58 @@ HELP_MESSAGE: str = (
     "• /help - Menampilkan panduan bantuan ini"
 )
 
-BOT_DESCRIPTION_EN: str = (
-    f"Welcome to {config.BOT_NAME}! 👋✨\n"
-    "Your interactive English learning companion with 1,000 curated exercises & smart AI coaching!\n\n"
-    "🌟 What can this bot do?\n"
-    "• 💬 Conversation: Practice real-life dialogues\n"
-    "• 📚 Vocabulary: Expand words, idioms & phrases\n"
-    "• ✍️ Grammar: Master tenses & sentence structure\n"
-    "• 📖 Reading: Interactive stories & comprehension\n"
-    "• ⚡ Challenge: Rapid-fire adaptive quizzes\n\n"
-    "🎯 3 Levels: Beginner, Intermediate, Advanced\n"
-    "⚡ 1,000 exercises offline + AI evaluation\n\n"
-    "Tap START to begin! 🚀"
-)
+def get_bot_description_en(bot_name: Optional[str] = None) -> str:
+    """Generates the English bot profile description adapting to any bot name."""
+    name = (bot_name or config.BOT_NAME).strip() or "Mebby"
+    return (
+        f"Welcome to {name}! 👋✨\n"
+        "Your interactive English learning companion with 1,000 curated exercises & smart AI coaching!\n\n"
+        "🌟 What can this bot do?\n"
+        "• 💬 Conversation: Practice real-life dialogues\n"
+        "• 📚 Vocabulary: Expand words, idioms & phrases\n"
+        "• ✍️ Grammar: Master tenses & sentence structure\n"
+        "• 📖 Reading: Interactive stories & comprehension\n"
+        "• ⚡ Challenge: Rapid-fire adaptive quizzes\n\n"
+        "🎯 3 Levels: Beginner, Intermediate, Advanced\n"
+        "⚡ 1,000 exercises offline + AI evaluation\n\n"
+        "Tap START to begin! 🚀"
+    )
 
-BOT_DESCRIPTION_ID: str = (
-    f"Selamat datang di {config.BOT_NAME}! 👋✨\n"
-    "Teman belajar bahasa Inggris interaktif dengan 1.000 bank soal kurasi & evaluasi cerdas!\n\n"
-    "🌟 Apa yang bisa dilakukan bot ini?\n"
-    "• 💬 Percakapan: Latihan dialog situasi nyata\n"
-    "• 📚 Kosakata: Perkaya kosakata & frasa baru\n"
-    "• ✍️ Tata Bahasa: Kuasai tenses & pola kalimat\n"
-    "• 📖 Membaca: Cerita menarik & uji pemahaman\n"
-    "• ⚡ Tantangan: Kuis kilat adaptif seru\n\n"
-    "🎯 3 Tingkat: Pemula, Menengah, Mahir\n"
-    "⚡ 1.000 latihan offline + evaluasi AI\n\n"
-    "Tekan START untuk mulai belajar! 🚀"
-)
 
-BOT_SHORT_DESC_EN: str = f"{config.BOT_NAME}: Interactive English learning companion with 1,000 curated exercises, 5 tracks, and smart AI feedback."
-BOT_SHORT_DESC_ID: str = f"{config.BOT_NAME}: Bot belajar bahasa Inggris interaktif dengan 1.000 materi kurasi, 5 kategori, dan evaluasi cerdas."
+def get_bot_description_id(bot_name: Optional[str] = None) -> str:
+    """Generates the Indonesian bot profile description adapting to any bot name."""
+    name = (bot_name or config.BOT_NAME).strip() or "Mebby"
+    return (
+        f"Selamat datang di {name}! 👋✨\n"
+        "Teman belajar bahasa Inggris interaktif dengan 1.000 bank soal kurasi & evaluasi cerdas!\n\n"
+        "🌟 Apa yang bisa dilakukan bot ini?\n"
+        "• 💬 Percakapan: Latihan dialog situasi nyata\n"
+        "• 📚 Kosakata: Perkaya kosakata & frasa baru\n"
+        "• ✍️ Tata Bahasa: Kuasai tenses & pola kalimat\n"
+        "• 📖 Membaca: Cerita menarik & uji pemahaman\n"
+        "• ⚡ Tantangan: Kuis kilat adaptif seru\n\n"
+        "🎯 3 Tingkat: Pemula, Menengah, Mahir\n"
+        "⚡ 1.000 latihan offline + evaluasi AI\n\n"
+        "Tekan START untuk mulai belajar! 🚀"
+    )
+
+
+def get_bot_short_desc_en(bot_name: Optional[str] = None) -> str:
+    """Generates the English short description adapting to any bot name."""
+    name = (bot_name or config.BOT_NAME).strip() or "Mebby"
+    return f"{name}: Interactive English learning companion with 1,000 curated exercises, 5 tracks, and smart AI feedback."
+
+
+def get_bot_short_desc_id(bot_name: Optional[str] = None) -> str:
+    """Generates the Indonesian short description adapting to any bot name."""
+    name = (bot_name or config.BOT_NAME).strip() or "Mebby"
+    return f"{name}: Bot belajar bahasa Inggris interaktif dengan 1.000 materi kurasi, 5 kategori, dan evaluasi cerdas."
+
+
+BOT_DESCRIPTION_EN: str = get_bot_description_en()
+BOT_DESCRIPTION_ID: str = get_bot_description_id()
+BOT_SHORT_DESC_EN: str = get_bot_short_desc_en()
+BOT_SHORT_DESC_ID: str = get_bot_short_desc_id()
 
 BOT_COMMANDS = [
     BotCommand("start", "Buka menu utama belajar (Open main menu)"),
@@ -278,15 +301,25 @@ async def setup_bot_profile(bot: Bot) -> None:
     """
     Synchronizes bot description ('What can this bot do?'), short description,
     and menu commands with the Telegram Bot API.
-    Does not call set_my_name to avoid serverless cold-start side effects and rate limits.
+    Dynamically adapts to the bot's configured or actual Telegram name.
     """
     try:
-        await bot.set_my_description(description=BOT_DESCRIPTION_EN)
-        await bot.set_my_description(description=BOT_DESCRIPTION_ID, language_code="id")
-        await bot.set_my_short_description(short_description=BOT_SHORT_DESC_EN)
-        await bot.set_my_short_description(short_description=BOT_SHORT_DESC_ID, language_code="id")
+        bot_name = config.BOT_NAME
+        # If BOT_NAME was not explicitly set in environment, attempt to fetch Telegram profile name
+        if not os.getenv("BOT_NAME"):
+            try:
+                me = await bot.get_me()
+                if me and me.first_name:
+                    bot_name = me.first_name.strip()
+            except Exception as get_me_err:
+                logger.debug("Could not resolve bot name via get_me(): %s", get_me_err)
+
+        await bot.set_my_description(description=get_bot_description_en(bot_name))
+        await bot.set_my_description(description=get_bot_description_id(bot_name), language_code="id")
+        await bot.set_my_short_description(short_description=get_bot_short_desc_en(bot_name))
+        await bot.set_my_short_description(short_description=get_bot_short_desc_id(bot_name), language_code="id")
         await bot.set_my_commands(commands=BOT_COMMANDS)
-        logger.info("Successfully updated Telegram bot profile descriptions and commands.")
+        logger.info("Successfully updated Telegram bot profile descriptions and commands for '%s'.", bot_name)
     except Exception as exc:
         logger.warning("Could not update bot profile descriptions with Telegram API: %s", exc)
 

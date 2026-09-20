@@ -70,11 +70,11 @@ def create_ptb_application() -> Application:
     Builds and registers handlers on the python-telegram-bot Application instance.
     Does NOT trigger run_polling().
     """
-    token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+    token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip().strip("'\"")
     if not token:
-        logger.warning(
-            "TELEGRAM_BOT_TOKEN is not set or empty. "
-            "Webhook calls will fail until configured."
+        logger.error(
+            "CRITICAL: TELEGRAM_BOT_TOKEN is missing or empty! "
+            "Configure TELEGRAM_BOT_TOKEN in your Vercel Project Settings."
         )
 
     # Configure resilient HTTPX timeout parameters
@@ -305,7 +305,9 @@ async def get_brand_icon(request: Request):
 
 
 @app.post("/api/webhook")
+@app.post("/api/webhook/")
 @app.post("/webhook")
+@app.post("/webhook/")
 @app.post("/api/index")
 @app.post("/api/index.py")
 @app.post("/")
@@ -323,7 +325,7 @@ async def telegram_webhook(
     - Processes update asynchronously via await app.process_update(update).
     - Returns HTTP 200 {"status": "ok"} immediately to prevent retry storms.
     """
-    webhook_secret = os.getenv("WEBHOOK_SECRET", "").strip()
+    webhook_secret = os.getenv("WEBHOOK_SECRET", "").strip().strip("'\"")
 
     # 1. Security check: Validate Telegram secret token
     if webhook_secret:

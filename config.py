@@ -99,8 +99,8 @@ MAX_MESSAGE_LENGTH: Final[int] = int(os.getenv("MAX_MESSAGE_LENGTH", "300"))
 # --- Gemini AI Configuration (Optional Hybrid Mode) ---
 GEMINI_API_KEY: Final[str] = os.getenv("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL: Final[str] = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
-# Timeout threshold for Gemini Flash calls before falling back to offline bank
-GEMINI_TIMEOUT_SECONDS: Final[float] = 9.5
+# Timeout threshold for Gemini Flash calls before falling back to offline bank (4.0s prevents Vercel serverless timeouts)
+GEMINI_TIMEOUT_SECONDS: Final[float] = float(os.getenv("GEMINI_TIMEOUT_SECONDS", "4.0"))
 
 # --- Difficulty Levels (CEFR) ---
 LEVEL_BEGINNER: Final[str] = "beginner"

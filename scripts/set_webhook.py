@@ -32,8 +32,8 @@ if str(ROOT_DIR) not in sys.path:
 
 load_dotenv(ROOT_DIR / ".env")
 
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
-WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET", "").strip()
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip().strip("'\"")
+WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET", "").strip().strip("'\"")
 
 
 def get_ssl_context():
@@ -48,7 +48,7 @@ def get_ssl_context():
 
 def check_token() -> str:
     if not BOT_TOKEN:
-        print("❌ Error: TELEGRAM_BOT_TOKEN is not set in .env")
+        print("❌ Error: TELEGRAM_BOT_TOKEN is not set in .env and not passed via --token")
         sys.exit(1)
     return BOT_TOKEN
 
@@ -140,31 +140,51 @@ def delete_webhook():
 
 def setup_profile():
     print("\n📝 Updating Telegram Bot Profile ('What can this bot do?')...")
+    import config
     from handlers import (
-        BOT_DESCRIPTION_EN,
-        BOT_DESCRIPTION_ID,
-        BOT_SHORT_DESC_EN,
-        BOT_SHORT_DESC_ID,
+        get_bot_description_en,
+        get_bot_description_id,
+        get_bot_short_desc_en,
+        get_bot_short_desc_id,
+        BOT_COMMANDS,
     )
 
-    r1 = api_request("setMyDescription", {"description": BOT_DESCRIPTION_EN})
-    r2 = api_request("setMyDescription", {"description": BOT_DESCRIPTION_ID, "language_code": "id"})
-    r3 = api_request("setMyShortDescription", {"short_description": BOT_SHORT_DESC_EN})
-    r4 = api_request("setMyShortDescription", {"short_description": BOT_SHORT_DESC_ID, "language_code": "id"})
+    # Determine bot name: env variable -> Telegram getMe profile -> config default
+    bot_name = os.getenv("BOT_NAME", "").strip()
+    if not bot_name:
+        me_res = api_request("getMe")
+        if me_res.get("ok"):
+            bot_name = me_res.get("result", {}).get("first_name", "").strip()
+    if not bot_name:
+        bot_name = config.BOT_NAME
+
+    print(f"🤖 Adapting profile descriptions for bot: '{bot_name}'")
+
+    desc_en = get_bot_description_en(bot_name)
+    desc_id = get_bot_description_id(bot_name)
+    short_en = get_bot_short_desc_en(bot_name)
+    short_id = get_bot_short_desc_id(bot_name)
+
+    r1 = api_request("setMyDescription", {"description": desc_en})
+    r2 = api_request("setMyDescription", {"description": desc_id, "language_code": "id"})
+    r3 = api_request("setMyShortDescription", {"short_description": short_en})
+    r4 = api_request("setMyShortDescription", {"short_description": short_id, "language_code": "id"})
     commands = json.dumps([
-        {"command": "start", "description": "Buka menu utama belajar (Open main menu)"},
-        {"command": "help", "description": "Panduan & bantuan belajar (User guide & help)"}
+        {"command": cmd.command, "description": cmd.description}
+        for cmd in BOT_COMMANDS
     ])
     r5 = api_request("setMyCommands", {"commands": commands})
 
     if r1.get("ok") and r2.get("ok") and r3.get("ok") and r5.get("ok"):
-        print("✅ SUCCESS: Telegram bot profile, descriptions, and commands updated successfully!")
+        print(f"✅ SUCCESS: Telegram bot profile for '{bot_name}' updated successfully!")
     else:
         print("⚠️ Profile update completed with results:", [r1, r2, r3, r4, r5])
 
 
 def main():
     parser = argparse.ArgumentParser(description="Manage Telegram Bot Webhook for Vercel")
+    parser.add_argument("--token", help="Override Telegram Bot Token from .env")
+    parser.add_argument("--secret", help="Override Webhook Secret Token from .env")
     subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
     set_parser = subparsers.add_parser("set", help="Set the webhook to your Vercel URL")
@@ -175,6 +195,12 @@ def main():
     subparsers.add_parser("profile", help="Update bot description and commands on Telegram")
 
     args = parser.parse_args()
+
+    global BOT_TOKEN, WEBHOOK_SECRET
+    if args.token:
+        BOT_TOKEN = args.token.strip().strip("'\"")
+    if args.secret:
+        WEBHOOK_SECRET = args.secret.strip().strip("'\"")
 
     if args.action == "set":
         url = args.url
