@@ -170,24 +170,37 @@ def setup_profile():
     short_en = get_bot_short_desc_en(bot_name=bot_name, bot_username=bot_username)
     short_id = get_bot_short_desc_id(bot_name=bot_name, bot_username=bot_username)
 
-    r1 = api_request("setMyDescription", {"description": desc_en})
+    # Set Indonesian as primary/default for all users
+    r1 = api_request("setMyDescription", {"description": desc_id})
     r2 = api_request("setMyDescription", {"description": desc_id, "language_code": "id"})
-    r3 = api_request("setMyShortDescription", {"short_description": short_en})
-    r4 = api_request("setMyShortDescription", {"short_description": short_id, "language_code": "id"})
+    r3 = api_request("setMyDescription", {"description": desc_en, "language_code": "en"})
+
+    r4 = api_request("setMyShortDescription", {"short_description": short_id})
+    r5 = api_request("setMyShortDescription", {"short_description": short_id, "language_code": "id"})
+    r6 = api_request("setMyShortDescription", {"short_description": short_en, "language_code": "en"})
+
     commands = json.dumps([
         {"command": cmd.command, "description": cmd.description}
         for cmd in BOT_COMMANDS
     ])
-    r5 = api_request("setMyCommands", {"commands": commands})
+    r7 = api_request("setMyCommands", {"commands": commands})
 
-    if r1.get("ok") and r2.get("ok") and r3.get("ok") and r4.get("ok") and r5.get("ok"):
-        print(f"✅ SUCCESS: Telegram bot profile for '{bot_name}' (@{bot_username}) updated successfully!")
+    requests = [
+        ("desc_default_id", r1),
+        ("desc_id", r2),
+        ("desc_en", r3),
+        ("short_default_id", r4),
+        ("short_id", r5),
+        ("short_en", r6),
+        ("commands", r7),
+    ]
+
+    all_ok = all(r.get("ok") for _, r in requests)
+    if all_ok:
+        print(f"✅ SUCCESS: Telegram bot profile for '{bot_name}' (@{bot_username}) updated successfully to Indonesian (default) & English!")
     else:
-        errors = []
-        for name, r in [("desc_en", r1), ("desc_id", r2), ("short_en", r3), ("short_id", r4), ("commands", r5)]:
-            if not r.get("ok"):
-                errors.append(f"{name}: {r.get('description', 'failed')}")
-        print(f"⚠️ Profile update status: {', '.join(errors) if errors else 'all applied'}")
+        errors = [f"{name}: {r.get('description', 'failed')}" for name, r in requests if not r.get("ok")]
+        print(f"⚠️ Profile update status: {', '.join(errors)}")
 
 
 def main():

@@ -316,15 +316,12 @@ def get_bot_description_en(
     full_display, _ = resolve_bot_identity(bot_name, bot_username)
     desc = (
         f"Welcome to {full_display}! 👋✨\n"
-        "Your interactive English learning companion for all levels with 1,000 curated exercises & smart AI coaching!\n\n"
-        "🌟 What can you do?\n"
-        "• 💬 Conversation: Real-life dialogues\n"
-        "• 📚 Vocabulary: Expand words & phrases\n"
-        "• ✍️ Grammar: Master sentence patterns\n"
-        "• 📖 Reading: Stories & comprehension\n"
-        "• ⚡ Challenge: Rapid-fire adaptive quizzes\n\n"
-        "🎯 3 Levels: Beginner, Intermediate, Advanced\n"
-        "⚡ 1,000 exercises offline + AI evaluation\n\n"
+        "Your interactive English learning coach with 1,000 exercises & smart pedagogical AI!\n\n"
+        "🌟 Features:\n"
+        "• 💬 Conversation, Vocabulary, Grammar & Reading\n"
+        "• ⚡ 1,000 bite-sized exercises (Beginner to Confident)\n"
+        "• 💡 Ask Anything: Ask 'what does this mean?', word definitions, or request clues!\n"
+        "• 🎯 Smart & Safe: Honest feedback & helpful hints without instant spoilers\n\n"
         "Tap START to begin! 🚀"
     )
     return desc[:512]
@@ -338,15 +335,12 @@ def get_bot_description_id(
     full_display, _ = resolve_bot_identity(bot_name, bot_username)
     desc = (
         f"Selamat datang di {full_display}! 👋✨\n"
-        "Teman belajar bahasa Inggris interaktif untuk semua kalangan dengan 1.000 materi kurasi & evaluasi cerdas!\n\n"
+        "Teman belajar bahasa Inggris interaktif dengan 1.000 materi latihan & AI Coach ramah!\n\n"
         "🌟 Fitur Utama:\n"
-        "• 💬 Percakapan: Latihan dialog nyata\n"
-        "• 📚 Kosakata: Kosakata & frasa baru\n"
-        "• ✍️ Tata Bahasa: Kuasai pola kalimat\n"
-        "• 📖 Membaca: Cerita seru & pemahaman\n"
-        "• ⚡ Tantangan: Kuis kilat adaptif\n\n"
-        "🎯 3 Tingkat: Pemula, Menengah, Mahir\n"
-        "⚡ 1.000 latihan offline + evaluasi AI\n\n"
+        "• 💬 Percakapan, Kosakata, Tata Bahasa & Membaca\n"
+        "• ⚡ 1.000 latihan kurasi (Pemula, Menengah, Mahir)\n"
+        "• 💡 Tanya Mebby: Bebas tanya 'apa maksudnya?', arti kata, atau minta petunjuk!\n"
+        "• 🎯 Edukatif & Aman: Panduan bertahap & koreksi jujur tanpa bocoran langsung\n\n"
         "Tekan START untuk mulai belajar! 🚀"
     )
     return desc[:512]
@@ -358,7 +352,7 @@ def get_bot_short_desc_en(
 ) -> str:
     """Generates the English short description adapting to any bot identity."""
     _, short_display = resolve_bot_identity(bot_name, bot_username)
-    desc = f"{short_display}: Interactive English companion for all levels with 1,000 exercises & smart AI feedback."
+    desc = f"{short_display}: Interactive English companion with 1,000 exercises, smart AI coach, & interactive hints."
     return desc[:120]
 
 
@@ -368,7 +362,7 @@ def get_bot_short_desc_id(
 ) -> str:
     """Generates the Indonesian short description adapting to any bot identity."""
     _, short_display = resolve_bot_identity(bot_name, bot_username)
-    desc = f"{short_display}: Bot belajar bahasa Inggris untuk semua kalangan dengan 1.000 materi & evaluasi cerdas."
+    desc = f"{short_display}: Bot belajar bahasa Inggris interaktif dengan 1.000 materi kurasi, tanya arti, & petunjuk AI."
     return desc[:120]
 
 
@@ -388,6 +382,7 @@ async def setup_bot_profile(bot: Bot) -> None:
     Synchronizes bot description ('What can this bot do?'), short description,
     and menu commands with the Telegram Bot API.
     Dynamically adapts to the bot's configured or actual Telegram name and username.
+    Configures Indonesian as the default profile display for all users.
     """
     try:
         bot_name = ""
@@ -407,10 +402,15 @@ async def setup_bot_profile(bot: Bot) -> None:
         short_en = get_bot_short_desc_en(bot_name=bot_name, bot_username=bot_username)
         short_id = get_bot_short_desc_id(bot_name=bot_name, bot_username=bot_username)
 
-        await bot.set_my_description(description=desc_en)
+        # Set Indonesian as primary/default for all users, with language-specific fallbacks
+        await bot.set_my_description(description=desc_id)
         await bot.set_my_description(description=desc_id, language_code="id")
-        await bot.set_my_short_description(short_description=short_en)
+        await bot.set_my_description(description=desc_en, language_code="en")
+
+        await bot.set_my_short_description(short_description=short_id)
         await bot.set_my_short_description(short_description=short_id, language_code="id")
+        await bot.set_my_short_description(short_description=short_en, language_code="en")
+
         await bot.set_my_commands(commands=BOT_COMMANDS)
         logger.info(
             "Successfully updated Telegram bot profile descriptions and commands for '%s' (@%s).",
