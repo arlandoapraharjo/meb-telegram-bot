@@ -1,5 +1,5 @@
 /// <reference path="./declarations.d.ts" />
-import React, { useState, type ElementType, type FC, type MouseEvent } from "react";
+import React, { useState, type FC, type MouseEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUpRight,
@@ -17,6 +17,203 @@ import {
   Layers,
 } from "lucide-react";
 import { ShaderBackground } from "./components/ui/dotted-veil";
+
+// 21st.dev / Lucide Animated Icons (Micro-Interactions powered by Framer Motion)
+const AnimatedChatIcon: FC<{ className?: string }> = ({ className = "w-3 h-3" }) => (
+  <motion.svg
+    fill="none"
+    height={14}
+    width={14}
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    className={className}
+    variants={{
+      normal: { scale: 1, rotate: 0 },
+      hover: {
+        scale: [1, 1.2, 1.05],
+        rotate: [0, -9, 9, -4, 0],
+        transition: { duration: 0.5, ease: "easeInOut" },
+      },
+    }}
+  >
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    <motion.circle
+      cx="9"
+      cy="10"
+      r="1"
+      fill="currentColor"
+      variants={{
+        normal: { opacity: 0.7, scale: 1 },
+        hover: { opacity: [0.3, 1, 0.7], scale: [0.8, 1.3, 1], transition: { duration: 0.4, repeat: 1 } },
+      }}
+    />
+    <motion.circle
+      cx="12"
+      cy="10"
+      r="1"
+      fill="currentColor"
+      variants={{
+        normal: { opacity: 0.7, scale: 1 },
+        hover: { opacity: [0.3, 1, 0.7], scale: [0.8, 1.3, 1], transition: { duration: 0.4, delay: 0.1, repeat: 1 } },
+      }}
+    />
+    <motion.circle
+      cx="15"
+      cy="10"
+      r="1"
+      fill="currentColor"
+      variants={{
+        normal: { opacity: 0.7, scale: 1 },
+        hover: { opacity: [0.3, 1, 0.7], scale: [0.8, 1.3, 1], transition: { duration: 0.4, delay: 0.2, repeat: 1 } },
+      }}
+    />
+  </motion.svg>
+);
+
+const AnimatedVocabIcon: FC<{ className?: string }> = ({ className = "w-3 h-3" }) => (
+  <motion.svg
+    fill="none"
+    height={14}
+    width={14}
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    className={className}
+    variants={{
+      normal: { scale: 1, rotate: 0, y: 0 },
+      hover: {
+        scale: [1, 1.15, 1],
+        rotate: [0, -8, 8, -5, 0],
+        y: [0, -2, 0],
+        transition: { duration: 0.55, ease: "easeInOut" },
+      },
+    }}
+  >
+    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+    <motion.path
+      d="m8 13 4-7 4 7"
+      variants={{
+        normal: { pathLength: 1 },
+        hover: { pathLength: [0, 1], transition: { duration: 0.45, ease: "easeOut" } },
+      }}
+    />
+    <motion.path
+      d="M9.1 11h5.7"
+      variants={{
+        normal: { opacity: 1 },
+        hover: { opacity: [0, 1], transition: { duration: 0.3, delay: 0.2 } },
+      }}
+    />
+  </motion.svg>
+);
+
+const AnimatedGrammarIcon: FC<{ className?: string }> = ({ className = "w-3 h-3" }) => (
+  <motion.svg
+    fill="none"
+    height={14}
+    width={14}
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    className={className}
+    variants={{
+      normal: { rotate: 0, x: 0, y: 0 },
+      hover: {
+        rotate: [0, -16, 6, -10, 0],
+        x: [0, -1, 1, 0],
+        y: [0, -2, 0, 0],
+        transition: { duration: 0.6, ease: "easeInOut" },
+      },
+    }}
+  >
+    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    <path d="m15 5 3 3" />
+    <motion.path
+      d="M12 20h9"
+      variants={{
+        normal: { pathLength: 1, opacity: 1 },
+        hover: { pathLength: [0, 1], opacity: [0, 1], transition: { duration: 0.5, ease: "easeOut" } },
+      }}
+    />
+  </motion.svg>
+);
+
+const AnimatedReadingIcon: FC<{ className?: string }> = ({ className = "w-3 h-3" }) => (
+  <motion.svg
+    fill="none"
+    height={14}
+    width={14}
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    className={className}
+    variants={{
+      normal: { scale: 1 },
+      hover: {
+        scale: [1, 1.2, 1],
+        transition: { duration: 0.5, ease: "easeInOut" },
+      },
+    }}
+  >
+    <motion.path
+      d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
+      variants={{
+        normal: { x: 0 },
+        hover: { x: [0, -1.5, 0], transition: { duration: 0.5 } },
+      }}
+    />
+    <motion.path
+      d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+      variants={{
+        normal: { x: 0 },
+        hover: { x: [0, 1.5, 0], transition: { duration: 0.5 } },
+      }}
+    />
+  </motion.svg>
+);
+
+const AnimatedZapIcon: FC<{ className?: string }> = ({ className = "w-3 h-3" }) => (
+  <motion.svg
+    fill="none"
+    height={14}
+    width={14}
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    className={className}
+    variants={{
+      normal: { scale: 1, rotate: 0 },
+      hover: {
+        scale: [1, 1.25, 1],
+        rotate: [0, -12, 10, 0],
+        transition: { duration: 0.55, ease: "easeInOut" },
+      },
+    }}
+  >
+    <motion.path
+      d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+      variants={{
+        normal: { pathLength: 1, opacity: 1 },
+        hover: {
+          pathLength: [0, 1],
+          opacity: [0.3, 1],
+          transition: { duration: 0.5, ease: "easeOut" },
+        },
+      }}
+    />
+  </motion.svg>
+);
 
 export interface BotStatusCardProps {
   botName?: string;
@@ -98,17 +295,17 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-zinc-950/80 p-4 sm:p-8 backdrop-blur-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_20px_50px_-12px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
+        className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#1e222d] bg-[#0c0d12] p-5 sm:p-8 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_25px_50px_-12px_rgba(0,0,0,0.95)]"
       >
         {/* WebGL Shader Background behind card content */}
         <div className="absolute inset-0 pointer-events-none opacity-30 -z-10 overflow-hidden rounded-2xl sm:rounded-3xl">
           <ShaderBackground className="w-full h-full" />
         </div>
 
-        {/* Subtle Top Accent Line */}
+        {/* Top Precision Edge Highlight */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent"
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"
         />
 
         {/* 1. HEADER SECTION */}
@@ -119,7 +316,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
               variants={itemVariants}
               role="status"
               aria-label={`System status: ${statusText} with ${uptime} uptime`}
-              className="inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-3 py-1 text-xs font-medium text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.12)] whitespace-nowrap transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/[0.12]"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-500/30 bg-[#0e1f17] px-3 py-1 text-xs font-medium text-emerald-400 shadow-sm whitespace-nowrap transition-colors hover:border-emerald-500/40 hover:bg-[#12281e]"
             >
               <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -207,140 +404,189 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
         </header>
 
         {/* 2. DUAL ENGINE STATUS: CONTENT BANK VS GEMINI MODE */}
+        {/* 2. DUAL ENGINE STATUS (MINIMALIST) */}
         <motion.section
           variants={itemVariants}
           className="mt-6 sm:mt-7 relative z-10"
           aria-label="Engine Operational Status"
         >
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <div className="mb-3.5 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <h2 className="text-xs font-mono font-medium uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
+              <h2 className="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
                 <Layers className="h-3.5 w-3.5 text-emerald-400" />
-                <span>Dual Engine Status</span>
+                <span>Status Sistem</span>
               </h2>
-              <span className="inline-flex items-center rounded-md border border-zinc-800 bg-zinc-900/80 px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
-                2 Modes
+              <span className="inline-flex items-center rounded-md border border-zinc-800/80 bg-zinc-900/60 px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
+                Dual Engine
               </span>
             </div>
 
-            {/* Overarching Summary Pill: Only 1 Mode Active */}
-            <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/[0.08] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.1)] whitespace-nowrap">
+            {/* Overarching Summary Pill: Dynamic 2 of 2 vs 1 of 2 */}
+            <div
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-mono whitespace-nowrap transition-all duration-300 ${
+                geminiActive && contentBankActive
+                  ? "border-emerald-500/40 bg-[#0e2017] text-emerald-300 shadow-sm"
+                  : "border-amber-500/40 bg-[#21190c] text-amber-300 shadow-sm"
+              }`}
+            >
               <span className="relative flex h-2 w-2 shrink-0">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-400" />
+                <span
+                  className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 ${
+                    geminiActive && contentBankActive ? "bg-emerald-400" : "bg-amber-400"
+                  }`}
+                />
+                <span
+                  className={`relative inline-flex h-2 w-2 rounded-full ${
+                    geminiActive && contentBankActive ? "bg-emerald-400" : "bg-amber-400"
+                  }`}
+                />
               </span>
-              <span className="font-medium whitespace-nowrap">1 Mode Aktif (Content Bank)</span>
+              <span className="font-medium whitespace-nowrap">
+                {geminiActive && contentBankActive ? "2 dari 2 Aktif (Hybrid Mode)" : "1 dari 2 Aktif (Bank Soal)"}
+              </span>
             </div>
           </div>
 
-          {/* Mode Comparison Grid */}
+          {/* Solid Matte Engine Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* Mode 1: Content Bank (ACTIVE) */}
-            <div className="relative overflow-hidden rounded-2xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/[0.08] to-zinc-900/80 p-4 shadow-[0_0_20px_rgba(16,185,129,0.08)] backdrop-blur-md">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 shadow-sm">
+            {/* Engine 1: Content Bank (Always Active) */}
+            <div className="relative overflow-hidden rounded-xl border border-emerald-500/30 bg-[#11161f] p-3.5 transition-all duration-200 hover:border-emerald-500/40">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-500/30 bg-[#0e2118] text-emerald-400 shadow-sm">
                     <Database className="h-4.5 w-4.5" />
                   </div>
-                  <div>
-                    <h3 className="text-xs font-semibold text-zinc-100 flex items-center gap-1.5">
-                      Content Bank Mode
-                      <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-mono font-medium text-emerald-300">
-                        Offline
-                      </span>
-                    </h3>
-                    <p className="text-[10px] text-zinc-400">Materi Terkurasi & Mandiri</p>
+                  <div className="min-w-0">
+                    <h3 className="text-xs font-semibold text-zinc-100 truncate">Content Bank</h3>
+                    <p className="text-[10px] text-zinc-400 truncate">360 Latihan • 5 Kategori</p>
                   </div>
                 </div>
 
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300">
+                <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/40 bg-[#0e2017] px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   AKTIF
                 </span>
               </div>
-
-              <div className="mt-3.5 space-y-1.5 text-[11px] border-t border-zinc-800/80 pt-2.5 font-sans">
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Status Mesin:</span>
-                  <span className="font-medium text-emerald-400 flex items-center gap-1">
-                    <CheckCircle2 className="h-3 w-3" /> Siap Melayani
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Kapasitas:</span>
-                  <span className="font-mono text-zinc-200">360 Soal (5 Kategori)</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Kecepatan:</span>
-                  <span className="font-mono text-emerald-400">&lt; 1 ms (Instan)</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Kebutuhan Kuota:</span>
-                  <span className="font-mono text-zinc-300">100% Gratis / No API Key</span>
-                </div>
-              </div>
             </div>
 
-            {/* Mode 2: Gemini Flash AI (STANDBY / INACTIVE) */}
-            <div className="relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-4 backdrop-blur-md">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-800/40 text-zinc-400">
+            {/* Engine 2: Gemini Flash AI (Dynamic) */}
+            <div
+              className={`relative overflow-hidden rounded-xl border p-3.5 transition-all duration-300 ${
+                geminiActive
+                  ? "border-emerald-500/30 bg-[#11161f] hover:border-emerald-500/40"
+                  : "border-[#202430] bg-[#12141a]"
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-colors ${
+                      geminiActive
+                        ? "border-emerald-500/30 bg-[#0e2118] text-emerald-400"
+                        : "border-[#262b3a] bg-[#181b24] text-zinc-400"
+                    }`}
+                  >
                     <Cpu className="h-4.5 w-4.5" />
                   </div>
-                  <div>
-                    <h3 className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-                      Gemini Flash Mode
-                      <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-[9px] font-mono font-medium text-zinc-400">
-                        Online AI
-                      </span>
+                  <div className="min-w-0">
+                    <h3 className={`text-xs font-semibold truncate ${geminiActive ? "text-zinc-100" : "text-zinc-300"}`}>
+                      Gemini Flash AI
                     </h3>
-                    <p className="text-[10px] text-zinc-500">Dynamic AI Question & Feedback</p>
+                    <p className="text-[10px] text-zinc-500 truncate">Generator &amp; Evaluasi Cerdas</p>
                   </div>
                 </div>
 
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-700/60 bg-zinc-800/60 px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-400">
-                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-500" />
-                  STANDBY
+                <span
+                  className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-mono font-medium transition-colors ${
+                    geminiActive
+                      ? "border-emerald-500/40 bg-[#0e2017] text-emerald-300 font-semibold"
+                      : "border-[#282d3d] bg-[#181b24] text-zinc-400"
+                  }`}
+                >
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      geminiActive ? "bg-emerald-400 animate-pulse" : "bg-zinc-500"
+                    }`}
+                  />
+                  {geminiActive ? "AKTIF" : "STANDBY"}
                 </span>
-              </div>
-
-              <div className="mt-3.5 space-y-1.5 text-[11px] border-t border-zinc-800/80 pt-2.5 font-sans">
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Status Mesin:</span>
-                  <span className="font-medium text-zinc-400 flex items-center gap-1">
-                    <Clock className="h-3 w-3 text-zinc-500" /> Menunggu API Key
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Kondisi .env:</span>
-                  <span className="font-mono text-amber-400/90">GEMINI_API_KEY kosong</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Kecepatan:</span>
-                  <span className="font-mono text-zinc-500">-- ms (Standby)</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Aktivasi:</span>
-                  <span className="text-zinc-400">Isi API key di .env</span>
-                </div>
               </div>
             </div>
           </div>
 
-          {/* Operational Clarity Callout Banner */}
-          <div className="mt-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-3.5 text-xs leading-relaxed text-zinc-300 flex items-start gap-3">
-            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 mt-0.5">
-              <Check className="h-3 w-3" />
+          {/* Dynamic Status Note (Solid Matte) */}
+          <div
+            className={`mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border p-3 text-xs transition-all duration-300 ${
+              geminiActive
+                ? "border-emerald-500/30 bg-[#0e161c] text-zinc-300"
+                : "border-[#1f2330] bg-[#101218] text-zinc-400"
+            }`}
+          >
+            <div className={`flex h-4 w-4 shrink-0 items-center justify-center mt-0.5 sm:mt-0 ${geminiActive ? "text-emerald-400" : "text-amber-400"}`}>
+              {geminiActive ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Clock className="h-3.5 w-3.5" />}
             </div>
-            <div>
-              <p className="font-semibold text-zinc-100 mb-0.5">
-                Status Operasional Saat Ini: Hanya 1 Mode yang Aktif
-              </p>
-              <p className="text-zinc-400 text-[11px]">
-                Bot saat ini beroperasi penuh menggunakan <b>Mode Content Bank (Offline Engine)</b>. Semua 360 materi dan latihan aktif 100% tanpa risiko downtime atau kuota habis. Jika Anda memasukkan <code>GEMINI_API_KEY</code> di file <code>.env</code>, bot akan otomatis beralih menjadi <b>Hybrid Mode</b> (AI dinamis + fallback bank soal).
-              </p>
-            </div>
+            <p className="text-[11px] leading-relaxed text-zinc-300">
+              {geminiActive ? (
+                <>
+                  <b>Hybrid Mode Aktif</b>: AI menghasilkan variasi latihan dinamis &amp; evaluasi cerdas, didukung{" "}
+                  <b>360 bank soal</b> sebagai cadangan instan.
+                </>
+              ) : (
+                <>
+                  <b>Mode Bank Soal beroperasi</b>: 360 materi kurasi aktif siap digunakan siswa tanpa perlu API key.
+                </>
+              )}
+            </p>
+          </div>
+
+          {/* 5 Learning Tracks Chips (Solid Matte with 21st.dev Animated Icons) */}
+          <div className="mt-3.5 flex flex-wrap items-center gap-1.5 text-[11px] font-mono text-zinc-400">
+            <span className="text-zinc-500 text-[10px] uppercase tracking-wider mr-0.5 select-none">Materi:</span>
+
+            <motion.span
+              initial="normal"
+              whileHover="hover"
+              className="inline-flex cursor-pointer select-none items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] transition-all duration-200"
+            >
+              <AnimatedChatIcon className="w-3 h-3 text-emerald-400 shrink-0" />
+              <span>Percakapan</span>
+            </motion.span>
+
+            <motion.span
+              initial="normal"
+              whileHover="hover"
+              className="inline-flex cursor-pointer select-none items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] transition-all duration-200"
+            >
+              <AnimatedVocabIcon className="w-3 h-3 text-emerald-400 shrink-0" />
+              <span>Kosakata</span>
+            </motion.span>
+
+            <motion.span
+              initial="normal"
+              whileHover="hover"
+              className="inline-flex cursor-pointer select-none items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] transition-all duration-200"
+            >
+              <AnimatedGrammarIcon className="w-3 h-3 text-emerald-400 shrink-0" />
+              <span>Tata Bahasa</span>
+            </motion.span>
+
+            <motion.span
+              initial="normal"
+              whileHover="hover"
+              className="inline-flex cursor-pointer select-none items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] transition-all duration-200"
+            >
+              <AnimatedReadingIcon className="w-3 h-3 text-emerald-400 shrink-0" />
+              <span>Membaca</span>
+            </motion.span>
+
+            <motion.span
+              initial="normal"
+              whileHover="hover"
+              className="inline-flex cursor-pointer select-none items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] transition-all duration-200"
+            >
+              <AnimatedZapIcon className="w-3 h-3 text-emerald-400 shrink-0" />
+              <span>Tantangan</span>
+            </motion.span>
           </div>
         </motion.section>
 

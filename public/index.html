@@ -58,6 +58,132 @@
       background: rgba(16, 185, 129, 0.25);
       color: #f4f4f5;
     }
+
+    /* 21st.dev / Lucide Animated Icons Specifications & Micro-Interactions */
+    .icon-pen-underline {
+      stroke-dasharray: 12;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.5s ease-out;
+    }
+    .icon-zap-bolt {
+      stroke-dasharray: 60;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.55s ease-out, filter 0.4s ease;
+    }
+    .icon-vocab-line {
+      stroke-dasharray: 18;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.5s ease;
+    }
+
+    /* Active Spring Micro-Interactions on Group Hover */
+    .group:hover .icon-chat-svg {
+      animation: icon-chat-wiggle 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .group:hover .icon-chat-dot {
+      animation: icon-dot-bounce 0.5s ease both;
+    }
+    .group:hover .dot-2 { animation-delay: 0.1s; }
+    .group:hover .dot-3 { animation-delay: 0.2s; }
+
+    .group:hover .icon-vocab-svg {
+      animation: icon-vocab-flutter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .group:hover .icon-vocab-line {
+      animation: icon-draw-line 0.5s ease-out both;
+    }
+
+    .group:hover .icon-pen-nib {
+      animation: icon-pen-tilt 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      transform-origin: 3px 21px;
+    }
+    .group:hover .icon-pen-underline {
+      animation: icon-pen-draw 0.5s ease-out both;
+    }
+
+    .group:hover .icon-book-svg {
+      animation: icon-book-expand 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .group:hover .icon-book-left {
+      animation: icon-book-fan-left 0.55s ease both;
+      transform-origin: 12px 12px;
+    }
+    .group:hover .icon-book-right {
+      animation: icon-book-fan-right 0.55s ease both;
+      transform-origin: 12px 12px;
+    }
+
+    .group:hover .icon-zap-svg {
+      animation: icon-zap-flash 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .group:hover .icon-zap-bolt {
+      animation: icon-zap-draw 0.55s ease-out both;
+    }
+
+    /* Ambient Staggered Shimmer (Icons feel dynamically alive even before hover) */
+    @keyframes ambient-breathe {
+      0%, 82%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); }
+      88% { transform: scale(1.14); filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.6)); }
+      94% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); }
+    }
+    .icon-chat-svg { animation: ambient-breathe 6s ease-in-out infinite; }
+    .icon-vocab-svg { animation: ambient-breathe 6s ease-in-out infinite 1.2s; }
+    .icon-pen-svg { animation: ambient-breathe 6s ease-in-out infinite 2.4s; }
+    .icon-book-svg { animation: ambient-breathe 6s ease-in-out infinite 3.6s; }
+    .icon-zap-svg { animation: ambient-breathe 6s ease-in-out infinite 4.8s; }
+
+    /* Keyframes Definitions */
+    @keyframes icon-chat-wiggle {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.2) rotate(-9deg); }
+      50% { transform: scale(1.1) rotate(9deg); }
+      75% { transform: scale(1.15) rotate(-4deg); }
+    }
+    @keyframes icon-dot-bounce {
+      0%, 100% { opacity: 0.6; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-1.5px); }
+    }
+    @keyframes icon-vocab-flutter {
+      0%, 100% { transform: scale(1) translateY(0); }
+      30% { transform: scale(1.18) translateY(-2px) rotate(-6deg); }
+      65% { transform: scale(1.1) translateY(-1px) rotate(4deg); }
+    }
+    @keyframes icon-draw-line {
+      0% { stroke-dashoffset: 18; opacity: 0.3; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @keyframes icon-pen-tilt {
+      0%, 100% { transform: rotate(0deg) translate(0, 0); }
+      30% { transform: rotate(-18deg) translate(-1px, -2px); }
+      60% { transform: rotate(4deg) translate(1px, 0); }
+    }
+    @keyframes icon-pen-draw {
+      0% { stroke-dashoffset: 12; opacity: 0.2; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @keyframes icon-book-expand {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.22); }
+    }
+    @keyframes icon-book-fan-left {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-1.5px); }
+    }
+    @keyframes icon-book-fan-right {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(1.5px); }
+    }
+    @keyframes icon-zap-flash {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.28) rotate(-12deg); }
+      50% { transform: scale(1.1) rotate(10deg); }
+      75% { transform: scale(1.15) rotate(-4deg); }
+    }
+    @keyframes icon-zap-draw {
+      0% { stroke-dashoffset: 60; opacity: 0.2; filter: drop-shadow(0 0 0 transparent); }
+      50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.9)); }
+      100% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4)); }
+    }
   </style>
 </head>
 
@@ -78,12 +204,12 @@
   <!-- Main Container -->
   <main class="relative w-full max-w-2xl animate-fade-in-up my-auto z-10">
 
-    <!-- Bento Card Container -->
+    <!-- Solid Matte Obsidian Card Container -->
     <div
-      class="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-zinc-800/80 bg-zinc-950/80 p-4 sm:p-8 backdrop-blur-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_20px_50px_-12px_rgba(0,0,0,0.85)] ring-1 ring-white/[0.04]">
+      class="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#1e222d] bg-[#0c0d12] p-5 sm:p-8 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_25px_50px_-12px_rgba(0,0,0,0.95)]">
 
-      <!-- Top Subtle Edge Glow Line -->
-      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent"
+      <!-- Top Precision Edge Highlight -->
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"
         aria-hidden="true"></div>
 
       <!-- 1. HEADER SECTION -->
@@ -93,7 +219,7 @@
         <div class="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
           <!-- Status Indicator Pill -->
           <div id="status-pill" role="status" aria-label="System status: Online with 99.9% Uptime"
-            class="inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-3 py-1 text-xs font-medium text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.12)] whitespace-nowrap transition-colors hover:border-emerald-500/30 hover:bg-emerald-500/[0.12]">
+            class="inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-500/30 bg-[#0e1f17] px-3 py-1 text-xs font-medium text-emerald-400 shadow-sm whitespace-nowrap transition-colors hover:border-emerald-500/40 hover:bg-[#12281e]">
             <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
               <span
                 class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
@@ -104,7 +230,7 @@
 
           <!-- Copy Bot Handle -->
           <button id="copy-btn" type="button" aria-label="Copy Telegram handle @EnglishBuddy_Practice_Bot"
-            class="inline-flex shrink-0 max-w-full items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 text-xs font-mono text-zinc-400 transition-colors hover:border-zinc-700 hover:bg-zinc-800/80 hover:text-zinc-200">
+            class="inline-flex shrink-0 max-w-full items-center gap-1.5 rounded-full border border-[#232734] bg-[#14161f] px-2.5 py-1 text-xs font-mono text-zinc-300 transition-colors hover:border-[#33384a] hover:bg-[#1a1d28] hover:text-zinc-100">
             <svg id="copy-icon" class="w-3 h-3 shrink-0 opacity-70" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
@@ -119,12 +245,12 @@
           <!-- Mascot Brand Icon -->
           <div class="relative flex-shrink-0 group">
             <div
-              class="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl border border-amber-500/25 bg-gradient-to-br from-amber-500/[0.08] via-zinc-900/90 to-zinc-950 p-1.5 shadow-inner shadow-amber-500/10 ring-1 ring-white/[0.06] transition-all duration-300 group-hover:scale-105 group-hover:border-amber-500/40">
+              class="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl border border-[#272b38] bg-[#13151c] p-1.5 shadow-md transition-all duration-300 group-hover:scale-105 group-hover:border-amber-500/40">
               <img src="./mascot.png" onerror="this.onerror=null; this.src='mascot.png';" alt="My English Buddy Mascot"
                 class="h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(245,158,11,0.25)] select-none" />
             </div>
             <div
-              class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-zinc-900 bg-emerald-500 text-zinc-950 shadow-sm"
+              class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#0c0d12] bg-emerald-500 text-zinc-950 shadow-sm"
               aria-hidden="true" title="Online">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <polygon
@@ -136,29 +262,25 @@
           <div class="min-w-0 flex-1">
             <h1 class="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100 flex items-center gap-2.5">
               <span>My English Buddy</span>
-              <span
-                class="inline-flex items-center rounded-md border border-zinc-800 bg-zinc-900 px-1.5 py-0.5 text-[10px] font-mono font-medium tracking-normal text-zinc-400">
-                v2.0
-              </span>
             </h1>
             <p class="mt-1 text-sm font-medium tracking-tight text-emerald-400/90">
               English Tutor Bot
             </p>
             <p class="mt-2 text-xs sm:text-sm leading-relaxed text-zinc-400">
               Platform bot belajar bahasa Inggris interaktif menggunakan
-              offline content bank & gemini API
+              offline content bank &amp; gemini API
             </p>
           </div>
         </div>
       </header>
 
-      <!-- 2.STATUS DISPLAY (CONTENT BANK VS GEMINI MODE) -->
+      <!-- 2. STATUS DISPLAY (MINIMALIST DUAL ENGINE) -->
       <section class="mt-6 sm:mt-7" aria-label="Status Mode Operasional Mesin">
 
-        <!-- Section Header -->
+        <!-- Section Header with Dynamic Overall Status Badge -->
         <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-2">
-            <h2 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
+            <h2 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
               <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2"
                 viewBox="0 0 24 24">
                 <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -167,93 +289,56 @@
               </svg>
               <span>Status</span>
             </h2>
-            <span
-              class="inline-flex items-center rounded-md border border-zinc-800 bg-zinc-900/80 px-1.5 py-0.5 text-[10px] font-mono text-zinc-400">
-              2 Mesin
-            </span>
           </div>
 
-          <!-- Overall Status Badge: 1 OF 2 MODES ACTIVE -->
-          <div
-            class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/[0.08] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.08)] whitespace-nowrap">
+          <!-- Overall Status Badge: DYNAMIC (2 dari 2 Aktif vs 1 dari 2 Aktif) -->
+          <div id="overall-status-badge"
+            class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/40 bg-[#21190c] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-sm whitespace-nowrap transition-all duration-300">
             <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
-              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
-              <span class="relative inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
+              <span id="overall-status-ping"
+                class="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
+              <span id="overall-status-dot" class="relative inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
             </span>
-            <span class="font-medium whitespace-nowrap">1 dari 2 Mode Aktif</span>
+            <span id="overall-status-text" class="font-medium whitespace-nowrap">1 dari 2 Mode Aktif</span>
           </div>
         </div>
 
-        <!-- Engine Cards Comparison Grid -->
+        <!-- Solid Matte Engine Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
-          <!-- Mode 1: Content Bank (ACTIVE) -->
+          <!-- Engine 1: Content Bank (Always Active) -->
           <div
-            class="relative overflow-hidden rounded-2xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/[0.09] to-zinc-900/80 p-4 shadow-[0_0_24px_rgba(16,185,129,0.08)] backdrop-blur-md">
-            <div class="flex items-start justify-between gap-2">
-              <div class="flex items-center gap-2.5">
+            class="relative overflow-hidden rounded-xl border border-emerald-500/30 bg-[#11161f] p-3.5 transition-all duration-200 hover:border-emerald-500/40">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5 min-w-0">
                 <div
-                  class="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 shadow-sm">
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-500/30 bg-[#0e2118] text-emerald-400">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <ellipse cx="12" cy="5" rx="9" ry="3" />
                     <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
                     <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
                   </svg>
                 </div>
-                <div>
-                  <h3 class="text-xs font-semibold text-zinc-100 flex items-center gap-1.5">
-                    Content Bank
-                    <span
-                      class="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-mono font-medium text-emerald-300">
-                      Offline
-                    </span>
-                  </h3>
-                  <p class="text-[10px] text-zinc-400">Bank Kurasi 360 Materi Ramah Anak</p>
+                <div class="min-w-0">
+                  <h3 class="text-xs font-semibold text-zinc-100 truncate">Content Bank</h3>
+                  <p class="text-[10px] text-zinc-400 truncate">360 Latihan • 5 Kategori</p>
                 </div>
               </div>
-
-              <!-- Active Badge -->
               <span
-                class="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300">
+                class="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/40 bg-[#0e2017] px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300">
                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 AKTIF
               </span>
             </div>
-
-            <div class="mt-3.5 space-y-1.5 text-[11px] border-t border-zinc-800/80 pt-2.5">
-              <div class="flex items-center justify-between">
-                <span class="text-zinc-400">Status Operasi:</span>
-                <span class="font-medium text-emerald-400 flex items-center gap-1">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                  Siap Melayani
-                </span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-zinc-400">Kapasitas:</span>
-                <span class="font-mono text-zinc-200">360 Soal (5 Kategori)</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-zinc-400">Kecepatan Respon:</span>
-                <span class="font-mono text-emerald-400">&lt; 1 ms (Instan)</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-zinc-400">Kebutuhan API:</span>
-                <span class="font-mono text-zinc-300">Zero API Key / 100% Gratis</span>
-              </div>
-            </div>
           </div>
 
-          <!-- Mode 2: Gemini Flash AI (DYNAMIC / HYBRID) -->
-          <div
-            id="gemini-card"
-            class="relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-4 backdrop-blur-md transition-all duration-300">
-            <div class="flex items-start justify-between gap-2">
-              <div class="flex items-center gap-2.5">
-                <div
-                  id="gemini-icon-box"
-                  class="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-800/40 text-zinc-400">
+          <!-- Engine 2: Gemini Flash AI (Dynamic) -->
+          <div id="gemini-card"
+            class="relative overflow-hidden rounded-xl border border-[#202430] bg-[#12141a] p-3.5 transition-all duration-300">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div id="gemini-icon-box"
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#262b3a] bg-[#181b24] text-zinc-400 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <rect width="18" height="18" x="3" y="3" rx="2" />
                     <line x1="9" x2="9" y1="9" y2="15" />
@@ -261,103 +346,133 @@
                     <line x1="9" x2="15" y1="12" y2="12" />
                   </svg>
                 </div>
-                <div>
-                  <h3 class="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
-                    Gemini Flash AI
-                    <span class="rounded bg-zinc-800 px-1.5 py-0.5 text-[9px] font-mono font-medium text-zinc-400">
-                      Online AI
-                    </span>
-                  </h3>
-                  <p class="text-[10px] text-zinc-500">Generator & Koreksi Otomatis</p>
+                <div class="min-w-0">
+                  <h3 id="gemini-title" class="text-xs font-semibold text-zinc-300 truncate">Gemini Flash AI</h3>
+                  <p id="gemini-subtitle" class="text-[10px] text-zinc-500 truncate">Generator &amp; Evaluasi Cerdas</p>
                 </div>
               </div>
-
-              <!-- Status Badge -->
-              <span
-                id="gemini-badge"
-                class="inline-flex items-center gap-1.5 rounded-full border border-zinc-700/60 bg-zinc-800/60 px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-400">
-                <span class="h-1.5 w-1.5 rounded-full bg-zinc-500"></span>
-                STANDBY
+              <span id="gemini-badge"
+                class="inline-flex shrink-0 items-center gap-1 rounded-full border border-[#282d3d] bg-[#181b24] px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-400 transition-colors">
+                <span id="gemini-badge-dot" class="h-1.5 w-1.5 rounded-full bg-zinc-500"></span>
+                <span id="gemini-badge-text">STANDBY</span>
               </span>
-            </div>
-
-            <div class="mt-3.5 space-y-1.5 text-[11px] border-t border-zinc-800/80 pt-2.5">
-              <div class="flex items-center justify-between">
-                <span class="text-zinc-400">Status Operasi:</span>
-                <span id="gemini-status-text" class="font-medium text-zinc-400 flex items-center gap-1">
-                  <svg class="w-3 h-3 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                  Menunggu API Key
-                </span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-zinc-400">Kondisi .env:</span>
-                <span id="gemini-env-status" class="font-mono text-amber-400/90">GEMINI_API_KEY kosong</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-zinc-400">Kecepatan Respon:</span>
-                <span id="gemini-speed-status" class="font-mono text-zinc-500">-- ms (Standby)</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-zinc-400">Aktivasi:</span>
-                <span id="gemini-activation-status" class="text-zinc-400">Isi API key di .env</span>
-              </div>
             </div>
           </div>
 
         </div>
 
-        <!-- Clarity Callout Banner -->
-        <div
-          id="clarity-banner-box"
-          class="mt-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.04] p-3.5 text-xs leading-relaxed text-zinc-300 flex items-start gap-3">
-          <div
-            class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 mt-0.5">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <polyline points="20 6 9 17 4 12" />
+        <!-- Dynamic Status Note (Solid Matte 1-liner) -->
+        <div id="dynamic-status-note"
+          class="mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-[#1f2330] bg-[#101218] p-3 text-xs text-zinc-400 transition-all duration-300">
+          <div id="dynamic-status-icon"
+            class="flex h-4 w-4 shrink-0 items-center justify-center text-amber-400 mt-0.5 sm:mt-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
           </div>
-          <div>
-            <p id="clarity-banner-title" class="font-semibold text-zinc-100 mb-0.5">
-              Kesimpulan: Saat ini HANYA 1 Mode yang Aktif (Content Bank)
-            </p>
-            <p id="clarity-banner-text" class="text-zinc-400 text-[11px]">
-              Bot Telegram beroperasi normal menggunakan <b>Mode Content Bank (Offline Engine)</b>. Siswa dapat langsung
-              belajar 5 kategori materi tanpa gangguan. Jika Anda menambahkan <code>GEMINI_API_KEY</code> pada file
-              <code>.env</code>, sistem otomatis beralih ke <b>Hybrid Mode</b> (AI sebagai generator dinamis dan Content
-              Bank sebagai fallback anti-gagal).
-            </p>
-          </div>
+          <p id="dynamic-status-desc" class="text-[11px] leading-relaxed text-zinc-300">
+            Mode Bank Soal beroperasi: 360 materi kurasi aktif siap digunakan siswa tanpa perlu API key.
+          </p>
+        </div>
+
+        <!-- 5 Learning Tracks Chips (Solid Matte with 21st.dev Animated Icons) -->
+        <div class="mt-3.5 flex flex-wrap items-center gap-1.5 text-[11px] font-mono text-zinc-400">
+          <span class="text-zinc-500 text-[10px] uppercase tracking-wider mr-0.5 select-none">Materi:</span>
+
+          <!-- Percakapan: MessageSquare Animated (21st.dev) -->
+          <span title="Latihan Percakapan Real-time"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-chat-svg" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              viewBox="0 0 24 24">
+              <path class="icon-chat-bubble" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              <circle class="icon-chat-dot dot-1" cx="9" cy="10" r="1" fill="currentColor" stroke="none" />
+              <circle class="icon-chat-dot dot-2" cx="12" cy="10" r="1" fill="currentColor" stroke="none" />
+              <circle class="icon-chat-dot dot-3" cx="15" cy="10" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span>Percakapan</span>
+          </span>
+
+          <!-- Kosakata: BookText Animated (21st.dev) -->
+          <span title="Pengayaan Kosakata & Frasa"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-vocab-svg" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              viewBox="0 0 24 24">
+              <path class="icon-vocab-cover" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+              <path class="icon-vocab-line line-a" d="m8 13 4-7 4 7" />
+              <path class="icon-vocab-line line-bar" d="M9.1 11h5.7" />
+            </svg>
+            <span>Kosakata</span>
+          </span>
+
+          <!-- Tata Bahasa: PenLine Animated (21st.dev) -->
+          <span title="Struktur & Tata Bahasa"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-pen-svg" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              viewBox="0 0 24 24">
+              <g class="icon-pen-nib">
+                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                <path d="m15 5 3 3" />
+              </g>
+              <path class="icon-pen-underline" d="M12 20h9" />
+            </svg>
+            <span>Tata Bahasa</span>
+          </span>
+
+          <!-- Membaca: BookOpen Animated (21st.dev) -->
+          <span title="Pemahaman Membaca & Teks"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-book-svg" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              viewBox="0 0 24 24">
+              <path class="icon-book-left" d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path class="icon-book-right" d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <span>Membaca</span>
+          </span>
+
+          <!-- Tantangan: Zap Animated (21st.dev) -->
+          <span title="Tantangan Kilat Adaptif"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-zap-svg" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              viewBox="0 0 24 24">
+              <path class="icon-zap-bolt" d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+            </svg>
+            <span>Tantangan</span>
+          </span>
         </div>
 
       </section>
 
       <!-- 3. PRIMARY ACTION & COMMAND SHORTCUTS -->
       <section
-        class="mt-7 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-5 border-t border-zinc-800/80">
+        class="mt-6 sm:mt-7 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-5 border-t border-[#1e222d]">
         <!-- Quick command hints -->
         <div class="flex items-center gap-1.5 overflow-x-auto py-1 text-xs text-zinc-400 scrollbar-none">
           <span class="text-zinc-500 font-mono text-[11px]">Quick:</span>
           <button type="button" onclick="copyCommand('/start')"
-            class="rounded bg-zinc-900 px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-zinc-800 hover:border-zinc-700 transition-colors">
+            class="rounded bg-[#12141c] px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-[#232735] hover:border-[#353b50] hover:text-zinc-100 transition-colors">
             /start
           </button>
           <button type="button" onclick="copyCommand('/level')"
-            class="rounded bg-zinc-900 px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-zinc-800 hover:border-zinc-700 transition-colors">
+            class="rounded bg-[#12141c] px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-[#232735] hover:border-[#353b50] hover:text-zinc-100 transition-colors">
             /level
           </button>
           <button type="button" onclick="copyCommand('/help')"
-            class="rounded bg-zinc-900 px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-zinc-800 hover:border-zinc-700 transition-colors">
+            class="rounded bg-[#12141c] px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-[#232735] hover:border-[#353b50] hover:text-zinc-100 transition-colors">
             /help
           </button>
         </div>
 
         <!-- Prominent Launch Button -->
-        <a href="https://t.me/EnglishBuddy_Practice_Bot" target="_blank" rel="noopener noreferrer"
-          class="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-100 px-5 py-2.5 text-sm font-medium tracking-tight text-zinc-950 shadow-[0_1px_2px_rgba(0,0,0,0.1),0_0_12px_rgba(255,255,255,0.12)] transition-all duration-200 hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200">
+        <a id="open-telegram-btn" href="https://t.me/EnglishBuddy_Practice_Bot" target="_blank"
+          rel="noopener noreferrer"
+          class="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-100 px-5 py-2.5 text-sm font-semibold tracking-tight text-zinc-950 shadow-md transition-all duration-200 hover:bg-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200">
           <span>Buka di Telegram</span>
           <svg
             class="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -371,38 +486,23 @@
 
       <!-- 4. FOOTER SYSTEM METADATA -->
       <footer
-        class="mt-6 pt-4 border-t border-zinc-900 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-zinc-500">
+        class="mt-6 pt-4 border-t border-[#181b24] flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-zinc-500">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="inline-flex items-center gap-1">
-            <svg class="w-3 h-3 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" viewBox="0 0 24 24">
-              <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
-              <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
-              <line x1="6" x2="6.01" y1="6" y2="6" />
-              <line x1="6" x2="6.01" y1="18" y2="18" />
-            </svg>
-            FastAPI Serverless
-          </span>
-          <span class="text-zinc-700">•</span>
-          <span class="inline-flex items-center gap-1">
-            <svg class="w-3 h-3 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" viewBox="0 0 24 24">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
-            Python Async Core
-          </span>
-          <span class="text-zinc-700">•</span>
-          <span class="inline-flex items-center gap-1">
+          <span class="inline-flex items-center gap-1 text-emerald-400/90">
             <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
             Zero Data Retention
           </span>
+          <span class="text-zinc-700">•</span>
+          <span>FastAPI Serverless</span>
+          <span class="text-zinc-700">•</span>
+          <span>360 Latihan</span>
         </div>
 
         <div id="ping-stats" class="text-zinc-600 transition-colors">
-          HTTPS Encrypted • RFC 7231
+          HTTPS Encrypted • Webhook Active
         </div>
       </footer>
 
@@ -411,7 +511,7 @@
 
   <!-- Notification Toast Container -->
   <div id="toast"
-    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/90 px-4 py-2 text-xs font-mono text-zinc-200 shadow-2xl backdrop-blur-md">
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 inline-flex items-center gap-2 rounded-full border border-[#282d3d] bg-[#14161f] px-4 py-2 text-xs font-mono text-zinc-200 shadow-2xl">
     <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <polyline points="20 6 9 17 4 12" />
     </svg>
@@ -633,60 +733,104 @@
           const cleanUser = data.bot_username.replace(/^@/, '');
           const tgBtn = document.getElementById('open-telegram-btn');
           if (tgBtn) tgBtn.href = `https://t.me/${cleanUser}`;
-          const pill = document.querySelector('a[href*="t.me"]');
-          if (pill && pill !== tgBtn) pill.href = `https://t.me/${cleanUser}`;
+          const copyBtnText = document.getElementById('copy-text');
+          if (copyBtnText && !copyBtnText.textContent.includes('Tersalin')) {
+            copyBtnText.textContent = `@${cleanUser}`;
+          }
+          const allTgLinks = document.querySelectorAll('a[href*="t.me"]');
+          allTgLinks.forEach(link => {
+            link.href = `https://t.me/${cleanUser}`;
+          });
         }
 
-        // 2. Sync Gemini AI status
+        // 2. Elements to update
+        const overallBadge = document.getElementById('overall-status-badge');
+        const overallPing = document.getElementById('overall-status-ping');
+        const overallDot = document.getElementById('overall-status-dot');
+        const overallText = document.getElementById('overall-status-text');
+
+        const geminiCard = document.getElementById('gemini-card');
+        const geminiIconBox = document.getElementById('gemini-icon-box');
+        const geminiTitle = document.getElementById('gemini-title');
+        const geminiSubtitle = document.getElementById('gemini-subtitle');
+        const geminiBadge = document.getElementById('gemini-badge');
+        const geminiBadgeDot = document.getElementById('gemini-badge-dot');
+        const geminiBadgeText = document.getElementById('gemini-badge-text');
+
+        const statusNote = document.getElementById('dynamic-status-note');
+        const statusIcon = document.getElementById('dynamic-status-icon');
+        const statusDesc = document.getElementById('dynamic-status-desc');
+
+        // 3. Sync Gemini AI status & fix dual-engine badge
         if (data.gemini_active) {
-          // Card border and background glow
-          const card = document.getElementById('gemini-card');
-          if (card) {
-            card.className = "relative overflow-hidden rounded-2xl border border-emerald-500/40 bg-gradient-to-b from-emerald-500/[0.09] to-zinc-900/80 p-4 shadow-[0_0_24px_rgba(16,185,129,0.08)] backdrop-blur-md transition-all duration-300";
+          // Both engines active: 2 dari 2 Aktif
+          if (overallBadge) {
+            overallBadge.className = "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-emerald-500/40 bg-[#0e2017] px-2.5 py-1 text-[11px] font-mono text-emerald-300 shadow-sm whitespace-nowrap transition-all duration-300";
           }
-          const iconBox = document.getElementById('gemini-icon-box');
-          if (iconBox) {
-            iconBox.className = "flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/15 text-emerald-400";
+          if (overallPing) overallPing.className = "absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75";
+          if (overallDot) overallDot.className = "relative inline-flex h-2 w-2 rounded-full bg-emerald-400";
+          if (overallText) overallText.textContent = "2 dari 2 Aktif (Hybrid Mode)";
+
+          // Gemini Card -> Solid Matte Active Emerald
+          if (geminiCard) {
+            geminiCard.className = "relative overflow-hidden rounded-xl border border-emerald-500/30 bg-[#11161f] p-3.5 transition-all duration-300 hover:border-emerald-500/40";
           }
-          // Badge
-          const badge = document.getElementById('gemini-badge');
-          if (badge) {
-            badge.className = "inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300";
-            badge.innerHTML = '<span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>AKTIF';
+          if (geminiIconBox) {
+            geminiIconBox.className = "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-500/30 bg-[#0e2118] text-emerald-400 transition-colors";
           }
-          // Status Operasi
-          const statusText = document.getElementById('gemini-status-text');
-          if (statusText) {
-            statusText.className = "font-medium text-emerald-400 flex items-center gap-1";
-            statusText.innerHTML = '<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Siap Melayani (AI Aktif)';
+          if (geminiTitle) geminiTitle.className = "text-xs font-semibold text-zinc-100 truncate";
+          if (geminiSubtitle) {
+            const modelName = data.gemini_model ? `Online AI (${data.gemini_model})` : 'Online AI Engine';
+            geminiSubtitle.textContent = modelName;
+            geminiSubtitle.className = "text-[10px] text-zinc-400 truncate";
           }
-          // Kondisi .env
-          const envStatus = document.getElementById('gemini-env-status');
-          if (envStatus) {
-            envStatus.className = "font-mono text-emerald-400 font-medium";
-            envStatus.textContent = "GEMINI_API_KEY terdeteksi";
+          if (geminiBadge) {
+            geminiBadge.className = "inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/40 bg-[#0e2017] px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300 transition-colors";
           }
-          // Kecepatan Respon
-          const speedStatus = document.getElementById('gemini-speed-status');
-          if (speedStatus) {
-            speedStatus.className = "font-mono text-emerald-400";
-            speedStatus.textContent = "~800 ms (Gemini Flash)";
+          if (geminiBadgeDot) geminiBadgeDot.className = "h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse";
+          if (geminiBadgeText) geminiBadgeText.textContent = "AKTIF";
+
+          // Dynamic Status Note -> Solid Matte Hybrid Mode Active
+          if (statusNote) {
+            statusNote.className = "mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-emerald-500/30 bg-[#0e161c] p-3 text-xs text-zinc-300 transition-all duration-300";
           }
-          // Aktivasi
-          const actStatus = document.getElementById('gemini-activation-status');
-          if (actStatus) {
-            actStatus.className = "text-emerald-400 font-medium";
-            actStatus.textContent = "Hybrid Mode Aktif";
+          if (statusIcon) {
+            statusIcon.className = "flex h-4 w-4 shrink-0 items-center justify-center text-emerald-400 mt-0.5 sm:mt-0";
+            statusIcon.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
           }
-          // Clarity Banner
-          const bannerTitle = document.getElementById('clarity-banner-title');
-          if (bannerTitle) {
-            bannerTitle.className = "font-semibold text-emerald-300 mb-0.5";
-            bannerTitle.textContent = "Status: Hybrid Mode Beroperasi Penuh (AI Dinamis + 360 Bank Soal)";
+          if (statusDesc) {
+            statusDesc.innerHTML = '<b>Hybrid Mode Aktif</b>: AI menghasilkan variasi latihan dinamis &amp; evaluasi cerdas, didukung <b>360 bank soal</b> sebagai cadangan instan.';
           }
-          const bannerText = document.getElementById('clarity-banner-text');
-          if (bannerText) {
-            bannerText.innerHTML = "Google Gemini Flash AI aktif terhubung dan siap menghasilkan soal variatif serta evaluasi cerdas, didukung <b>360 Bank Soal offline</b> sebagai fallback instan anti-gagal.";
+        } else {
+          // Only Content Bank active: 1 dari 2 Aktif
+          if (overallBadge) {
+            overallBadge.className = "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/40 bg-[#21190c] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-sm whitespace-nowrap transition-all duration-300";
+          }
+          if (overallPing) overallPing.className = "absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75";
+          if (overallDot) overallDot.className = "relative inline-flex h-2 w-2 rounded-full bg-amber-400";
+          if (overallText) overallText.textContent = "1 dari 2 Aktif (Bank Soal)";
+
+          if (geminiCard) {
+            geminiCard.className = "relative overflow-hidden rounded-xl border border-[#202430] bg-[#12141a] p-3.5 transition-all duration-300";
+          }
+          if (geminiIconBox) {
+            geminiIconBox.className = "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#262b3a] bg-[#181b24] text-zinc-400 transition-colors";
+          }
+          if (geminiBadge) {
+            geminiBadge.className = "inline-flex shrink-0 items-center gap-1 rounded-full border border-[#282d3d] bg-[#181b24] px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-400 transition-colors";
+          }
+          if (geminiBadgeDot) geminiBadgeDot.className = "h-1.5 w-1.5 rounded-full bg-zinc-500";
+          if (geminiBadgeText) geminiBadgeText.textContent = "STANDBY";
+
+          if (statusNote) {
+            statusNote.className = "mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-[#1f2330] bg-[#101218] p-3 text-xs text-zinc-400 transition-all duration-300";
+          }
+          if (statusIcon) {
+            statusIcon.className = "flex h-4 w-4 shrink-0 items-center justify-center text-amber-400 mt-0.5 sm:mt-0";
+            statusIcon.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+          }
+          if (statusDesc) {
+            statusDesc.innerHTML = '<b>Mode Bank Soal beroperasi</b>: 360 materi kurasi aktif siap digunakan siswa tanpa perlu API key.';
           }
         }
       } catch (err) {
