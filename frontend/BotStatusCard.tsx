@@ -229,8 +229,8 @@ export interface BotStatusCardProps {
 }
 
 export const BotStatusCard: FC<BotStatusCardProps> = ({
-  botName = "My English Buddy",
-  subtitle = "AI & Offline English Tutor Bot",
+  botName = "Mebby",
+  subtitle = "My English Buddy • AI & Offline English Tutor Bot",
   description = "Interactive English learning bot powered by a 1,000-exercise offline content bank & Gemini Flash AI.",
   telegramHandle = "EnglishBuddy_Practice_Bot",
   telegramUrl = "https://t.me/EnglishBuddy_Practice_Bot",
@@ -613,7 +613,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
 
           {/* Repo with GitBranch and Arrow Icons */}
           <a
-            href="https://github.com/arlandoapraharjo/meb-telegram-bot"
+            href="https://github.com/arlandoapraharjo/mebby-telegram-bot"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-1 text-zinc-400 hover:text-zinc-200 underline decoration-zinc-700 underline-offset-4 transition-colors duration-150"

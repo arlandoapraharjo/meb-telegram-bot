@@ -33,7 +33,7 @@ class TestBotHandlers(unittest.IsolatedAsyncioTestCase):
 
         message.reply_text.assert_called_once()
         call_kwargs = message.reply_text.call_args.kwargs
-        self.assertIn("Panduan & Bantuan My English Buddy", call_kwargs["text"])
+        self.assertIn("Panduan & Bantuan Mebby", call_kwargs["text"])
         self.assertIn("Percakapan", call_kwargs["text"])
         self.assertIn("Kosakata", call_kwargs["text"])
         self.assertIn("Tata Bahasa", call_kwargs["text"])

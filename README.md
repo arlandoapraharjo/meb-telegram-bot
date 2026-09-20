@@ -1,4 +1,4 @@
-# 🤖 English Buddy Telegram Bot
+# 🤖 Mebby — English Learning Telegram Bot
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
@@ -6,7 +6,7 @@
 [![Telegram Bot API](https://img.shields.io/badge/telegram--bot--api-v21%2B%20(async)-0088cc?logo=telegram&logoColor=white)](https://python-telegram-bot.org/)
 [![Google GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%203.8%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 
-An interactive Telegram bot for English learners built with **FastAPI** and **python-telegram-bot (v21+ async)**, featuring **Gemini 3.8 Flash AI coaching**, an instant **curated offline fallback bank** (1,000 exercises across 5 tracks), and ready for zero-maintenance deployment on **Vercel Serverless Functions**.
+**Mebby** (short for *My English Buddy*) is an interactive Telegram bot for English learners built with **FastAPI** and **python-telegram-bot (v21+ async)**, featuring **Gemini 3.8 Flash AI coaching**, an instant **curated offline fallback bank** (1,000 exercises across 5 tracks), and ready for zero-maintenance deployment on **Vercel Serverless Functions**.
 
 ---
 
@@ -67,8 +67,8 @@ If you prefer running the bot locally with long-polling during development:
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/arlandoapraharjo/meb-telegram-bot.git
-cd meb-telegram-bot
+git clone https://github.com/arlandoapraharjo/mebby-telegram-bot.git
+cd mebby-telegram-bot
 
 # 2. Set up environment
 cp .env.example .env

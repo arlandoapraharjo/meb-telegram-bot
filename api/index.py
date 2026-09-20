@@ -170,7 +170,7 @@ async def lifespan(fastapi_app: FastAPI):
 
 # Initialize FastAPI ASGI App
 app = FastAPI(
-    title="English Buddy Telegram Bot - Vercel Serverless Webhook",
+    title="Mebby Telegram Bot - Vercel Serverless Webhook",
     lifespan=lifespan,
     redirect_slashes=False,
 )
@@ -197,7 +197,7 @@ def get_landing_html() -> str:
             _raw_html_template = (
                 "<!DOCTYPE html><html><body style='background:#07060a;color:#f4f4f5;"
                 "font-family:sans-serif;padding:40px;text-align:center;'>"
-                "<h1>English Buddy</h1><p style='color:#10b981;'>● Webhook Active &amp; Operational</p>"
+                "<h1>Mebby</h1><p style='color:#10b981;'>● Webhook Active &amp; Operational</p>"
                 "</body></html>"
             )
 

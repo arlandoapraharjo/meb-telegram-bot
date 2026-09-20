@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "meb-telegram-bot"
+name = "mebby-telegram-bot"
 version = "1.0.0"
-description = "Curated English Buddy Telegram Bot with 1,000 Exercises and Gemini AI Coaching"
+description = "Mebby: Curated English Learning Telegram Bot with 1,000 Exercises and Gemini AI Coaching"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-    { name = "English Buddy Team" }
+    { name = "Mebby Team" }
 ]
 dependencies = [
     "python-telegram-bot>=21.0.0",
