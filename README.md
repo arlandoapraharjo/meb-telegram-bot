@@ -1,153 +1,134 @@
-# 🤖 Mebby — English Learning Telegram Bot
+# 🤖 Mebby — Modular Telegram Learning Bot
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Vercel](https://img.shields.io/badge/Vercel-black?logo=vercel&logoColor=white)](https://vercel.com/)
 [![Telegram Bot API](https://img.shields.io/badge/telegram--bot--api-v21%2B%20(async)-0088cc?logo=telegram&logoColor=white)](https://python-telegram-bot.org/)
-[![Google GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%203.8%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev/)
+[![Google GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 
-**Mebby** (short for *My English Buddy*) is an interactive Telegram bot for English learners built with **FastAPI** and **python-telegram-bot (v21+ async)**, featuring **Gemini 3.8 Flash AI coaching**, an instant **curated offline fallback bank** (1,000 exercises across 5 tracks), and ready for zero-maintenance deployment on **Vercel Serverless Functions**.
-
----
-
-## ✨ Features
-
-- 💬 **5 Practice Tracks:** Daily Conversation, Vocabulary Builder, Grammar Clinic, Reading Comprehension, and Challenge Arena.
-- 🎯 **3 CEFR Levels:** Beginner (A1–A2), Intermediate (B1–B2), and Advanced (C1–C2)—switchable anytime via inline buttons.
-- ⚡ **Hybrid AI Engine:** Real-time feedback and dynamic exercise generation via Google Gemini model; automatically falls back to offline exercises if offline or unconfigured.
-- ☁️ **Serverless Webhook Ready:** Production-ready FastAPI ASGI entrypoint (`api/index.py`) engineered specifically for Vercel's Python runtime.
-- 🛡️ **Production Guardrails:**
-  - `X-Telegram-Bot-Api-Secret-Token` authentication with constant-time verification.
-  - Automatic 300-character input truncation guardrail.
-  - In-memory sliding window rate limiter (5 req / 10s).
-  - 512KB DoS payload limiter.
-  - Automatic credential scrubbing from all logs and output messages.
+A serverless Telegram bot built with **FastAPI** and **python-telegram-bot (v21+ async)**. Configured by default for English practice with **Gemini Flash** and an offline fallback bank (1,000 exercises), designed to be deployed directly to **Vercel** or adapted as a template for other subjects (math, coding, other languages).
 
 ---
 
-## 🚀 Deployment (Vercel Serverless Webhook)
+## Features
+
+- **5 Practice Tracks:** Daily Conversation, Vocabulary, Grammar, Reading Comprehension, and Challenge.
+- **CEFR Level Selection:** Beginner (A1–A2), Intermediate (B1–B2), and Advanced (C1–C2) via inline keyboards.
+- **Hybrid Evaluation:** Real-time feedback powered by Gemini Flash; falls back to offline content when unconfigured or rate-limited.
+- **Serverless Architecture:** Stateless FastAPI ASGI handler (`api/index.py`) designed for Vercel functions.
+- **Security & Abuse Mitigation:**
+  - Constant-time verification for `X-Telegram-Bot-Api-Secret-Token`.
+  - In-memory sliding window rate limiter (5 requests / 10s per user).
+  - Strict payload limits (512 KB) and message input truncation (300 chars).
+  - Masked credentials across application logs.
+
+---
+
+## Deployment (Vercel Webhook)
 
 ### 1. Configure Environment Variables
-In your Vercel Project Settings (or via `.env` locally), configure:
-- `TELEGRAM_BOT_TOKEN`: Your Telegram Bot Token from [@BotFather](https://t.me/BotFather).
-- `WEBHOOK_SECRET`: A custom random string for webhook request validation (e.g., generated with `python -c "import secrets; print(secrets.token_urlsafe(32))"`).
-- `GEMINI_API_KEY`: *(Optional)* Google AI Studio API key for dynamic AI coaching.
-- `GEMINI_MODEL`: *(Optional)* Gemini model name (defaults to `gemini-3.8-flash`).
+Set the following in your Vercel Project Settings:
+- `TELEGRAM_BOT_TOKEN`: Token obtained from [@BotFather](https://t.me/BotFather).
+- `WEBHOOK_SECRET`: Random string for request validation (generate via `python -c "import secrets; print(secrets.token_urlsafe(32))"`).
+- `GEMINI_API_KEY`: *(Optional)* Google AI Studio key. If omitted, the bot runs in offline mode.
+- `BOT_NAME` & `BOT_USERNAME`: *(Optional)* Bot branding and handle for the landing portal.
 
-### 2. Deploy to Vercel
-Push to GitHub to trigger automatic deployment, or deploy directly via Vercel CLI:
+### 2. Deploy
+Push to your linked GitHub repository or deploy via CLI:
 ```bash
 vercel --prod
+
 ```
 
-### 3. Register Webhook with Telegram
-Point Telegram to your Vercel deployment URL using the included helper utility:
+### 3. Register Webhook
+
+Point Telegram to your Vercel domain:
+
 ```bash
-# Option A: Using the CLI helper (Recommended)
-python scripts/set_webhook.py set https://<your-vercel-domain>.vercel.app
+# Using the CLI script
+python scripts/set_webhook.py set https://<your-project>.vercel.app
 
-# Option B: Using cURL
-curl -F "url=https://<your-vercel-domain>.vercel.app/api/webhook" \
+# Or via cURL
+curl -F "url=https://<your-project>.vercel.app/api/webhook" \
      -F "secret_token=<YOUR_WEBHOOK_SECRET>" \
-     https://api.telegram.org/bot<YOUR_TELEGRAM_BOT_TOKEN>/setWebhook
+     [https://api.telegram.org/bot](https://api.telegram.org/bot)<YOUR_TELEGRAM_BOT_TOKEN>/setWebhook
+
 ```
 
-Verify webhook registration:
+Check status:
+
 ```bash
 python scripts/set_webhook.py info
-# Or via curl:
-# curl https://api.telegram.org/bot<YOUR_TELEGRAM_BOT_TOKEN>/getWebhookInfo
+
 ```
 
 ---
 
-## 💻 Local Development (Polling Mode)
+## Local Development (Polling)
 
-If you prefer running the bot locally with long-polling during development:
+To develop locally without webhooks:
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/arlandoapraharjo/mebby-telegram-bot.git
+git clone [https://github.com/arlandoapraharjo/mebby-telegram-bot.git](https://github.com/arlandoapraharjo/mebby-telegram-bot.git)
 cd mebby-telegram-bot
 
-# 2. Set up environment
+# 2. Setup environment
 cp .env.example .env
-# Edit .env and insert your TELEGRAM_BOT_TOKEN
+# Fill in TELEGRAM_BOT_TOKEN in .env
 
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. If webhook was previously set, unregister it for local polling:
+# 4. Remove active webhook (required before polling)
 python scripts/set_webhook.py delete
 
-# 5. Run local polling
+# 5. Start bot
 python bot.py
+
 ```
 
 ---
 
-## ⚙️ Configuration (`.env`)
+## Configuration (`.env`)
 
 | Variable | Required | Default | Description |
-| :--- | :---: | :--- | :--- |
-| `BOT_NAME` | No | `Mebby` | Public display name used in messages and AI tutor persona |
-| `BOT_USERNAME` | No | `EnglishBuddy_Practice_Bot` | Telegram bot handle (without `@`) for direct links |
-| `TELEGRAM_BOT_TOKEN` | **Yes** | — | Bot token from [@BotFather](https://t.me/BotFather) |
-| `WEBHOOK_SECRET` | **Yes (Prod)** | — | Secret token header (`X-Telegram-Bot-Api-Secret-Token`) for webhook validation |
-| `GEMINI_API_KEY` | No | — | Gemini API key from [Google AI Studio](https://aistudio.google.com/) (runs offline if omitted) |
-| `GEMINI_MODEL` | No | `gemini-3.8-flash` | Gemini model name |
-| `RATE_LIMIT_MAX_REQUESTS` | No | `5` | Max requests per sliding window |
-| `RATE_LIMIT_WINDOW_SECONDS` | No | `10.0` | Sliding window duration in seconds |
-| `MAX_MESSAGE_LENGTH` | No | `300` | Max character length for user replies |
+| --- | --- | --- | --- |
+| `TELEGRAM_BOT_TOKEN` | **Yes** | — | Telegram Bot API token |
+| `WEBHOOK_SECRET` | **Yes (Prod)** | — | Secret token header for webhook validation |
+| `BOT_NAME` | No | `Mebby` | Display name in messages and AI persona |
+| `BOT_USERNAME` | No | `EnglishBuddy_Practice_Bot` | Telegram handle (without `@`) for portal links |
+| `GEMINI_API_KEY` | No | — | Google AI Studio key (runs offline bank if omitted) |
+| `GEMINI_MODEL` | No | `gemini-3.8-flash` | Gemini model variant |
+| `RATE_LIMIT_MAX_REQUESTS` | No | `5` | Allowed requests per sliding window |
+| `RATE_LIMIT_WINDOW_SECONDS` | No | `10.0` | Sliding window duration (seconds) |
+| `MAX_MESSAGE_LENGTH` | No | `300` | Max character length for user inputs |
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
-├── .env.example            # Environment variable template
-├── .gitignore              # VCS ignore rules
-├── pyproject.toml          # PEP 518/621 project configuration & metadata
-├── requirements.txt        # Pinned production dependencies
-├── vercel.json             # Vercel serverless routing configuration
-├── README.md               # Documentation and deployment guide
-│
-├── api/                    # Vercel Serverless Function entrypoints
-│   └── index.py            # FastAPI ASGI entrypoint for webhook & health probes
-│
-├── exercises/              # 1,000 modular curated offline exercises
-│   ├── __init__.py         # Track aggregator
-│   ├── conversation.py     # 200 Daily Conversation exercises
-│   ├── vocabulary.py       # 200 Vocabulary Builder exercises
-│   ├── grammar.py          # 200 Grammar Clinic exercises
-│   ├── reading.py          # 200 Reading Comprehension exercises
-│   └── challenge.py        # 200 Challenge Arena exercises
-│
-├── frontend/               # Isolated React / TypeScript UI Design Assets
-│   ├── tsconfig.json       # Self-contained TypeScript configuration
-│   ├── declarations.d.ts   # Ambient types
-│   ├── BotStatusCard.tsx   # React status card preview component
-│   └── components/ui/      # Reusable UI primitives
-│       ├── dotted-veil.tsx # WebGL Shader Background component
-│       └── demo.tsx        # Component demo preview
-│
-├── public/                 # Static web assets served by FastAPI/Vercel
-│   └── index.html          # High-performance matte dark landing page
-│
-├── scripts/                # Operational CLI utilities
-│   └── set_webhook.py      # Telegram webhook registration tool
-│
-├── tests/                  # Automated Test Suite (Unit & Integration)
-│   ├── __init__.py
-│   ├── test_content_bank.py
-│   ├── test_rate_limiter.py
-│   ├── test_quality_guard.py
-│   └── test_api.py
-│
-├── bot.py                  # Standalone entrypoint for local polling development
-├── config.py               # Centralized settings & environment loader
-├── content_bank.py         # Offline bank manager & pedagogical grading
-├── gemini_service.py       # Gemini 3.8 Flash AI coaching layer
-├── handlers.py             # Telegram commands, callbacks & message handlers
-└── rate_limiter.py         # In-memory sliding window rate limiter (LRU)
+├── api/
+│   └── index.py            # FastAPI entrypoint for Vercel serverless webhook
+├── exercises/              # Offline exercise bank
+│   ├── __init__.py         # Track loader
+│   ├── conversation.py     # 200 Conversation exercises
+│   ├── vocabulary.py       # 200 Vocabulary exercises
+│   ├── grammar.py          # 200 Grammar exercises
+│   ├── reading.py          # 200 Reading exercises
+│   └── challenge.py        # 200 Challenge exercises
+├── frontend/               # Status card preview component (React / Tailwind)
+├── public/
+│   └── index.html          # Web status portal served at GET /
+├── scripts/
+│   └── set_webhook.py      # Webhook registration CLI
+├── tests/                  # Test suite
+├── bot.py                  # Standalone entrypoint for local polling
+├── config.py               # Environment configuration
+├── content_bank.py         # Offline exercise evaluator
+├── gemini_service.py       # Gemini API client & persona prompt
+├── handlers.py             # Telegram commands & callback handlers
+└── rate_limiter.py         # In-memory sliding window rate limiter
+
 ```
