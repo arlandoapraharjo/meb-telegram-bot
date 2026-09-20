@@ -149,21 +149,26 @@ def setup_profile():
         BOT_COMMANDS,
     )
 
-    # Determine bot name: env variable -> Telegram getMe profile -> config default
-    bot_name = os.getenv("BOT_NAME", "").strip()
-    if not bot_name:
-        me_res = api_request("getMe")
-        if me_res.get("ok"):
-            bot_name = me_res.get("result", {}).get("first_name", "").strip()
-    if not bot_name:
-        bot_name = config.BOT_NAME
+    # Determine bot identity dynamically via getMe API call using active token
+    bot_name = ""
+    bot_username = ""
+    me_res = api_request("getMe")
+    if me_res.get("ok"):
+        result = me_res.get("result", {})
+        bot_name = result.get("first_name", "").strip()
+        bot_username = result.get("username", "").strip()
 
-    print(f"🤖 Adapting profile descriptions for bot: '{bot_name}'")
+    if not bot_name:
+        bot_name = os.getenv("BOT_NAME", "").strip() or config.BOT_NAME
+    if not bot_username:
+        bot_username = os.getenv("BOT_USERNAME", "").strip() or config.BOT_USERNAME
 
-    desc_en = get_bot_description_en(bot_name)
-    desc_id = get_bot_description_id(bot_name)
-    short_en = get_bot_short_desc_en(bot_name)
-    short_id = get_bot_short_desc_id(bot_name)
+    print(f"🤖 Adapting profile descriptions for bot: '{bot_name}' (@{bot_username})")
+
+    desc_en = get_bot_description_en(bot_name=bot_name, bot_username=bot_username)
+    desc_id = get_bot_description_id(bot_name=bot_name, bot_username=bot_username)
+    short_en = get_bot_short_desc_en(bot_name=bot_name, bot_username=bot_username)
+    short_id = get_bot_short_desc_id(bot_name=bot_name, bot_username=bot_username)
 
     r1 = api_request("setMyDescription", {"description": desc_en})
     r2 = api_request("setMyDescription", {"description": desc_id, "language_code": "id"})
@@ -175,10 +180,14 @@ def setup_profile():
     ])
     r5 = api_request("setMyCommands", {"commands": commands})
 
-    if r1.get("ok") and r2.get("ok") and r3.get("ok") and r5.get("ok"):
-        print(f"✅ SUCCESS: Telegram bot profile for '{bot_name}' updated successfully!")
+    if r1.get("ok") and r2.get("ok") and r3.get("ok") and r4.get("ok") and r5.get("ok"):
+        print(f"✅ SUCCESS: Telegram bot profile for '{bot_name}' (@{bot_username}) updated successfully!")
     else:
-        print("⚠️ Profile update completed with results:", [r1, r2, r3, r4, r5])
+        errors = []
+        for name, r in [("desc_en", r1), ("desc_id", r2), ("short_en", r3), ("short_id", r4), ("commands", r5)]:
+            if not r.get("ok"):
+                errors.append(f"{name}: {r.get('description', 'failed')}")
+        print(f"⚠️ Profile update status: {', '.join(errors) if errors else 'all applied'}")
 
 
 def main():

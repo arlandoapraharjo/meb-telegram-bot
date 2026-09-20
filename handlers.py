@@ -142,11 +142,68 @@ def get_mode_keyboard(mode_key: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(keyboard)
 
 
-WELCOME_MESSAGE: str = (
-    f"Halo! Aku {config.BOT_NAME}, teman belajarmu! 👋✨\n\n"
-    "Belajar bahasa Inggris itu seru dan menyenangkan! Jangan takut salah ya, di sini kita bisa belajar dan berlatih bersama sesuai kemampuanmu.\n\n"
-    "Yuk, pilih materi atau tantangan yang ingin kamu coba di bawah ini:"
-)
+def resolve_bot_identity(
+    bot_name: Optional[str] = None,
+    bot_username: Optional[str] = None,
+) -> tuple[str, str]:
+    """
+    Dynamically resolves a clean bot display name and handle.
+    Adapts gracefully to bot_name, bot_username, or falls back to config values.
+    Returns: (full_display, short_display)
+    """
+    uname = (bot_username or "").strip().lstrip("@")
+    bname = (bot_name or "").strip()
+
+    # If neither explicitly provided, fallback to environment / config defaults
+    if not uname and not bname:
+        bname = (os.getenv("BOT_NAME") or config.BOT_NAME or "").strip()
+        uname = (os.getenv("BOT_USERNAME") or config.BOT_USERNAME or "").strip().lstrip("@")
+
+    if bname and uname and bname.lower() != uname.lower():
+        full_display = f"{bname} (@{uname})"
+        short_display = f"@{uname}"
+    elif uname:
+        full_display = f"@{uname}"
+        short_display = f"@{uname}"
+    elif bname:
+        full_display = bname
+        short_display = bname
+    else:
+        full_display = "English Buddy"
+        short_display = "English Buddy"
+
+    return full_display, short_display
+
+
+def get_welcome_message(
+    bot_name: Optional[str] = None,
+    bot_username: Optional[str] = None,
+) -> str:
+    """Generates friendly greeting message suitable for all audiences."""
+    full_display, short_display = resolve_bot_identity(bot_name, bot_username)
+    bname = (bot_name or "").strip() or (os.getenv("BOT_NAME") or config.BOT_NAME or "").strip() or short_display
+    return (
+        f"Halo! Aku {bname}, teman belajarmu! 👋✨\n\n"
+        "Belajar bahasa Inggris itu seru dan menyenangkan! Jangan takut salah ya, di sini kita bisa belajar dan berlatih bersama sesuai kemampuanmu.\n\n"
+        "Yuk, pilih materi atau tantangan yang ingin kamu coba di bawah ini:"
+    )
+
+
+WELCOME_MESSAGE: str = get_welcome_message()
+
+
+def _extract_bot_identity(context: Optional[ContextTypes.DEFAULT_TYPE]) -> tuple[Optional[str], Optional[str]]:
+    """Safely extracts bot first_name and username from PTB context if available."""
+    bot_name = None
+    bot_username = None
+    if context and hasattr(context, "bot") and context.bot:
+        fname = getattr(context.bot, "first_name", None)
+        uname = getattr(context.bot, "username", None)
+        if isinstance(fname, str) and fname.strip():
+            bot_name = fname.strip()
+        if isinstance(uname, str) and uname.strip():
+            bot_username = uname.strip()
+    return bot_name, bot_username
 
 
 async def fetch_exercise(
@@ -207,83 +264,112 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     if last_msg_id and update.effective_chat:
         await strip_previous_reply_markup(context, update.effective_chat.id, last_msg_id)
 
+    bot_name, bot_username = _extract_bot_identity(context)
+    welcome_text = get_welcome_message(bot_name, bot_username) if (bot_name or bot_username) else WELCOME_MESSAGE
+
     sent_msg = await update.message.reply_text(
-        text=WELCOME_MESSAGE,
+        text=welcome_text,
         reply_markup=get_main_menu_keyboard(current_level),
         parse_mode=constants.ParseMode.HTML,
     )
     user_data["last_interactive_msg_id"] = sent_msg.message_id
 
 
-HELP_MESSAGE: str = (
-    f"📖 <b>Panduan & Bantuan {config.BOT_NAME}</b> 👋✨\n\n"
-    f"Halo! Aku {config.BOT_NAME}, teman belajarmu untuk menguasai bahasa Inggris dengan cara yang mudah, seru, dan menyenangkan!\n\n"
-    "🌟 <b>5 Kategori Pembelajaran:</b>\n"
-    "• 💬 <b>Percakapan (Conversation):</b> Latihan dialog nyata situasi sehari-hari.\n"
-    "• 📚 <b>Kosakata (Vocabulary):</b> Tambah kosakata, padanan kata, dan frasa baru.\n"
-    "• ✍️ <b>Tata Bahasa (Grammar):</b> Pahami pola kalimat, tenses, dan tata bahasa.\n"
-    "• 📖 <b>Membaca (Reading):</b> Baca teks pendek dan uji pemahaman bacaanmu.\n"
-    "• ⚡ <b>Tantangan (Challenge):</b> Kuis kilat adaptif untuk melatih ketangkasan berpikir!\n\n"
-    "⚙️ <b>Tingkat Kemampuan:</b>\n"
-    "Kamu bisa memilih level kapan saja di menu utama melalui tombol <b>⚙️ Level</b>:\n"
-    "🟢 <b>Pemula (Beginner)</b> • 🟡 <b>Menengah (Intermediate)</b> • 🔴 <b>Mahir (Advanced)</b>\n\n"
-    "💡 <b>Cara Belajar:</b>\n"
-    "1. Ketik /start atau tekan tombol di bawah untuk membuka menu.\n"
-    "2. Pilih topik yang ingin kamu pelajari.\n"
-    "3. Ketik jawabanmu langsung di pesan chat saat soal muncul.\n"
-    "4. Bot akan mengevaluasi jawabanmu secara ramah dan edukatif!\n"
-    "5. Gunakan tombol <b>🔄 Latihan Lain</b> untuk soal baru, atau <b>🔙 Menu Utama</b> untuk ganti materi.\n\n"
-    "📌 <b>Perintah Tersedia:</b>\n"
-    "• /start - Membuka menu utama pembelajaran\n"
-    "• /help - Menampilkan panduan bantuan ini"
-)
-
-def get_bot_description_en(bot_name: Optional[str] = None) -> str:
-    """Generates the English bot profile description adapting to any bot name."""
-    name = (bot_name or config.BOT_NAME).strip() or "Mebby"
+def get_help_message(
+    bot_name: Optional[str] = None,
+    bot_username: Optional[str] = None,
+) -> str:
+    """Generates comprehensive guide and help message adapting to bot identity."""
+    bname = (bot_name or "").strip() or (os.getenv("BOT_NAME") or config.BOT_NAME or "").strip() or "English Buddy"
     return (
-        f"Welcome to {name}! 👋✨\n"
-        "Your interactive English learning companion with 1,000 curated exercises & smart AI coaching!\n\n"
-        "🌟 What can this bot do?\n"
-        "• 💬 Conversation: Practice real-life dialogues\n"
-        "• 📚 Vocabulary: Expand words, idioms & phrases\n"
-        "• ✍️ Grammar: Master tenses & sentence structure\n"
-        "• 📖 Reading: Interactive stories & comprehension\n"
+        f"📖 <b>Panduan & Bantuan {bname}</b> 👋✨\n\n"
+        f"Halo! Aku {bname}, teman belajarmu untuk menguasai bahasa Inggris dengan cara yang mudah, seru, dan menyenangkan!\n\n"
+        "🌟 <b>5 Kategori Pembelajaran:</b>\n"
+        "• 💬 <b>Percakapan (Conversation):</b> Latihan dialog nyata situasi sehari-hari.\n"
+        "• 📚 <b>Kosakata (Vocabulary):</b> Tambah kosakata, padanan kata, dan frasa baru.\n"
+        "• ✍️ <b>Tata Bahasa (Grammar):</b> Pahami pola kalimat, tenses, dan tata bahasa.\n"
+        "• 📖 <b>Membaca (Reading):</b> Baca teks pendek dan uji pemahaman bacaanmu.\n"
+        "• ⚡ <b>Tantangan (Challenge):</b> Kuis kilat adaptif untuk melatih ketangkasan berpikir!\n\n"
+        "⚙️ <b>Tingkat Kemampuan:</b>\n"
+        "Kamu bisa memilih level kapan saja di menu utama melalui tombol <b>⚙️ Level</b>:\n"
+        "🟢 <b>Pemula (Beginner)</b> • 🟡 <b>Menengah (Intermediate)</b> • 🔴 <b>Mahir (Advanced)</b>\n\n"
+        "💡 <b>Cara Belajar:</b>\n"
+        "1. Ketik /start atau tekan tombol di bawah untuk membuka menu.\n"
+        "2. Pilih topik yang ingin kamu pelajari.\n"
+        "3. Ketik jawabanmu langsung di pesan chat saat soal muncul.\n"
+        "4. Bot akan mengevaluasi jawabanmu secara ramah dan edukatif!\n"
+        "5. Gunakan tombol <b>🔄 Latihan Lain</b> untuk soal baru, atau <b>🔙 Menu Utama</b> untuk ganti materi.\n\n"
+        "📌 <b>Perintah Tersedia:</b>\n"
+        "• /start - Membuka menu utama pembelajaran\n"
+        "• /help - Menampilkan panduan bantuan ini"
+    )
+
+
+HELP_MESSAGE: str = get_help_message()
+
+
+def get_bot_description_en(
+    bot_name: Optional[str] = None,
+    bot_username: Optional[str] = None,
+) -> str:
+    """Generates the English bot profile description ('What can this bot do?') adapting to any bot name/username."""
+    full_display, _ = resolve_bot_identity(bot_name, bot_username)
+    desc = (
+        f"Welcome to {full_display}! 👋✨\n"
+        "Your interactive English learning companion for all levels with 1,000 curated exercises & smart AI coaching!\n\n"
+        "🌟 What can you do?\n"
+        "• 💬 Conversation: Real-life dialogues\n"
+        "• 📚 Vocabulary: Expand words & phrases\n"
+        "• ✍️ Grammar: Master sentence patterns\n"
+        "• 📖 Reading: Stories & comprehension\n"
         "• ⚡ Challenge: Rapid-fire adaptive quizzes\n\n"
         "🎯 3 Levels: Beginner, Intermediate, Advanced\n"
         "⚡ 1,000 exercises offline + AI evaluation\n\n"
         "Tap START to begin! 🚀"
     )
+    return desc[:512]
 
 
-def get_bot_description_id(bot_name: Optional[str] = None) -> str:
-    """Generates the Indonesian bot profile description adapting to any bot name."""
-    name = (bot_name or config.BOT_NAME).strip() or "Mebby"
-    return (
-        f"Selamat datang di {name}! 👋✨\n"
-        "Teman belajar bahasa Inggris interaktif dengan 1.000 bank soal kurasi & evaluasi cerdas!\n\n"
-        "🌟 Apa yang bisa dilakukan bot ini?\n"
-        "• 💬 Percakapan: Latihan dialog situasi nyata\n"
-        "• 📚 Kosakata: Perkaya kosakata & frasa baru\n"
-        "• ✍️ Tata Bahasa: Kuasai tenses & pola kalimat\n"
-        "• 📖 Membaca: Cerita menarik & uji pemahaman\n"
-        "• ⚡ Tantangan: Kuis kilat adaptif seru\n\n"
+def get_bot_description_id(
+    bot_name: Optional[str] = None,
+    bot_username: Optional[str] = None,
+) -> str:
+    """Generates the Indonesian bot profile description ('What can this bot do?') adapting to any bot name/username."""
+    full_display, _ = resolve_bot_identity(bot_name, bot_username)
+    desc = (
+        f"Selamat datang di {full_display}! 👋✨\n"
+        "Teman belajar bahasa Inggris interaktif untuk semua kalangan dengan 1.000 materi kurasi & evaluasi cerdas!\n\n"
+        "🌟 Fitur Utama:\n"
+        "• 💬 Percakapan: Latihan dialog nyata\n"
+        "• 📚 Kosakata: Kosakata & frasa baru\n"
+        "• ✍️ Tata Bahasa: Kuasai pola kalimat\n"
+        "• 📖 Membaca: Cerita seru & pemahaman\n"
+        "• ⚡ Tantangan: Kuis kilat adaptif\n\n"
         "🎯 3 Tingkat: Pemula, Menengah, Mahir\n"
         "⚡ 1.000 latihan offline + evaluasi AI\n\n"
         "Tekan START untuk mulai belajar! 🚀"
     )
+    return desc[:512]
 
 
-def get_bot_short_desc_en(bot_name: Optional[str] = None) -> str:
-    """Generates the English short description adapting to any bot name."""
-    name = (bot_name or config.BOT_NAME).strip() or "Mebby"
-    return f"{name}: Interactive English learning companion with 1,000 curated exercises, 5 tracks, and smart AI feedback."
+def get_bot_short_desc_en(
+    bot_name: Optional[str] = None,
+    bot_username: Optional[str] = None,
+) -> str:
+    """Generates the English short description adapting to any bot identity."""
+    _, short_display = resolve_bot_identity(bot_name, bot_username)
+    desc = f"{short_display}: Interactive English companion for all levels with 1,000 exercises & smart AI feedback."
+    return desc[:120]
 
 
-def get_bot_short_desc_id(bot_name: Optional[str] = None) -> str:
-    """Generates the Indonesian short description adapting to any bot name."""
-    name = (bot_name or config.BOT_NAME).strip() or "Mebby"
-    return f"{name}: Bot belajar bahasa Inggris interaktif dengan 1.000 materi kurasi, 5 kategori, dan evaluasi cerdas."
+def get_bot_short_desc_id(
+    bot_name: Optional[str] = None,
+    bot_username: Optional[str] = None,
+) -> str:
+    """Generates the Indonesian short description adapting to any bot identity."""
+    _, short_display = resolve_bot_identity(bot_name, bot_username)
+    desc = f"{short_display}: Bot belajar bahasa Inggris untuk semua kalangan dengan 1.000 materi & evaluasi cerdas."
+    return desc[:120]
 
 
 BOT_DESCRIPTION_EN: str = get_bot_description_en()
@@ -301,25 +387,36 @@ async def setup_bot_profile(bot: Bot) -> None:
     """
     Synchronizes bot description ('What can this bot do?'), short description,
     and menu commands with the Telegram Bot API.
-    Dynamically adapts to the bot's configured or actual Telegram name.
+    Dynamically adapts to the bot's configured or actual Telegram name and username.
     """
     try:
-        bot_name = config.BOT_NAME
-        # If BOT_NAME was not explicitly set in environment, attempt to fetch Telegram profile name
-        if not os.getenv("BOT_NAME"):
-            try:
-                me = await bot.get_me()
-                if me and me.first_name:
+        bot_name = ""
+        bot_username = ""
+        try:
+            me = await bot.get_me()
+            if me:
+                if me.first_name:
                     bot_name = me.first_name.strip()
-            except Exception as get_me_err:
-                logger.debug("Could not resolve bot name via get_me(): %s", get_me_err)
+                if me.username:
+                    bot_username = me.username.strip()
+        except Exception as get_me_err:
+            logger.debug("Could not resolve bot info via get_me(): %s", get_me_err)
 
-        await bot.set_my_description(description=get_bot_description_en(bot_name))
-        await bot.set_my_description(description=get_bot_description_id(bot_name), language_code="id")
-        await bot.set_my_short_description(short_description=get_bot_short_desc_en(bot_name))
-        await bot.set_my_short_description(short_description=get_bot_short_desc_id(bot_name), language_code="id")
+        desc_en = get_bot_description_en(bot_name=bot_name, bot_username=bot_username)
+        desc_id = get_bot_description_id(bot_name=bot_name, bot_username=bot_username)
+        short_en = get_bot_short_desc_en(bot_name=bot_name, bot_username=bot_username)
+        short_id = get_bot_short_desc_id(bot_name=bot_name, bot_username=bot_username)
+
+        await bot.set_my_description(description=desc_en)
+        await bot.set_my_description(description=desc_id, language_code="id")
+        await bot.set_my_short_description(short_description=short_en)
+        await bot.set_my_short_description(short_description=short_id, language_code="id")
         await bot.set_my_commands(commands=BOT_COMMANDS)
-        logger.info("Successfully updated Telegram bot profile descriptions and commands for '%s'.", bot_name)
+        logger.info(
+            "Successfully updated Telegram bot profile descriptions and commands for '%s' (@%s).",
+            bot_name or config.BOT_NAME,
+            bot_username or config.BOT_USERNAME,
+        )
     except Exception as exc:
         logger.warning("Could not update bot profile descriptions with Telegram API: %s", exc)
 
@@ -342,8 +439,11 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         [InlineKeyboardButton("🚀 Buka Menu Belajar (/start)", callback_data=config.ACTION_MAIN_MENU)]
     ])
 
+    bot_name, bot_username = _extract_bot_identity(context)
+    help_text = get_help_message(bot_name, bot_username) if (bot_name or bot_username) else HELP_MESSAGE
+
     await update.message.reply_text(
-        text=HELP_MESSAGE,
+        text=help_text,
         reply_markup=keyboard,
         parse_mode=constants.ParseMode.HTML,
     )
@@ -372,6 +472,9 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
     user_data = context.user_data if context.user_data is not None else {}
     current_level = user_data.get("level", config.DEFAULT_LEVEL)
 
+    bot_name, bot_username = _extract_bot_identity(context)
+    welcome_text = get_welcome_message(bot_name, bot_username) if (bot_name or bot_username) else WELCOME_MESSAGE
+
     # In-place editing: Keep track of current interactive message
     if query.message:
         user_data["last_interactive_msg_id"] = query.message.message_id
@@ -380,7 +483,7 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
     if data == config.ACTION_MAIN_MENU:
         try:
             await query.edit_message_text(
-                text=WELCOME_MESSAGE,
+                text=welcome_text,
                 reply_markup=get_main_menu_keyboard(current_level),
                 parse_mode=constants.ParseMode.HTML,
             )
@@ -417,7 +520,7 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
             logger.info("User %s changed level to %s", update.effective_user.id if update.effective_user else 0, new_level)
             try:
                 await query.edit_message_text(
-                    text=f"✅ <b>Level berhasil diubah ke {level_name}!</b>\n\n{WELCOME_MESSAGE}",
+                    text=f"✅ <b>Level berhasil diubah ke {level_name}!</b>\n\n{welcome_text}",
                     reply_markup=get_main_menu_keyboard(current_level),
                     parse_mode=constants.ParseMode.HTML,
                 )

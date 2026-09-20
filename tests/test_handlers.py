@@ -77,6 +77,49 @@ class TestBotHandlers(unittest.IsolatedAsyncioTestCase):
         self.assertLessEqual(len(BOT_DESCRIPTION_EN), 512)
         self.assertLessEqual(len(BOT_DESCRIPTION_ID), 512)
 
+    def test_dynamic_identity_adaptation(self) -> None:
+        """Verify profile descriptions and welcome messages adapt dynamically to any bot username/name."""
+        from handlers import (
+            get_bot_description_en,
+            get_bot_description_id,
+            get_bot_short_desc_en,
+            get_bot_short_desc_id,
+            get_welcome_message,
+        )
+
+        test_cases = [
+            ("TAPE", "tape_english_bot"),
+            ("Mebby", "mebby_tutor_bot"),
+            ("Super Long Bot Name That Might Test Limits", "very_long_bot_username_bot"),
+            (None, "tape_english_bot"),
+            ("CustomBot", None),
+        ]
+
+        for b_name, b_user in test_cases:
+            desc_en = get_bot_description_en(bot_name=b_name, bot_username=b_user)
+            desc_id = get_bot_description_id(bot_name=b_name, bot_username=b_user)
+            short_en = get_bot_short_desc_en(bot_name=b_name, bot_username=b_user)
+            short_id = get_bot_short_desc_id(bot_name=b_name, bot_username=b_user)
+            welcome = get_welcome_message(bot_name=b_name, bot_username=b_user)
+
+            # Strict Telegram API limits
+            self.assertLessEqual(len(desc_en), 512)
+            self.assertLessEqual(len(desc_id), 512)
+            self.assertLessEqual(len(short_en), 120)
+            self.assertLessEqual(len(short_id), 120)
+
+            # Check that descriptions contain the dynamic identity
+            if b_user:
+                clean_user = b_user.lstrip("@")
+                self.assertIn(clean_user, desc_en)
+                self.assertIn(clean_user, desc_id)
+            elif b_name:
+                self.assertIn(b_name, desc_en)
+                self.assertIn(b_name, desc_id)
+
+            if b_name:
+                self.assertIn(b_name, welcome)
+
 
 if __name__ == "__main__":
     unittest.main()
