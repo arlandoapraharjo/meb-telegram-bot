@@ -440,7 +440,7 @@
             </p>
             <p class="mt-2 text-xs sm:text-sm leading-relaxed text-zinc-400">
               Interactive learning bot backed by a
-              1,000-exercise offline bank and configurable AI model keys.
+              1,000-exercise content bank and configurable AI model keys.
             </p>
           </div>
         </div>
@@ -895,6 +895,13 @@
         const response = await fetch('/api?format=json', { cache: 'no-store' });
         if (!response.ok) return;
         const data = await response.json();
+
+        // 0. Sync Bot Display Name if provided
+        if (data.bot_name) {
+          const nameSpan = document.querySelector('h1 span');
+          if (nameSpan) nameSpan.textContent = data.bot_name;
+          document.title = `${data.bot_name} — Status & Portal`;
+        }
 
         // 1. Sync Bot Username if provided
         if (data.bot_username) {

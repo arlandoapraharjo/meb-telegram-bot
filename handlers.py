@@ -142,7 +142,7 @@ def get_mode_keyboard(mode_key: str) -> InlineKeyboardMarkup:
 
 
 WELCOME_MESSAGE: str = (
-    "Halo adik-adik! Aku Mebby (My English Buddy), teman belajarmu! 👋✨\n\n"
+    f"Halo adik-adik! Aku {config.BOT_NAME}, teman belajarmu! 👋✨\n\n"
     "Belajar bahasa Inggris itu mudah dan seru lho! Jangan takut salah ya, di sini kita belajar bersama dari dasar.\n\n"
     "Yuk pilih materi atau tantangan yang ingin kamu coba di bawah ini:"
 )
@@ -215,8 +215,8 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 
 HELP_MESSAGE: str = (
-    "📖 <b>Panduan & Bantuan Mebby (My English Buddy)</b> 👋✨\n\n"
-    "Halo! Aku Mebby, teman belajarmu untuk menguasai bahasa Inggris dengan cara yang mudah, seru, dan menyenangkan!\n\n"
+    f"📖 <b>Panduan & Bantuan {config.BOT_NAME}</b> 👋✨\n\n"
+    f"Halo! Aku {config.BOT_NAME}, teman belajarmu untuk menguasai bahasa Inggris dengan cara yang mudah, seru, dan menyenangkan!\n\n"
     "🌟 <b>5 Kategori Pembelajaran:</b>\n"
     "• 💬 <b>Percakapan (Conversation):</b> Latihan dialog nyata situasi sehari-hari.\n"
     "• 📚 <b>Kosakata (Vocabulary):</b> Tambah kosakata, padanan kata, dan frasa baru.\n"
@@ -238,7 +238,7 @@ HELP_MESSAGE: str = (
 )
 
 BOT_DESCRIPTION_EN: str = (
-    "Welcome to Mebby (My English Buddy)! 👋✨\n"
+    f"Welcome to {config.BOT_NAME}! 👋✨\n"
     "Your interactive English learning companion with 1,000 curated exercises & smart AI coaching!\n\n"
     "🌟 What can this bot do?\n"
     "• 💬 Conversation: Practice real-life dialogues\n"
@@ -252,7 +252,7 @@ BOT_DESCRIPTION_EN: str = (
 )
 
 BOT_DESCRIPTION_ID: str = (
-    "Selamat datang di Mebby (My English Buddy)! 👋✨\n"
+    f"Selamat datang di {config.BOT_NAME}! 👋✨\n"
     "Teman belajar bahasa Inggris interaktif dengan 1.000 bank soal kurasi & evaluasi cerdas!\n\n"
     "🌟 Apa yang bisa dilakukan bot ini?\n"
     "• 💬 Percakapan: Latihan dialog situasi nyata\n"
@@ -265,8 +265,8 @@ BOT_DESCRIPTION_ID: str = (
     "Tekan START untuk mulai belajar! 🚀"
 )
 
-BOT_SHORT_DESC_EN: str = "Mebby: Interactive English learning companion with 1,000 curated exercises, 5 tracks, and smart AI feedback."
-BOT_SHORT_DESC_ID: str = "Mebby: Bot belajar bahasa Inggris interaktif dengan 1.000 materi kurasi, 5 kategori, dan evaluasi cerdas."
+BOT_SHORT_DESC_EN: str = f"{config.BOT_NAME}: Interactive English learning companion with 1,000 curated exercises, 5 tracks, and smart AI feedback."
+BOT_SHORT_DESC_ID: str = f"{config.BOT_NAME}: Bot belajar bahasa Inggris interaktif dengan 1.000 materi kurasi, 5 kategori, dan evaluasi cerdas."
 
 BOT_COMMANDS = [
     BotCommand("start", "Buka menu utama belajar (Open main menu)"),
@@ -276,17 +276,17 @@ BOT_COMMANDS = [
 
 async def setup_bot_profile(bot: Bot) -> None:
     """
-    Synchronizes bot name, description ('What can this bot do?'), short description,
+    Synchronizes bot description ('What can this bot do?'), short description,
     and menu commands with the Telegram Bot API.
+    Does not call set_my_name to avoid serverless cold-start side effects and rate limits.
     """
     try:
-        await bot.set_my_name(name="Mebby")
         await bot.set_my_description(description=BOT_DESCRIPTION_EN)
         await bot.set_my_description(description=BOT_DESCRIPTION_ID, language_code="id")
         await bot.set_my_short_description(short_description=BOT_SHORT_DESC_EN)
         await bot.set_my_short_description(short_description=BOT_SHORT_DESC_ID, language_code="id")
         await bot.set_my_commands(commands=BOT_COMMANDS)
-        logger.info("Successfully updated Telegram bot profile name ('Mebby'), descriptions, and commands.")
+        logger.info("Successfully updated Telegram bot profile descriptions and commands.")
     except Exception as exc:
         logger.warning("Could not update bot profile descriptions with Telegram API: %s", exc)
 

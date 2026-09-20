@@ -55,6 +55,8 @@ def validate_bot_token(token: str | None = None) -> str:
 TELEGRAM_BOT_TOKEN: str = _RAW_TOKEN
 
 # --- Telegram Bot Identity Settings ---
+BOT_NAME: Final[str] = os.getenv("BOT_NAME", "Mebby").strip() or "Mebby"
+
 # Canonical bot username (without @ prefix), used for public portal links & display chips.
 _RAW_BOT_USERNAME: Final[str] = (
     os.getenv("BOT_USERNAME")

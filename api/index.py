@@ -170,7 +170,7 @@ async def lifespan(fastapi_app: FastAPI):
 
 # Initialize FastAPI ASGI App
 app = FastAPI(
-    title="Mebby Telegram Bot - Vercel Serverless Webhook",
+    title=f"{config.BOT_NAME} Telegram Bot - Vercel Serverless Webhook",
     lifespan=lifespan,
     redirect_slashes=False,
 )
@@ -186,8 +186,9 @@ _raw_html_template: str | None = None
 def get_landing_html() -> str:
     """
     Renders the crafted status portal landing page with dynamic bot configuration.
-    Dynamically injects the display handle (@<BOT_USERNAME>) into the copy pill
-    and the canonical URL (https://t.me/<BOT_USERNAME>) into the CTA button.
+    Dynamically injects the display handle (@<BOT_USERNAME>) into the copy pill,
+    the canonical URL (https://t.me/<BOT_USERNAME>) into the CTA button,
+    and the configured bot name (<BOT_NAME>) across titles, headings, and meta tags.
     """
     global _raw_html_template
     if _raw_html_template is None:
@@ -197,11 +198,11 @@ def get_landing_html() -> str:
             _raw_html_template = (
                 "<!DOCTYPE html><html><body style='background:#07060a;color:#f4f4f5;"
                 "font-family:sans-serif;padding:40px;text-align:center;'>"
-                "<h1>Mebby</h1><p style='color:#10b981;'>● Webhook Active &amp; Operational</p>"
+                "<h1>{{BOT_NAME}}</h1><p style='color:#10b981;'>● Webhook Active &amp; Operational</p>"
                 "</body></html>"
             )
 
-    # Dynamic username & links resolution
+    bot_name = getattr(config, "BOT_NAME", "Mebby").strip() or "Mebby"
     clean_username = getattr(config, "BOT_USERNAME", "").strip().lstrip("@")
     if not clean_username:
         clean_username = (
@@ -223,9 +224,18 @@ def get_landing_html() -> str:
     # 2. Update display chips and labels with @ prefix
     content = content.replace("@EnglishBuddy_Practice_Bot", display_handle)
     content = content.replace("@EnglishBuddyBot", display_handle)
-    # 3. Update any remaining plain identifiers
+    # 3. Update template placeholders if present
+    content = content.replace("{{BOT_NAME}}", bot_name)
+    content = content.replace("{{BOT_USERNAME}}", clean_username)
+    # 4. Update any remaining plain identifiers
     content = content.replace("EnglishBuddy_Practice_Bot", clean_username)
     content = content.replace("EnglishBuddyBot", clean_username)
+    # 5. Update specific bot name occurrences
+    content = content.replace("<title>Mebby — Status & Portal</title>", f"<title>{bot_name} — Status & Portal</title>")
+    content = content.replace("Operational status for Mebby", f"Operational status for {bot_name}")
+    content = content.replace('alt="Mebby Mascot"', f'alt="{bot_name} Mascot"')
+    content = content.replace("<span>Mebby</span>", f"<span>{bot_name}</span>")
+    content = content.replace("<h1>Mebby</h1>", f"<h1>{bot_name}</h1>")
 
     return content
 
@@ -247,6 +257,7 @@ async def health_check(request: Request):
     # Dedicated JSON response for monitoring probes, curl, or format=json
     if fmt == "json" or "application/json" in accept or "curl" in request.headers.get("user-agent", "").lower():
         gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+        bot_name = getattr(config, "BOT_NAME", "Mebby").strip() or "Mebby"
         clean_username = getattr(config, "BOT_USERNAME", "").strip().lstrip("@")
         if not clean_username:
             clean_username = (
@@ -259,6 +270,7 @@ async def health_check(request: Request):
 
         return {
             "status": "healthy",
+            "bot_name": bot_name,
             "gemini_active": bool(gemini_key),
             "gemini_model": (os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.8-flash") if gemini_key else None,
             "bot_username": clean_username,

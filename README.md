@@ -90,6 +90,8 @@ python bot.py
 
 | Variable | Required | Default | Description |
 | :--- | :---: | :--- | :--- |
+| `BOT_NAME` | No | `Mebby` | Public display name used in messages and AI tutor persona |
+| `BOT_USERNAME` | No | `EnglishBuddy_Practice_Bot` | Telegram bot handle (without `@`) for direct links |
 | `TELEGRAM_BOT_TOKEN` | **Yes** | — | Bot token from [@BotFather](https://t.me/BotFather) |
 | `WEBHOOK_SECRET` | **Yes (Prod)** | — | Secret token header (`X-Telegram-Bot-Api-Secret-Token`) for webhook validation |
 | `GEMINI_API_KEY` | No | — | Gemini API key from [Google AI Studio](https://aistudio.google.com/) (runs offline if omitted) |

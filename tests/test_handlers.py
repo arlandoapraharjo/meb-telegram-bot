@@ -9,6 +9,7 @@ from unittest.mock import AsyncMock, MagicMock
 from telegram import Update, Message, Chat, User, constants
 from telegram.ext import ContextTypes
 
+import config
 from handlers import help_command, start_command, HELP_MESSAGE, WELCOME_MESSAGE, BOT_DESCRIPTION_EN, BOT_DESCRIPTION_ID
 
 
@@ -33,7 +34,9 @@ class TestBotHandlers(unittest.IsolatedAsyncioTestCase):
 
         message.reply_text.assert_called_once()
         call_kwargs = message.reply_text.call_args.kwargs
-        self.assertIn("Panduan & Bantuan Mebby", call_kwargs["text"])
+        self.assertIn(f"Panduan & Bantuan {config.BOT_NAME}", call_kwargs["text"])
+        self.assertIn(config.BOT_NAME, HELP_MESSAGE)
+        self.assertIn(config.BOT_NAME, WELCOME_MESSAGE)
         self.assertIn("Percakapan", call_kwargs["text"])
         self.assertIn("Kosakata", call_kwargs["text"])
         self.assertIn("Tata Bahasa", call_kwargs["text"])

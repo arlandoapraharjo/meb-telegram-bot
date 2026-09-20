@@ -9,6 +9,7 @@ import unittest
 from unittest.mock import patch
 from fastapi.testclient import TestClient
 
+import config
 from api.index import app
 
 
@@ -24,13 +25,16 @@ class TestFastAPIEndpoints(unittest.TestCase):
         self.assertEqual(data["status"], "healthy")
         self.assertEqual(data["content_bank_exercises"], 1000)
         self.assertIn("bot_username", data)
+        self.assertEqual(data["bot_username"], config.BOT_USERNAME)
+        self.assertIn("bot_name", data)
+        self.assertEqual(data["bot_name"], config.BOT_NAME)
 
     def test_landing_page_html(self) -> None:
         """Verify GET / returns 200 HTML content."""
         response = self.client.get("/", headers={"Accept": "text/html"})
         self.assertEqual(response.status_code, 200)
         self.assertIn("text/html", response.headers.get("content-type", ""))
-        self.assertIn("English Buddy", response.text)
+        self.assertIn(config.BOT_NAME, response.text)
 
     def test_webhook_unauthorized_without_secret(self) -> None:
         """Verify webhook rejects POST requests without valid secret token when configured."""
