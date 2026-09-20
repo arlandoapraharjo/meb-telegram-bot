@@ -1,6 +1,3 @@
-Berikut versi `README.md` yang sudah dibersihkan dari *buzzword*, klausa pasif-agresif ala marketing AI, dan deskripsi berlebihan (*editorialized comments* pada struktur folder), tanpa menghilangkan detail teknis penting:
-
-```markdown
 # 🤖 Mebby — Modular Telegram Learning Bot
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
@@ -10,8 +7,6 @@ Berikut versi `README.md` yang sudah dibersihkan dari *buzzword*, klausa pasif-a
 [![Google GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 
 A serverless Telegram bot built with **FastAPI** and **python-telegram-bot (v21+ async)**. Configured by default for English practice with **Gemini Flash** and an offline fallback bank (1,000 exercises), designed to be deployed directly to **Vercel** or adapted as a template for other subjects (math, coding, other languages).
-
----
 
 ## Features
 
