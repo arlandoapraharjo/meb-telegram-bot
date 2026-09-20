@@ -265,17 +265,17 @@ void main() {
 }
 `
 
-// Tailored palette: deep dark zinc background with subtle emerald-teal highlights matching the card theme
+// Tailored palette: deep dark plum-obsidian background with sunset amber & rose gold highlights
 const UNIFORMS = {
   colors: [
-    [0.027, 0.031, 0.039], // #07080a Deep Zinc Background
-    [0.035, 0.075, 0.055], // Deep Dark Emerald
-    [0.063, 0.282, 0.188], // Muted Emerald Midtone
-    [0.102, 0.725, 0.498], // Emerald-500 Accent (#10b981)
-    [0.063, 0.282, 0.188],
-    [0.035, 0.075, 0.055],
-    [0.027, 0.031, 0.039],
-    [0.027, 0.031, 0.039],
+    [0.043, 0.035, 0.055], // #0b090e Deep Obsidian Plum Background
+    [0.120, 0.040, 0.080], // Deep Velvet Rose
+    [0.450, 0.120, 0.220], // Soft Rose Quartz Glow
+    [0.960, 0.620, 0.040], // Sunset Amber-500 Accent (#f59e0b)
+    [0.980, 0.440, 0.520], // Rose Gold / Rose Quartz Accent (#fb7185)
+    [0.450, 0.120, 0.220],
+    [0.043, 0.035, 0.055],
+    [0.043, 0.035, 0.055],
   ] as [number, number, number][],
   colorCount: 4,
   scale: 1.100,

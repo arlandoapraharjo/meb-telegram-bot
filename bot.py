@@ -31,7 +31,9 @@ from telegram.request import HTTPXRequest
 import config
 from handlers import (
     global_error_handler,
+    help_command,
     menu_callback_handler,
+    setup_bot_profile,
     start_command,
     text_message_handler,
 )
@@ -133,6 +135,9 @@ async def post_init(application: Application) -> None:
     )
     application.bot_data["cleanup_task"] = cleanup_task
 
+    # Synchronize 'What can this bot do?' profile description and commands with Telegram
+    await setup_bot_profile(application.bot)
+
 
 async def post_shutdown(application: Application) -> None:
     """
@@ -177,6 +182,7 @@ def create_bot_application(token: str) -> Application:
 
     # 3. Register command handlers
     app.add_handler(CommandHandler("start", start_command))
+    app.add_handler(CommandHandler("help", help_command))
 
     # 4. Register callback query handlers (for learning modes and back to menu)
     app.add_handler(CallbackQueryHandler(menu_callback_handler))

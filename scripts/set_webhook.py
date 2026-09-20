@@ -135,6 +135,31 @@ def delete_webhook():
         print(f"❌ FAILED: {res.get('description')}")
 
 
+def setup_profile():
+    print("\n📝 Updating Telegram Bot Profile ('What can this bot do?')...")
+    from handlers import (
+        BOT_DESCRIPTION_EN,
+        BOT_DESCRIPTION_ID,
+        BOT_SHORT_DESC_EN,
+        BOT_SHORT_DESC_ID,
+    )
+
+    r1 = api_request("setMyDescription", {"description": BOT_DESCRIPTION_EN})
+    r2 = api_request("setMyDescription", {"description": BOT_DESCRIPTION_ID, "language_code": "id"})
+    r3 = api_request("setMyShortDescription", {"short_description": BOT_SHORT_DESC_EN})
+    r4 = api_request("setMyShortDescription", {"short_description": BOT_SHORT_DESC_ID, "language_code": "id"})
+    commands = json.dumps([
+        {"command": "start", "description": "Buka menu utama belajar (Open main menu)"},
+        {"command": "help", "description": "Panduan & bantuan belajar (User guide & help)"}
+    ])
+    r5 = api_request("setMyCommands", {"commands": commands})
+
+    if r1.get("ok") and r2.get("ok") and r3.get("ok") and r5.get("ok"):
+        print("✅ SUCCESS: Telegram bot profile, descriptions, and commands updated successfully!")
+    else:
+        print("⚠️ Profile update completed with results:", [r1, r2, r3, r4, r5])
+
+
 def main():
     parser = argparse.ArgumentParser(description="Manage Telegram Bot Webhook for Vercel")
     subparsers = parser.add_subparsers(dest="action", help="Action to perform")
@@ -144,6 +169,7 @@ def main():
 
     subparsers.add_parser("info", help="Check current webhook registration status")
     subparsers.add_parser("delete", help="Delete webhook (use before running local bot.py)")
+    subparsers.add_parser("profile", help="Update bot description and commands on Telegram")
 
     args = parser.parse_args()
 
@@ -156,14 +182,17 @@ def main():
         get_info()
     elif args.action == "delete":
         delete_webhook()
+    elif args.action == "profile":
+        setup_profile()
     else:
         # If no arguments provided, show menu
         print("\n🤖 English Buddy - Webhook Setup Utility\n")
         print("1. Set Webhook (Connect Vercel to Telegram)")
         print("2. Check Webhook Info (Verify status)")
         print("3. Delete Webhook (Switch back to local polling)")
-        print("4. Exit")
-        choice = input("\nSelect an option (1-4): ").strip()
+        print("4. Update Bot Profile ('What can this bot do?')")
+        print("5. Exit")
+        choice = input("\nSelect an option (1-5): ").strip()
 
         if choice == "1":
             url = input("Enter your Vercel URL (e.g. https://my-bot.vercel.app): ").strip()
@@ -173,6 +202,8 @@ def main():
             get_info()
         elif choice == "3":
             delete_webhook()
+        elif choice == "4":
+            setup_profile()
         else:
             print("Exiting.")
 

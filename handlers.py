@@ -19,6 +19,8 @@ import traceback
 from typing import Any, Dict, Optional
 
 from telegram import (
+    Bot,
+    BotCommand,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Update,
@@ -210,6 +212,107 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         parse_mode=constants.ParseMode.HTML,
     )
     user_data["last_interactive_msg_id"] = sent_msg.message_id
+
+
+HELP_MESSAGE: str = (
+    "📖 <b>Panduan & Bantuan My English Buddy</b> 👋✨\n\n"
+    "Halo! Aku English Buddy, teman belajarmu untuk menguasai bahasa Inggris dengan cara yang mudah, seru, dan menyenangkan!\n\n"
+    "🌟 <b>5 Kategori Pembelajaran:</b>\n"
+    "• 💬 <b>Percakapan (Conversation):</b> Latihan dialog nyata situasi sehari-hari.\n"
+    "• 📚 <b>Kosakata (Vocabulary):</b> Tambah kosakata, padanan kata, dan frasa baru.\n"
+    "• ✍️ <b>Tata Bahasa (Grammar):</b> Pahami pola kalimat, tenses, dan tata bahasa.\n"
+    "• 📖 <b>Membaca (Reading):</b> Baca teks pendek dan uji pemahaman bacaanmu.\n"
+    "• ⚡ <b>Tantangan (Challenge):</b> Kuis kilat adaptif untuk melatih ketangkasan berpikir!\n\n"
+    "⚙️ <b>Tingkat Kemampuan:</b>\n"
+    "Kamu bisa memilih level kapan saja di menu utama melalui tombol <b>⚙️ Level</b>:\n"
+    "🟢 <b>Pemula (Beginner)</b> • 🟡 <b>Menengah (Intermediate)</b> • 🔴 <b>Mahir (Advanced)</b>\n\n"
+    "💡 <b>Cara Belajar:</b>\n"
+    "1. Ketik /start atau tekan tombol di bawah untuk membuka menu.\n"
+    "2. Pilih topik yang ingin kamu pelajari.\n"
+    "3. Ketik jawabanmu langsung di pesan chat saat soal muncul.\n"
+    "4. Bot akan mengevaluasi jawabanmu secara ramah dan edukatif!\n"
+    "5. Gunakan tombol <b>🔄 Latihan Lain</b> untuk soal baru, atau <b>🔙 Menu Utama</b> untuk ganti materi.\n\n"
+    "📌 <b>Perintah Tersedia:</b>\n"
+    "• /start - Membuka menu utama pembelajaran\n"
+    "• /help - Menampilkan panduan bantuan ini"
+)
+
+BOT_DESCRIPTION_EN: str = (
+    "Welcome to My English Buddy! 👋✨\n"
+    "Your interactive English learning companion with 1,000 curated exercises & smart AI coaching!\n\n"
+    "🌟 What can this bot do?\n"
+    "• 💬 Conversation: Practice real-life dialogues\n"
+    "• 📚 Vocabulary: Expand words, idioms & phrases\n"
+    "• ✍️ Grammar: Master tenses & sentence structure\n"
+    "• 📖 Reading: Interactive stories & comprehension\n"
+    "• ⚡ Challenge: Rapid-fire adaptive quizzes\n\n"
+    "🎯 3 Levels: Beginner, Intermediate, Advanced\n"
+    "⚡ 1,000 exercises offline + AI evaluation\n\n"
+    "Tap START to begin! 🚀"
+)
+
+BOT_DESCRIPTION_ID: str = (
+    "Selamat datang di My English Buddy! 👋✨\n"
+    "Teman belajar bahasa Inggris interaktif dengan 1.000 bank soal kurasi & evaluasi cerdas!\n\n"
+    "🌟 Apa yang bisa dilakukan bot ini?\n"
+    "• 💬 Percakapan: Latihan dialog situasi nyata\n"
+    "• 📚 Kosakata: Perkaya kosakata & frasa baru\n"
+    "• ✍️ Tata Bahasa: Kuasai tenses & pola kalimat\n"
+    "• 📖 Membaca: Cerita menarik & uji pemahaman\n"
+    "• ⚡ Tantangan: Kuis kilat adaptif seru\n\n"
+    "🎯 3 Tingkat: Pemula, Menengah, Mahir\n"
+    "⚡ 1.000 latihan offline + evaluasi AI\n\n"
+    "Tekan START untuk mulai belajar! 🚀"
+)
+
+BOT_SHORT_DESC_EN: str = "Interactive English learning companion with 1,000 curated exercises, 5 tracks, and smart AI feedback."
+BOT_SHORT_DESC_ID: str = "Bot belajar bahasa Inggris interaktif dengan 1.000 materi kurasi, 5 kategori, dan evaluasi cerdas."
+
+BOT_COMMANDS = [
+    BotCommand("start", "Buka menu utama belajar (Open main menu)"),
+    BotCommand("help", "Panduan & bantuan belajar (User guide & help)"),
+]
+
+
+async def setup_bot_profile(bot: Bot) -> None:
+    """
+    Synchronizes bot description ('What can this bot do?'), short description,
+    and menu commands with the Telegram Bot API.
+    """
+    try:
+        await bot.set_my_description(description=BOT_DESCRIPTION_EN)
+        await bot.set_my_description(description=BOT_DESCRIPTION_ID, language_code="id")
+        await bot.set_my_short_description(short_description=BOT_SHORT_DESC_EN)
+        await bot.set_my_short_description(short_description=BOT_SHORT_DESC_ID, language_code="id")
+        await bot.set_my_commands(commands=BOT_COMMANDS)
+        logger.info("Successfully updated Telegram bot profile descriptions and commands.")
+    except Exception as exc:
+        logger.warning("Could not update bot profile descriptions with Telegram API: %s", exc)
+
+
+@rate_limited()
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Handles /help command.
+    Sends comprehensive user guide and quick navigation back to the main menu.
+    """
+    if update.message is None:
+        return
+
+    # Security: Restrict interactions to private chats only
+    if update.effective_chat and update.effective_chat.type != constants.ChatType.PRIVATE:
+        logger.info("Ignoring /help from non-private chat id=%s", update.effective_chat.id)
+        return
+
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🚀 Buka Menu Belajar (/start)", callback_data=config.ACTION_MAIN_MENU)]
+    ])
+
+    await update.message.reply_text(
+        text=HELP_MESSAGE,
+        reply_markup=keyboard,
+        parse_mode=constants.ParseMode.HTML,
+    )
 
 
 @rate_limited()

@@ -42,7 +42,9 @@ import content_bank  # noqa: E402
 from bot import TokenRedactingFilter  # noqa: E402
 from handlers import (  # noqa: E402
     global_error_handler,
+    help_command,
     menu_callback_handler,
+    setup_bot_profile,
     start_command,
     text_message_handler,
 )
@@ -94,6 +96,7 @@ def create_ptb_application() -> Application:
 
     # 1. Register command handlers
     application.add_handler(CommandHandler("start", start_command))
+    application.add_handler(CommandHandler("help", help_command))
 
     # 2. Register callback query handlers (6 learning tracks + level selector)
     application.add_handler(CallbackQueryHandler(menu_callback_handler))
@@ -131,6 +134,7 @@ async def get_ptb_app() -> Application:
             if not _ptb_app._initialized:
                 await _ptb_app.initialize()
                 await _ptb_app.start()
+                await setup_bot_profile(_ptb_app.bot)
                 logger.info(
                     "PTB Application initialized and started for webhook processing."
                 )
@@ -176,28 +180,54 @@ INDEX_HTML_PATH = ROOT_DIR / "public" / "index.html"
 if not INDEX_HTML_PATH.is_file() and (ROOT_DIR / "index.html").is_file():
     INDEX_HTML_PATH = ROOT_DIR / "index.html"
 
-_cached_html: str | None = None
+_raw_html_template: str | None = None
 
 
 def get_landing_html() -> str:
-    """Loads and caches the 21st.dev craft HTML status landing page."""
-    global _cached_html
-    if _cached_html is None:
+    """
+    Renders the crafted status portal landing page with dynamic bot configuration.
+    Dynamically injects the display handle (@<BOT_USERNAME>) into the copy pill
+    and the canonical URL (https://t.me/<BOT_USERNAME>) into the CTA button.
+    """
+    global _raw_html_template
+    if _raw_html_template is None:
         if INDEX_HTML_PATH.is_file():
-            content = INDEX_HTML_PATH.read_text(encoding="utf-8")
-            bot_username = os.getenv("TELEGRAM_BOT_USERNAME", "").strip().lstrip("@")
-            if bot_username:
-                content = content.replace("EnglishBuddy_Practice_Bot", bot_username)
-                content = content.replace("EnglishBuddyBot", bot_username)
-            _cached_html = content
+            _raw_html_template = INDEX_HTML_PATH.read_text(encoding="utf-8")
         else:
-            _cached_html = (
-                "<!DOCTYPE html><html><body style='background:#09090b;color:#f4f4f5;"
+            _raw_html_template = (
+                "<!DOCTYPE html><html><body style='background:#07060a;color:#f4f4f5;"
                 "font-family:sans-serif;padding:40px;text-align:center;'>"
                 "<h1>English Buddy</h1><p style='color:#10b981;'>● Webhook Active &amp; Operational</p>"
                 "</body></html>"
             )
-    return _cached_html
+
+    # Dynamic username & links resolution
+    clean_username = getattr(config, "BOT_USERNAME", "").strip().lstrip("@")
+    if not clean_username:
+        clean_username = (
+            os.getenv("BOT_USERNAME")
+            or os.getenv("TELEGRAM_BOT_USERNAME")
+            or "EnglishBuddy_Practice_Bot"
+        ).strip().lstrip("@")
+    if not clean_username:
+        clean_username = "EnglishBuddy_Practice_Bot"
+
+    display_handle = f"@{clean_username}"
+    telegram_url = f"https://t.me/{clean_username}"
+
+    # Perform on-the-fly injection on template before returning HTMLResponse
+    content = _raw_html_template
+    # 1. Update canonical Telegram deep-links
+    content = content.replace("https://t.me/EnglishBuddy_Practice_Bot", telegram_url)
+    content = content.replace("https://t.me/EnglishBuddyBot", telegram_url)
+    # 2. Update display chips and labels with @ prefix
+    content = content.replace("@EnglishBuddy_Practice_Bot", display_handle)
+    content = content.replace("@EnglishBuddyBot", display_handle)
+    # 3. Update any remaining plain identifiers
+    content = content.replace("EnglishBuddy_Practice_Bot", clean_username)
+    content = content.replace("EnglishBuddyBot", clean_username)
+
+    return content
 
 
 @app.get("/")
@@ -217,11 +247,23 @@ async def health_check(request: Request):
     # Dedicated JSON response for monitoring probes, curl, or format=json
     if fmt == "json" or "application/json" in accept or "curl" in request.headers.get("user-agent", "").lower():
         gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+        clean_username = getattr(config, "BOT_USERNAME", "").strip().lstrip("@")
+        if not clean_username:
+            clean_username = (
+                os.getenv("BOT_USERNAME")
+                or os.getenv("TELEGRAM_BOT_USERNAME")
+                or "EnglishBuddy_Practice_Bot"
+            ).strip().lstrip("@")
+        if not clean_username:
+            clean_username = "EnglishBuddy_Practice_Bot"
+
         return {
             "status": "healthy",
             "gemini_active": bool(gemini_key),
             "gemini_model": (os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.8-flash") if gemini_key else None,
-            "bot_username": os.getenv("TELEGRAM_BOT_USERNAME", "EnglishBuddy_Practice_Bot").lstrip("@"),
+            "bot_username": clean_username,
+            "bot_handle": f"@{clean_username}",
+            "telegram_url": f"https://t.me/{clean_username}",
             "content_bank_exercises": content_bank.TOTAL_EXERCISES,
         }
 

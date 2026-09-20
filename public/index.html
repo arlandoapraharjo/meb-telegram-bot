@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="en" class="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My English Buddy — Status & Portal</title>
   <meta name="description"
-    content="Status operasional My English Buddy Telegram Bot. status: Content Bank (Offline) vs Google Gemini Flash AI (Online)." />
+    content="Operational status for My English Buddy Telegram Bot. Dual Engine: Curated Content Bank (Offline) & Google Gemini Flash AI (Online)." />
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/png" sizes="64x64" href="./favicon.png" />
@@ -32,6 +32,20 @@
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
             mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
           },
+          colors: {
+            amber: {
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            },
+            rose: {
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+            },
+          },
           animation: {
             'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
             'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -48,15 +62,15 @@
   </script>
 
   <style>
-    /* Smooth focus outlines */
+    /* Smooth focus outlines with Rose Gold accent */
     *:focus-visible {
-      outline: 2px solid rgba(16, 185, 129, 0.6);
+      outline: 2px solid rgba(251, 113, 133, 0.6);
       outline-offset: 2px;
     }
 
     ::selection {
-      background: rgba(16, 185, 129, 0.25);
-      color: #f4f4f5;
+      background: rgba(244, 63, 94, 0.25);
+      color: #fff1f2;
     }
 
     /* 21st.dev / Lucide Animated Icons Specifications & Micro-Interactions */
@@ -65,11 +79,13 @@
       stroke-dashoffset: 0;
       transition: stroke-dashoffset 0.5s ease-out;
     }
+
     .icon-zap-bolt {
       stroke-dasharray: 60;
       stroke-dashoffset: 0;
       transition: stroke-dashoffset 0.55s ease-out, filter 0.4s ease;
     }
+
     .icon-vocab-line {
       stroke-dasharray: 18;
       stroke-dashoffset: 0;
@@ -80,15 +96,23 @@
     .group:hover .icon-chat-svg {
       animation: icon-chat-wiggle 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
+
     .group:hover .icon-chat-dot {
       animation: icon-dot-bounce 0.5s ease both;
     }
-    .group:hover .dot-2 { animation-delay: 0.1s; }
-    .group:hover .dot-3 { animation-delay: 0.2s; }
+
+    .group:hover .dot-2 {
+      animation-delay: 0.1s;
+    }
+
+    .group:hover .dot-3 {
+      animation-delay: 0.2s;
+    }
 
     .group:hover .icon-vocab-svg {
       animation: icon-vocab-flutter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
+
     .group:hover .icon-vocab-line {
       animation: icon-draw-line 0.5s ease-out both;
     }
@@ -97,6 +121,7 @@
       animation: icon-pen-tilt 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
       transform-origin: 3px 21px;
     }
+
     .group:hover .icon-pen-underline {
       animation: icon-pen-draw 0.5s ease-out both;
     }
@@ -104,10 +129,12 @@
     .group:hover .icon-book-svg {
       animation: icon-book-expand 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
+
     .group:hover .icon-book-left {
       animation: icon-book-fan-left 0.55s ease both;
       transform-origin: 12px 12px;
     }
+
     .group:hover .icon-book-right {
       animation: icon-book-fan-right 0.55s ease both;
       transform-origin: 12px 12px;
@@ -116,100 +143,243 @@
     .group:hover .icon-zap-svg {
       animation: icon-zap-flash 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
+
     .group:hover .icon-zap-bolt {
       animation: icon-zap-draw 0.55s ease-out both;
     }
 
-    /* Ambient Staggered Shimmer (Icons feel dynamically alive even before hover) */
+    /* Ambient Staggered Shimmer with Rose Gold & Amber Glow */
     @keyframes ambient-breathe {
-      0%, 82%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); }
-      88% { transform: scale(1.14); filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.6)); }
-      94% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); }
+
+      0%,
+      82%,
+      100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 transparent);
+      }
+
+      88% {
+        transform: scale(1.14);
+        filter: drop-shadow(0 0 5px rgba(251, 113, 133, 0.7));
+      }
+
+      94% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 transparent);
+      }
     }
-    .icon-chat-svg { animation: ambient-breathe 6s ease-in-out infinite; }
-    .icon-vocab-svg { animation: ambient-breathe 6s ease-in-out infinite 1.2s; }
-    .icon-pen-svg { animation: ambient-breathe 6s ease-in-out infinite 2.4s; }
-    .icon-book-svg { animation: ambient-breathe 6s ease-in-out infinite 3.6s; }
-    .icon-zap-svg { animation: ambient-breathe 6s ease-in-out infinite 4.8s; }
+
+    .icon-chat-svg {
+      animation: ambient-breathe 6s ease-in-out infinite;
+    }
+
+    .icon-vocab-svg {
+      animation: ambient-breathe 6s ease-in-out infinite 1.2s;
+    }
+
+    .icon-pen-svg {
+      animation: ambient-breathe 6s ease-in-out infinite 2.4s;
+    }
+
+    .icon-book-svg {
+      animation: ambient-breathe 6s ease-in-out infinite 3.6s;
+    }
+
+    .icon-zap-svg {
+      animation: ambient-breathe 6s ease-in-out infinite 4.8s;
+    }
 
     /* Keyframes Definitions */
     @keyframes icon-chat-wiggle {
-      0%, 100% { transform: scale(1) rotate(0deg); }
-      25% { transform: scale(1.2) rotate(-9deg); }
-      50% { transform: scale(1.1) rotate(9deg); }
-      75% { transform: scale(1.15) rotate(-4deg); }
+
+      0%,
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+
+      25% {
+        transform: scale(1.2) rotate(-9deg);
+      }
+
+      50% {
+        transform: scale(1.1) rotate(9deg);
+      }
+
+      75% {
+        transform: scale(1.15) rotate(-4deg);
+      }
     }
+
     @keyframes icon-dot-bounce {
-      0%, 100% { opacity: 0.6; transform: translateY(0); }
-      50% { opacity: 1; transform: translateY(-1.5px); }
+
+      0%,
+      100% {
+        opacity: 0.6;
+        transform: translateY(0);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateY(-1.5px);
+      }
     }
+
     @keyframes icon-vocab-flutter {
-      0%, 100% { transform: scale(1) translateY(0); }
-      30% { transform: scale(1.18) translateY(-2px) rotate(-6deg); }
-      65% { transform: scale(1.1) translateY(-1px) rotate(4deg); }
+
+      0%,
+      100% {
+        transform: scale(1) translateY(0);
+      }
+
+      30% {
+        transform: scale(1.18) translateY(-2px) rotate(-6deg);
+      }
+
+      65% {
+        transform: scale(1.1) translateY(-1px) rotate(4deg);
+      }
     }
+
     @keyframes icon-draw-line {
-      0% { stroke-dashoffset: 18; opacity: 0.3; }
-      100% { stroke-dashoffset: 0; opacity: 1; }
+      0% {
+        stroke-dashoffset: 18;
+        opacity: 0.3;
+      }
+
+      100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
     }
+
     @keyframes icon-pen-tilt {
-      0%, 100% { transform: rotate(0deg) translate(0, 0); }
-      30% { transform: rotate(-18deg) translate(-1px, -2px); }
-      60% { transform: rotate(4deg) translate(1px, 0); }
+
+      0%,
+      100% {
+        transform: rotate(0deg) translate(0, 0);
+      }
+
+      30% {
+        transform: rotate(-18deg) translate(-1px, -2px);
+      }
+
+      60% {
+        transform: rotate(4deg) translate(1px, 0);
+      }
     }
+
     @keyframes icon-pen-draw {
-      0% { stroke-dashoffset: 12; opacity: 0.2; }
-      100% { stroke-dashoffset: 0; opacity: 1; }
+      0% {
+        stroke-dashoffset: 12;
+        opacity: 0.2;
+      }
+
+      100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
     }
+
     @keyframes icon-book-expand {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.22); }
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.22);
+      }
     }
+
     @keyframes icon-book-fan-left {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(-1.5px); }
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      50% {
+        transform: translateX(-1.5px);
+      }
     }
+
     @keyframes icon-book-fan-right {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(1.5px); }
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      50% {
+        transform: translateX(1.5px);
+      }
     }
+
     @keyframes icon-zap-flash {
-      0%, 100% { transform: scale(1) rotate(0deg); }
-      25% { transform: scale(1.28) rotate(-12deg); }
-      50% { transform: scale(1.1) rotate(10deg); }
-      75% { transform: scale(1.15) rotate(-4deg); }
+
+      0%,
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+
+      25% {
+        transform: scale(1.28) rotate(-12deg);
+      }
+
+      50% {
+        transform: scale(1.1) rotate(10deg);
+      }
+
+      75% {
+        transform: scale(1.15) rotate(-4deg);
+      }
     }
+
     @keyframes icon-zap-draw {
-      0% { stroke-dashoffset: 60; opacity: 0.2; filter: drop-shadow(0 0 0 transparent); }
-      50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.9)); }
-      100% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4)); }
+      0% {
+        stroke-dashoffset: 60;
+        opacity: 0.2;
+        filter: drop-shadow(0 0 0 transparent);
+      }
+
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.9));
+      }
+
+      100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+        filter: drop-shadow(0 0 4px rgba(251, 113, 133, 0.5));
+      }
     }
   </style>
 </head>
 
 <body
-  class="min-h-screen bg-[#07080a] text-zinc-100 antialiased font-sans flex flex-col justify-center items-center p-3 xs:p-4 sm:p-6 lg:p-8 relative overflow-x-hidden">
+  class="min-h-screen bg-[#07060a] text-zinc-100 antialiased font-sans flex flex-col justify-center items-center p-3 xs:p-4 sm:p-6 lg:p-8 relative overflow-x-hidden">
 
-  <!-- Dotted Veil WebGL Shader Canvas as Dynamic Background -->
+  <!-- Dotted Veil WebGL Shader Canvas as Dynamic Background (Sunset Amber & Rose Gold) -->
   <canvas id="shader-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-40"></canvas>
 
-  <!-- Ambient Glow Elements -->
+  <!-- Ambient Glow Elements in Sunset Amber & Rose Gold -->
   <div
-    class="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[360px] bg-emerald-500/[0.07] rounded-full blur-[130px] pointer-events-none z-0"
+    class="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[360px] bg-amber-500/[0.08] rounded-full blur-[130px] pointer-events-none z-0"
     aria-hidden="true"></div>
   <div
-    class="fixed bottom-10 right-1/4 w-[420px] h-[300px] bg-zinc-700/[0.08] rounded-full blur-[100px] pointer-events-none z-0"
+    class="fixed bottom-10 right-1/4 w-[420px] h-[300px] bg-rose-500/[0.06] rounded-full blur-[100px] pointer-events-none z-0"
     aria-hidden="true"></div>
 
   <!-- Main Container -->
   <main class="relative w-full max-w-2xl animate-fade-in-up my-auto z-10">
 
-    <!-- Solid Matte Obsidian Card Container -->
+    <!-- Solid Matte Dark Obsidian Card Container with Rose Gold Precision Trim -->
     <div
-      class="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#1e222d] bg-[#0c0d12] p-5 sm:p-8 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_25px_50px_-12px_rgba(0,0,0,0.95)]">
+      class="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#231e2b] bg-[#0d0a13] p-5 sm:p-8 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_25px_50px_-12px_rgba(0,0,0,0.95)]">
 
-      <!-- Top Precision Edge Highlight -->
-      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"
+      <!-- Top Precision Edge Highlight in Rose Gold & Amber -->
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rose-400/50 to-transparent"
         aria-hidden="true"></div>
 
       <!-- 1. HEADER SECTION -->
@@ -217,20 +387,20 @@
 
         <!-- Live Status Pill & Copy Action -->
         <div class="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
-          <!-- Status Indicator Pill -->
-          <div id="status-pill" role="status" aria-label="System status: Online with 99.9% Uptime"
-            class="inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-500/30 bg-[#0e1f17] px-3 py-1 text-xs font-medium text-emerald-400 shadow-sm whitespace-nowrap transition-colors hover:border-emerald-500/40 hover:bg-[#12281e]">
+          <!-- Borderless Inline Status Indicator -->
+          <div id="status-pill" role="status" aria-label="System status: Operational with 99.9% Uptime"
+            class="inline-flex shrink-0 items-center gap-2 text-xs font-mono text-zinc-400 select-none">
             <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
               <span
-                class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
               <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
             </span>
-            <span class="tracking-tight font-medium whitespace-nowrap" id="status-label">Online • 99.9% Uptime</span>
+            <span class="whitespace-nowrap" id="status-label">Online</span>
           </div>
 
           <!-- Copy Bot Handle -->
           <button id="copy-btn" type="button" aria-label="Copy Telegram handle @EnglishBuddy_Practice_Bot"
-            class="inline-flex shrink-0 max-w-full items-center gap-1.5 rounded-full border border-[#232734] bg-[#14161f] px-2.5 py-1 text-xs font-mono text-zinc-300 transition-colors hover:border-[#33384a] hover:bg-[#1a1d28] hover:text-zinc-100">
+            class="inline-flex shrink-0 max-w-full items-center gap-1.5 rounded-full border border-[#262031] bg-[#14101c] px-2.5 py-1 text-xs font-mono text-zinc-300 transition-colors hover:border-[#382f47] hover:bg-[#1b1526] hover:text-zinc-100">
             <svg id="copy-icon" class="w-3 h-3 shrink-0 opacity-70" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
@@ -245,14 +415,15 @@
           <!-- Mascot Brand Icon -->
           <div class="relative flex-shrink-0 group">
             <div
-              class="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl border border-[#272b38] bg-[#13151c] p-1.5 shadow-md transition-all duration-300 group-hover:scale-105 group-hover:border-amber-500/40">
+              class="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl border border-[#2e243b] bg-[#14101b] p-1.5 shadow-md transition-all duration-300 group-hover:scale-105 group-hover:border-rose-400/50">
               <img src="./mascot.png" onerror="this.onerror=null; this.src='mascot.png';" alt="My English Buddy Mascot"
                 class="h-full w-full object-contain drop-shadow-[0_4px_12px_rgba(245,158,11,0.25)] select-none" />
             </div>
             <div
-              class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#0c0d12] bg-emerald-500 text-zinc-950 shadow-sm"
+              class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#0d0a13] bg-gradient-to-r from-amber-500 to-rose-500 text-zinc-950 shadow-sm"
               aria-hidden="true" title="Online">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 text-zinc-950 font-bold" fill="none" stroke="currentColor" stroke-width="2.5"
+                viewBox="0 0 24 24">
                 <polygon
                   points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
               </svg>
@@ -263,44 +434,32 @@
             <h1 class="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100 flex items-center gap-2.5">
               <span>My English Buddy</span>
             </h1>
-            <p class="mt-1 text-sm font-medium tracking-tight text-emerald-400/90">
+            <p
+              class="mt-1 text-sm font-medium tracking-tight bg-gradient-to-r from-amber-300 via-rose-300 to-amber-200 bg-clip-text text-transparent">
               English Tutor Bot
             </p>
             <p class="mt-2 text-xs sm:text-sm leading-relaxed text-zinc-400">
-              Platform bot belajar bahasa Inggris interaktif menggunakan
-              offline content bank &amp; gemini API
+              Interactive English learning bot backed by a
+              1,000-exercise offline bank and configurable AI model keys.
             </p>
           </div>
         </div>
       </header>
 
-      <!-- 2. STATUS DISPLAY (MINIMALIST DUAL ENGINE) -->
-      <section class="mt-6 sm:mt-7" aria-label="Status Mode Operasional Mesin">
+      <!-- 2. STATUS DISPLAY (SOLID MATTE DUAL ENGINE WITH ROSE GOLD ACCENTS) -->
+      <section class="mt-6 sm:mt-7" aria-label="Engine Operational Status">
 
-        <!-- Section Header with Dynamic Overall Status Badge -->
-        <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
-            <h2 class="text-xs font-mono font-medium uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
-              <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2"
-                viewBox="0 0 24 24">
-                <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                <polyline points="2 17 12 22 22 17" />
-                <polyline points="2 12 12 17 22 12" />
-              </svg>
-              <span>Status</span>
-            </h2>
-          </div>
-
-          <!-- Overall Status Badge: DYNAMIC (2 dari 2 Aktif vs 1 dari 2 Aktif) -->
-          <div id="overall-status-badge"
-            class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/40 bg-[#21190c] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-sm whitespace-nowrap transition-all duration-300">
-            <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
-              <span id="overall-status-ping"
-                class="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
-              <span id="overall-status-dot" class="relative inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
-            </span>
-            <span id="overall-status-text" class="font-medium whitespace-nowrap">1 dari 2 Mode Aktif</span>
-          </div>
+        <!-- Section Header (Clean Minimalist Title & Icon) -->
+        <div class="mb-3.5 flex items-center justify-between">
+          <h2 class="text-[11px] font-mono tracking-wider text-zinc-400 uppercase flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24">
+              <polygon points="12 2 2 7 12 12 22 7 12 2" />
+              <polyline points="2 17 12 22 22 17" />
+              <polyline points="2 12 12 17 22 12" />
+            </svg>
+            <span>System Status</span>
+          </h2>
         </div>
 
         <!-- Solid Matte Engine Cards Grid -->
@@ -308,11 +467,11 @@
 
           <!-- Engine 1: Content Bank (Always Active) -->
           <div
-            class="relative overflow-hidden rounded-xl border border-emerald-500/30 bg-[#11161f] p-3.5 transition-all duration-200 hover:border-emerald-500/40">
+            class="relative overflow-hidden rounded-xl border border-amber-500/30 bg-[#15111a] p-3.5 transition-all duration-200 hover:border-amber-500/40">
             <div class="flex items-center justify-between gap-2">
               <div class="flex items-center gap-2.5 min-w-0">
                 <div
-                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-500/30 bg-[#0e2118] text-emerald-400">
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-amber-500/30 bg-[#241712] text-amber-400">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <ellipse cx="12" cy="5" rx="9" ry="3" />
                     <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
@@ -321,24 +480,23 @@
                 </div>
                 <div class="min-w-0">
                   <h3 class="text-xs font-semibold text-zinc-100 truncate">Content Bank</h3>
-                  <p class="text-[10px] text-zinc-400 truncate">1.000 Latihan • 5 Kategori</p>
+                  <p class="text-[10px] text-zinc-400 truncate">1,000 Exercises • 5 Tracks</p>
                 </div>
               </div>
               <span
-                class="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/40 bg-[#0e2017] px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300">
-                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                AKTIF
+                class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                ACTIVE
               </span>
             </div>
           </div>
 
           <!-- Engine 2: Gemini Flash AI (Dynamic) -->
           <div id="gemini-card"
-            class="relative overflow-hidden rounded-xl border border-[#202430] bg-[#12141a] p-3.5 transition-all duration-300">
+            class="relative overflow-hidden rounded-xl border border-[#251f2e] bg-[#141019] p-3.5 transition-all duration-300">
             <div class="flex items-center justify-between gap-2">
               <div class="flex items-center gap-2.5 min-w-0">
                 <div id="gemini-icon-box"
-                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#262b3a] bg-[#181b24] text-zinc-400 transition-colors">
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#2c2436] bg-[#1a1422] text-zinc-400 transition-colors">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <rect width="18" height="18" x="3" y="3" rx="2" />
                     <line x1="9" x2="9" y1="9" y2="15" />
@@ -348,22 +506,21 @@
                 </div>
                 <div class="min-w-0">
                   <h3 id="gemini-title" class="text-xs font-semibold text-zinc-300 truncate">Gemini Flash AI</h3>
-                  <p id="gemini-subtitle" class="text-[10px] text-zinc-500 truncate">Generator &amp; Evaluasi Cerdas</p>
+                  <p id="gemini-subtitle" class="text-[10px] text-zinc-500 truncate">Smart Generator &amp; Evaluator</p>
                 </div>
               </div>
               <span id="gemini-badge"
-                class="inline-flex shrink-0 items-center gap-1 rounded-full border border-[#282d3d] bg-[#181b24] px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-400 transition-colors">
-                <span id="gemini-badge-dot" class="h-1.5 w-1.5 rounded-full bg-zinc-500"></span>
-                <span id="gemini-badge-text">STANDBY</span>
+                class="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800/60 text-zinc-500 border border-zinc-700/40 font-medium transition-colors">
+                STANDBY
               </span>
             </div>
           </div>
 
         </div>
 
-        <!-- Dynamic Status Note (Solid Matte 1-liner) -->
+        <!-- Dynamic Status Note (Solid Matte 1-liner with Rose Gold / Amber Accents) -->
         <div id="dynamic-status-note"
-          class="mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-[#1f2330] bg-[#101218] p-3 text-xs text-zinc-400 transition-all duration-300">
+          class="mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-amber-500/30 bg-[#181316] p-3 text-xs text-zinc-300 transition-all duration-300">
           <div id="dynamic-status-icon"
             class="flex h-4 w-4 shrink-0 items-center justify-center text-amber-400 mt-0.5 sm:mt-0">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -373,77 +530,73 @@
             </svg>
           </div>
           <p id="dynamic-status-desc" class="text-[11px] leading-relaxed text-zinc-300">
-            Mode Bank Soal beroperasi: 1.000 materi kurasi aktif siap digunakan siswa tanpa perlu API key.
+            <b>Content Bank Operating</b>: 1,000 curated exercises ready for learners without requiring an API key.
           </p>
         </div>
 
-        <!-- 5 Learning Tracks Chips (Solid Matte with 21st.dev Animated Icons) -->
+        <!-- 5 Learning Tracks Chips (Solid Matte with Rose Gold & Amber 21st.dev Animated Icons) -->
         <div class="mt-3.5 flex flex-wrap items-center gap-1.5 text-[11px] font-mono text-zinc-400">
-          <span class="text-zinc-500 text-[10px] uppercase tracking-wider mr-0.5 select-none">Materi:</span>
+          <span class="text-zinc-500 text-[10px] uppercase tracking-wider mr-0.5 select-none">Tracks:</span>
 
-          <!-- Percakapan: MessageSquare Animated (21st.dev) -->
-          <span title="Latihan Percakapan Real-time"
-            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
-            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-chat-svg" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              viewBox="0 0 24 24">
+          <!-- Conversation: MessageSquare Animated -->
+          <span title="Real-time Conversation Practice"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#292033] bg-[#14101c] px-2 py-0.5 text-zinc-300 hover:border-amber-400/50 hover:bg-[#1b1425] hover:text-amber-200 hover:shadow-[0_0_12px_rgba(245,158,11,0.12)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-amber-400 shrink-0 icon-chat-svg" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path class="icon-chat-bubble" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               <circle class="icon-chat-dot dot-1" cx="9" cy="10" r="1" fill="currentColor" stroke="none" />
               <circle class="icon-chat-dot dot-2" cx="12" cy="10" r="1" fill="currentColor" stroke="none" />
               <circle class="icon-chat-dot dot-3" cx="15" cy="10" r="1" fill="currentColor" stroke="none" />
             </svg>
-            <span>Percakapan</span>
+            <span>Conversation</span>
           </span>
 
-          <!-- Kosakata: BookText Animated (21st.dev) -->
-          <span title="Pengayaan Kosakata & Frasa"
-            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
-            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-vocab-svg" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              viewBox="0 0 24 24">
+          <!-- Vocabulary: BookText Animated -->
+          <span title="Vocabulary & Phrase Expansion"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#292033] bg-[#14101c] px-2 py-0.5 text-zinc-300 hover:border-rose-400/50 hover:bg-[#1b1425] hover:text-rose-200 hover:shadow-[0_0_12px_rgba(251,113,133,0.12)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-rose-400 shrink-0 icon-vocab-svg" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path class="icon-vocab-cover" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
               <path class="icon-vocab-line line-a" d="m8 13 4-7 4 7" />
               <path class="icon-vocab-line line-bar" d="M9.1 11h5.7" />
             </svg>
-            <span>Kosakata</span>
+            <span>Vocabulary</span>
           </span>
 
-          <!-- Tata Bahasa: PenLine Animated (21st.dev) -->
-          <span title="Struktur & Tata Bahasa"
-            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
-            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-pen-svg" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              viewBox="0 0 24 24">
+          <!-- Grammar: PenLine Animated -->
+          <span title="Grammar & Sentence Structure"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#292033] bg-[#14101c] px-2 py-0.5 text-zinc-300 hover:border-amber-400/50 hover:bg-[#1b1425] hover:text-amber-200 hover:shadow-[0_0_12px_rgba(245,158,11,0.12)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-amber-400 shrink-0 icon-pen-svg" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <g class="icon-pen-nib">
                 <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
                 <path d="m15 5 3 3" />
               </g>
               <path class="icon-pen-underline" d="M12 20h9" />
             </svg>
-            <span>Tata Bahasa</span>
+            <span>Grammar</span>
           </span>
 
-          <!-- Membaca: BookOpen Animated (21st.dev) -->
-          <span title="Pemahaman Membaca & Teks"
-            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
-            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-book-svg" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              viewBox="0 0 24 24">
+          <!-- Reading: BookOpen Animated -->
+          <span title="Reading Comprehension & Passages"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#292033] bg-[#14101c] px-2 py-0.5 text-zinc-300 hover:border-rose-400/50 hover:bg-[#1b1425] hover:text-rose-200 hover:shadow-[0_0_12px_rgba(251,113,133,0.12)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-rose-400 shrink-0 icon-book-svg" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path class="icon-book-left" d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
               <path class="icon-book-right" d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
             </svg>
-            <span>Membaca</span>
+            <span>Reading</span>
           </span>
 
-          <!-- Tantangan: Zap Animated (21st.dev) -->
-          <span title="Tantangan Kilat Adaptif"
-            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#222634] bg-[#12141c] px-2 py-0.5 text-zinc-300 hover:border-emerald-500/40 hover:bg-[#151a24] hover:text-zinc-100 hover:shadow-[0_0_12px_rgba(16,185,129,0.08)] active:scale-95 transition-all duration-200">
-            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0 icon-zap-svg" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              viewBox="0 0 24 24">
-              <path class="icon-zap-bolt" d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+          <!-- Challenge: Zap Animated -->
+          <span title="Adaptive Rapid-Fire Quizzes"
+            class="group cursor-pointer select-none inline-flex items-center gap-1.5 rounded-md border border-[#292033] bg-[#14101c] px-2 py-0.5 text-zinc-300 hover:border-amber-400/50 hover:bg-[#1b1425] hover:text-amber-200 hover:shadow-[0_0_12px_rgba(245,158,11,0.12)] active:scale-95 transition-all duration-200">
+            <svg class="w-3.5 h-3.5 text-amber-400 shrink-0 icon-zap-svg" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path class="icon-zap-bolt"
+                d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
             </svg>
-            <span>Tantangan</span>
+            <span>Challenge</span>
           </span>
         </div>
 
@@ -451,29 +604,25 @@
 
       <!-- 3. PRIMARY ACTION & COMMAND SHORTCUTS -->
       <section
-        class="mt-6 sm:mt-7 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-5 border-t border-[#1e222d]">
+        class="mt-6 sm:mt-7 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-5 border-t border-[#231e2b]">
         <!-- Quick command hints -->
         <div class="flex items-center gap-1.5 overflow-x-auto py-1 text-xs text-zinc-400 scrollbar-none">
           <span class="text-zinc-500 font-mono text-[11px]">Quick:</span>
           <button type="button" onclick="copyCommand('/start')"
-            class="rounded bg-[#12141c] px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-[#232735] hover:border-[#353b50] hover:text-zinc-100 transition-colors">
+            class="rounded bg-[#14101c] px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-[#271f32] hover:border-amber-400/40 hover:text-zinc-100 transition-colors">
             /start
           </button>
-          <button type="button" onclick="copyCommand('/level')"
-            class="rounded bg-[#12141c] px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-[#232735] hover:border-[#353b50] hover:text-zinc-100 transition-colors">
-            /level
-          </button>
           <button type="button" onclick="copyCommand('/help')"
-            class="rounded bg-[#12141c] px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-[#232735] hover:border-[#353b50] hover:text-zinc-100 transition-colors">
+            class="rounded bg-[#14101c] px-1.5 py-0.5 font-mono text-[11px] text-zinc-300 border border-[#271f32] hover:border-rose-400/40 hover:text-zinc-100 transition-colors">
             /help
           </button>
         </div>
 
-        <!-- Prominent Launch Button -->
+        <!-- Prominent Launch Button with Sunset Amber & Rose Gold Gradient -->
         <a id="open-telegram-btn" href="https://t.me/EnglishBuddy_Practice_Bot" target="_blank"
           rel="noopener noreferrer"
-          class="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-100 px-5 py-2.5 text-sm font-semibold tracking-tight text-zinc-950 shadow-md transition-all duration-200 hover:bg-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-200">
-          <span>Buka di Telegram</span>
+          class="group relative inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 bg-[length:200%_auto] px-5 py-2.5 text-sm font-semibold tracking-tight text-white shadow-[0_4px_20px_rgba(245,158,11,0.35)] transition-all duration-300 hover:bg-right hover:shadow-[0_6px_25px_rgba(244,63,94,0.45)] hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300">
+          <span>Open in Telegram</span>
           <svg
             class="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -484,26 +633,44 @@
         </a>
       </section>
 
-      <!-- 4. FOOTER SYSTEM METADATA -->
+      <!-- 4. DEVELOPER SIGNATURE FOOTER -->
       <footer
-        class="mt-6 pt-4 border-t border-[#181b24] flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-zinc-500">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="inline-flex items-center gap-1 text-emerald-400/90">
-            <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        class="mt-6 pt-4 border-t border-zinc-800/60 flex flex-wrap items-center justify-center gap-y-1.5 text-[11px] text-zinc-500 font-normal tracking-wide">
+        <!-- Author with GitHub Octocat Icon -->
+        <span class="inline-flex items-center gap-1">
+          <span>by</span>
+          <a href="https://github.com/arlandoapraharjo" target="_blank" rel="noopener noreferrer"
+            class="group inline-flex items-center gap-1 text-zinc-400 hover:text-zinc-200 underline decoration-zinc-700 underline-offset-4 transition-colors duration-150">
+            <svg class="w-3.5 h-3.5 fill-current shrink-0 transition-transform duration-200 group-hover:scale-110"
+              viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
             </svg>
-            Zero Data Retention
-          </span>
-          <span class="text-zinc-700">•</span>
-          <span>FastAPI Serverless</span>
-          <span class="text-zinc-700">•</span>
-          <span>1.000 Latihan</span>
-        </div>
+            <span>@arlandoapraharjo</span>
+          </a>
+        </span>
 
-        <div id="ping-stats" class="text-zinc-600 transition-colors">
-          HTTPS Encrypted • Webhook Active
-        </div>
+        <span class="mx-2 text-zinc-700 select-none">•</span>
+
+        <!-- Repo with GitBranch and Arrow Icons -->
+        <a href="https://github.com/arlandoapraharjo/meb-telegram-bot" target="_blank" rel="noopener noreferrer"
+          class="group inline-flex items-center gap-1 text-zinc-400 hover:text-zinc-200 underline decoration-zinc-700 underline-offset-4 transition-colors duration-150">
+          <svg class="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:rotate-12" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <line x1="6" y1="3" x2="6" y2="15" />
+            <circle cx="18" cy="6" r="3" />
+            <circle cx="6" cy="18" r="3" />
+            <path d="M18 9a9 9 0 0 1-9 9" />
+          </svg>
+          <span>View Repo</span>
+          <svg
+            class="w-3 h-3 text-zinc-500 transition-transform duration-200 group-hover:text-zinc-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            viewBox="0 0 24 24">
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
+          </svg>
+        </a>
       </footer>
 
     </div>
@@ -511,11 +678,11 @@
 
   <!-- Notification Toast Container -->
   <div id="toast"
-    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 inline-flex items-center gap-2 rounded-full border border-[#282d3d] bg-[#14161f] px-4 py-2 text-xs font-mono text-zinc-200 shadow-2xl">
-    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-[#16101c] px-4 py-2 text-xs font-mono text-zinc-200 shadow-2xl">
+    <svg class="w-3.5 h-3.5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <polyline points="20 6 9 17 4 12" />
     </svg>
-    <span id="toast-text">Tersalin ke clipboard</span>
+    <span id="toast-text">Copied to clipboard</span>
   </div>
 
   <!-- Interactive Logic & WebGL Dotted Veil Shader Background -->
@@ -538,11 +705,12 @@
 
     if (copyBtn) {
       copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText('@EnglishBuddy_Practice_Bot').then(() => {
-          showToast('Tersalin: @EnglishBuddy_Practice_Bot');
-          copyText.textContent = 'Tersalin!';
+        const handle = (copyText && copyText.textContent.trim()) ? copyText.textContent.trim() : '@EnglishBuddy_Practice_Bot';
+        navigator.clipboard.writeText(handle).then(() => {
+          showToast(`Copied: ${handle}`);
+          copyText.textContent = 'Copied!';
           setTimeout(() => {
-            copyText.textContent = '@EnglishBuddy_Practice_Bot';
+            copyText.textContent = handle;
           }, 1800);
         });
       });
@@ -550,11 +718,11 @@
 
     function copyCommand(cmd) {
       navigator.clipboard.writeText(cmd).then(() => {
-        showToast(`Tersalin: ${cmd}`);
+        showToast(`Copied: ${cmd}`);
       });
     }
 
-    // --- WebGL Halftone Dotted Veil Shader Runtime ---
+    // --- WebGL Halftone Dotted Veil Shader Runtime (Rose Gold & Sunset Amber Palette) ---
     (function initDottedVeilShader() {
       const canvas = document.getElementById('shader-canvas');
       if (!canvas) return;
@@ -667,16 +835,16 @@
       gl.enableVertexAttribArray(loc);
       gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 
-      // Tailored Dark Zinc + Emerald Color Palette
+      // Rose Gold & Sunset Amber Palette on Deep Obsidian Plum Background
       const colors = [
-        0.027, 0.031, 0.039, // Deep zinc background (#07080a)
-        0.035, 0.075, 0.055, // Dark emerald
-        0.063, 0.282, 0.188, // Muted emerald
-        0.102, 0.725, 0.498, // Emerald-500 accent (#10b981)
-        0.063, 0.282, 0.188,
-        0.035, 0.075, 0.055,
-        0.027, 0.031, 0.039,
-        0.027, 0.031, 0.039
+        0.043, 0.035, 0.055, // Deep obsidian plum (#0b090e)
+        0.12, 0.04, 0.08,    // Deep velvet rose
+        0.45, 0.12, 0.22,    // Soft rose quartz glow
+        0.96, 0.62, 0.04,    // Sunset Amber-500 accent (#f59e0b)
+        0.98, 0.44, 0.52,    // Rose Gold / Rose Quartz accent (#fb7185)
+        0.45, 0.12, 0.22,
+        0.043, 0.035, 0.055,
+        0.043, 0.035, 0.055
       ];
 
       const uni = {
@@ -734,7 +902,7 @@
           const tgBtn = document.getElementById('open-telegram-btn');
           if (tgBtn) tgBtn.href = `https://t.me/${cleanUser}`;
           const copyBtnText = document.getElementById('copy-text');
-          if (copyBtnText && !copyBtnText.textContent.includes('Tersalin')) {
+          if (copyBtnText && !copyBtnText.textContent.includes('Copied')) {
             copyBtnText.textContent = `@${cleanUser}`;
           }
           const allTgLinks = document.querySelectorAll('a[href*="t.me"]');
@@ -744,39 +912,24 @@
         }
 
         // 2. Elements to update
-        const overallBadge = document.getElementById('overall-status-badge');
-        const overallPing = document.getElementById('overall-status-ping');
-        const overallDot = document.getElementById('overall-status-dot');
-        const overallText = document.getElementById('overall-status-text');
-
         const geminiCard = document.getElementById('gemini-card');
         const geminiIconBox = document.getElementById('gemini-icon-box');
         const geminiTitle = document.getElementById('gemini-title');
         const geminiSubtitle = document.getElementById('gemini-subtitle');
         const geminiBadge = document.getElementById('gemini-badge');
-        const geminiBadgeDot = document.getElementById('gemini-badge-dot');
-        const geminiBadgeText = document.getElementById('gemini-badge-text');
 
         const statusNote = document.getElementById('dynamic-status-note');
         const statusIcon = document.getElementById('dynamic-status-icon');
         const statusDesc = document.getElementById('dynamic-status-desc');
 
-        // 3. Sync Gemini AI status & fix dual-engine badge
+        // 3. Sync Gemini AI status (Solid Matte Obsidian with Emerald & Rose accents)
         if (data.gemini_active) {
-          // Both engines active: 2 dari 2 Aktif
-          if (overallBadge) {
-            overallBadge.className = "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-emerald-500/40 bg-[#0e2017] px-2.5 py-1 text-[11px] font-mono text-emerald-300 shadow-sm whitespace-nowrap transition-all duration-300";
-          }
-          if (overallPing) overallPing.className = "absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75";
-          if (overallDot) overallDot.className = "relative inline-flex h-2 w-2 rounded-full bg-emerald-400";
-          if (overallText) overallText.textContent = "2 dari 2 Aktif (Hybrid Mode)";
-
-          // Gemini Card -> Solid Matte Active Emerald
+          // Gemini Card -> Solid Matte Active Rose
           if (geminiCard) {
-            geminiCard.className = "relative overflow-hidden rounded-xl border border-emerald-500/30 bg-[#11161f] p-3.5 transition-all duration-300 hover:border-emerald-500/40";
+            geminiCard.className = "relative overflow-hidden rounded-xl border border-rose-500/30 bg-[#16101c] p-3.5 transition-all duration-300 hover:border-rose-500/40";
           }
           if (geminiIconBox) {
-            geminiIconBox.className = "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-500/30 bg-[#0e2118] text-emerald-400 transition-colors";
+            geminiIconBox.className = "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-[#25121b] text-rose-400 transition-colors";
           }
           if (geminiTitle) geminiTitle.className = "text-xs font-semibold text-zinc-100 truncate";
           if (geminiSubtitle) {
@@ -785,52 +938,43 @@
             geminiSubtitle.className = "text-[10px] text-zinc-400 truncate";
           }
           if (geminiBadge) {
-            geminiBadge.className = "inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/40 bg-[#0e2017] px-2 py-0.5 text-[10px] font-mono font-semibold text-emerald-300 transition-colors";
+            geminiBadge.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium transition-colors";
+            geminiBadge.textContent = "ACTIVE";
           }
-          if (geminiBadgeDot) geminiBadgeDot.className = "h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse";
-          if (geminiBadgeText) geminiBadgeText.textContent = "AKTIF";
 
           // Dynamic Status Note -> Solid Matte Hybrid Mode Active
           if (statusNote) {
-            statusNote.className = "mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-emerald-500/30 bg-[#0e161c] p-3 text-xs text-zinc-300 transition-all duration-300";
+            statusNote.className = "mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-rose-500/30 bg-[#18101a] p-3 text-xs text-zinc-300 transition-all duration-300";
           }
           if (statusIcon) {
-            statusIcon.className = "flex h-4 w-4 shrink-0 items-center justify-center text-emerald-400 mt-0.5 sm:mt-0";
+            statusIcon.className = "flex h-4 w-4 shrink-0 items-center justify-center text-rose-400 mt-0.5 sm:mt-0";
             statusIcon.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
           }
           if (statusDesc) {
-            statusDesc.innerHTML = '<b>Hybrid Mode Aktif</b>: AI menghasilkan variasi latihan dinamis &amp; evaluasi cerdas, didukung <b>1.000 bank soal</b> sebagai cadangan instan.';
+            statusDesc.innerHTML = '<b>Hybrid Mode Active</b>: AI dynamically generates fresh exercises &amp; intelligent evaluations, backed by <b>1,000 curated exercises</b> as instant fallback.';
           }
         } else {
-          // Only Content Bank active: 1 dari 2 Aktif
-          if (overallBadge) {
-            overallBadge.className = "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-amber-500/40 bg-[#21190c] px-2.5 py-1 text-[11px] font-mono text-amber-300 shadow-sm whitespace-nowrap transition-all duration-300";
-          }
-          if (overallPing) overallPing.className = "absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75";
-          if (overallDot) overallDot.className = "relative inline-flex h-2 w-2 rounded-full bg-amber-400";
-          if (overallText) overallText.textContent = "1 dari 2 Aktif (Bank Soal)";
-
+          // Gemini Card in Standby
           if (geminiCard) {
-            geminiCard.className = "relative overflow-hidden rounded-xl border border-[#202430] bg-[#12141a] p-3.5 transition-all duration-300";
+            geminiCard.className = "relative overflow-hidden rounded-xl border border-[#251f2e] bg-[#141019] p-3.5 transition-all duration-300";
           }
           if (geminiIconBox) {
-            geminiIconBox.className = "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#262b3a] bg-[#181b24] text-zinc-400 transition-colors";
+            geminiIconBox.className = "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#2c2436] bg-[#1a1422] text-zinc-400 transition-colors";
           }
           if (geminiBadge) {
-            geminiBadge.className = "inline-flex shrink-0 items-center gap-1 rounded-full border border-[#282d3d] bg-[#181b24] px-2 py-0.5 text-[10px] font-mono font-medium text-zinc-400 transition-colors";
+            geminiBadge.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800/60 text-zinc-500 border border-zinc-700/40 font-medium transition-colors";
+            geminiBadge.textContent = "STANDBY";
           }
-          if (geminiBadgeDot) geminiBadgeDot.className = "h-1.5 w-1.5 rounded-full bg-zinc-500";
-          if (geminiBadgeText) geminiBadgeText.textContent = "STANDBY";
 
           if (statusNote) {
-            statusNote.className = "mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-[#1f2330] bg-[#101218] p-3 text-xs text-zinc-400 transition-all duration-300";
+            statusNote.className = "mt-3 flex items-start sm:items-center gap-2.5 rounded-xl border border-amber-500/30 bg-[#181316] p-3 text-xs text-zinc-300 transition-all duration-300";
           }
           if (statusIcon) {
             statusIcon.className = "flex h-4 w-4 shrink-0 items-center justify-center text-amber-400 mt-0.5 sm:mt-0";
             statusIcon.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
           }
           if (statusDesc) {
-            statusDesc.innerHTML = '<b>Mode Bank Soal beroperasi</b>: 1.000 materi kurasi aktif siap digunakan siswa tanpa perlu API key.';
+            statusDesc.innerHTML = '<b>Content Bank Operating</b>: 1,000 curated exercises ready for learners without requiring an API key.';
           }
         }
       } catch (err) {

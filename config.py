@@ -54,6 +54,31 @@ def validate_bot_token(token: str | None = None) -> str:
 # If run directly or imported, we validate only when running the bot or validating explicitly.
 TELEGRAM_BOT_TOKEN: str = _RAW_TOKEN
 
+# --- Telegram Bot Identity Settings ---
+# Canonical bot username (without @ prefix), used for public portal links & display chips.
+_RAW_BOT_USERNAME: Final[str] = (
+    os.getenv("BOT_USERNAME")
+    or os.getenv("TELEGRAM_BOT_USERNAME")
+    or "EnglishBuddy_Practice_Bot"
+).strip()
+
+BOT_USERNAME: Final[str] = _RAW_BOT_USERNAME.lstrip("@") or "EnglishBuddy_Practice_Bot"
+BOT_DISPLAY_HANDLE: Final[str] = f"@{BOT_USERNAME}"
+BOT_TELEGRAM_URL: Final[str] = f"https://t.me/{BOT_USERNAME}"
+
+
+def format_bot_handle(username: str | None = None) -> str:
+    """Returns the bot display handle with a single leading '@' prefix."""
+    user = (username or BOT_USERNAME).strip().lstrip("@")
+    return f"@{user}" if user else "@EnglishBuddy_Practice_Bot"
+
+
+def format_telegram_url(username: str | None = None) -> str:
+    """Returns the canonical Telegram link URL (without '@')."""
+    user = (username or BOT_USERNAME).strip().lstrip("@")
+    return f"https://t.me/{user}" if user else "https://t.me/EnglishBuddy_Practice_Bot"
+
+
 # Webhook Secret Token for Telegram API authentication on serverless endpoints
 WEBHOOK_SECRET: Final[str] = os.getenv("WEBHOOK_SECRET", "").strip()
 

@@ -137,6 +137,7 @@ declare module "framer-motion" {
 declare module "lucide-react" {
   export const ArrowUpRight: any;
   export const Bot: any;
+  export const GitBranch: any;
   export const Sparkles: any;
   export const MessageSquare: any;
   export const BookOpen: any;
