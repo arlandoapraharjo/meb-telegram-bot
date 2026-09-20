@@ -2,11 +2,11 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Vercel](https://img.shields.io/badge/Vercel-Serverless-black?logo=vercel&logoColor=white)](https://vercel.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-black?logo=vercel&logoColor=white)](https://vercel.com/)
 [![Telegram Bot API](https://img.shields.io/badge/telegram--bot--api-v21%2B%20(async)-0088cc?logo=telegram&logoColor=white)](https://python-telegram-bot.org/)
 [![Google GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%203.8%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 
-An interactive Telegram bot for English learners built with **FastAPI** and **python-telegram-bot (v21+ async)**, featuring **Gemini 3.8 Flash AI coaching**, an instant **curated offline fallback bank** (360 exercises across 5 tracks), and ready for zero-maintenance deployment on **Vercel Serverless Functions**.
+An interactive Telegram bot for English learners built with **FastAPI** and **python-telegram-bot (v21+ async)**, featuring **Gemini 3.8 Flash AI coaching**, an instant **curated offline fallback bank** (1,000 exercises across 5 tracks), and ready for zero-maintenance deployment on **Vercel Serverless Functions**.
 
 ---
 
@@ -14,7 +14,7 @@ An interactive Telegram bot for English learners built with **FastAPI** and **py
 
 - 💬 **5 Practice Tracks:** Daily Conversation, Vocabulary Builder, Grammar Clinic, Reading Comprehension, and Challenge Arena.
 - 🎯 **3 CEFR Levels:** Beginner (A1–A2), Intermediate (B1–B2), and Advanced (C1–C2)—switchable anytime via inline buttons.
-- ⚡ **Hybrid AI Engine:** Real-time feedback and dynamic exercise generation via Google Gemini 3.8 Flash; automatically falls back to offline exercises if offline or unconfigured.
+- ⚡ **Hybrid AI Engine:** Real-time feedback and dynamic exercise generation via Google Gemini model; automatically falls back to offline exercises if offline or unconfigured.
 - ☁️ **Serverless Webhook Ready:** Production-ready FastAPI ASGI entrypoint (`api/index.py`) engineered specifically for Vercel's Python runtime.
 - 🛡️ **Production Guardrails:**
   - `X-Telegram-Bot-Api-Secret-Token` authentication with constant-time verification.
@@ -103,23 +103,49 @@ python bot.py
 ## 📁 Project Structure
 
 ```text
-├── api/
-│   └── index.py            # FastAPI serverless entrypoint for Vercel Webhook
-├── public/
-│   └── index.html          # Web status & launch landing page (served by FastAPI)
-├── frontend/
-│   ├── BotStatusCard.tsx   # Craft React/Tailwind component
-│   ├── declarations.d.ts   # Ambient TypeScript declarations
-│   └── tsconfig.json       # TypeScript configuration for component
-├── scripts/
-│   └── set_webhook.py      # CLI utility to register, check, or delete Telegram Webhooks
+├── .env.example            # Environment variable template
+├── .gitignore              # VCS ignore rules
+├── pyproject.toml          # PEP 518/621 project configuration & metadata
+├── requirements.txt        # Pinned production dependencies
+├── vercel.json             # Vercel serverless routing configuration
+├── README.md               # Documentation and deployment guide
+│
+├── api/                    # Vercel Serverless Function entrypoints
+│   └── index.py            # FastAPI ASGI entrypoint for webhook & health probes
+│
+├── exercises/              # 1,000 modular curated offline exercises
+│   ├── __init__.py         # Track aggregator
+│   ├── conversation.py     # 200 Daily Conversation exercises
+│   ├── vocabulary.py       # 200 Vocabulary Builder exercises
+│   ├── grammar.py          # 200 Grammar Clinic exercises
+│   ├── reading.py          # 200 Reading Comprehension exercises
+│   └── challenge.py        # 200 Challenge Arena exercises
+│
+├── frontend/               # Isolated React / TypeScript UI Design Assets
+│   ├── tsconfig.json       # Self-contained TypeScript configuration
+│   ├── declarations.d.ts   # Ambient types
+│   ├── BotStatusCard.tsx   # React status card preview component
+│   └── components/ui/      # Reusable UI primitives
+│       ├── dotted-veil.tsx # WebGL Shader Background component
+│       └── demo.tsx        # Component demo preview
+│
+├── public/                 # Static web assets served by FastAPI/Vercel
+│   └── index.html          # High-performance matte dark landing page
+│
+├── scripts/                # Operational CLI utilities
+│   └── set_webhook.py      # Telegram webhook registration tool
+│
+├── tests/                  # Automated Test Suite (Unit & Integration)
+│   ├── __init__.py
+│   ├── test_content_bank.py
+│   ├── test_rate_limiter.py
+│   ├── test_quality_guard.py
+│   └── test_api.py
+│
 ├── bot.py                  # Standalone entrypoint for local polling development
-├── config.py               # Settings, track definitions & validations
-├── handlers.py             # Telegram commands, callback queries & text handler
-├── gemini_service.py       # Gemini 3.8 Flash AI integration & coach persona
-├── content_bank.py         # 360 curated offline exercises (5 tracks x 3 levels x 24) & anti-sugarcoat logic
-├── rate_limiter.py         # In-memory sliding window rate limiter (LRU)
-├── requirements.txt        # Pinned dependencies (fastapi, uvicorn, python-telegram-bot, etc.)
-├── vercel.json             # Vercel routing and rewrites configuration
-└── .env.example            # Environment variable template
+├── config.py               # Centralized settings & environment loader
+├── content_bank.py         # Offline bank manager & pedagogical grading
+├── gemini_service.py       # Gemini 3.8 Flash AI coaching layer
+├── handlers.py             # Telegram commands, callbacks & message handlers
+└── rate_limiter.py         # In-memory sliding window rate limiter (LRU)
 ```

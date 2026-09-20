@@ -38,6 +38,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 import config  # noqa: E402
+import content_bank  # noqa: E402
 from bot import TokenRedactingFilter  # noqa: E402
 from handlers import (  # noqa: E402
     global_error_handler,
@@ -221,7 +222,7 @@ async def health_check(request: Request):
             "gemini_active": bool(gemini_key),
             "gemini_model": (os.getenv("GEMINI_MODEL", "").strip() or "gemini-3.8-flash") if gemini_key else None,
             "bot_username": os.getenv("TELEGRAM_BOT_USERNAME", "EnglishBuddy_Practice_Bot").lstrip("@"),
-            "content_bank_exercises": 360,
+            "content_bank_exercises": content_bank.TOTAL_EXERCISES,
         }
 
     # Browser navigation: return crafted minimal landing page

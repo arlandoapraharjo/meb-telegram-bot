@@ -12,13 +12,12 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["../*", "*"]
+      "@/*": ["*"]
     }
   },
   "include": [
     "BotStatusCard.tsx",
     "declarations.d.ts",
-    "components/**/*",
-    "../components/**/*"
+    "components/**/*"
   ]
 }

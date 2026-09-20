@@ -458,7 +458,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-xs font-semibold text-zinc-100 truncate">Content Bank</h3>
-                    <p className="text-[10px] text-zinc-400 truncate">360 Latihan • 5 Kategori</p>
+                    <p className="text-[10px] text-zinc-400 truncate">1.000 Latihan • 5 Kategori</p>
                   </div>
                 </div>
 
@@ -529,11 +529,11 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
               {geminiActive ? (
                 <>
                   <b>Hybrid Mode Aktif</b>: AI menghasilkan variasi latihan dinamis &amp; evaluasi cerdas, didukung{" "}
-                  <b>360 bank soal</b> sebagai cadangan instan.
+                  <b>1.000 bank soal</b> sebagai cadangan instan.
                 </>
               ) : (
                 <>
-                  <b>Mode Bank Soal beroperasi</b>: 360 materi kurasi aktif siap digunakan siswa tanpa perlu API key.
+                  <b>Mode Bank Soal beroperasi</b>: 1.000 materi kurasi aktif siap digunakan siswa tanpa perlu API key.
                 </>
               )}
             </p>
