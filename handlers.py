@@ -143,9 +143,9 @@ def get_mode_keyboard(mode_key: str) -> InlineKeyboardMarkup:
 
 
 WELCOME_MESSAGE: str = (
-    f"Halo adik-adik! Aku {config.BOT_NAME}, teman belajarmu! 👋✨\n\n"
-    "Belajar bahasa Inggris itu mudah dan seru lho! Jangan takut salah ya, di sini kita belajar bersama dari dasar.\n\n"
-    "Yuk pilih materi atau tantangan yang ingin kamu coba di bawah ini:"
+    f"Halo! Aku {config.BOT_NAME}, teman belajarmu! 👋✨\n\n"
+    "Belajar bahasa Inggris itu seru dan menyenangkan! Jangan takut salah ya, di sini kita bisa belajar dan berlatih bersama sesuai kemampuanmu.\n\n"
+    "Yuk, pilih materi atau tantangan yang ingin kamu coba di bawah ini:"
 )
 
 
