@@ -44,7 +44,6 @@ from handlers import (  # noqa: E402
     global_error_handler,
     help_command,
     menu_callback_handler,
-    setup_bot_profile,
     start_command,
     text_message_handler,
 )
@@ -134,7 +133,6 @@ async def get_ptb_app() -> Application:
             if not _ptb_app._initialized:
                 await _ptb_app.initialize()
                 await _ptb_app.start()
-                await setup_bot_profile(_ptb_app.bot)
                 logger.info(
                     "PTB Application initialized and started for webhook processing."
                 )
