@@ -236,7 +236,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
   telegramUrl = "https://t.me/EnglishBuddy_Practice_Bot",
   uptime = "99.9%",
   status = "operational",
-  statusText = "Operational",
+  statusText = "Online",
   systemSpecs = ["FastAPI Webhook", "< 1ms Offline Fallback", "1,000 Exercises • Free"],
   className = "",
   contentBankActive = true,
@@ -321,7 +321,7 @@ export const BotStatusCard: FC<BotStatusCardProps> = ({
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
               <span className="whitespace-nowrap">
-                {statusText} • {uptime} Uptime
+                {statusText}
               </span>
             </motion.div>
 
