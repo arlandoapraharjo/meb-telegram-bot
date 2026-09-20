@@ -275,3 +275,66 @@ def get_offline_feedback(
     Backwards-compatible wrapper delegating to evaluate_offline_answer.
     """
     return evaluate_offline_answer(safe_user_text, active_exercise, mode, level)
+
+
+def get_offline_hint(
+    active_exercise: Optional[Dict[str, Any]],
+    mode: str = config.MODE_DAILY_CONVERSATION,
+    level: str = config.DEFAULT_LEVEL,
+    query_text: str = "",
+) -> str:
+    """
+    Provides a structured, pedagogical offline hint or explanation when
+    the student asks 'apa maksudnya?', 'apa jawabannya?', or requests help.
+    Does not require any Gemini API call (0 API cost, zero downtime).
+    """
+    level_info = config.LEVEL_INFO.get(level, config.LEVEL_INFO[config.DEFAULT_LEVEL])
+    badge = level_info.get("badge", "Level")
+
+    if not active_exercise:
+        return (
+            f"💡 <b>Petunjuk Belajar ({badge}):</b>\n\n"
+            "Kamu sedang berada di menu latihan bahasa Inggris! "
+            "Pilihlah salah satu topik di menu atau tekan <b>🔄 Latihan Lain</b> untuk mulai mengerjakan soal bersama Mebby ya! 😊"
+        )
+
+    title = active_exercise.get("title", "Latihan")
+    ex_badge = active_exercise.get("badge", "Soal")
+    primary_answer = active_exercise.get("primary_answer", "")
+
+    query_lower = query_text.lower().strip()
+
+    # If the user explicitly asks for the answer key or gives up
+    if any(p in query_lower for p in ["kunci jawaban", "kunci", "menyerah", "pasrah", "bocoran"]):
+        if primary_answer:
+            return (
+                f"🔑 <b>Kunci Jawaban ({badge}):</b>\n\n"
+                f"📌 <b>Materi:</b> {ex_badge}\n"
+                f"✅ Jawaban yang tepat: <code>{primary_answer}</code>\n\n"
+                f"💡 Yuk coba ketik ulang jawaban di atas agar semakin ingat dan terlatih ya! Semangat! 😊"
+            )
+
+    # If the student asks 'apa jawabannya' / asking for answer clue
+    asking_answer = any(p in query_lower for p in ["jawabannya", "jawaban", "answer"])
+    if asking_answer and primary_answer:
+        word_count = len(primary_answer.split())
+        first_char = primary_answer[0].upper()
+        return (
+            f"💡 <b>Petunjuk Jawaban ({badge}):</b>\n\n"
+            f"📌 <b>Materi:</b> {ex_badge}\n\n"
+            f"Mebby beri petunjuk dulu ya agar kamu bisa coba berpikir mandiri:\n"
+            f"• Dimulai dengan huruf: <b>{first_char}...</b>\n"
+            f"• Terdiri dari <b>{word_count} kata</b>.\n\n"
+            f"Yuk coba ketik tebakanmu! Atau ketik <code>kunci jawaban</code> jika benar-benar kesulitan ya. 😊"
+        )
+
+    # General explanation for 'apa maksudnya', 'artinya apa', 'maksudnya gimana'
+    return (
+        f"💡 <b>Penjelasan Soal ({badge}):</b>\n\n"
+        f"📌 <b>Materi:</b> {title} ({ex_badge})\n\n"
+        f"Pada latihan ini, perhatikan instruksi di bagian <i>👉 Giliranmu</i> pada soal di atas. "
+        f"Tuliskan jawaban dalam bahasa Inggris sesuai contoh yang diberikan.\n\n"
+        f"Jangan takut salah ya, karena dari kesalahan kita bisa belajar! "
+        f"👉 <b>Yuk coba ketik jawabanmu di bawah ini:</b>"
+    )
+

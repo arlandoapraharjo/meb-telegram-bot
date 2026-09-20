@@ -623,7 +623,18 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     if last_msg_id and update.effective_chat:
         await strip_previous_reply_markup(context, update.effective_chat.id, last_msg_id)
 
-    # Show typing indicator while coach evaluates
+    # 1. Anti-Jailbreak / Prompt Injection Pre-screening (0 API tokens consumed)
+    jailbreak_msg = gemini_service.detect_potential_jailbreak(user_text)
+    if jailbreak_msg:
+        sent_msg = await update.message.reply_text(
+            text=sanitize_outgoing_text(jailbreak_msg),
+            reply_markup=get_mode_keyboard(active_mode),
+            parse_mode=constants.ParseMode.HTML,
+        )
+        user_data["last_interactive_msg_id"] = sent_msg.message_id
+        return
+
+    # Show typing indicator while coach processes
     if update.effective_chat:
         try:
             await context.bot.send_chat_action(
@@ -633,14 +644,24 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         except Exception:
             pass
 
-    # Conversational Coach Evaluation (Gemini Flash or Offline Fallback)
-    feedback_text = await gemini_service.evaluate_student_message(
-        mode=active_mode,
-        level=current_level,
-        active_prompt=active_prompt,
-        user_text=user_text,
-        active_exercise=active_exercise,
-    )
+    # 2. Student Question / Clarification / Hint Intent ('apa maksudnya', 'apa jawabannya')
+    if gemini_service.is_student_query_or_hint_request(user_text):
+        feedback_text = await gemini_service.explain_or_hint_exercise(
+            mode=active_mode,
+            level=current_level,
+            active_prompt=active_prompt,
+            user_text=user_text,
+            active_exercise=active_exercise,
+        )
+    else:
+        # 3. Conversational Coach Evaluation for Student Answer Submissions
+        feedback_text = await gemini_service.evaluate_student_message(
+            mode=active_mode,
+            level=current_level,
+            active_prompt=active_prompt,
+            user_text=user_text,
+            active_exercise=active_exercise,
+        )
 
     sent_msg = await update.message.reply_text(
         text=sanitize_outgoing_text(feedback_text),
