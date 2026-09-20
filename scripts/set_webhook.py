@@ -182,17 +182,26 @@ def setup_profile():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Manage Telegram Bot Webhook for Vercel")
-    parser.add_argument("--token", help="Override Telegram Bot Token from .env")
-    parser.add_argument("--secret", help="Override Webhook Secret Token from .env")
+    parent_parser = argparse.ArgumentParser(add_help=False)
+    parent_parser.add_argument("--token", help="Override Telegram Bot Token from .env")
+    parent_parser.add_argument("--secret", help="Override Webhook Secret Token from .env")
+
+    parser = argparse.ArgumentParser(
+        description="Manage Telegram Bot Webhook for Vercel",
+        parents=[parent_parser],
+    )
     subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
-    set_parser = subparsers.add_parser("set", help="Set the webhook to your Vercel URL")
+    set_parser = subparsers.add_parser(
+        "set",
+        help="Set the webhook to your Vercel URL",
+        parents=[parent_parser],
+    )
     set_parser.add_argument("url", nargs="?", help="Your Vercel deployment URL (e.g., https://my-app.vercel.app)")
 
-    subparsers.add_parser("info", help="Check current webhook registration status")
-    subparsers.add_parser("delete", help="Delete webhook (use before running local bot.py)")
-    subparsers.add_parser("profile", help="Update bot description and commands on Telegram")
+    subparsers.add_parser("info", help="Check current webhook registration status", parents=[parent_parser])
+    subparsers.add_parser("delete", help="Delete webhook (use before running local bot.py)", parents=[parent_parser])
+    subparsers.add_parser("profile", help="Update bot description and commands on Telegram", parents=[parent_parser])
 
     args = parser.parse_args()
 
