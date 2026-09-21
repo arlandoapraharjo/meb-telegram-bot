@@ -1448,85 +1448,96 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "rdg_adv_01",
         "badge": "🤖 AI di Bidang Medis: Manfaat Utama",
-        "prompt": "🩺 <b>Baca teks teknologi medis:</b>\n\"Artificial Intelligence algorithms trained on millions of radiological scans assist physicians in achieving accurate <b>early diagnosis</b> of complex conditions, thereby drastically increasing patient survival rates.\"\n\n👉 <b>Pertanyaan:</b> What key diagnostic benefit does AI provide according to the passage? (Manfaat diagnostik utama apa yang diberikan AI?)",
+        "prompt": "🩺 <b>Baca teks teknologi medis berikut:</b>\n\"Modern hospitals are rapidly integrating machine learning into their clinical workflows. Artificial Intelligence algorithms trained on millions of radiological scans assist physicians in achieving accurate <b>early diagnosis</b> of complex conditions. By detecting anomalies before symptoms become severe, these diagnostic systems drastically increase patient survival rates.\"\n\n👉 <b>Pertanyaan:</b> What key diagnostic benefit does AI provide according to the passage? (Manfaat diagnostik utama apa yang diberikan AI?)",
         "expected": [
             "early diagnosis",
             "accurate early diagnosis",
-            "diagnosis"
+            "diagnosis",
+            "early detection",
+            "an accurate early diagnosis"
         ],
         "primary_answer": "early diagnosis"
     },
     {
         "id": "rdg_adv_02",
         "badge": "🤖 AI di Bidang Medis: Pengawasan Dokter",
-        "prompt": "👩‍⚕️ <b>Baca teks teknologi medis:</b>\n\"Despite automated machine precision, medical ethicists emphasize that final clinical decisions must always remain under competent human <b>oversight</b>.\"\n\n👉 <b>Pertanyaan:</b> Final clinical decisions must always remain under human what? (Keputusan klinis akhir harus selalu di bawah apa dari manusia?)",
+        "prompt": "👩‍⚕️ <b>Baca teks teknologi medis berikut:</b>\n\"Although algorithmic diagnostic tools can process medical imaging in seconds, they are not infallible. Despite automated machine precision, medical ethicists emphasize that final clinical decisions must always remain under competent human <b>oversight</b>. Experienced doctors provide the ethical judgment and empathetic patient care that machines cannot replicate.\"\n\n👉 <b>Pertanyaan:</b> Final clinical decisions must always remain under human what? (Keputusan klinis akhir harus selalu di bawah apa dari manusia?)",
         "expected": [
             "oversight",
+            "human oversight",
             "supervision",
-            "human oversight"
+            "competent human oversight"
         ],
         "primary_answer": "oversight"
     },
     {
         "id": "rdg_adv_03",
         "badge": "🏭 Revolusi Industri: Sumber Tenaga",
-        "prompt": "⚙️ <b>Baca teks sejarah modern:</b>\n\"The transformation from agrarian handcrafting to mechanized manufacturing was propelled by James Watt's refinement of the commercial <b>steam</b> engine.\"\n\n👉 <b>Pertanyaan:</b> What type of engine powered the mechanization of manufacturing? (Mesin bertenaga apakah yang mendorong mekanisasi manufaktur?)",
+        "prompt": "⚙️ <b>Baca teks sejarah modern berikut:</b>\n\"Prior to the mid-eighteenth century, human manufacturing relied strictly on manual labor, draft animals, and watermills. The transformation from agrarian handcrafting to mechanized manufacturing was propelled by James Watt's refinement of the commercial <b>steam</b> engine. This revolutionary power source enabled factories to operate continuously regardless of weather or river flow.\"\n\n👉 <b>Pertanyaan:</b> What type of engine powered the mechanization of manufacturing? (Mesin bertenaga apakah yang mendorong mekanisasi manufaktur?)",
         "expected": [
             "steam",
             "steam engine",
-            "the steam engine"
+            "the steam engine",
+            "commercial steam engine"
         ],
         "primary_answer": "steam engine"
     },
     {
         "id": "rdg_adv_04",
         "badge": "🏭 Revolusi Industri: Abad Dimulai",
-        "prompt": "📜 <b>Baca teks sejarah modern:</b>\n\"The first wave of the Industrial Revolution unfolded initially in Great Britain during the latter half of the <b>eighteenth</b> century.\"\n\n👉 <b>Pertanyaan:</b> In which century did the first industrial revolution begin? (Pada abad ke berapa revolusi industri pertama dimulai?)",
+        "prompt": "📜 <b>Baca teks sejarah modern berikut:</b>\n\"Technological innovations gradually reshaped trade routes, urban demographics, and labor systems across the globe. The first wave of the Industrial Revolution unfolded initially in Great Britain during the latter half of the <b>eighteenth</b> century. Soon afterward, industrialization expanded rapidly across continental Europe and North America.\"\n\n👉 <b>Pertanyaan:</b> In which century did the first industrial revolution begin? (Pada abad ke berapa revolusi industri pertama dimulai?)",
         "expected": [
             "eighteenth",
             "18th",
             "18th century",
-            "eighteenth century"
+            "eighteenth century",
+            "the 18th century",
+            "the eighteenth century"
         ],
         "primary_answer": "18th century"
     },
     {
         "id": "rdg_adv_05",
         "badge": "🌳 Hutan Amazon: Persentase Oksigen",
-        "prompt": "🌿 <b>Baca teks biosfer global:</b>\n\"Often referred to as the green lungs of our planet, the Amazon Basin rainforest produces roughly <b>twenty</b> percent of Earth's total terrestrial oxygen.\"\n\n👉 <b>Pertanyaan:</b> What percentage of terrestrial oxygen does the Amazon produce? (Berapa persen oksigen daratan yang dihasilkan Amazon?)",
+        "prompt": "🌿 <b>Baca teks biosfer global berikut:</b>\n\"Covering over five million square kilometers across South America, the Amazon rainforest harbors unmatched biodiversity. Often referred to as the green lungs of our planet, the Amazon Basin rainforest produces roughly <b>twenty</b> percent of Earth's total terrestrial oxygen. It also stabilizes global climate patterns by storing massive amounts of carbon.\"\n\n👉 <b>Pertanyaan:</b> What percentage of terrestrial oxygen does the Amazon produce? (Berapa persen oksigen daratan yang dihasilkan Amazon?)",
         "expected": [
             "twenty",
             "20",
             "20 percent",
             "20%",
-            "twenty percent"
+            "twenty percent",
+            "roughly twenty percent",
+            "about 20%"
         ],
         "primary_answer": "20%"
     },
     {
         "id": "rdg_adv_06",
         "badge": "🌳 Hutan Amazon: Ancaman Deforestasi",
-        "prompt": "🚜 <b>Baca teks biosfer global:</b>\n\"Unchecked illegal logging and expansive cattle ranching drive rapid <b>deforestation</b>, threatening countless indigenous wildlife species with extinction.\"\n\n👉 <b>Pertanyaan:</b> What ecological crisis is caused by logging and ranching? (Krisis ekologis apa yang disebabkan oleh penebangan dan peternakan?)",
+        "prompt": "🚜 <b>Baca teks biosfer global berikut:</b>\n\"Despite its critical ecological role, the tropical biome faces unprecedented environmental pressures. Unchecked illegal logging and expansive cattle ranching drive rapid <b>deforestation</b>, threatening countless indigenous wildlife species with extinction. Conservationists urge international treaties to protect these fragile primary forests.\"\n\n👉 <b>Pertanyaan:</b> What ecological crisis is caused by logging and ranching? (Krisis ekologis apa yang disebabkan oleh penebangan dan peternakan?)",
         "expected": [
             "deforestation",
-            "forest loss"
+            "rapid deforestation",
+            "forest loss",
+            "the deforestation"
         ],
         "primary_answer": "deforestation"
     },
     {
         "id": "rdg_adv_07",
         "badge": "☢️ Marie Curie: Penemuan Radium",
-        "prompt": "🔬 <b>Baca teks biografi saintis:</b>\n\"Through relentless isolation of pitchblende minerals, physicist Marie Curie discovered two new radioactive elements: polonium and <b>radium</b>.\"\n\n👉 <b>Pertanyaan:</b> In addition to polonium, what radioactive element did Marie Curie discover? (Selain polonium, unsur radioaktif apa yang ditemukan Marie Curie?)",
+        "prompt": "🔬 <b>Baca teks biografi saintis berikut:</b>\n\"Working tirelessly in an unventilated wooden shed in Paris, Marie Curie investigated pitchblende ore. Through relentless isolation of radioactive minerals, physicist Marie Curie discovered two new radioactive elements: polonium and <b>radium</b>. Her pioneering discoveries laid the foundation for modern nuclear physics and cancer radiation therapy.\"\n\n👉 <b>Pertanyaan:</b> In addition to polonium, what radioactive element did Marie Curie discover? (Selain polonium, unsur radioaktif apa yang ditemukan Marie Curie?)",
         "expected": [
             "radium",
-            "element radium"
+            "element radium",
+            "the element radium"
         ],
         "primary_answer": "radium"
     },
     {
         "id": "rdg_adv_08",
         "badge": "☢️ Marie Curie: Jumlah Nobel",
-        "prompt": "🏆 <b>Baca teks biografi saintis:</b>\n\"Marie Curie remains the only historic figure to have achieved <b>two</b> Nobel Prizes across two completely distinct scientific disciplines: Physics and Chemistry.\"\n\n👉 <b>Pertanyaan:</b> How many Nobel Prizes did Marie Curie win? (Berapa banyak Hadiah Nobel yang diraih Marie Curie?)",
+        "prompt": "🏆 <b>Baca teks biografi saintis berikut:</b>\n\"Marie Curie's scientific brilliance broke numerous gender barriers in academia. Marie Curie remains the only historic figure to have achieved <b>two</b> Nobel Prizes across two completely distinct scientific disciplines: Physics and Chemistry. Her legacy continues to inspire generations of scientists worldwide.\"\n\n👉 <b>Pertanyaan:</b> How many Nobel Prizes did Marie Curie win? (Berapa banyak Hadiah Nobel yang diraih Marie Curie?)",
         "expected": [
             "two",
             "2",
@@ -1538,7 +1549,7 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "rdg_adv_09",
         "badge": "🌊 Laut Dalam: Kemosintesis",
-        "prompt": "🔦 <b>Baca teks oseanografi:</b>\n\"In the pitch-black abyssal trenches devoid of sunlight, specialized benthic bacteria sustain life via <b>chemosynthesis</b> rather than photosynthetic solar energy.\"\n\n👉 <b>Pertanyaan:</b> What process replaces photosynthesis in total deep-sea darkness? (Proses apa yang menggantikan fotosintesis dalam kegelapan laut dalam?)",
+        "prompt": "🔦 <b>Baca teks oseanografi berikut:</b>\n\"The ocean's deepest zones experience freezing temperatures and immense hydrostatic pressure. In the pitch-black abyssal trenches devoid of sunlight, specialized benthic bacteria sustain life via <b>chemosynthesis</b> rather than photosynthetic solar energy. These microscopic organisms convert toxic volcanic chemicals into nutritious organic compounds.\"\n\n👉 <b>Pertanyaan:</b> What process replaces photosynthesis in total deep-sea darkness? (Proses apa yang menggantikan fotosintesis dalam kegelapan laut dalam?)",
         "expected": [
             "chemosynthesis",
             "bacterial chemosynthesis"
@@ -1548,18 +1559,18 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "rdg_adv_10",
         "badge": "🌊 Laut Dalam: Ventilasi Hidrotermal",
-        "prompt": "🌋 <b>Baca teks oseanografi:</b>\n\"Deep hydrothermal vents spew mineral-rich water heated by subterranean volcanic <b>magma</b>, sustaining astonishing alien-like biological colonies.\"\n\n👉 <b>Pertanyaan:</b> What subterranean substance heats hydrothermal vents? (Zat bawah tanah apa yang memanaskan ventilasi hidrotermal?)",
+        "prompt": "🌋 <b>Baca teks oseanografi berikut:</b>\n\"Submersibles exploring oceanic ridges discovered towering chimney formations on the seafloor. Deep hydrothermal vents spew mineral-rich water heated by subterranean volcanic <b>magma</b>, sustaining astonishing alien-like biological colonies. Giant tube worms, blind shrimp, and crabs thrive in these superheated thermal fields.\"\n\n👉 <b>Pertanyaan:</b> What subterranean substance heats hydrothermal vents? (Zat bawah tanah apa yang memanaskan ventilasi hidrotermal?)",
         "expected": [
             "magma",
             "volcanic magma",
-            "heat"
+            "subterranean volcanic magma"
         ],
         "primary_answer": "magma"
     },
     {
         "id": "rdg_adv_11",
         "badge": "🧱 Tembok Besar Cina: Tujuan Utama",
-        "prompt": "🏯 <b>Baca teks sejarah arsitektur:</b>\n\"Stretching thousands of miles across northern ridges, the monumental fortifications were erected for border <b>defense</b> against nomadic incursions.\"\n\n👉 <b>Pertanyaan:</b> What was the primary military function of the Great Wall? (Apa fungsi pertahanan militer utama dari Tembok Besar?)",
+        "prompt": "🏯 <b>Baca teks sejarah arsitektur berikut:</b>\n\"The Great Wall represents one of mankind's greatest engineering feats. Stretching thousands of miles across northern ridges, the monumental fortifications were erected for border <b>defense</b> against nomadic incursions. Watchtowers and beacon signals allowed imperial garrisons to coordinate rapid military responses.\"\n\n👉 <b>Pertanyaan:</b> What was the primary military function of the Great Wall? (Apa fungsi pertahanan militer utama dari Tembok Besar?)",
         "expected": [
             "defense",
             "defence",
@@ -1571,30 +1582,32 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "rdg_adv_12",
         "badge": "🧱 Tembok Besar Cina: Bahan Bangunan",
-        "prompt": "🧗 <b>Baca teks sejarah arsitektur:</b>\n\"The enduring Ming dynasty sections of the wall were fortified utilizing quarried granite <b>stone</b> and kiln-fired bricks bonded with sticky rice mortar.\"\n\n👉 <b>Pertanyaan:</b> What masonry materials were primarily used besides bricks? (Material bebatuan apa yang digunakan selain batu bata?)",
+        "prompt": "🧗 <b>Baca teks sejarah arsitektur berikut:</b>\n\"Early builders utilized rammed earth and timber to construct regional barriers. However, the enduring Ming dynasty sections of the wall were fortified utilizing quarried granite <b>stone</b> and kiln-fired bricks bonded with sticky rice mortar. This sturdy construction enabled the fortress to withstand centuries of weathering.\"\n\n👉 <b>Pertanyaan:</b> What masonry materials were primarily used besides bricks? (Material bebatuan apa yang digunakan selain batu bata?)",
         "expected": [
             "stone",
             "granite",
-            "granite stone"
+            "granite stone",
+            "quarried granite stone"
         ],
         "primary_answer": "stone"
     },
     {
         "id": "rdg_adv_13",
         "badge": "🧊 Mencairnya Gletser: Efek Permukaan Laut",
-        "prompt": "🌊 <b>Baca teks klimatologi:</b>\n\"Accelerated melting of polar ice caps and continental glaciers discharges trillions of tons of freshwater, resulting in alarming global sea level <b>rise</b>.\"\n\n👉 <b>Pertanyaan:</b> What happens to global sea levels when glaciers melt? (Apa yang terjadi pada permukaan laut global saat gletser mencair?)",
+        "prompt": "🌊 <b>Baca teks klimatologi berikut:</b>\n\"Rising global atmospheric temperatures have initiated dramatic retreats in glaciers from Greenland to Antarctica. Accelerated melting of polar ice caps and continental glaciers discharges trillions of tons of freshwater, resulting in alarming global sea level <b>rise</b>. Coastal communities and low-lying islands face growing risks of chronic flooding.\"\n\n👉 <b>Pertanyaan:</b> What happens to global sea levels when glaciers melt? (Apa yang terjadi pada permukaan laut global saat gletser mencair?)",
         "expected": [
             "rise",
             "sea level rise",
             "they rise",
-            "it rises"
+            "it rises",
+            "global sea level rise"
         ],
         "primary_answer": "rise"
     },
     {
         "id": "rdg_adv_14",
         "badge": "🧊 Mencairnya Gletser: Gas Rumah Kaca",
-        "prompt": "🏭 <b>Baca teks klimatologi:</b>\n\"Anthropogenic emissions of <b>carbon dioxide</b> trap thermal infrared radiation within the atmosphere, driving unprecedented thermal acceleration.\"\n\n👉 <b>Pertanyaan:</b> What greenhouse gas is highlighted as trapping heat? (Gas rumah kaca apa yang disorot karena memerangkap panas?)",
+        "prompt": "🏭 <b>Baca teks klimatologi berikut:</b>\n\"Scientists observe that industrial emissions trap excessive heat inside the planetary biosphere. Anthropogenic emissions of <b>carbon dioxide</b> trap thermal infrared radiation within the atmosphere, driving unprecedented thermal acceleration. Transitioning towards renewable clean energy is essential to slow polar melting.\"\n\n👉 <b>Pertanyaan:</b> What greenhouse gas is highlighted as trapping heat? (Gas rumah kaca apa yang disorot karena memerangkap panas?)",
         "expected": [
             "carbon dioxide",
             "co2",
@@ -1605,7 +1618,7 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "rdg_adv_15",
         "badge": "🎨 Era Renaisans: Tempat Lahir",
-        "prompt": "🏛️ <b>Baca teks sejarah seni:</b>\n\"Marking the cultural rebirth of European classical philosophy and realistic humanism, the Renaissance blossomed during the fourteenth century in <b>Italy</b>.\"\n\n👉 <b>Pertanyaan:</b> In which European country did the Renaissance originate? (Di negara Eropa mana masa Renaisans bermula?)",
+        "prompt": "🏛️ <b>Baca teks sejarah seni berikut:</b>\n\"Following the late Middle Ages, a powerful intellectual and artistic movement swept through Europe. Marking the cultural rebirth of European classical philosophy and realistic humanism, the Renaissance blossomed during the fourteenth century in <b>Italy</b>. Cities like Florence and Venice became bustling epicenters for wealthy merchant patrons and visionary artists.\"\n\n👉 <b>Pertanyaan:</b> In which European country did the Renaissance originate? (Di negara Eropa mana masa Renaisans bermula?)",
         "expected": [
             "italy",
             "in italy"
@@ -1615,89 +1628,96 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "rdg_adv_16",
         "badge": "🎨 Era Renaisans: Sang Polimatik",
-        "prompt": "🖼️ <b>Baca teks sejarah seni:</b>\n\"Embodying the supreme Renaissance polymath, <b>Leonardo da Vinci</b> achieved immortal acclaim through masterpieces such as the Mona Lisa.\"\n\n👉 <b>Pertanyaan:</b> Who painted the Mona Lisa and embodied the Renaissance genius? (Siapa pelukis Mona Lisa yang mencerminkan kejeniusan Renaisans?)",
+        "prompt": "🖼️ <b>Baca teks sejarah seni berikut:</b>\n\"The Italian Renaissance celebrated multi-talented thinkers who unified art, engineering, and anatomy. Embodying the supreme Renaissance polymath, <b>Leonardo da Vinci</b> achieved immortal acclaim through masterpieces such as the Mona Lisa. His intricate sketchbooks also anticipated helicopters, tanks, and automated calculating machines.\"\n\n👉 <b>Pertanyaan:</b> Who painted the Mona Lisa and embodied the Renaissance genius? (Siapa pelukis Mona Lisa yang mencerminkan kejeniusan Renaisans?)",
         "expected": [
             "leonardo da vinci",
             "da vinci",
-            "leonardo"
+            "leonardo",
+            "leonardo da vinci"
         ],
         "primary_answer": "Leonardo da Vinci"
     },
     {
         "id": "rdg_adv_17",
         "badge": "🚀 Eksplorasi Mars: Target Misi",
-        "prompt": "🪐 <b>Baca teks eksplorasi antariksa:</b>\n\"Equipped with advanced spectrometer instruments, robotic planetary rovers analyze ancient lakebed sediments to uncover biosignature signs of past microbial <b>life</b>.\"\n\n👉 <b>Pertanyaan:</b> What signs are planetary rovers seeking in Martian sediments? (Tanda-tanda apa yang dicari oleh penjelajah robotik di sedimen Mars?)",
+        "prompt": "🪐 <b>Baca teks eksplorasi antariksa berikut:</b>\n\"Planetary scientists explore the Red Planet to understand whether habitable environments ever existed beyond Earth. Equipped with advanced spectrometer instruments, robotic planetary rovers analyze ancient lakebed sediments to uncover biosignature signs of past microbial <b>life</b>. Finding organic traces would fundamentally transform our understanding of the cosmos.\"\n\n👉 <b>Pertanyaan:</b> What signs are planetary rovers seeking in Martian sediments? (Tanda-tanda apa yang dicari oleh penjelajah robotik di sedimen Mars?)",
         "expected": [
             "life",
             "microbial life",
             "signs of life",
-            "past life"
+            "past life",
+            "past microbial life"
         ],
         "primary_answer": "life"
     },
     {
         "id": "rdg_adv_18",
         "badge": "🚀 Eksplorasi Mars: Nama Rover",
-        "prompt": "🤖 <b>Baca teks eksplorasi antariksa:</b>\n\"NASA's car-sized robotic rover named <b>Perseverance</b> successfully touched down inside Jezero Crater to collect pristine rock core samples.\"\n\n👉 <b>Pertanyaan:</b> What is the name of NASA's rover in Jezero Crater? (Apa nama robot penjelajah NASA di Kawah Jezero?)",
+        "prompt": "🤖 <b>Baca teks eksplorasi antariksa berikut:</b>\n\"Interplanetary space exploration reached a technological milestone in February 2021. NASA's car-sized robotic rover named <b>Perseverance</b> successfully touched down inside Jezero Crater to collect pristine rock core samples. The mission also carried a solar-powered scout helicopter named Ingenuity to test aerial flight.\"\n\n👉 <b>Pertanyaan:</b> What is the name of NASA's rover in Jezero Crater? (Apa nama robot penjelajah NASA di Kawah Jezero?)",
         "expected": [
             "perseverance",
-            "perseverance rover"
+            "perseverance rover",
+            "the perseverance rover",
+            "rover perseverance"
         ],
         "primary_answer": "Perseverance"
     },
     {
         "id": "rdg_adv_19",
         "badge": "🌊 Mikroplastik Laut: Ukuran",
-        "prompt": "🔬 <b>Baca teks biologi kelautan:</b>\n\"Marine scientists classify synthetic polymer fragments measuring less than <b>five</b> millimeters in length as hazardous microplastics.\"\n\n👉 <b>Pertanyaan:</b> Microplastics measure less than how many millimeters? (Mikroplastik berukuran kurang dari berapa milimeter?)",
+        "prompt": "🔬 <b>Baca teks pencemaran laut berikut:</b>\n\"Plastic pollution in marine ecosystems poses severe threats to oceanic food webs. Marine scientists classify synthetic debris measuring less than <b>5 millimeters</b> in diameter as hazardous microplastics. These minuscule particles result from both industrial manufacturing and the gradual breakdown of discarded consumer packaging.\"\n\n👉 <b>Pertanyaan:</b> Microplastics are defined as synthetic debris measuring less than what size? (Mikroplastik didefinisikan berukuran kurang dari berapa?)",
         "expected": [
-            "five",
-            "5",
-            "5 mm",
             "5 millimeters",
-            "five millimeters"
+            "5 mm",
+            "5 millimeters in diameter",
+            "five millimeters",
+            "less than 5 millimeters"
         ],
         "primary_answer": "5 millimeters"
     },
     {
         "id": "rdg_adv_20",
         "badge": "🌊 Mikroplastik Laut: Dampak Hewan",
-        "prompt": "🐟 <b>Baca teks biologi kelautan:</b>\n\"Because of their microscopic size, microplastics are frequently mistaken for food and undergo accidental <b>ingestion</b> by plankton and fish.\"\n\n👉 <b>Pertanyaan:</b> What happens when aquatic creatures mistake plastic for food? (Apa yang terjadi saat hewan air mengira plastik sebagai makanan?)",
+        "prompt": "🐟 <b>Baca teks pencemaran laut berikut:</b>\n\"Because microplastics drift near the water surface, they frequently mimic natural food sources. Small plankton and filter-feeding marine organisms suffer toxic chemical absorption through accidental <b>ingestion</b>. Over time, these synthetic pollutants accumulate up the food chain, eventually reaching human consumers.\"\n\n👉 <b>Pertanyaan:</b> How do filter-feeding organisms absorb toxins from microplastics? (Melalui apa organisme penyaring menyerap racun mikroplastik?)",
         "expected": [
             "ingestion",
-            "they eat it",
-            "swallowed",
-            "consumption"
+            "accidental ingestion",
+            "by ingestion",
+            "through ingestion"
         ],
         "primary_answer": "ingestion"
     },
     {
         "id": "rdg_adv_21",
         "badge": "🎭 Drama Shakespeare: Teater Globe",
-        "prompt": "🎪 <b>Baca teks sastra klasik:</b>\n\"Many of William Shakespeare's immortal theatrical plays premiered at London's open-air polygonal wooden playhouse known as the <b>Globe</b> Theatre.\"\n\n👉 <b>Pertanyaan:</b> What was the name of the famous London theatre? (Apa nama teater terbuka terkenal di London tersebut?)",
+        "prompt": "🎪 <b>Baca teks sastra klasik berikut:</b>\n\"During the Elizabethan era, London's theater scene experienced a vibrant cultural explosion. Built along the south bank of the River Thames in 1599, William Shakespeare's acting troupe staged monumental plays at <b>the Globe</b> theater. Thousands of spectators from all social classes gathered inside its open-air wooden amphitheater.\"\n\n👉 <b>Pertanyaan:</b> What was the famous London theater where Shakespeare's troupe performed? (Apa nama teater terkenal tempat pementasan naskah Shakespeare?)",
         "expected": [
-            "globe",
             "the globe",
+            "globe",
             "globe theatre",
-            "the globe theatre"
+            "the globe theatre",
+            "globe theater"
         ],
         "primary_answer": "the Globe"
     },
     {
         "id": "rdg_adv_22",
         "badge": "🎭 Drama Shakespeare: Tragedi Terkenal",
-        "prompt": "👑 <b>Baca teks sastra klasik:</b>\n\"Exploring profound existential dilemmas and revenge, the tragedy of Prince <b>Hamlet</b> of Denmark remains one of world literature's most quoted dramas.\"\n\n👉 <b>Pertanyaan:</b> Which Danish prince is the central protagonist of Shakespeare's celebrated tragedy? (Pangeran Denmark manakah yang menjadi tokoh utama drama tragedi tersebut?)",
+        "prompt": "👑 <b>Baca teks sastra klasik berikut:</b>\n\"Shakespeare penned world-renowned comedies, histories, and deeply psychological tragedies. Centered on a brooding Danish prince grappling with filial grief, moral paralysis, and vengeance, <b>Hamlet</b> is celebrated as Shakespeare's finest psychological tragedy. The play contains the iconic soliloquy 'To be, or not to be.'\"\n\n👉 <b>Pertanyaan:</b> Which tragedy features a troubled Danish prince seeking justice? (Tragedi apa yang mengisahkan pangeran Denmark mencari keadilan?)",
         "expected": [
             "hamlet",
-            "prince hamlet"
+            "the tragedy of hamlet",
+            "tragedy of hamlet"
         ],
         "primary_answer": "Hamlet"
     },
     {
         "id": "rdg_adv_23",
         "badge": "💻 Komputasi Kuantum: Qubit",
-        "prompt": "⚛️ <b>Baca teks komputasi mutakhir:</b>\n\"Unlike classical silicon bits constrained strictly to binary 0 or 1, quantum computers exploit superposition utilizing the quantum bit or <b>qubit</b>.\"\n\n👉 <b>Pertanyaan:</b> What fundamental quantum unit replaces the classical bit? (Unit kuantum dasar apakah yang menggantikan bit klasik?)",
+        "prompt": "⚛️ <b>Baca teks ilmu komputasi masa depan berikut:</b>\n\"Classical computers rely on binary transistors that process data strictly as zeros or ones. In quantum computing, the fundamental unit of computational information is the <b>qubit</b>. Because of quantum superposition, a qubit can exist simultaneously in multiple states, enabling exponential processing capability.\"\n\n👉 <b>Pertanyaan:</b> What is the basic unit of quantum information called? (Disebut apakah unit dasar informasi dalam komputasi kuantum?)",
         "expected": [
             "qubit",
+            "the qubit",
             "quantum bit"
         ],
         "primary_answer": "qubit"
@@ -1705,39 +1725,43 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "rdg_adv_24",
         "badge": "💻 Komputasi Kuantum: Kemampuan Kecepatan",
-        "prompt": "🚀 <b>Baca teks komputasi mutakhir:</b>\n\"By calculating through quantum entanglement, quantum processors solve hyper-complex cryptographic puzzles drastically <b>faster</b> than standard supercomputers.\"\n\n👉 <b>Pertanyaan:</b> Compared to classical computers, how do quantum computers perform complex calculations? (Dibandingkan komputer biasa, seberapa cepat komputer kuantum menyelesaikan perhitungan rumit?)",
+        "prompt": "⚡ <b>Baca teks ilmu komputasi masa depan berikut:</b>\n\"Simulating molecular structures and chemical reactions takes supercomputers months of calculation. By harnessing quantum entanglement and superposition, quantum processors solve specific mathematical challenges exponentially <b>faster</b> than standard supercomputers. This breakthrough will accelerate pharmaceutical discoveries and encryption technologies.\"\n\n👉 <b>Pertanyaan:</b> In terms of speed, how do quantum processors solve complex equations compared to classical computers? (Terkait kecepatan, bagaimana prosesor kuantum dibandingkan komputer biasa?)",
         "expected": [
             "faster",
-            "drastically faster",
-            "much faster"
+            "exponentially faster",
+            "much faster",
+            "more quickly"
         ],
         "primary_answer": "faster"
     },
     {
         "id": "rdg_adv_25",
-        "badge": "📖 🔬 CRISPR Gene Editing: Penemu Nobel",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"CRISPR-Cas9 revolutionized molecular genetics by enabling targeted DNA cuts. In 2020, biochemists Emmanuelle Charpentier and Jennifer Doudna were awarded the <b>Nobel</b> Prize in Chemistry.\"\n\n👉 <b>Pertanyaan:</b> What prestigious prize did the discoverers win? (Penghargaan bergengsi apa yang diraih para penemunya?)",
+        "badge": "🧬 CRISPR Gene Editing: Penemu Nobel",
+        "prompt": "🏅 <b>Baca teks bioteknologi genomika berikut:</b>\n\"In 2012, researchers unlocked a revolutionary molecular technique capable of precisely editing genetic sequences. For transforming genetic engineering through the invention of CRISPR-Cas9 genome scissors, biochemists Emmanuelle Charpentier and Jennifer Doudna were awarded the <b>Nobel Prize</b> in Chemistry in 2020. Their technique opened new frontiers for curing hereditary illnesses.\"\n\n👉 <b>Pertanyaan:</b> What prestigious global prize did Charpentier and Doudna receive for CRISPR? (Penghargaan prestisius apa yang diraih peneliti penemu gunting molekuler CRISPR?)",
         "expected": [
-            "nobel",
             "nobel prize",
-            "the nobel prize"
+            "the nobel prize",
+            "nobel prize in chemistry",
+            "the nobel prize in chemistry"
         ],
         "primary_answer": "Nobel Prize"
     },
     {
         "id": "rdg_adv_26",
-        "badge": "📖 🔬 CRISPR Gene Editing: Target Pemotongan",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"The RNA-guided Cas9 enzyme functions like molecular scissors to accurately excise mutations within genomic <b>DNA</b> sequences.\"\n\n👉 <b>Pertanyaan:</b> What biological molecule does Cas9 cut? (Molekul biologis apa yang dipotong oleh enzim Cas9?)",
+        "badge": "🧬 CRISPR Gene Editing: Target Pemotongan",
+        "prompt": "✂️ <b>Baca teks bioteknologi genomika berikut:</b>\n\"CRISPR functions like molecular word processing software inside living cells. Guided by synthetic RNA sequences, the specialized Cas9 enzyme binds to and severs double-stranded genomic <b>DNA</b> at precise target coordinates. Researchers can then deactivate harmful mutations or insert beneficial therapeutic genes.\"\n\n👉 <b>Pertanyaan:</b> What cellular macromolecule does the Cas9 enzyme cut? (Makromolekul seluler apa yang dipotong oleh enzim Cas9?)",
         "expected": [
             "dna",
-            "genomic dna"
+            "genomic dna",
+            "the dna",
+            "dna strands"
         ],
         "primary_answer": "DNA"
     },
     {
         "id": "rdg_adv_27",
-        "badge": "📖 🌌 Lubang Hitam: Cakrawala Peristiwa",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Surrounding every black hole is a boundary known as the <b>event horizon</b>, beyond which not even electromagnetic light can escape the gravitational pull.\"\n\n👉 <b>Pertanyaan:</b> What is the boundary of a black hole called? (Apa nama batas tak kembali pada lubang hitam?)",
+        "badge": "🌌 Lubang Hitam: Cakrawala Peristiwa",
+        "prompt": "🔭 <b>Baca teks astrofisika kosmik berikut:</b>\n\"Black holes are gravitational abysses where matter is compressed into extraordinary density. The outer boundary beyond which nothing—not even electromagnetic light—can escape gravitational pull is termed the <b>event horizon</b>. Inside this boundary, known physics breaks down into a gravitational singularity.\"\n\n👉 <b>Pertanyaan:</b> What is the boundary of no return surrounding a black hole called? (Disebut apakah batas luar lubang hitam di mana cahaya pun tidak bisa lepas?)",
         "expected": [
             "event horizon",
             "the event horizon"
@@ -1746,119 +1770,134 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     },
     {
         "id": "rdg_adv_28",
-        "badge": "📖 🌌 Lubang Hitam: Gambar Pertama",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"In 2019, the Event Horizon Telescope array unveiled the historic first direct visual image of the supermassive black hole in galaxy <b>M87</b>.\"\n\n👉 <b>Pertanyaan:</b> In which galaxy was the imaged black hole located? (Di galaksi mana lubang hitam yang berhasil difoto itu berada?)",
+        "badge": "🌌 Lubang Hitam: Gambar Pertama",
+        "prompt": "📷 <b>Baca teks astrofisika kosmik berikut:</b>\n\"Synchronizing radio telescopes across continents created an Earth-sized virtual aperture called the Event Horizon Telescope. In 2019, astronomers captured the historic first direct visual image of the supermassive black hole located at the heart of galaxy <b>M87</b>. The luminous glowing ring revealed hot gas swirling around the central shadow.\"\n\n👉 <b>Pertanyaan:</b> What galaxy housed the first directly imaged supermassive black hole? (Galaksi apa yang menjadi tempat lubang hitam pertama yang berhasil dipotret?)",
         "expected": [
             "m87",
-            "messier 87"
+            "messier 87",
+            "galaxy m87"
         ],
         "primary_answer": "M87"
     },
     {
         "id": "rdg_adv_29",
-        "badge": "📖 🏛️ Perpustakaan Alexandria: Kota Kuno",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"The ancient Library of Alexandria was an intellectual jewel of the Mediterranean, located along the northern coast of <b>Egypt</b>.\"\n\n👉 <b>Pertanyaan:</b> In which country was the ancient Library of Alexandria located? (Di negara mana Perpustakaan Aleksandria kuno berada?)",
+        "badge": "📜 Perpustakaan Alexandria: Kota Kuno",
+        "prompt": "🏛️ <b>Baca teks peradaban kuno berikut:</b>\n\"Founded under the Ptolemaic dynasty, the Great Library was envisioned as a universal repository of human thought. The monumental library of Alexandria was situated along the Mediterranean coast of ancient <b>Egypt</b>. Scholars from across the known world traveled there to study astronomy, geometry, and philosophy.\"\n\n👉 <b>Pertanyaan:</b> In which ancient nation was the Great Library of Alexandria built? (Di negeri kuno manakah Perpustakaan Agung Alexandria didirikan?)",
         "expected": [
             "egypt",
-            "in egypt"
+            "in egypt",
+            "ancient egypt"
         ],
         "primary_answer": "Egypt"
     },
     {
         "id": "rdg_adv_30",
-        "badge": "📖 🏛️ Perpustakaan Alexandria: Bahan Gulungan",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Scholars gathered to study hundreds of thousands of handwritten manuscripts inscribed upon Egyptian <b>papyrus</b> scrolls.\"\n\n👉 <b>Pertanyaan:</b> What plant-based writing material was used for the scrolls? (Bahan tulis tumbuhan apa yang digunakan untuk naskah gulungan?)",
+        "badge": "📜 Perpustakaan Alexandria: Bahan Gulungan",
+        "prompt": "📜 <b>Baca teks peradaban kuno berikut:</b>\n\"Before the invention of parchment codices or wood pulp paper, scribes harvested river reeds. Hundreds of thousands of ancient literary works were written and stored in Alexandria on rolled scrolls made of dried <b>papyrus</b>. Ships docking in the harbor were searched so original manuscripts could be copied by royal scribes.\"\n\n👉 <b>Pertanyaan:</b> What reed-based writing material formed the scrolls of Alexandria? (Bahan berserat tanaman apa yang digunakan untuk gulungan naskah kuno?)",
         "expected": [
             "papyrus",
-            "papyrus scrolls"
+            "papyrus scrolls",
+            "dried papyrus"
         ],
         "primary_answer": "papyrus"
     },
     {
         "id": "rdg_adv_31",
-        "badge": "📖 🧠 Plastisitas Saraf Otak: Neuroplastisitas",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Modern neuroscience proves that the brain constantly reorganizes synaptic pathways through learning, a dynamic capacity termed <b>neuroplasticity</b>.\"\n\n👉 <b>Pertanyaan:</b> What term describes the brain's ability to rewire itself? (Istilah apa yang menggambarkan kemampuan otak mengubah jalur sinapsisnya?)",
+        "badge": "🧠 Plastisitas Saraf Otak: Neuroplastisitas",
+        "prompt": "⚡ <b>Baca teks neurosains kognitif berikut:</b>\n\"Scientists once believed that the adult human brain was rigid and structurally unchangeable after childhood. Neuroscientists now recognize that brain circuits continuously adapt and reorganize through <b>neuroplasticity</b>. In response to intensive learning or novel experiences, synaptic connections strengthen and grow.\"\n\n👉 <b>Pertanyaan:</b> What biological term describes the brain's ability to reorganize neural pathways? (Istilah biologis apa yang menggambarkan kemampuan otak memperbarui jalurnya?)",
         "expected": [
-            "neuroplasticity"
+            "neuroplasticity",
+            "brain neuroplasticity",
+            "neural plasticity"
         ],
         "primary_answer": "neuroplasticity"
     },
     {
         "id": "rdg_adv_32",
-        "badge": "📖 🧠 Plastisitas Saraf Otak: Pemulihan Cedera",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Neuroplasticity allows stroke patients to regain speech and motor control through intensive physical <b>rehabilitation</b>.\"\n\n👉 <b>Pertanyaan:</b> What therapy helps stroke patients rewire brain functions? (Terapi apa yang membantu pasien memulihkan fungsi otak?)",
+        "badge": "🧠 Plastisitas Saraf Otak: Pemulihan Cedera",
+        "prompt": "🏥 <b>Baca teks neurosains kognitif berikut:</b>\n\"When patients suffer traumatic neurological damage from strokes, undamaged areas of the brain can compensate. Patients recover lost motor skills and speech through intensive physical and cognitive <b>rehabilitation</b>. Structured repetitive practice stimulates healthy neurons to form new functional networks.\"\n\n👉 <b>Pertanyaan:</b> What therapeutic process assists stroke patients in recovering motor skills? (Proses terapi apa yang membantu pasien stroke memulihkan kemampuan motorik?)",
         "expected": [
             "rehabilitation",
-            "physical rehabilitation"
+            "cognitive rehabilitation",
+            "physical rehabilitation",
+            "therapy"
         ],
         "primary_answer": "rehabilitation"
     },
     {
         "id": "rdg_adv_33",
-        "badge": "📖 ☀️ Fusi Nuklir Tokamak: Sumber Tenaga Bintang",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Nuclear fusion replicates the energetic reactions powering the <b>sun</b>, merging hydrogen isotopes into helium under extreme heat.\"\n\n👉 <b>Pertanyaan:</b> What cosmic body does nuclear fusion replicate? (Reaksi energi dari benda antariksa apa yang ditiru oleh fusi nuklir?)",
+        "badge": "☀️ Fusi Nuklir Tokamak: Sumber Tenaga Bintang",
+        "prompt": "🌟 <b>Baca teks energi masa depan berikut:</b>\n\"Commercial nuclear reactors rely on fission, which splits heavy uranium atoms to produce electricity. In contrast, nuclear fusion mimics the natural thermonuclear furnace that fuels our <b>sun</b> and distant stars. If perfected on Earth, fusion could deliver virtually limitless, clean, carbon-free baseload power.\"\n\n👉 <b>Pertanyaan:</b> Nuclear fusion replicates the thermonuclear process powering what celestial body? (Fusi nuklir meniru proses termonuklir yang memberi daya pada benda langit apa?)",
         "expected": [
+            "sun",
             "the sun",
-            "sun"
+            "our sun"
         ],
         "primary_answer": "sun"
     },
     {
         "id": "rdg_adv_34",
-        "badge": "📖 ☀️ Fusi Nuklir Tokamak: Desain Magnetik",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"To contain 100-million-degree plasma without melting the walls, fusion reactors employ a donut-shaped magnetic chamber called a <b>tokamak</b>.\"\n\n👉 <b>Pertanyaan:</b> What is the donut-shaped magnetic reactor called? (Apa nama reaktor magnetik berbentuk donat tersebut?)",
+        "badge": "☀️ Fusi Nuklir Tokamak: Desain Magnetik",
+        "prompt": "🧲 <b>Baca teks energi masa depan berikut:</b>\n\"Containing superheated plasma at temperatures exceeding one hundred million degrees Celsius requires extraordinary engineering. The most prominent experimental magnetic confinement reactor design is the donut-shaped <b>tokamak</b>. Powerful superconducting magnets confine the roaring plasma ring without letting it touch reactor walls.\"\n\n👉 <b>Pertanyaan:</b> What donut-shaped magnetic chamber is widely used in fusion research? (Kamar magnetik berbentuk cincin apa yang digunakan dalam reaktor fusi?)",
         "expected": [
             "tokamak",
-            "a tokamak"
+            "the tokamak",
+            "tokamak reactor"
         ],
         "primary_answer": "tokamak"
     },
     {
         "id": "rdg_adv_35",
-        "badge": "📖 🌊 Palung Mariana: Kedalaman Abisal",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Challenger Deep within the Mariana Trench plunges nearly <b>eleven</b> kilometers beneath the Pacific Ocean surface.\"\n\n👉 <b>Pertanyaan:</b> How many kilometers deep is Challenger Deep? (Berapa kilometer kedalaman Palung Mariana?)",
+        "badge": "🌊 Palung Mariana: Kedalaman Abisal",
+        "prompt": "🚢 <b>Baca teks eksplorasi samudra berikut:</b>\n\"The Challenger Deep lies in the western Pacific Ocean as the deepest identified depression on our planet. Plunging almost <b>eleven</b> kilometers beneath the ocean surface, this extreme trench plunges deeper than Mount Everest is tall. Deep-sea research submersibles require reinforced titanium hulls to explore its floor.\"\n\n👉 <b>Pertanyaan:</b> How many kilometers deep is the Challenger Deep depression roughly? (Berapa perkiraan kedalaman Palung Mariana dalam kilometer?)",
         "expected": [
             "eleven",
             "11",
-            "11 km",
-            "11 kilometers"
+            "11 kilometers",
+            "eleven kilometers",
+            "almost eleven kilometers",
+            "11 km"
         ],
         "primary_answer": "eleven"
     },
     {
         "id": "rdg_adv_36",
-        "badge": "📖 🌊 Palung Mariana: Tekanan Hidrostatis",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Organisms thriving at the trench floor endure hydrostatic pressures exceeding one thousand times atmospheric <b>pressure</b> at sea level.\"\n\n👉 <b>Pertanyaan:</b> What extreme physical condition exceeds 1000 atmospheres in the trench? (Kondisi fisik ekstrem apa yang melebihi 1000 atmosfer?)",
+        "badge": "🌊 Palung Mariana: Tekanan Hidrostatis",
+        "prompt": "⚓ <b>Baca teks eksplorasi samudra berikut:</b>\n\"Descending into the hadal ocean trenches exposes exploratory vehicles to severe physical extremes. Deep-sea creatures inhabiting the Mariana Trench endure immense hydrostatic <b>pressure</b> exceeding one thousand atmospheres. Their cellular membranes utilize unique piezolyte molecules to avoid physical collapse.\"\n\n👉 <b>Pertanyaan:</b> What physical force exceeds one thousand atmospheres at the ocean floor? (Gaya fisik apa yang melebihi seribu atmosfer di dasar palung laut?)",
         "expected": [
             "pressure",
-            "hydrostatic pressure"
+            "hydrostatic pressure",
+            "immense pressure",
+            "immense hydrostatic pressure"
         ],
         "primary_answer": "pressure"
     },
     {
         "id": "rdg_adv_37",
-        "badge": "📖 📜 Deklarasi Universal HAM: Tahun Pengesahan",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"The Universal Declaration of Human Rights was proclaimed by the United Nations General Assembly in Paris in <b>1948</b>.\"\n\n👉 <b>Pertanyaan:</b> In what year was the Universal Declaration of Human Rights adopted? (Pada tahun berapa Deklarasi Universal HAM disahkan?)",
+        "badge": "🕊️ Deklarasi Universal HAM: Tahun Pengesahan",
+        "prompt": "🌐 <b>Baca teks hukum internasional berikut:</b>\n\"In the aftermath of the devastation caused by the Second World War, delegates united to prevent future atrocities. The United Nations General Assembly adopted the Universal Declaration of Human Rights in Paris in <b>1948</b>. This milestone treaty established universal standards of freedom and justice for all peoples and nations.\"\n\n👉 <b>Pertanyaan:</b> In what year did the United Nations adopt the Universal Declaration of Human Rights? (Pada tahun berapa Deklarasi Universal HAM disahkan PBB?)",
         "expected": [
             "1948",
+            "nineteen forty-eight",
             "in 1948"
         ],
         "primary_answer": "1948"
     },
     {
         "id": "rdg_adv_38",
-        "badge": "📖 📜 Deklarasi Universal HAM: Pasal 1 Martabat",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Article 1 establishes that all human beings are born free and equal in dignity and <b>rights</b>.\"\n\n👉 <b>Pertanyaan:</b> All human beings are born free and equal in dignity and what? (Semua manusia dilahirkan bebas dan setara dalam martabat dan apa?)",
+        "badge": "🕊️ Deklarasi Universal HAM: Pasal 1 Martabat",
+        "prompt": "⚖️ <b>Baca teks hukum internasional berikut:</b>\n\"The opening articles of the declaration proclaim the innate worth of every human being. Article 1 asserts that all human beings are born free and equal in dignity and fundamental <b>rights</b>. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.\"\n\n👉 <b>Pertanyaan:</b> All human beings are declared equal in dignity and what? (Semua manusia dilahirkan setara dalam martabat dan apa?)",
         "expected": [
             "rights",
+            "fundamental rights",
             "equal rights"
         ],
         "primary_answer": "rights"
     },
     {
         "id": "rdg_adv_39",
-        "badge": "📖 🌲 Jaringan Jamur Bawah Tanah: Wood Wide Web",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Mycorrhizal fungal networks connect tree roots beneath forest soils, enabling nutrient transfer in a system dubbed the <b>wood wide web</b>.\"\n\n👉 <b>Pertanyaan:</b> What nickname is given to subterranean fungal networks? (Apa julukan yang diberikan pada jaringan jamur bawah tanah?)",
+        "badge": "🍄 Jaringan Jamur Bawah Tanah: Wood Wide Web",
+        "prompt": "🌲 <b>Baca teks ekologi botani berikut:</b>\n\"Beneath the quiet floor of old-growth forests lies an intricate biological internet. Underground mycorrhizal fungal networks linking tree root systems are affectionately called the <b>wood wide web</b>. Through these microscopic fungal threads, neighboring trees exchange water, nitrogen, and essential sugars.\"\n\n👉 <b>Pertanyaan:</b> What popular nickname is given to underground mycorrhizal tree communication networks? (Julukan populer apa yang diberikan pada jaringan jamur bawah tanah hutan?)",
         "expected": [
             "wood wide web",
             "the wood wide web"
@@ -1867,42 +1906,44 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     },
     {
         "id": "rdg_adv_40",
-        "badge": "📖 🌲 Jaringan Jamur Bawah Tanah: Peringatan Bahaya",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"When attacked by pests, mother trees send chemical distress signals through fungal hyphae to <b>warn</b> neighboring saplings.\"\n\n👉 <b>Pertanyaan:</b> What do trees send to alert neighbors of pest attacks? (Apa yang dikirim pohon untuk memperingatkan tetangganya?)",
+        "badge": "🍄 Jaringan Jamur Bawah Tanah: Peringatan Bahaya",
+        "prompt": "🐛 <b>Baca teks ekologi botani berikut:</b>\n\"Forest trees do not merely compete for sunlight; they actively collaborate for collective survival. When attacked by insect pests or pathogenic caterpillars, trees transmit chemical <b>distress signals</b> to alert neighboring trees. Upon receiving the signal, neighboring trees produce protective tannins to repel the infestation.\"\n\n👉 <b>Pertanyaan:</b> What chemical warnings do trees transmit through fungal networks during pest attacks? (Peringatan kimiawi apa yang dikirimkan pohon saat diserang hama?)",
         "expected": [
             "distress signals",
-            "warning",
-            "chemical signals",
-            "warn"
+            "chemical distress signals",
+            "signals",
+            "warning signals"
         ],
         "primary_answer": "distress signals"
     },
     {
         "id": "rdg_adv_41",
-        "badge": "📖 🤖 Pembelajaran Mesin: Jaringan Saraf Tiruan",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Deep learning utilizes multi-layered mathematical models known as artificial <b>neural networks</b>, inspired by human brain architecture.\"\n\n👉 <b>Pertanyaan:</b> What brain-inspired structures form the basis of deep learning? (Struktur apa yang menjadi dasar pembelajaran mendalam?)",
+        "badge": "🤖 Pembelajaran Mesin: Jaringan Saraf Tiruan",
+        "prompt": "🧠 <b>Baca teks kecerdasan buatan berikut:</b>\n\"Deep learning algorithms draw conceptual inspiration from biological nervous systems. Deep learning architectures inspired by human cortical neurons are called artificial <b>neural networks</b>. These layered computational architectures excel at detecting nuanced patterns across images, speech, and written language.\"\n\n👉 <b>Pertanyaan:</b> What interconnected mathematical architectures model the structure of biological neurons? (Arsitektur matematis apa yang meniru susunan neuron biologis?)",
         "expected": [
             "neural networks",
-            "artificial neural networks"
+            "artificial neural networks",
+            "networks"
         ],
         "primary_answer": "neural networks"
     },
     {
         "id": "rdg_adv_42",
-        "badge": "📖 🤖 Pembelajaran Mesin: Bobot Parameter",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"During model training, backpropagation adjusts internal numerical <b>weights</b> to minimize prediction errors.\"\n\n👉 <b>Pertanyaan:</b> What internal values are adjusted to reduce prediction errors? (Nilai internal apa yang disesuaikan untuk memperkecil galat prediksi?)",
+        "badge": "🤖 Pembelajaran Mesin: Bobot Parameter",
+        "prompt": "🔢 <b>Baca teks kecerdasan buatan berikut:</b>\n\"During model training, algorithms iteratively process vast datasets to minimize prediction errors. As models train on training data, backpropagation fine-tunes internal parameters known as numerical <b>weights</b>. Optimizing these weight values allows the network to generalize accurately to brand-new, unseen data.\"\n\n👉 <b>Pertanyaan:</b> What internal mathematical parameters are fine-tuned during backpropagation training? (Parameter matematis apa yang disetel saat pelatihan jaringan saraf?)",
         "expected": [
             "weights",
-            "numerical weights"
+            "numerical weights",
+            "the weights",
+            "parameters"
         ],
         "primary_answer": "weights"
     },
     {
         "id": "rdg_adv_43",
-        "badge": "📖 🏛️ Filsafat Socrates: Metode Dialektika",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Socrates engaged Athenian citizens in disciplined question-and-answer examinations known today as the <b>Socratic</b> method.\"\n\n👉 <b>Pertanyaan:</b> What is this famous philosophical inquiry method called? (Apa nama metode tanya jawab filosofis terkenal ini?)",
+        "badge": "🏛️ Filsafat Socrates: Metode Dialektika",
+        "prompt": "🏺 <b>Baca teks sejarah filsafat berikut:</b>\n\"In the bustling agora of ancient Athens, Socrates engaged fellow citizens in philosophical dialogue. The classical philosophical technique of cooperative inquiry through rigorous questioning is termed the <b>Socratic method</b>. Rather than lecturing, Socrates prompted students to identify contradictions in their own beliefs.\"\n\n👉 <b>Pertanyaan:</b> What teaching technique relies on disciplined questioning to stimulate critical thinking? (Metode pembelajaran apa yang bertumpu pada tanya-jawab dialektis?)",
         "expected": [
-            "socratic",
             "socratic method",
             "the socratic method"
         ],
@@ -1910,238 +1951,274 @@ READING_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     },
     {
         "id": "rdg_adv_44",
-        "badge": "📖 🏛️ Filsafat Socrates: Kebijaksanaan Sejati",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Socrates famously asserted that true wisdom begins when one acknowledges that he knows <b>nothing</b>.\"\n\n👉 <b>Pertanyaan:</b> Socrates asserted that wisdom begins when one knows what? (Socrates menyatakan kebijaksanaan bermula saat seseorang menyadari apa?)",
+        "badge": "🏛️ Filsafat Socrates: Kebijaksanaan Sejati",
+        "prompt": "💭 <b>Baca teks sejarah filsafat berikut:</b>\n\"The Oracle of Delphi famously claimed that no man in Athens was wiser than Socrates. Socrates concluded that his paradoxical wisdom stemmed from recognizing that he truly knew <b>nothing</b>. Unlike arrogant politicians who pretended to possess absolute knowledge, Socrates embraced intellectual humility.\"\n\n👉 <b>Pertanyaan:</b> What did Socrates acknowledge knowing, which formed the basis of his paradoxical wisdom? (Apa yang diakui Socrates ia ketahui, yang menjadi dasar kebijaksanaannya?)",
         "expected": [
             "nothing",
-            "knows nothing"
+            "that he knows nothing",
+            "he knows nothing",
+            "that he knew nothing"
         ],
         "primary_answer": "nothing"
     },
     {
         "id": "rdg_adv_45",
-        "badge": "📖 🦠 Penemuan Penisilin: Alexander Fleming",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"In 1928, Scottish bacteriologist Sir <b>Alexander Fleming</b> noticed that a penicillium mold had contaminated and killed staphylococcus bacteria.\"\n\n👉 <b>Pertanyaan:</b> Who discovered the antibacterial properties of penicillin? (Siapa penemu khasiat antibakteri dari penisilin?)",
+        "badge": "🧫 Penemuan Penisilin: Alexander Fleming",
+        "prompt": "🔬 <b>Baca teks sejarah kedokteran berikut:</b>\n\"In September 1928, a Scottish bacteriologist returned from vacation to inspect his messy laboratory. Scottish physician <b>Alexander Fleming</b> discovered penicillin when green Penicillium mold contaminated a Petri dish of staphylococci. He observed that the bacterial colonies surrounding the fungal growth had dissolved completely.\"\n\n👉 <b>Pertanyaan:</b> Which Scottish scientist made the serendipitous discovery of penicillin in 1928? (Siapa ilmuwan Skotlandia yang menemukan penisilin pada tahun 1928?)",
         "expected": [
             "alexander fleming",
             "fleming",
+            "dr alexander fleming",
             "sir alexander fleming"
         ],
         "primary_answer": "Alexander Fleming"
     },
     {
         "id": "rdg_adv_46",
-        "badge": "📖 🦠 Penemuan Penisilin: Jenis Obat",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Penicillin became the world's first widely used medical <b>antibiotic</b>, saving millions of lives from bacterial infections.\"\n\n👉 <b>Pertanyaan:</b> What class of medication did penicillin pioneer? (Golongan obat apa yang dipelopori penisilin?)",
+        "badge": "🧫 Penemuan Penisilin: Jenis Obat",
+        "prompt": "💊 <b>Baca teks sejarah kedokteran berikut:</b>\n\"Prior to Fleming's breakthrough, even minor bacterial infections from scratches could prove fatal. Penicillin's development revolutionized pharmaceuticals as the world's first mass-produced therapeutic <b>antibiotic</b>. It saved millions of soldiers during World War II and transformed modern infection control.\"\n\n👉 <b>Pertanyaan:</b> What class of infection-fighting medicine was pioneered by penicillin? (Golongan obat pembasmi infeksi bakteri apa yang dipelopori oleh penisilin?)",
         "expected": [
             "antibiotic",
-            "an antibiotic"
+            "an antibiotic",
+            "therapeutic antibiotic",
+            "antibiotics"
         ],
         "primary_answer": "antibiotic"
     },
     {
         "id": "rdg_adv_47",
-        "badge": "📖 🧊 Lapisan Es Greenland: Peningkatan Suhu",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Thermal measurements reveal that Greenland's ice sheet is losing more than <b>two hundred</b> billion tons of mass annually.\"\n\n👉 <b>Pertanyaan:</b> Greenland loses how many billion tons of ice mass each year? (Berapa ratus miliar ton massa es yang hilang tiap tahun?)",
+        "badge": "🧊 Lapisan Es Greenland: Peningkatan Suhu",
+        "prompt": "🌡️ <b>Baca teks sains kutub berikut:</b>\n\"The Greenland Ice Sheet contains enough frozen water to raise worldwide ocean levels by over seven meters. Arctic temperatures are warming at a rate <b>two hundred</b> percent faster than the planetary average. This pronounced polar amplification accelerates glacial ablation and threatens global weather stability.\"\n\n👉 <b>Pertanyaan:</b> By what percentage rate is the Arctic warming faster than the global average? (Berapa persen laju pemanasan Arktik lebih cepat dibanding rata-rata bumi?)",
         "expected": [
             "two hundred",
             "200",
-            "200 billion",
-            "two hundred billion"
+            "200 percent",
+            "200%",
+            "two hundred percent"
         ],
         "primary_answer": "two hundred"
     },
     {
         "id": "rdg_adv_48",
-        "badge": "📖 🧊 Lapisan Es Greenland: Efek Albedo",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"As white ice melts into dark open water, the surface absorbs more solar heat, weakening the planet's reflective <b>albedo</b> effect.\"\n\n👉 <b>Pertanyaan:</b> What reflective planetary effect is diminished by melting ice? (Efek reflektif apa yang melemah akibat mencairnya es?)",
+        "badge": "🧊 Lapisan Es Greenland: Efek Albedo",
+        "prompt": "☀️ <b>Baca teks sains kutub berikut:</b>\n\"Bright white surfaces reflect solar radiation back into space, keeping the polar regions cool. When reflective ice sheets melt into dark meltwater ponds, the landscape's decreased <b>albedo</b> absorbs more sunlight. This warming creates a dangerous positive feedback loop that intensifies thermal melting.\"\n\n👉 <b>Pertanyaan:</b> What optical reflectivity property decreases as bright ice turns into dark open water? (Sifat reflektivitas permukaan apa yang menurun saat es putih mencair?)",
         "expected": [
             "albedo",
-            "albedo effect",
-            "the albedo effect"
+            "the albedo",
+            "albedo effect"
         ],
         "primary_answer": "albedo"
     },
     {
         "id": "rdg_adv_49",
-        "badge": "📖 📜 Sumpah Pemuda 1928: Satu Bahasa",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"On 28 October 1928, youth leaders united the Indonesian archipelago by pledging loyalty to one motherland, one nation, and one language: <b>Bahasa Indonesia</b>.\"\n\n👉 <b>Pertanyaan:</b> What language was declared the unifying language of Indonesia? (Bahasa apa yang diikrarkan sebagai bahasa persatuan?)",
+        "badge": "🇮🇩 Sumpah Pemuda 1928: Satu Bahasa",
+        "prompt": "🏛️ <b>Baca teks sejarah pergerakan nasional berikut:</b>\n\"On 28 October 1928, diverse youth delegates from across the Indonesian archipelago gathered in unity. In the historic Youth Pledge, delegates declared one motherland, one nation, and upheld <b>Bahasa Indonesia</b> as the unifying national language. This shared tongue united hundreds of diverse ethnic groups in the fight for national freedom.\"\n\n👉 <b>Pertanyaan:</b> What language was upheld as the unifying tongue in the historic 1928 Youth Pledge? (Bahasa apa yang dijunjung tinggi sebagai bahasa persatuan dalam Sumpah Pemuda?)",
         "expected": [
             "bahasa indonesia",
             "indonesian",
-            "indonesian language"
+            "indonesian language",
+            "bahasa"
         ],
         "primary_answer": "Bahasa Indonesia"
     },
     {
         "id": "rdg_adv_50",
-        "badge": "📖 📜 Sumpah Pemuda 1928: Kota Pertemuan",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"The momentous Second Youth Congress was held in the historic colonial capital city of <b>Batavia</b> (now Jakarta).\"\n\n👉 <b>Pertanyaan:</b> In what city was the 1928 Youth Congress convened? (Di kota mana Kongres Pemuda II tahun 1928 diselenggarakan?)",
+        "badge": "🇮🇩 Sumpah Pemuda 1928: Kota Pertemuan",
+        "prompt": "📜 <b>Baca teks sejarah pergerakan nasional berikut:</b>\n\"Youth organizations such as Jong Java, Jong Sumatranen Bond, and Jong Ambon set aside regional differences. The momentous Second Youth Congress took place in the colonial administrative capital then called <b>Batavia</b>, which is now Jakarta. Their solemn pledge cemented the ideological foundation for the future Republic.\"\n\n👉 <b>Pertanyaan:</b> In what colonial city was the Youth Congress convened in 1928? (Di kota kolonial manakah Kongres Pemuda II diselenggarakan?)",
         "expected": [
             "batavia",
-            "jakarta"
+            "city of batavia",
+            "in batavia"
         ],
         "primary_answer": "Batavia"
     },
     {
         "id": "rdg_adv_51",
-        "badge": "📖 🚀 Pendaratan Apollo 11 di Bulan: Astronot Pertama",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"On 20 July 1969, astronaut <b>Neil Armstrong</b> stepped onto the lunar surface, declaring \"one small step for a man, one giant leap for mankind.\"\"\n\n👉 <b>Pertanyaan:</b> Who was the first human to step on the Moon? (Siapa manusia pertama yang menginjakkan kaki di Bulan?)",
+        "badge": "🚀 Pendaratan Apollo 11 di Bulan: Astronot Pertama",
+        "prompt": "🌕 <b>Baca teks sejarah antariksa berikut:</b>\n\"On July 20, 1969, the Apollo 11 mission accomplished President Kennedy's ambitious goal of reaching lunar soil. Mission commander <b>Neil Armstrong</b> became the first human being to step onto the Moon, speaking the famous words: 'That's one small step for man, one giant leap for mankind.'\"\n\n👉 <b>Pertanyaan:</b> Who was the first human astronaut to walk on the lunar surface? (Siapakah astronot pertama yang menjejakkan kaki di permukaan Bulan?)",
         "expected": [
             "neil armstrong",
-            "armstrong"
+            "armstrong",
+            "commander neil armstrong"
         ],
         "primary_answer": "Neil Armstrong"
     },
     {
         "id": "rdg_adv_52",
-        "badge": "📖 🚀 Pendaratan Apollo 11 di Bulan: Modul Pendarat",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"The lunar module that touched down in the Sea of Tranquility was named the <b>Eagle</b>.\"\n\n👉 <b>Pertanyaan:</b> What was the callsign of the lunar lander module? (Apa nama panggilan modul pendarat Bulan tersebut?)",
+        "badge": "🚀 Pendaratan Apollo 11 di Bulan: Modul Pendarat",
+        "prompt": "🦅 <b>Baca teks sejarah antariksa berikut:</b>\n\"While astronaut Michael Collins maintained lunar orbit inside the Command Module Columbia, two astronauts prepared for descent. The Apollo 11 Lunar Module christened the <b>Eagle</b> safely touched down in the Sea of Tranquility. Millions around the world listened breathlessly as Armstrong radioed: 'The Eagle has landed.'\"\n\n👉 <b>Pertanyaan:</b> What was the call sign name of the Apollo 11 lunar landing module? (Apa nama panggilan sandi modul pendarat Bulan tersebut?)",
         "expected": [
             "eagle",
-            "the eagle"
+            "the eagle",
+            "lunar module eagle"
         ],
         "primary_answer": "Eagle"
     },
     {
         "id": "rdg_adv_53",
-        "badge": "📖 🌿 Terumbu Karang Segitiga Karang: Lokasi",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Indonesia sits at the epicenter of the Coral Triangle, home to over seventy-five percent of the world's known <b>coral</b> species.\"\n\n👉 <b>Pertanyaan:</b> Over 75 percent of what aquatic species reside in the Coral Triangle? (Lebih dari 75 persen spesies apa yang hidup di Segitiga Karang?)",
+        "badge": "🐠 Terumbu Karang Segitiga Karang: Lokasi",
+        "prompt": "🌊 <b>Baca teks keanekaragaman hayati maritim berikut:</b>\n\"Spanning six nations in the Indo-Pacific, the Coral Triangle represents the global epicenter of marine biodiversity. Over 75 percent of all known reef-building <b>coral</b> species thrive across these nutrient-rich tropical waters. Millions of coastal residents depend on these reefs for artisanal fisheries and shoreline protection.\"\n\n👉 <b>Pertanyaan:</b> The Coral Triangle contains over 75 percent of the world's species of what? (Segitiga Karang memuat lebih dari 75 persen spesies apa di dunia?)",
         "expected": [
             "coral",
-            "coral species"
+            "coral species",
+            "reef-building coral",
+            "reef building corals"
         ],
         "primary_answer": "coral"
     },
     {
         "id": "rdg_adv_54",
-        "badge": "📖 🌿 Terumbu Karang Segitiga Karang: Raja Ampat",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"The archipelago of <b>Raja Ampat</b> in West Papua is recognized as the global ground zero of marine biodiversity.\"\n\n👉 <b>Pertanyaan:</b> Which West Papuan archipelago is hailed for marine richness? (Kepulauan di Papua Barat mana yang terkenal akan keanekaragaman hayati lautnya?)",
+        "badge": "🐠 Terumbu Karang Segitiga Karang: Raja Ampat",
+        "prompt": "🏝️ <b>Baca teks keanekaragaman hayati maritim berikut:</b>\n\"Within Indonesia's eastern waters lies an archipelago celebrated as the crown jewel of oceanic life. Located in Southwest Papua, the marine paradise of <b>Raja Ampat</b> boasts the highest recorded marine biodiversity density on the planet. Its crystal-clear lagoons provide sanctuary to manta rays, dugongs, and sea turtles.\"\n\n👉 <b>Pertanyaan:</b> What archipelago in Papua is celebrated for the world's richest marine biodiversity? (Gugusan kepulauan di Papua mana yang tersohor memiliki keanekaragaman laut tertinggi?)",
         "expected": [
-            "raja ampat"
+            "raja ampat",
+            "raja ampat archipelago",
+            "islands of raja ampat"
         ],
         "primary_answer": "Raja Ampat"
     },
     {
         "id": "rdg_adv_55",
-        "badge": "📖 ⚡ Superkonduktivitas: Hambatan Nol",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Superconductors are materials that conduct electrical current with zero <b>resistance</b> when cooled below a critical temperature.\"\n\n👉 <b>Pertanyaan:</b> Superconductors conduct electricity with zero what? (Superkonduktor menghantarkan listrik dengan nol apa?)",
+        "badge": "⚡ Superkonduktivitas: Hambatan Nol",
+        "prompt": "🔬 <b>Baca teks fisika kuantum terapan berikut:</b>\n\"Standard copper electrical cables lose significant energy as heat due to internal friction. Certain materials cooled below a critical cryogenic temperature exhibit superconductivity with exactly zero electrical <b>resistance</b>. This allows electrical currents to flow perpetually without experiencing any loss of power.\"\n\n👉 <b>Pertanyaan:</b> Superconductors conduct electricity with zero what? (Superkonduktor menghantarkan listrik dengan nol apa?)",
         "expected": [
             "resistance",
-            "electrical resistance"
+            "electrical resistance",
+            "zero resistance",
+            "zero electrical resistance"
         ],
         "primary_answer": "resistance"
     },
     {
         "id": "rdg_adv_56",
-        "badge": "📖 ⚡ Superkonduktivitas: Efek Levitasi",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Superconductors repel magnetic fields in a phenomenon known as the <b>Meissner</b> effect, allowing high-speed trains to levitate.\"\n\n👉 <b>Pertanyaan:</b> What magnetic expulsion effect enables levitation? (Efek penolakan magnetik apa yang memungkinkan levitasi?)",
+        "badge": "⚡ Superkonduktivitas: Efek Levitasi",
+        "prompt": "🧲 <b>Baca teks fisika kuantum terapan berikut:</b>\n\"Superconducting materials do not merely conduct electricity without loss; they interact dramatically with magnetic fields. The complete expulsion of magnetic flux fields from a superconductor is named the <b>Meissner</b> effect. This quantum phenomenon enables frictionless high-speed maglev trains to levitate above tracks.\"\n\n👉 <b>Pertanyaan:</b> What scientific name is given to the expulsion of magnetic fields in superconductors? (Apa nama ilmiah pengusiran medan magnet pada superkonduktor?)",
         "expected": [
             "meissner",
-            "meissner effect"
+            "meissner effect",
+            "the meissner effect"
         ],
         "primary_answer": "Meissner"
     },
     {
         "id": "rdg_adv_57",
-        "badge": "📖 🏛️ Teori Relativitas Einstein: Persamaan Energi",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Albert Einstein formulated the iconic equation E=mc², showing that energy equals mass multiplied by the square of the speed of <b>light</b>.\"\n\n👉 <b>Pertanyaan:</b> In E=mc², the letter 'c' represents the speed of what? (Dalam rumus E=mc², huruf 'c' mewakili kecepatan apa?)",
+        "badge": "💡 Teori Relativitas Einstein: Persamaan Energi",
+        "prompt": "📐 <b>Baca teks fisika teoretis berikut:</b>\n\"In 1905, Albert Einstein published a paper that revolutionized physics by asserting that mass and energy are equivalent. In the landmark equation E=mc², the letter 'c' symbolizes the universal speed of <b>light</b> in a vacuum. Because light speed squared is a vast number, even a tiny amount of mass holds enormous energy.\"\n\n👉 <b>Pertanyaan:</b> In Einstein's equation E=mc², what does the letter 'c' represent? (Dalam rumus E=mc², huruf 'c' melambangkan kecepatan apa?)",
         "expected": [
             "light",
-            "speed of light"
+            "speed of light",
+            "the speed of light"
         ],
         "primary_answer": "light"
     },
     {
         "id": "rdg_adv_58",
-        "badge": "📖 🏛️ Teori Relativitas Einstein: Ruang dan Waktu",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"General relativity describes gravity not as an invisible force, but as the curvature of four-dimensional <b>spacetime</b> caused by mass.\"\n\n👉 <b>Pertanyaan:</b> Gravity is described as the curvature of what four-dimensional fabric? (Gravitasi digambarkan sebagai lengkungan apa?)",
+        "badge": "💡 Teori Relativitas Einstein: Ruang dan Waktu",
+        "prompt": "🌌 <b>Baca teks fisika teoretis berikut:</b>\n\"Einstein's General Theory of Relativity fundamentally transformed our understanding of the universe. Rather than treating three-dimensional space and time as separate entities, Einstein unified them into a four-dimensional continuum known as <b>spacetime</b>. Heavy planetary bodies warp this fabric, producing the effect we experience as gravity.\"\n\n👉 <b>Pertanyaan:</b> What four-dimensional fabric combines spatial dimensions with time in Einstein's physics? (Rajutan empat dimensi apa yang menyatukan ruang dan waktu?)",
         "expected": [
             "spacetime",
             "space-time",
-            "space and time"
+            "fabric of spacetime",
+            "the spacetime continuum"
         ],
         "primary_answer": "spacetime"
     },
     {
         "id": "rdg_adv_59",
-        "badge": "📖 💉 Vaksin mRNA: Instruksi Seluler",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Unlike traditional vaccines using dead viruses, mRNA vaccines deliver genetic instructions for human cells to produce a harmless spike <b>protein</b>.\"\n\n👉 <b>Pertanyaan:</b> What harmless viral structure do cells produce using mRNA? (Struktur virus tidak berbahaya apa yang diproduksi sel?)",
+        "badge": "💉 Vaksin mRNA: Instruksi Seluler",
+        "prompt": "🧬 <b>Baca teks imunologi biomedis berikut:</b>\n\"Traditional vaccines introduce weakened or inactivated viruses to train the immune system. In contrast, messenger RNA vaccines deliver genetic blueprints instructing human cells to synthesize a harmless viral spike <b>protein</b>. Our cells recognize this foreign antigen and prepare defensive mechanisms against real infections.\"\n\n👉 <b>Pertanyaan:</b> What viral component do host cells temporarily manufacture from mRNA instructions? (Komponen virus apa yang diproduksi sementara oleh sel tubuh dari instruksi mRNA?)",
         "expected": [
             "protein",
-            "spike protein"
+            "spike protein",
+            "viral spike protein",
+            "the spike protein"
         ],
         "primary_answer": "protein"
     },
     {
         "id": "rdg_adv_60",
-        "badge": "📖 💉 Vaksin mRNA: Respon Imun",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Once the spike protein is displayed, our immune system generates protective <b>antibodies</b> to defend against future viral infections.\"\n\n👉 <b>Pertanyaan:</b> What protective molecules are produced by the immune system? (Molekul pelindung apa yang dihasilkan sistem imun?)",
+        "badge": "💉 Vaksin mRNA: Respon Imun",
+        "prompt": "🛡️ <b>Baca teks imunologi biomedis berikut:</b>\n\"Once human cells display the synthetic viral spike protein on their surfaces, defensive immune sentinels spring into action. Specialized B-cells produce protective <b>antibodies</b> that neutralize future viral infections rapidly. This training provides long-lasting immunity without exposing the patient to active pathogens.\"\n\n👉 <b>Pertanyaan:</b> What defensive proteins are generated by immune cells to neutralize pathogens? (Protein pelindung apa yang diproduksi oleh sel imun untuk menetralkan patogen?)",
         "expected": [
             "antibodies",
-            "antibody"
+            "antibody",
+            "protective antibodies"
         ],
         "primary_answer": "antibodies"
     },
     {
         "id": "rdg_adv_61",
-        "badge": "📖 🌋 Geologi Cincin Api Pasifik: Lempeng Tektonik",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Indonesia lies along the Pacific Ring of Fire, an active belt shaped by the collision of major tectonic <b>plates</b>.\"\n\n👉 <b>Pertanyaan:</b> What subterranean structures collide to form the Ring of Fire? (Struktur geologis apa yang bertubrukan membentuk Cincin Api?)",
+        "badge": "🌋 Geologi Cincin Api Pasifik: Lempeng Tektonik",
+        "prompt": "🌏 <b>Baca teks geologi gempa bumi berikut:</b>\n\"The Pacific basin accounts for the majority of the world's most severe earthquakes and volcanic eruptions. Indonesia lies directly along the Pacific Ring of Fire, an active belt shaped by the collision of major tectonic <b>plates</b>. The friction generated by these moving rock slabs causes frequent seismic rumblings.\"\n\n👉 <b>Pertanyaan:</b> What subterranean structures collide to form the Ring of Fire? (Struktur geologis apa yang bertubrukan membentuk Cincin Api?)",
         "expected": [
             "plates",
-            "tectonic plates"
+            "tectonic plates",
+            "the tectonic plates",
+            "major tectonic plates"
         ],
         "primary_answer": "plates"
     },
     {
         "id": "rdg_adv_62",
-        "badge": "📖 🌋 Geologi Cincin Api Pasifik: Jalur Subduksi",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Where an oceanic plate plunges beneath a continental plate, the grinding zone is known as a <b>subduction</b> zone.\"\n\n👉 <b>Pertanyaan:</b> What is the zone where one tectonic plate sinks beneath another called? (Disebut apakah zona tempat lempeng samudra menunjam ke bawah lempeng benua?)",
+        "badge": "🌋 Geologi Cincin Api Pasifik: Jalur Subduksi",
+        "prompt": "🌊 <b>Baca teks geologi gempa bumi berikut:</b>\n\"When dense oceanic crust meets lighter continental crust, deep oceanic trenches and volcanic mountain arcs are formed. Where an oceanic plate plunges beneath a continental plate, the grinding zone is known as a <b>subduction</b> zone. This intense downward movement melts crustal rock into rising magma.\"\n\n👉 <b>Pertanyaan:</b> What is the zone where one tectonic plate sinks beneath another called? (Disebut apakah zona tempat lempeng samudra menunjam ke bawah lempeng benua?)",
         "expected": [
             "subduction",
-            "subduction zone"
+            "subduction zone",
+            "a subduction zone",
+            "the subduction zone"
         ],
         "primary_answer": "subduction"
     },
     {
         "id": "rdg_adv_63",
-        "badge": "📖 📜 Magna Carta 1215: Pembatasan Monarki",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Sealed in 1215 at Runnymede, the Magna Carta established for the first time that even the sovereign <b>king</b> is subject to the rule of law.\"\n\n👉 <b>Pertanyaan:</b> Who was declared subject to the rule of law under Magna Carta? (Siapa yang dinyatakan tunduk pada hukum dalam Magna Carta?)",
+        "badge": "📜 Magna Carta 1215: Pembatasan Monarki",
+        "prompt": "⚖️ <b>Baca teks sejarah ketatanegaraan berikut:</b>\n\"During the Middle Ages, English barons grew increasingly frustrated with arbitrary taxes and royal abuses of authority. Sealed in 1215 at Runnymede, the Magna Carta established for the first time that even the sovereign <b>king</b> is subject to the rule of law. This historic document laid foundational principles for modern constitutional democracy.\"\n\n👉 <b>Pertanyaan:</b> Who was declared subject to the rule of law under Magna Carta? (Siapa yang dinyatakan tunduk pada hukum dalam Magna Carta?)",
         "expected": [
             "king",
             "the king",
-            "monarch"
+            "sovereign king",
+            "the sovereign king",
+            "monarch",
+            "the monarch",
+            "the ruler"
         ],
         "primary_answer": "king"
     },
     {
         "id": "rdg_adv_64",
-        "badge": "📖 📜 Magna Carta 1215: Pengadilan Adil",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Clause 39 of the charter guaranteed that no free individual could be imprisoned without lawful judgment by <b>peers</b>.\"\n\n👉 <b>Pertanyaan:</b> Imprisonment required lawful judgment by whom? (Penahanan memerlukan putusan sah oleh siapa?)",
+        "badge": "📜 Magna Carta 1215: Pengadilan Adil",
+        "prompt": "🏛️ <b>Baca teks sejarah ketatanegaraan berikut:</b>\n\"Before 1215, medieval monarchs exercised unchecked authority to seize private property and imprison rivals without trial. Clause 39 of the charter guaranteed that no free individual could be imprisoned without lawful judgment by <b>peers</b>. This historic clause established the cornerstone for the right to a fair trial.\"\n\n👉 <b>Pertanyaan:</b> Imprisonment required lawful judgment by whom? (Penahanan memerlukan putusan sah oleh siapa?)",
         "expected": [
             "peers",
-            "judgment by peers"
+            "judgment by peers",
+            "lawful judgment by peers",
+            "their peers",
+            "by peers"
         ],
         "primary_answer": "peers"
     },
     {
         "id": "rdg_adv_65",
-        "badge": "📖 🌊 Arus Termohalin Global: Sabuk Konveyor Laut",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"Deep ocean currents are driven by variations in water temperature and <b>salinity</b>, forming the global conveyor belt.\"\n\n👉 <b>Pertanyaan:</b> Besides temperature, what property drives deep thermohaline circulation? (Selain suhu, sifat apa yang menggerakkan sirkulasi laut dalam?)",
+        "badge": "🌊 Arus Termohalin Global: Sabuk Konveyor Laut",
+        "prompt": "🧭 <b>Baca teks sirkulasi kelautan berikut:</b>\n\"Global ocean currents transport massive amounts of heat and nutrients across equatorial and polar basins. Deep ocean currents are driven by variations in water temperature and <b>salinity</b>, forming the global conveyor belt. Cold, salty water sinks near the poles and flows along the deep ocean floor.\"\n\n👉 <b>Pertanyaan:</b> Besides temperature, what property drives deep thermohaline circulation? (Selain suhu, sifat apa yang menggerakkan sirkulasi laut dalam?)",
         "expected": [
             "salinity",
             "saltiness",
+            "water salinity",
             "salt concentration"
         ],
         "primary_answer": "salinity"
     },
     {
         "id": "rdg_adv_66",
-        "badge": "📖 🌊 Arus Termohalin Global: Regulasi Iklim",
-        "prompt": "📖 <b>Baca teks saintifik/sejarah berikut:</b>\n\"The North Atlantic conveyor transports equatorial heat toward Europe, regulating regional continental <b>climate</b>.\"\n\n👉 <b>Pertanyaan:</b> What continental phenomenon is moderated by Atlantic heat transport? (Fenomena benua apa yang diatur oleh perpindahan panas samudera ini?)",
+        "badge": "🌊 Arus Termohalin Global: Regulasi Iklim",
+        "prompt": "🌍 <b>Baca teks sirkulasi kelautan berikut:</b>\n\"The oceans act as our planet's giant thermal buffer, preventing equatorial zones from overheating and high latitudes from freezing. The North Atlantic conveyor transports equatorial heat toward Europe, regulating regional continental <b>climate</b>. Disruption to this oceanic circulation could lead to severe weather shifts across Western Europe.\"\n\n👉 <b>Pertanyaan:</b> What continental phenomenon is moderated by Atlantic heat transport? (Fenomena benua apa yang diatur oleh perpindahan panas samudera ini?)",
         "expected": [
             "climate",
-            "continental climate"
+            "continental climate",
+            "regional climate",
+            "regional continental climate"
         ],
         "primary_answer": "climate"
     }

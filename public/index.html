@@ -62,6 +62,36 @@
   </script>
 
   <style>
+    /* Custom Theme-Matched Scrollbar (Rose Gold & Dark Slate Theme) */
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(244, 63, 94, 0.45) #090d16;
+    }
+
+    ::-webkit-scrollbar {
+      width: 9px;
+      height: 9px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #090d16;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(244, 63, 94, 0.5) 0%, rgba(251, 191, 36, 0.5) 100%);
+      border-radius: 9999px;
+      border: 2px solid #090d16;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, rgba(244, 63, 94, 0.85) 0%, rgba(251, 191, 36, 0.85) 100%);
+      box-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: #090d16;
+    }
+
     /* Smooth focus outlines with Rose Gold accent */
     *:focus-visible {
       outline: 2px solid rgba(251, 113, 133, 0.6);

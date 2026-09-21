@@ -246,11 +246,10 @@ async def evaluate_student_message(
     if quality_msg:
         return quality_msg
 
-    # 2. Fast-Path: Deterministic exact match check (0ms latency, zero API cost)
+    # 2. Fast-Path: Deterministic intelligent match check (0ms latency, zero API cost)
     if active_exercise and active_exercise.get("expected"):
-        norm_user = content_bank._normalize_answer(user_text)
         for exp in active_exercise["expected"]:
-            if norm_user == content_bank._normalize_answer(exp):
+            if content_bank._is_valid_match(user_text, exp, active_prompt):
                 return content_bank.evaluate_offline_answer(user_text, active_exercise, mode, level)
 
     client = get_genai_client()
@@ -366,11 +365,14 @@ async def explain_or_hint_exercise(
         f"<<<END_STUDENT_QUESTION>>>\n\n"
         f"As their friendly English Coach ({config.BOT_NAME}), respond following these rules:\n"
         f"1. Explain warmly and clearly in friendly Indonesian (Bahasa Indonesia yang santun & memotivasi) with simple English examples.\n"
-        f"2. IF ASKING FOR MEANING/EXPLANATION ('apa maksudnya', 'artinya apa', 'maksudnya gimana'): Explain simply what the English sentence/words mean and clarify what the exercise is asking them to do.\n"
-        f"3. IF ASKING FOR THE ANSWER DIRECTLY ('apa jawabannya'): HINT FIRST RULE! Do NOT directly spoil the final answer. Give an encouraging pedagogical clue (e.g., mention the starting letter, to be rule, or meaning of the subject) and motivate them to try typing their guess.\n"
+        f"2. IF ASKING FOR A HINT / PETUNJUK (e.g. user typed '/hint', 'minta petunjuk', 'clue', 'bantuan', or 'apa jawabannya'): HINT FIRST RULE! "
+        f"NEVER spoil the answer directly. Give a clear, motivating pedagogical clue (e.g., mention starting letter, letter count, masked pattern like 'N _ _ e', meaning clue, or sentence starter) so the student can guess independently.\n"
+        f"3. IF ASKING FOR MEANING/EXPLANATION ('apa maksudnya', 'artinya apa', 'maksudnya gimana'): Explain simply what the English sentence/words mean and clarify what the exercise is asking them to do.\n"
         f"4. IF ASKING WHY AN ANSWER WAS WRONG ('kenapa salah'): Explain the grammar or vocabulary difference simply and kindly.\n"
-        f"5. Keep explanations short, clear, and encouraging (under 120 words). Use only <b>, <i>, <code> tags."
+        f"5. IF ASKING FOR ANSWER KEY DIRECTLY ('kunci jawaban', 'menyerah', 'bocoran'): Reveal the canonical answer and explain why.\n"
+        f"6. Keep explanations short, clear, and encouraging (under 120 words). Use only <b>, <i>, <code> tags."
     )
+
 
     try:
         response = await asyncio.wait_for(

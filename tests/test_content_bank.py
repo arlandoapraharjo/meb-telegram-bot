@@ -112,6 +112,58 @@ class TestContentBank(unittest.TestCase):
         res_wrong = content_bank.evaluate_offline_answer("I want to eat chocolate", ex)
         self.assertIn("Kunci Jawaban yang Benar", res_wrong)
 
+    def test_intelligent_evaluation_variations(self) -> None:
+        """Verify natural phrasing, articles, and prompt-grounded answers pass as correct."""
+        ex = content_bank.get_exercise_by_id("rdg_adv_63")
+        self.assertIsNotNone(ex)
+
+        # Magna Carta question with accepted variations
+        test_inputs = [
+            "The sovereign king",
+            "the sovereign king",
+            "sovereign king",
+            "king",
+            "the king",
+            "monarch",
+            "The answer is: the sovereign king",
+            "Jawabannya the king",
+        ]
+        for user_ans in test_inputs:
+            res = content_bank.evaluate_offline_answer(
+                user_ans, ex, config.MODE_READING, config.LEVEL_ADVANCED
+            )
+            self.assertIn(
+                "Tepat Sekali",
+                res,
+                f"Expected '{user_ans}' to evaluate as correct for rdg_adv_63, got: {res}",
+            )
+
+    def test_confident_level_enrichment(self) -> None:
+        """Verify advanced level exercises have enriched passages and dialogue context."""
+        reading_adv = self.bank[config.MODE_READING][config.LEVEL_ADVANCED]
+        for ex in reading_adv:
+            # Ensure reading passage is substantial (at least 150 chars in prompt)
+            self.assertGreater(
+                len(ex["prompt"]),
+                150,
+                f"Reading advanced exercise {ex['id']} passage is too short",
+            )
+            # Ensure proper HTML tags
+            self.assertIn("<b>", ex["prompt"])
+            self.assertIn("👉 <b>Pertanyaan:</b>", ex["prompt"])
+
+        conv_adv = self.bank[config.MODE_DAILY_CONVERSATION][config.LEVEL_ADVANCED]
+        for ex in conv_adv:
+            # Ensure conversation prompt includes dialogue turns
+            self.assertIn(
+                "<i>",
+                ex["prompt"],
+                f"Conversation advanced exercise {ex['id']} should include dialogue lines",
+            )
+            self.assertIn("👉 <b>Giliranmu:</b>", ex["prompt"])
+            self.assertIn("<code>", ex["prompt"])
+
 
 if __name__ == "__main__":
     unittest.main()
+

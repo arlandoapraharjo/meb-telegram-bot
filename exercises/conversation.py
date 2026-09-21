@@ -1582,7 +1582,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_01",
         "badge": "💬 Cita-cita Mulia (Dream Career)",
-        "prompt": "<b>🩺 Situasi:</b> Guru meminta murid menceritakan cita-cita di masa depan.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu ingin menjadi dokter untuk menolong orang sakit di desa:\n<code>I want to be a doctor to help sick people in my village.</code>\n<i>(Artinya: Saya ingin menjadi dokter untuk menolong orang sakit di desaku.)</i>",
+        "prompt": "<b>🩺 Percakapan di Kelas:</b>\nTeacher: <i>\"Everyone, think about your future and what you want to achieve.\"</i>\nRian: <i>\"I want to become an engineer to build bridges and roads!\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu ingin menjadi dokter untuk menolong orang sakit di desa:\n<code>I want to be a doctor to help sick people in my village.</code>\n<i>(Artinya: Saya ingin menjadi dokter untuk menolong orang sakit di desaku.)</i>",
         "expected": [
             "i want to be a doctor to help sick people in my village",
             "i want to be a doctor to help sick people",
@@ -1594,7 +1594,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_02",
         "badge": "💬 Menjaga Lingkungan (Protecting Environment)",
-        "prompt": "<b>🌱 Situasi:</b> Kamu sedang berdiskusi tentang cara menjaga kebersihan bumi.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kita harus menanam pohon dan membuang sampah pada tempatnya:\n<code>We should plant more trees and keep our surroundings clean.</code>\n<i>(Artinya: Kita harus menanam lebih banyak pohon dan menjaga lingkungan tetap bersih.)</i>",
+        "prompt": "<b>🌱 Diskusi Komunitas:</b>\nAlex: <i>\"Our town park has too much litter and very few shady trees.\"</i>\nMaya: <i>\"We need an action plan so our environment stays green and healthy.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kita harus menanam pohon dan membuang sampah pada tempatnya:\n<code>We should plant more trees and keep our surroundings clean.</code>\n<i>(Artinya: Kita harus menanam lebih banyak pohon dan menjaga lingkungan tetap bersih.)</i>",
         "expected": [
             "we should plant more trees and keep our surroundings clean",
             "we should plant more trees",
@@ -1606,7 +1606,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_03",
         "badge": "💬 Menceritakan Liburan Desa (Describing Vacation)",
-        "prompt": "<b>🌾 Situasi:</b> Temanmu bertanya bagaimana liburan sekolahmu kemarin.\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa kamu mengunjungi kakekmu dan memberi makan kambing di desa:\n<code>Last holiday, I visited my grandfather and fed his goats in the village.</code>\n<i>(Artinya: Liburan lalu, saya mengunjungi kakek dan memberi makan kambing-kambingnya di desa.)</i>",
+        "prompt": "<b>🌾 Obrolan Istirahat:</b>\nBudi: <i>\"How was your school vacation last week? Did you go anywhere fun?\"</i>\nSarah: <i>\"I went camping with my family! How about you?\"</i>\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa kamu mengunjungi kakekmu dan memberi makan kambing di desa:\n<code>Last holiday, I visited my grandfather and fed his goats in the village.</code>\n<i>(Artinya: Liburan lalu, saya mengunjungi kakek dan memberi makan kambing-kambingnya di desa.)</i>",
         "expected": [
             "last holiday, i visited my grandfather and fed his goats in the village",
             "last holiday i visited my grandfather and fed his goats",
@@ -1618,7 +1618,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_04",
         "badge": "💬 Merekomendasikan Buku Cerita (Book Recommendation)",
-        "prompt": "<b>📚 Situasi:</b> Kamu baru saja selesai membaca cerita fabel yang penuh pesan moral.\n\n👉 <b>Giliranmu:</b> Rekomendasikan buku tersebut kepada temanmu:\n<code>You should read this fable because it teaches us about honesty.</code>\n<i>(Artinya: Kamu harus membaca fabel ini karena ia mengajarkan kita tentang kejujuran.)</i>",
+        "prompt": "<b>📚 Di Perpustakaan:</b>\nLisa: <i>\"I'm looking for an inspiring story with great life lessons.\"</i>\nTom: <i>\"Have you seen any good recommendations on the featured bookshelf?\"</i>\n\n👉 <b>Giliranmu:</b> Rekomendasikan buku tersebut kepada temanmu:\n<code>You should read this fable because it teaches us about honesty.</code>\n<i>(Artinya: Kamu harus membaca fabel ini karena ia mengajarkan kita tentang kejujuran.)</i>",
         "expected": [
             "you should read this fable because it teaches us about honesty",
             "you should read this fable",
@@ -1630,7 +1630,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_05",
         "badge": "💬 Menasihati Teman yang Sakit (Giving Healthy Advice)",
-        "prompt": "<b>💊 Situasi:</b> Teman sebangkumu tampak pucat dan mengeluh pusing setelah upacara.\n\n👉 <b>Giliranmu:</b> Beri saran agar ia minum air putih dan istirahat di ruang UKS:\n<code>You should drink plenty of water and rest in the clinic room.</code>\n<i>(Artinya: Kamu sebaiknya minum banyak air dan beristirahat di ruang UKS.)</i>",
+        "prompt": "<b>💊 Di Depan Kelas:</b>\nKevin: <i>\"I have a terrible headache and feel dizzy after the morning assembly.\"</i>\nSiti: <i>\"You look really pale, Kevin. You shouldn't force yourself to study right now.\"</i>\n\n👉 <b>Giliranmu:</b> Beri saran agar ia minum air putih dan istirahat di ruang UKS:\n<code>You should drink plenty of water and rest in the clinic room.</code>\n<i>(Artinya: Kamu sebaiknya minum banyak air dan beristirahat di ruang UKS.)</i>",
         "expected": [
             "you should drink plenty of water and rest in the clinic room",
             "you should drink plenty of water and rest",
@@ -1642,7 +1642,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_06",
         "badge": "💬 Berbakti Kepada Orang Tua (Gratitude to Parents)",
-        "prompt": "<b>❤️ Situasi:</b> Guru meminta murid menuliskan ungkapan rasa syukur terhadap orang tua.\n\n👉 <b>Giliranmu:</b> Tuliskan bahwa kamu bersyukur atas kasih sayang tulus orang tuamu:\n<code>I am truly grateful for my parents' unconditional love and care.</code>\n<i>(Artinya: Saya sungguh bersyukur atas kasih sayang dan perhatian tulus kedua orang tua saya.)</i>",
+        "prompt": "<b>❤️ Sesi Bimbingan Konseling:</b>\nCounselor: <i>\"Our parents sacrifice so much for our education and future.\"</i>\nDoni: <i>\"Yes, their dedication inspires me to do my very best every single day.\"</i>\n\n👉 <b>Giliranmu:</b> Tuliskan bahwa kamu bersyukur atas kasih sayang tulus orang tuamu:\n<code>I am truly grateful for my parents' unconditional love and care.</code>\n<i>(Artinya: Saya sungguh bersyukur atas kasih sayang dan perhatian tulus kedua orang tua saya.)</i>",
         "expected": [
             "i am truly grateful for my parents' unconditional love and care",
             "i am truly grateful for my parents",
@@ -1654,7 +1654,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_07",
         "badge": "💬 Kuliner Khas Nusantara (Indonesian Traditional Food)",
-        "prompt": "<b>🍛 Situasi:</b> Teman bertukar cerita tentang masakan daerah favorit di Indonesia.\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa Rendang adalah makanan daging lezat kaya rempah dari Sumatera Barat:\n<code>Rendang is a delicious spicy beef dish from West Sumatra.</code>\n<i>(Artinya: Rendang adalah masakan daging sapi pedas yang lezat dari Sumatera Barat.)</i>",
+        "prompt": "<b>🍛 Wisata Kuliner:</b>\nDavid (turis): <i>\"Indonesian cuisine is famous worldwide for its rich herbs and spices!\"</i>\nRina: <i>\"That's true! Have you tried our traditional dishes yet?\"</i>\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa Rendang adalah makanan daging lezat kaya rempah dari Sumatera Barat:\n<code>Rendang is a delicious spicy beef dish from West Sumatra.</code>\n<i>(Artinya: Rendang adalah masakan daging sapi pedas yang lezat dari Sumatera Barat.)</i>",
         "expected": [
             "rendang is a delicious spicy beef dish from west sumatra",
             "rendang is a delicious spicy beef dish",
@@ -1666,7 +1666,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_08",
         "badge": "💬 Pentingnya Belajar Bahasa Inggris (Why Learn English)",
-        "prompt": "<b>🌏 Situasi:</b> Dalam diskusi kelas, kamu ditanya mengapa kita perlu belajar bahasa Inggris.\n\n👉 <b>Giliranmu:</b> Jelaskan bahwa bahasa Inggris membuka wawasan dan jendela ke dunia luar:\n<code>Learning English opens doors to knowledge and global friendships.</code>\n<i>(Artinya: Belajar bahasa Inggris membuka pintu pengetahuan dan persahabatan global.)</i>",
+        "prompt": "<b>🌏 Diskusi Klub Bahasa:</b>\nMr. Smith: <i>\"Why do you think mastering English is so essential in the modern era?\"</i>\nAndi: <i>\"It helps us communicate with people from all across the globe.\"</i>\n\n👉 <b>Giliranmu:</b> Jelaskan bahwa bahasa Inggris membuka wawasan dan jendela ke dunia luar:\n<code>Learning English opens doors to knowledge and global friendships.</code>\n<i>(Artinya: Belajar bahasa Inggris membuka pintu pengetahuan dan persahabatan global.)</i>",
         "expected": [
             "learning english opens doors to knowledge and global friendships",
             "learning english opens doors to knowledge",
@@ -1678,7 +1678,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_09",
         "badge": "💬 Pola Hidup Sehat (Healthy Lifestyle Habits)",
-        "prompt": "<b>🍎 Situasi:</b> Kamu diminta membagikan tips agar tubuh tetap bugar dan berenergi di sekolah.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa makan sayuran dan tidur 8 jam membuat tubuh bugar:\n<code>Eating fresh vegetables and sleeping eight hours keep our body strong.</code>\n<i>(Artinya: Makan sayuran segar dan tidur delapan jam menjaga tubuh kita tetap kuat.)</i>",
+        "prompt": "<b>🍎 Tips Kebugaran Remaja:</b>\nCoach: <i>\"Many students complain of feeling exhausted and unfocused during morning lessons.\"</i>\nEdo: <i>\"What daily habits should we adopt to stay energetic throughout the school day?\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa makan sayuran dan tidur 8 jam membuat tubuh bugar:\n<code>Eating fresh vegetables and sleeping eight hours keep our body strong.</code>\n<i>(Artinya: Makan sayuran segar dan tidur delapan jam menjaga tubuh kita tetap kuat.)</i>",
         "expected": [
             "eating fresh vegetables and sleeping eight hours keep our body strong",
             "eating vegetables and sleeping eight hours",
@@ -1690,7 +1690,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_10",
         "badge": "💬 Jangan Takut Membuat Kesalahan (Overcoming Mistakes)",
-        "prompt": "<b>💡 Situasi:</b> Temanmu merasa malu karena salah menjawab soal di papan tulis.\n\n👉 <b>Giliranmu:</b> Hibur kawanmu bahwa membuat kesalahan adalah bagian alami dari proses belajar:\n<code>Making mistakes is a normal step in learning something new.</code>\n<i>(Artinya: Membuat kesalahan adalah langkah wajar dalam mempelajari hal baru.)</i>",
+        "prompt": "<b>💡 Setelah Pelajaran Matematika:</b>\nAyu: <i>\"I felt so embarrassed when I got that algebra question wrong on the blackboard!\"</i>\nFajar: <i>\"Don't worry about it at all, Ayu! No one understands everything immediately.\"</i>\n\n👉 <b>Giliranmu:</b> Hibur kawanmu bahwa membuat kesalahan adalah bagian alami dari proses belajar:\n<code>Making mistakes is a normal step in learning something new.</code>\n<i>(Artinya: Membuat kesalahan adalah langkah wajar dalam mempelajari hal baru.)</i>",
         "expected": [
             "making mistakes is a normal step in learning something new",
             "making mistakes is a normal step in learning",
@@ -1702,7 +1702,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_11",
         "badge": "💬 Manfaat Komputer & Belajar (Technology in Education)",
-        "prompt": "<b>💻 Situasi:</b> Kamu sedang belajar di laboratorium komputer sekolah.\n\n👉 <b>Giliranmu:</b> Katakan bahwa komputer membantu siswa mencari ilmu dengan cepat:\n<code>Computers help students explore useful knowledge very quickly.</code>\n<i>(Artinya: Komputer membantu para siswa menjelajahi ilmu bermanfaat dengan sangat cepat.)</i>",
+        "prompt": "<b>💻 Di Lab Komputer:</b>\nIT Teacher: <i>\"Digital tools have transformed how students conduct scientific research today.\"</i>\nTari: <i>\"Yes, we can find encyclopedias and academic papers within seconds!\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa komputer membantu siswa mencari ilmu dengan cepat:\n<code>Computers help students explore useful knowledge very quickly.</code>\n<i>(Artinya: Komputer membantu para siswa menjelajahi ilmu bermanfaat dengan sangat cepat.)</i>",
         "expected": [
             "computers help students explore useful knowledge very quickly",
             "computers help students explore useful knowledge",
@@ -1714,7 +1714,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_12",
         "badge": "💬 Gotong Royong Warga (Community Cooperation)",
-        "prompt": "<b>🤝 Situasi:</b> Warga desamu mengadakan kerja bakti membersihkan selokan di hari Minggu.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa gotong royong membuat lingkungan bersih dan rukun:\n<code>Cooperation makes our neighborhood clean, safe, and peaceful.</code>\n<i>(Artinya: Gotong royong membuat lingkungan kita bersih, aman, dan damai.)</i>",
+        "prompt": "<b>🤝 Pertemuan RT/RW:</b>\nPak RT: <i>\"Our drainage system is clogged with autumn leaves before the rainy season.\"</i>\nBu Nina: <i>\"If we clean it together this Sunday, the job will be finished before noon!\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa gotong royong membuat lingkungan bersih dan rukun:\n<code>Cooperation makes our neighborhood clean, safe, and peaceful.</code>\n<i>(Artinya: Gotong royong membuat lingkungan kita bersih, aman, dan damai.)</i>",
         "expected": [
             "cooperation makes our neighborhood clean, safe, and peaceful",
             "cooperation makes our neighborhood clean",
@@ -1726,7 +1726,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_13",
         "badge": "💬 Rencana Jenjang Sekolah (Entering Junior High)",
-        "prompt": "<b>🎓 Situasi:</b> Guru bertanya apa rencanamu setelah lulus dari Sekolah Dasar (SD).\n\n👉 <b>Giliranmu:</b> Sampaikan tekadmu untuk melanjutkan ke SMP dengan giat belajar:\n<code>After graduating from primary school, I will enter junior high school.</code>\n<i>(Artinya: Setelah lulus dari sekolah dasar, saya akan masuk sekolah menengah pertama.)</i>",
+        "prompt": "<b>🎓 Menjelang Kelulusan SD:</b>\nTeacher: <i>\"You have all grown so much during your six years here in primary school.\"</i>\nPutri: <i>\"We will miss our classroom, but we are also excited for the next chapter!\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan tekadmu untuk melanjutkan ke SMP dengan giat belajar:\n<code>After graduating from primary school, I will enter junior high school.</code>\n<i>(Artinya: Setelah lulus dari sekolah dasar, saya akan masuk sekolah menengah pertama.)</i>",
         "expected": [
             "after graduating from primary school, i will enter junior high school",
             "after graduating from primary school i will enter junior high school",
@@ -1738,7 +1738,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_14",
         "badge": "💬 Hari Kemerdekaan Indonesia (Independence Day)",
-        "prompt": "<b>🇮🇩 Situasi:</b> Kamu menceritakan kemeriahan lomba 17 Agustus di kampungmu.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa Indonesia merayakan kemerdekaan setiap tanggal 17 Agustus:\n<code>We celebrate Indonesian Independence Day on the seventeenth of August.</code>\n<i>(Artinya: Kita merayakan Hari Kemerdekaan Indonesia pada tanggal 17 Agustus.)</i>",
+        "prompt": "<b>🇮🇩 Menjelang 17 Agustus:</b>\nKen (teman Jepang): <i>\"Red and white flags are hanging along every street in your neighborhood!\"</i>\nRio: <i>\"Yes, we are preparing for our biggest national celebration of the year!\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa Indonesia merayakan kemerdekaan setiap tanggal 17 Agustus:\n<code>We celebrate Indonesian Independence Day on the seventeenth of August.</code>\n<i>(Artinya: Kita merayakan Hari Kemerdekaan Indonesia pada tanggal 17 Agustus.)</i>",
         "expected": [
             "we celebrate indonesian independence day on the seventeenth of august",
             "we celebrate indonesian independence day",
@@ -1750,7 +1750,7 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_15",
         "badge": "💬 Rasa Hormat Kepada Guru (Respect for Teachers)",
-        "prompt": "<b>💐 Situasi:</b> Pada peringatan Hari Guru, kamu ingin menyampaikan rasa hormatmu.\n\n👉 <b>Giliranmu:</b> Katakan bahwa bapak dan ibu guru membimbing kita dengan sabar:\n<code>Our teachers guide us with boundless patience and wisdom.</code>\n<i>(Artinya: Guru-guru kita membimbing kita dengan kesabaran dan kebijaksanaan tanpa batas.)</i>",
+        "prompt": "<b>💐 Hari Guru Nasional:</b>\nKetua OSIS: <i>\"Today we celebrate the educators who dedicate their lives to our growth.\"</i>\nMaya: <i>\"They never give up on us, even when lessons are challenging.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa bapak dan ibu guru membimbing kita dengan sabar:\n<code>Our teachers guide us with boundless patience and wisdom.</code>\n<i>(Artinya: Guru-guru kita membimbing kita dengan kesabaran dan kebijaksanaan tanpa batas.)</i>",
         "expected": [
             "our teachers guide us with boundless patience and wisdom",
             "our teachers guide us with patience and wisdom",
@@ -1762,570 +1762,613 @@ CONVERSATION_EXERCISES: Dict[str, List[Dict[str, Any]]] = {
     {
         "id": "conv_adv_16",
         "badge": "💬 Menghibur Teman Sedih (Showing Empathy)",
-        "prompt": "<b>🤗 Situasi:</b> Temanmu tampak bersedih karena kehilangan buku catatan kesayangannya.\n\n👉 <b>Giliranmu:</b> Berikan dukungan hangat bahwa kamu siap membantunya mencari:\n<code>Don't be sad, I will help you look for your notebook.</code>\n<i>(Artinya: Jangan sedih ya, saya akan membantumu mencari buku catatanmu.)</i>",
+        "prompt": "<b>🤝 Menolong Kawan:</b>\nDimas: <i>\"I lost my favorite fountain pen that my father gave me for my birthday!\"</i>\nNia: <i>\"Don't panic Dimas, I saw it near the science laboratory earlier.\"</i>\n\n👉 <b>Giliranmu:</b> Hibur kawanmu dan tawarkan bantuan untuk mencarinya:\n<code>Don't be sad, I will help you look for your lost pen.</code>\n<i>(Artinya: Jangan bersedih, saya akan membantumu mencari pulpenmu yang hilang.)</i>",
         "expected": [
-            "don't be sad, i will help you look for your notebook",
-            "don't be sad i will help you look for your notebook",
-            "dont be sad i will help you",
-            "i will help you look for your notebook"
+            "don't be sad, i will help you look for your lost pen",
+            "don't be sad i will help you look for your lost pen",
+            "dont be sad, i will help you look for your lost pen",
+            "i will help you look for your lost pen"
         ],
-        "primary_answer": "Don't be sad, I will help you look for your notebook."
+        "primary_answer": "Don't be sad, I will help you look for your lost pen."
     },
     {
         "id": "conv_adv_17",
         "badge": "💬 Kekuatan Kerja Kelompok (Power of Teamwork)",
-        "prompt": "<b>🧩 Situasi:</b> Kelompok belajarmu baru saja berhasil menyelesaikan tugas poster besar.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kerja sama membuat tugas yang sulit menjadi ringan:\n<code>Teamwork makes difficult challenges feel much easier and lighter.</code>\n<i>(Artinya: Kerja sama tim membuat tantangan sulit terasa jauh lebih mudah dan ringan.)</i>",
+        "prompt": "<b>🏆 Diskusi Tugas Kelompok:</b>\nCaptain: <i>\"This science fair project involves research, building a model, and presenting.\"</i>\nBayu: <i>\"It looks like too much work for any single student to complete alone.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kerja sama membuat tantangan terasa lebih ringan:\n<code>Teamwork makes difficult challenges feel much easier to accomplish.</code>\n<i>(Artinya: Kerja sama tim membuat tantangan sulit terasa jauh lebih mudah diselesaikan.)</i>",
         "expected": [
-            "teamwork makes difficult challenges feel much easier and lighter",
-            "teamwork makes difficult challenges feel easier",
-            "teamwork makes difficult challenges easier",
-            "teamwork makes challenges easier"
+            "teamwork makes difficult challenges feel much easier to accomplish",
+            "teamwork makes difficult challenges feel much easier",
+            "makes difficult challenges feel much easier",
+            "teamwork makes difficult challenges easier"
         ],
-        "primary_answer": "Teamwork makes difficult challenges feel much easier and lighter."
+        "primary_answer": "Teamwork makes difficult challenges feel much easier to accomplish."
     },
     {
         "id": "conv_adv_18",
         "badge": "💬 Keindahan Alam Pedesaan (Beauty of Nature)",
-        "prompt": "<b>🌄 Situasi:</b> Kamu berdiri di atas bukit desa memandangi matahari terbit di sawah.\n\n👉 <b>Giliranmu:</b> Ungkapkan kekagumanmu pada keindahan alam ciptaan Tuhan:\n<code>The golden sunrise over the green rice fields is breathtaking.</code>\n<i>(Artinya: Matahari terbit keemasan di atas persawahan hijau sungguh menakjubkan.)</i>",
+        "prompt": "<b>🌅 Menikmati Pagi di Desa:</b>\nWisatawan: <i>\"The morning air here is so crisp and fresh compared to the crowded city!\"</i>\nGalih: <i>\"Just look at the sunrise glowing behind the distant mountains.\"</i>\n\n👉 <b>Giliranmu:</b> Ceritakan pemandangan matahari terbit di atas sawah hijau desa:\n<code>The golden sunrise over the green rice fields looks breathtaking.</code>\n<i>(Artinya: Matahari terbit keemasan di atas persawahan hijau tampak sangat memukau.)</i>",
         "expected": [
-            "the golden sunrise over the green rice fields is breathtaking",
-            "the golden sunrise over the green rice fields",
+            "the golden sunrise over the green rice fields looks breathtaking",
             "golden sunrise over the green rice fields",
-            "sunrise over green rice fields"
+            "sunrise over the green rice fields looks breathtaking",
+            "the golden sunrise over the green rice fields"
         ],
-        "primary_answer": "The golden sunrise over the green rice fields is breathtaking."
+        "primary_answer": "The golden sunrise over the green rice fields looks breathtaking."
     },
     {
         "id": "conv_adv_19",
         "badge": "💬 Kebiasaan Menabung (Saving Pocket Money)",
-        "prompt": "<b>💰 Situasi:</b> Kamu memiliki celengan ayam di kamar untuk menyisihkan uang saku.\n\n👉 <b>Giliranmu:</b> Ceritakan bahwa kamu menyisihkan uang saku setiap hari:\n<code>I save some of my pocket money in my piggy bank every day.</code>\n<i>(Artinya: Saya menyisihkan sebagian uang saku di celengan setiap hari.)</i>",
+        "prompt": "<b>🪙 Mengelola Uang Jajan:</b>\nIbu: <i>\"Here is your pocket money for school this week, Anton.\"</i>\nAnton: <i>\"Thank you, Mom! I'm planning ahead so I don't spend it all on snacks.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu menyisihkan sebagian uang saku ke celengan setiap hari:\n<code>I save some of my pocket money in my piggy bank every day.</code>\n<i>(Artinya: Saya menyisihkan sebagian uang saku ke dalam celengan setiap hari.)</i>",
         "expected": [
             "i save some of my pocket money in my piggy bank every day",
             "i save some of my pocket money in my piggy bank",
-            "save pocket money in piggy bank",
-            "save some pocket money"
+            "save some of my pocket money in my piggy bank",
+            "save some of my pocket money"
         ],
         "primary_answer": "I save some of my pocket money in my piggy bank every day."
     },
     {
         "id": "conv_adv_20",
         "badge": "💬 Tokoh Pendidikan Indonesia (Ki Hajar Dewantara)",
-        "prompt": "<b>🏫 Situasi:</b> Di kelas sejarah, guru membahas pahlawan nasional bidang pendidikan.\n\n👉 <b>Giliranmu:</b> Sebutkan bahwa Ki Hajar Dewantara adalah bapak pendidikan kita:\n<code>Ki Hajar Dewantara is the revered father of education in Indonesia.</code>\n<i>(Artinya: Ki Hajar Dewantara adalah bapak pendidikan yang dihormati di Indonesia.)</i>",
+        "prompt": "<b>📜 Kelas Sejarah Nasional:</b>\nHistory Teacher: <i>\"Who founded the Taman Siswa movement to give ordinary Indonesians access to schooling?\"</i>\nSinta: <i>\"His birthday on May 2 is celebrated annually as National Education Day!\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa Ki Hajar Dewantara adalah bapak pendidikan Indonesia yang dihormati:\n<code>Ki Hajar Dewantara is the revered father of Indonesian education.</code>\n<i>(Artinya: Ki Hajar Dewantara adalah bapak pendidikan Indonesia yang sangat dihormati.)</i>",
         "expected": [
-            "ki hajar dewantara is the revered father of education in indonesia",
-            "ki hajar dewantara is the father of education in indonesia",
-            "father of education in indonesia",
-            "ki hajar dewantara"
+            "ki hajar dewantara is the revered father of indonesian education",
+            "ki hajar dewantara is the father of indonesian education",
+            "the revered father of indonesian education",
+            "father of indonesian education"
         ],
-        "primary_answer": "Ki Hajar Dewantara is the revered father of education in Indonesia."
+        "primary_answer": "Ki Hajar Dewantara is the revered father of Indonesian education."
     },
     {
         "id": "conv_adv_21",
         "badge": "💬 Disiplin Waktu Belajar (Time Management)",
-        "prompt": "<b>⏰ Situasi:</b> Temanmu kagum karena kamu selalu mengumpulkan PR tepat waktu.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kamu selalu menyelesaikan PR sebelum bermain:\n<code>I always finish all my school homework before playing games.</code>\n<i>(Artinya: Saya selalu menyelesaikan semua PR sekolah sebelum bermain game.)</i>",
+        "prompt": "<b>⏰ Kebiasaan Malam Hari:</b>\nFather: <i>\"Make sure you don't stay up late playing video games tonight, Rian.\"</i>\nRian: <i>\"Don't worry, Dad. I always set a strict study schedule each evening.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa kamu selalu menyelesaikan PR sekolah sebelum menonton TV:\n<code>I always finish all my school homework before watching television.</code>\n<i>(Artinya: Saya selalu menyelesaikan semua PR sekolah sebelum menonton televisi.)</i>",
         "expected": [
-            "i always finish all my school homework before playing games",
-            "i always finish my homework before playing games",
-            "finish homework before playing games",
-            "finish all homework before playing"
+            "i always finish all my school homework before watching television",
+            "i always finish all my school homework before watching tv",
+            "finish all my school homework before watching television",
+            "finish my school homework before watching tv"
         ],
-        "primary_answer": "I always finish all my school homework before playing games."
+        "primary_answer": "I always finish all my school homework before watching television."
     },
     {
         "id": "conv_adv_22",
         "badge": "💬 Kesantunan di Tempat Umum (Public Manners)",
-        "prompt": "<b>🚌 Situasi:</b> Kamu antre bersama teman saat hendak menaiki bus sekolah.\n\n👉 <b>Giliranmu:</b> Ingatkan teman agar selalu tertib mengantre dengan sabar:\n<code>Always queue patiently and speak politely in public places.</code>\n<i>(Artinya: Selalulah mengantre dengan sabar dan berbicara sopan di tempat umum.)</i>",
+        "prompt": "<b>🚌 Di Halte Bus Kota:</b>\nPetugas: <i>\"Passengers, please line up orderly and let passengers alight first.\"</i>\nDina: <i>\"Good manners make our journey comfortable and safe for everyone.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan agar selalu mengantre dengan sabar dan berbicara sopan di tempat umum:\n<code>Always queue patiently and speak politely in public areas.</code>\n<i>(Artinya: Selalulah mengantre dengan sabar dan berbicara santun di tempat umum.)</i>",
         "expected": [
-            "always queue patiently and speak politely in public places",
-            "queue patiently and speak politely in public places",
-            "queue patiently and speak politely",
-            "speak politely in public places"
+            "always queue patiently and speak politely in public areas",
+            "queue patiently and speak politely in public areas",
+            "always queue patiently and speak politely",
+            "queue patiently and speak politely"
         ],
-        "primary_answer": "Always queue patiently and speak politely in public places."
+        "primary_answer": "Always queue patiently and speak politely in public areas."
     },
     {
         "id": "conv_adv_23",
         "badge": "💬 Mengembangkan Bakat Seni (Expressing Creativity)",
-        "prompt": "<b>🎨 Situasi:</b> Kamu gemar melukis dan menulis cerita di buku harianmu.\n\n👉 <b>Giliranmu:</b> Katakan bahwa melukis dan menulis membantumu menuangkan ide:\n<code>Painting and writing help me express my imagination freely.</code>\n<i>(Artinya: Melukis dan menulis membantuku mengekspresikan imajinasi dengan bebas.)</i>",
+        "prompt": "<b>🎨 Di Sanggar Seni:</b>\nInstruktur: <i>\"Art allows us to communicate feelings that words sometimes fail to describe.\"</i>\nCindy: <i>\"Yes, creating something original brings so much personal joy and peace.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa melukis dan menulis membantumu mengekspresikan kreativitas:\n<code>Painting and writing help me express my inner creativity.</code>\n<i>(Artinya: Melukis dan menulis membantu saya mengekspresikan kreativitas dalam diri saya.)</i>",
         "expected": [
-            "painting and writing help me express my imagination freely",
-            "painting and writing help me express my imagination",
-            "express my imagination freely",
-            "express imagination"
+            "painting and writing help me express my inner creativity",
+            "painting and writing help me express my creativity",
+            "help me express my inner creativity",
+            "express my inner creativity"
         ],
-        "primary_answer": "Painting and writing help me express my imagination freely."
+        "primary_answer": "Painting and writing help me express my inner creativity."
     },
     {
         "id": "conv_adv_24",
         "badge": "💬 Motivasi Terus Belajar (Lifelong Learning)",
-        "prompt": "<b>🌟 Situasi:</b> Kamu membagikan kata mutiara motivasi di papan majalah dinding kelas.\n\n👉 <b>Giliranmu:</b> Tuliskan semboyan bahwa kita tidak boleh berhenti belajar:\n<code>Never stop learning because life never stops teaching us.</code>\n<i>(Artinya: Jangan pernah berhenti belajar karena hidup tidak pernah berhenti mengajar kita.)</i>",
+        "prompt": "<b>🌟 Nasihat Mentor:</b>\nMentor: <i>\"Graduating from school is not the finish line of your educational journey.\"</i>\nHendra: <i>\"Every day brings new discoveries and skills to develop throughout life.\"</i>\n\n👉 <b>Giliranmu:</b> Ucapkan pepatah bahwa kita jangan pernah berhenti belajar karena hidup tidak pernah berhenti mengajar:\n<code>Never stop learning because life never stops teaching.</code>\n<i>(Artinya: Jangan pernah berhenti belajar karena kehidupan tidak pernah berhenti memberi pelajaran.)</i>",
         "expected": [
-            "never stop learning because life never stops teaching us",
             "never stop learning because life never stops teaching",
             "never stop learning",
-            "life never stops teaching us"
+            "life never stops teaching",
+            "never stop learning because life never stops"
         ],
-        "primary_answer": "Never stop learning because life never stops teaching us."
+        "primary_answer": "Never stop learning because life never stops teaching."
     },
     {
         "id": "conv_adv_25",
         "badge": "💬 Verifikasi Berita Medsos (Fact-Checking News)",
-        "prompt": "<b>📱 Situasi:</b> Dalam diskusi literasi digital, kamu mengingatkan bahaya hoaks di media sosial.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kita harus memverifikasi berita sebelum membagikannya:\n<code>We should verify news before sharing it online.</code>\n<i>(Artinya: Kita harus memverifikasi berita sebelum membagikannya di internet.)</i>",
+        "prompt": "<b>📱 Berita di Grup WhatsApp:</b>\nRiko: <i>\"Look at this shocking forward message claiming meteorites will hit Earth tonight!\"</i>\nDewi: <i>\"Wait, don't forward that! Sensational rumors often circulate without proof.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa kita harus memeriksa kebenaran berita sebelum membagikannya:\n<code>We should verify news before sharing it on social media.</code>\n<i>(Artinya: Kita harus memverifikasi berita sebelum membagikannya di media sosial.)</i>",
         "expected": [
-            "we should verify news before sharing it online",
-            "verify news before sharing it online",
-            "we must verify news before sharing it online"
+            "we should verify news before sharing it on social media",
+            "we should verify news before sharing it",
+            "verify news before sharing it on social media",
+            "verify news before sharing"
         ],
-        "primary_answer": "We should verify news before sharing it online."
+        "primary_answer": "We should verify news before sharing it on social media."
     },
     {
         "id": "conv_adv_26",
         "badge": "💬 Melestarikan Seni Tari Tradisional (Traditional Dance Heritage)",
-        "prompt": "<b>💃 Situasi:</b> Kamu berbicara tentang pentingnya mempelajari tarian daerah nusantara.\n\n👉 <b>Giliranmu:</b> Katakan bahwa melestarikan tari tradisional menjaga identitas budaya kita:\n<code>Preserving traditional dances keeps our cultural identity alive.</code>\n<i>(Artinya: Melestarikan tarian tradisional menjaga identitas budaya kita tetap hidup.)</i>",
+        "prompt": "<b>🎭 Festival Kebudayaan:</b>\nBudayawan: <i>\"Modern pop music is popular, but we must never forget our ancestral dances.\"</i>\nLaras: <i>\"Each traditional movement carries sacred stories and deep philosophy.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa melestarikan tari tradisional menjaga identitas budaya kita tetap hidup:\n<code>Preserving traditional dances keeps our cultural identity alive.</code>\n<i>(Artinya: Melestarikan tarian tradisional menjaga identitas budaya kita tetap hidup.)</i>",
         "expected": [
             "preserving traditional dances keeps our cultural identity alive",
-            "preserving traditional dances keeps cultural identity alive",
-            "keeps our cultural identity alive"
+            "preserving traditional dances keeps our cultural identity",
+            "keeps our cultural identity alive",
+            "preserving traditional dances"
         ],
         "primary_answer": "Preserving traditional dances keeps our cultural identity alive."
     },
     {
         "id": "conv_adv_27",
         "badge": "💬 Kebiasaan Membaca Harian (Daily Reading Habit)",
-        "prompt": "<b>📚 Situasi:</b> Dalam seminar literasi sekolah, kamu membagikan tips meningkatkan nalar kritis.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa membaca harian memperkaya kosakata dan melatih nalar kritis:\n<code>Reading daily expands vocabulary and enhances critical thinking.</code>\n<i>(Artinya: Membaca setiap hari memperluas kosakata dan meningkatkan kemampuan berpikir kritis.)</i>",
+        "prompt": "<b>📖 Pojok Baca Kelas:</b>\nLibrarian: <i>\"Students who read books thirty minutes a day build superior communication skills.\"</i>\nFarhan: <i>\"I notice my writing has become much richer since I started reading novels.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa membaca setiap hari memperluas kosakata dan melatih konsentrasi:\n<code>Reading daily expands vocabulary and enhances mental focus.</code>\n<i>(Artinya: Membaca setiap hari memperluas kosakata dan meningkatkan fokus pikiran.)</i>",
         "expected": [
-            "reading daily expands vocabulary and enhances critical thinking",
-            "reading daily expands vocabulary and improves critical thinking",
-            "expands vocabulary and enhances critical thinking"
+            "reading daily expands vocabulary and enhances mental focus",
+            "reading daily expands vocabulary and enhances focus",
+            "expands vocabulary and enhances mental focus",
+            "reading daily expands vocabulary"
         ],
-        "primary_answer": "Reading daily expands vocabulary and enhances critical thinking."
+        "primary_answer": "Reading daily expands vocabulary and enhances mental focus."
     },
     {
         "id": "conv_adv_28",
         "badge": "💬 Transisi Energi Bersih (Clean Energy Transition)",
-        "prompt": "<b>⚡ Situasi:</b> Dalam debat ilmiah, kamu menyoroti solusi perubahan iklim global.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa beralih ke energi bersih menekan emisi karbon dunia:\n<code>Transitioning to clean energy reduces global carbon emissions.</code>\n<i>(Artinya: Beralih ke energi bersih mengurangi emisi karbon global.)</i>",
+        "prompt": "<b>⚡ Diskusi Kelestarian Bumi:</b>\nEnvironmentalist: <i>\"Burning coal and petroleum releases immense carbon pollution into our atmosphere.\"</i>\nGita: <i>\"Solar panels and wind turbines offer safe, renewable alternatives for power generation.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa beralih ke energi bersih mengurangi polusi global secara signifikan:\n<code>Transitioning to clean energy reduces global pollution significantly.</code>\n<i>(Artinya: Beralih ke energi bersih mengurangi polusi global secara signifikan.)</i>",
         "expected": [
-            "transitioning to clean energy reduces global carbon emissions",
-            "transitioning to clean energy reduces carbon emissions",
-            "clean energy reduces global carbon emissions"
+            "transitioning to clean energy reduces global pollution significantly",
+            "transitioning to clean energy reduces global pollution",
+            "reduces global pollution significantly",
+            "clean energy reduces global pollution"
         ],
-        "primary_answer": "Transitioning to clean energy reduces global carbon emissions."
+        "primary_answer": "Transitioning to clean energy reduces global pollution significantly."
     },
     {
         "id": "conv_adv_29",
         "badge": "💬 Mengatasi Kecemasan Ujian (Managing Exam Anxiety)",
-        "prompt": "<b>🧠 Situasi:</b> Temanmu merasa gugup berlebihan menjelang ujian kelulusan.\n\n👉 <b>Giliranmu:</b> Beri saran bahwa latihan pernapasan dan tidur cukup meredakan cemas:\n<code>Practicing deep breathing and good sleep helps reduce exam anxiety.</code>\n<i>(Artinya: Latihan pernapasan dalam dan tidur cukup membantu mengurangi kecemasan ujian.)</i>",
+        "prompt": "<b>📝 Menjelang Ujian Akhir:</b>\nBella: <i>\"My hands are shaking because the final examination paper is about to start!\"</i>\nYoga: <i>\"Stay calm Bella! You've prepared diligently for weeks.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa latihan pernapasan dalam dan tidur cukup meredakan kecemasan ujian:\n<code>Practicing deep breathing and good sleep calm exam anxiety.</code>\n<i>(Artinya: Melatih pernapasan dalam dan tidur yang cukup meredakan kecemasan ujian.)</i>",
         "expected": [
-            "practicing deep breathing and good sleep helps reduce exam anxiety",
-            "deep breathing and good sleep helps reduce exam anxiety",
-            "helps reduce exam anxiety"
+            "practicing deep breathing and good sleep calm exam anxiety",
+            "practicing deep breathing and good sleep",
+            "deep breathing and good sleep calm exam anxiety",
+            "calm exam anxiety"
         ],
-        "primary_answer": "Practicing deep breathing and good sleep helps reduce exam anxiety."
+        "primary_answer": "Practicing deep breathing and good sleep calm exam anxiety."
     },
     {
         "id": "conv_adv_30",
         "badge": "💬 Kejujuran Akademik (Academic Integrity)",
-        "prompt": "<b>⚖️ Situasi:</b> Kamu menekankan prinsip kejujuran saat mengerjakan ujian mandiri.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kejujuran akademik lebih berharga daripada nilai tinggi dari mencontek:\n<code>Academic integrity is more valuable than achieving high scores dishonestly.</code>\n<i>(Artinya: Integritas akademik lebih berharga daripada meraih nilai tinggi secara tidak jujur.)</i>",
+        "prompt": "<b>✍️ Sebelum Pembagian Soal:</b>\nPengawas: <i>\"Students, please place your backpacks and phones at the front of the room.\"</i>\nBagas: <i>\"A good score earned dishonestly holds zero real value.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kejujuran akademik lebih berharga daripada nilai sempurna sekalipun:\n<code>Academic integrity is more valuable than any perfect test score.</code>\n<i>(Artinya: Kejujuran akademik lebih berharga daripada nilai ujian sempurna sekalipun.)</i>",
         "expected": [
-            "academic integrity is more valuable than achieving high scores dishonestly",
-            "academic integrity is more valuable than high scores dishonestly",
-            "integrity is more valuable than high scores dishonestly"
+            "academic integrity is more valuable than any perfect test score",
+            "academic integrity is more valuable than perfect test score",
+            "more valuable than any perfect test score",
+            "academic integrity is more valuable"
         ],
-        "primary_answer": "Academic integrity is more valuable than achieving high scores dishonestly."
+        "primary_answer": "Academic integrity is more valuable than any perfect test score."
     },
     {
         "id": "conv_adv_31",
         "badge": "💬 Bahaya Sampah Plastik di Sungai (Plastic in Rivers)",
-        "prompt": "<b>🌊 Situasi:</b> Saat aksi bersih sungai desa, kamu mengedukasi warga tentang bahaya limbah plastik.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa sampah plastik di sungai membahayakan ekosistem dan kesehatan:\n<code>Plastic waste in rivers endangers aquatic ecosystems and human health.</code>\n<i>(Artinya: Sampah plastik di sungai membahayakan ekosistem air dan kesehatan manusia.)</i>",
+        "prompt": "<b>🌊 Aksi Bersih Sungai:</b>\nScout Leader: <i>\"Look at all those plastic bottles and packaging accumulating in the riverbed.\"</i>\nAnita: <i>\"They don't dissolve, and during floods they block the water flow completely.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa sampah plastik di sungai membahayakan hewan air dan menyebabkan banjir:\n<code>Plastic waste in rivers endangers aquatic life and triggers floods.</code>\n<i>(Artinya: Sampah plastik di sungai membahayakan biota air dan memicu banjir.)</i>",
         "expected": [
-            "plastic waste in rivers endangers aquatic ecosystems and human health",
-            "plastic waste in rivers endangers aquatic ecosystems",
-            "endangers aquatic ecosystems and human health"
+            "plastic waste in rivers endangers aquatic life and triggers floods",
+            "plastic waste in rivers endangers aquatic life",
+            "endangers aquatic life and triggers floods",
+            "plastic waste in rivers"
         ],
-        "primary_answer": "Plastic waste in rivers endangers aquatic ecosystems and human health."
+        "primary_answer": "Plastic waste in rivers endangers aquatic life and triggers floods."
     },
     {
         "id": "conv_adv_32",
         "badge": "💬 Kepemimpinan Pemuda Desa (Youth Leadership)",
-        "prompt": "<b>🌟 Situasi:</b> Dalam forum karang taruna, kamu memotivasi generasi muda desa.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa pemimpin muda memiliki daya untuk membawa perubahan positif:\n<code>Young leaders have the power to create positive change in communities.</code>\n<i>(Artinya: Pemimpin muda memiliki kekuatan untuk menciptakan perubahan positif di masyarakat.)</i>",
+        "prompt": "<b>🌱 Musyawarah Pemuda:</b>\nKepala Desa: <i>\"Our village youth organization has introduced brilliant digital farming ideas.\"</i>\nSurya: <i>\"Young people have both the energy and creativity to uplift our community.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa pemimpin muda memiliki kekuatan untuk menciptakan perubahan positif:\n<code>Young leaders have the power to create positive social change.</code>\n<i>(Artinya: Pemimpin muda memiliki kekuatan untuk menciptakan perubahan sosial yang positif.)</i>",
         "expected": [
-            "young leaders have the power to create positive change in communities",
+            "young leaders have the power to create positive social change",
             "young leaders have the power to create positive change",
-            "power to create positive change in communities"
+            "create positive social change",
+            "power to create positive social change"
         ],
-        "primary_answer": "Young leaders have the power to create positive change in communities."
+        "primary_answer": "Young leaders have the power to create positive social change."
     },
     {
         "id": "conv_adv_33",
         "badge": "💬 Menghargai Keberagaman Tradisi (Respecting Cultural Diversity)",
-        "prompt": "<b>🇮🇩 Situasi:</b> Pada peringatan Hari Sumpah Pemuda, kamu berbicara tentang persatuan bangsa.\n\n👉 <b>Giliranmu:</b> Katakan bahwa menghargai keberagaman tradisi memupuk kerukunan masyarakat multikultural:\n<code>Respecting diverse traditions fosters harmony in a multicultural society.</code>\n<i>(Artinya: Menghormati tradisi yang beragam menumbuhkan keharmonisan dalam masyarakat multikultural.)</i>",
+        "prompt": "<b>🤝 Pertukaran Budaya Antar Daerah:</b>\nStudent Host: <i>\"Our classmates come from Sumatra, Java, Bali, Kalimantan, and Papua!\"</i>\nWati: <i>\"Our unique customs and languages make our school community truly vibrant.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa menghargai keberagaman tradisi memupuk kerukunan di tengah masyarakat:\n<code>Respecting diverse traditions fosters harmony across our communities.</code>\n<i>(Artinya: Menghormati tradisi yang beragam memupuk keharmonisan di seluruh masyarakat kita.)</i>",
         "expected": [
-            "respecting diverse traditions fosters harmony in a multicultural society",
+            "respecting diverse traditions fosters harmony across our communities",
             "respecting diverse traditions fosters harmony",
-            "fosters harmony in a multicultural society"
+            "fosters harmony across our communities",
+            "respecting diverse traditions"
         ],
-        "primary_answer": "Respecting diverse traditions fosters harmony in a multicultural society."
+        "primary_answer": "Respecting diverse traditions fosters harmony across our communities."
     },
     {
         "id": "conv_adv_34",
         "badge": "💬 Menumbuhkan Rasa Ingin Tahu (Cultivating Curiosity)",
-        "prompt": "<b>🎨 Situasi:</b> Dalam lokakarya pendidikan anak, kamu membahas cara mendorong kreativitas siswa.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa merangsang rasa ingin tahu anak mendorong inovasi artistik:\n<code>Encouraging children to express curiosity stimulates artistic innovation.</code>\n<i>(Artinya: Mendorong anak-anak mengekspresikan rasa ingin tahu merangsang inovasi artistik.)</i>",
+        "prompt": "<b>🔬 Eksperimen Sains:</b>\nScience Teacher: <i>\"The greatest inventors in human history all started by asking simple questions.\"</i>\nArman: <i>\"Curiosity drives us to explore how nature works beneath the surface.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa mendorong rasa ingin tahu anak merangsang kreativitas berpikir:\n<code>Encouraging children to express curiosity sparks lifelong creativity.</code>\n<i>(Artinya: Mendorong anak-anak mengekspresikan rasa ingin tahu memicu kreativitas seumur hidup.)</i>",
         "expected": [
-            "encouraging children to express curiosity stimulates artistic innovation",
-            "encouraging children to express curiosity",
-            "stimulates artistic innovation"
+            "encouraging children to express curiosity sparks lifelong creativity",
+            "encouraging children to express curiosity sparks creativity",
+            "sparks lifelong creativity",
+            "encouraging children to express curiosity"
         ],
-        "primary_answer": "Encouraging children to express curiosity stimulates artistic innovation."
+        "primary_answer": "Encouraging children to express curiosity sparks lifelong creativity."
     },
     {
         "id": "conv_adv_35",
         "badge": "💬 Pola Makan Seimbang dan Imunitas (Balanced Diet and Immunity)",
-        "prompt": "<b>🥗 Situasi:</b> Kamu memberikan penyuluhan kesehatan tentang pentingnya gizi seimbang.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa makanan kaya serat dan vitamin memperkuat daya tahan tubuh:\n<code>A balanced diet rich in fibers and vitamins boosts our immune system.</code>\n<i>(Artinya: Pola makan seimbang yang kaya serat dan vitamin memperkuat sistem kekebalan tubuh kita.)</i>",
+        "prompt": "<b>🥗 Penyuluhan Gizi Sekolah:</b>\nNutritionist: <i>\"Skipping breakfast and relying on sweet sodas weakens our bodily defenses.\"</i>\nNadia: <i>\"What dietary choices should students prioritize to avoid falling ill?\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa pola makan seimbang kaya serat dan vitamin memperkuat sistem imun:\n<code>A balanced diet rich in fibers and vitamins fortifies our immune system.</code>\n<i>(Artinya: Pola makan seimbang yang kaya serat dan vitamin memperkuat sistem imun kita.)</i>",
         "expected": [
-            "a balanced diet rich in fibers and vitamins boosts our immune system",
-            "balanced diet rich in fibers and vitamins boosts our immune system",
-            "boosts our immune system"
+            "a balanced diet rich in fibers and vitamins fortifies our immune system",
+            "balanced diet rich in fibers and vitamins fortifies our immune system",
+            "fortifies our immune system",
+            "a balanced diet rich in fibers and vitamins"
         ],
-        "primary_answer": "A balanced diet rich in fibers and vitamins boosts our immune system."
+        "primary_answer": "A balanced diet rich in fibers and vitamins fortifies our immune system."
     },
     {
         "id": "conv_adv_36",
         "badge": "💬 Waspada Kecanduan Gadget (Avoiding Digital Addiction)",
-        "prompt": "<b>📱 Situasi:</b> Teman-temanmu sering menghabiskan berjam-jam menatap layar ponsel tanpa henti.\n\n👉 <b>Giliranmu:</b> Ingatkan bahwa meski ponsel berguna, kita harus waspada kecanduan digital:\n<code>Smartphones connect us instantly but we must avoid digital addiction.</code>\n<i>(Artinya: Ponsel pintar menghubungkan kita seketika namun kita harus menghindari kecanduan digital.)</i>",
+        "prompt": "<b>📱 Pengingat Waktu Layar:</b>\nIbu: <i>\"You've spent three continuous hours scrolling through video clips on your phone!\"</i>\nIlham: <i>\"I didn't realize how quickly time passed, Mom. I need to manage my screen time.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa gawai memudahkan komunikasi tapi kita harus membatasi waktu layar:\n<code>Smartphones connect us instantly but we must limit excessive screen time.</code>\n<i>(Artinya: Ponsel pintar menghubungkan kita secara instan tetapi kita harus membatasi waktu layar yang berlebihan.)</i>",
         "expected": [
-            "smartphones connect us instantly but we must avoid digital addiction",
-            "we must avoid digital addiction",
+            "smartphones connect us instantly but we must limit excessive screen time",
+            "smartphones connect us instantly but we must limit screen time",
+            "limit excessive screen time",
             "smartphones connect us instantly"
         ],
-        "primary_answer": "Smartphones connect us instantly but we must avoid digital addiction."
+        "primary_answer": "Smartphones connect us instantly but we must limit excessive screen time."
     },
     {
         "id": "conv_adv_37",
         "badge": "💬 Menghormati Jasa Para Pahlawan (Honoring National Heroes)",
-        "prompt": "<b>🎖️ Situasi:</b> Menjelang Hari Pahlawan 10 November, kamu membacakan pidato reflektif.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kita menghormati keberanian pahlawan yang memperjuangkan kemerdekaan:\n<code>We honor the courage of heroes who fought for our freedom.</code>\n<i>(Artinya: Kita menghormati keberanian para pahlawan yang berjuang demi kemerdekaan kita.)</i>",
+        "prompt": "<b>🇮🇩 Upacara Hari Pahlawan:</b>\nVeterans Guest: <i>\"Our independence was won through blood, sweat, and tireless perseverance.\"</i>\nBunga: <i>\"We will forever honor the memory of those who stood up for our sovereign dignity.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kita menghormati keberanian pahlawan yang berjuang demi kemerdekaan:\n<code>We honor the courage of heroes who fought for our freedom.</code>\n<i>(Artinya: Kita menghormati keberanian para pahlawan yang berjuang demi kemerdekaan kita.)</i>",
         "expected": [
             "we honor the courage of heroes who fought for our freedom",
             "honor the courage of heroes who fought for our freedom",
-            "heroes who fought for our freedom"
+            "courage of heroes who fought for our freedom",
+            "we honor the courage of heroes"
         ],
         "primary_answer": "We honor the courage of heroes who fought for our freedom."
     },
     {
         "id": "conv_adv_38",
         "badge": "💬 Gotong Royong Pererat Solidaritas (Community Service and Solidarity)",
-        "prompt": "<b>🤝 Situasi:</b> Saat musyawarah desa, kamu mengajak warga giat kerja bakti.\n\n👉 <b>Giliranmu:</b> Katakan bahwa partisipasi aktif dalam kerja bakti mempererat kerukunan sosial:\n<code>Active participation in community service strengthens social cohesion.</code>\n<i>(Artinya: Partisipasi aktif dalam pelayanan masyarakat memperkuat keterikatan sosial.)</i>",
+        "prompt": "<b>🤝 Bakti Sosial Pemuda:</b>\nTokoh Masyarakat: <i>\"When neighbors roll up their sleeves together, social bonds become unbreakable.\"</i>\nDarto: <i>\"Volunteering makes everyone feel responsible for the welfare of our village.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa partisipasi aktif dalam kerja bakti mempererat persaudaraan antarwarga:\n<code>Active participation in community service strengthens social solidarity.</code>\n<i>(Artinya: Partisipasi aktif dalam kerja bakti masyarakat mempererat solidaritas sosial.)</i>",
         "expected": [
-            "active participation in community service strengthens social cohesion",
-            "participation in community service strengthens social cohesion",
-            "strengthens social cohesion"
+            "active participation in community service strengthens social solidarity",
+            "active participation in community service strengthens solidarity",
+            "strengthens social solidarity",
+            "participation in community service strengthens social solidarity"
         ],
-        "primary_answer": "Active participation in community service strengthens social cohesion."
+        "primary_answer": "Active participation in community service strengthens social solidarity."
     },
     {
         "id": "conv_adv_39",
         "badge": "💬 Menabung untuk Kemandirian Finansial (Early Saving Habits)",
-        "prompt": "<b>💰 Situasi:</b> Guru ekonomi bertanya apa kunci mengelola keuangan sejak muda.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa membiasakan menabung sejak dini menjamin stabilitas finansial:\n<code>Developing saving habits at an early age ensures financial stability.</code>\n<i>(Artinya: Membangun kebiasaan menabung sejak dini menjamin stabilitas keuangan.)</i>",
+        "prompt": "<b>💰 Seminar Keuangan Pemuda:</b>\nBanker: <i>\"Why should teenagers start practicing budget management early in life?\"</i>\nRama: <i>\"Because financial independence begins with small, disciplined habits today.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa menumbuhkan kebiasaan menabung sejak dini membangun masa depan yang aman:\n<code>Developing saving habits at an early age builds future financial security.</code>\n<i>(Artinya: Menumbuhkan kebiasaan menabung sejak dini membangun keamanan finansial di masa depan.)</i>",
         "expected": [
-            "developing saving habits at an early age ensures financial stability",
-            "saving habits at an early age ensures financial stability",
-            "ensures financial stability"
+            "developing saving habits at an early age builds future financial security",
+            "developing saving habits at an early age builds financial security",
+            "builds future financial security",
+            "saving habits at an early age builds future financial security"
         ],
-        "primary_answer": "Developing saving habits at an early age ensures financial stability."
+        "primary_answer": "Developing saving habits at an early age builds future financial security."
     },
     {
         "id": "conv_adv_40",
         "badge": "💬 Rendah Hati dan Haus Ilmu (Humility and Lifelong Learning)",
-        "prompt": "<b>🌱 Situasi:</b> Kamu membagikan nasihat bijak di catatan jurnal kepemimpinan.\n\n👉 <b>Giliranmu:</b> Tuliskan bahwa sikap rendah hati dan kemauan terus belajar adalah tanda kebijaksanaan sejati:\n<code>Humility and continuous learning are marks of true wisdom.</code>\n<i>(Artinya: Kerendahan hati dan terus belajar adalah tanda-tanda kebijaksanaan sejati.)</i>",
+        "prompt": "<b>🎓 Nasihat Guru Besar:</b>\nProfessor: <i>\"True scholars never brag about how much they know; they listen eagerly.\"</i>\nVina: <i>\"A curious mind recognizes that the universe holds far more than any one person can master.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kerendahan hati dan terus belajar adalah ciri orang bijaksana:\n<code>Humility and continuous learning are hallmarks of truly wise individuals.</code>\n<i>(Artinya: Kerendahan hati dan pembelajaran berkelanjutan adalah ciri orang-orang yang sungguh bijaksana.)</i>",
         "expected": [
-            "humility and continuous learning are marks of true wisdom",
-            "humility and learning are marks of true wisdom",
-            "marks of true wisdom"
+            "humility and continuous learning are hallmarks of truly wise individuals",
+            "humility and continuous learning are hallmarks of wise individuals",
+            "hallmarks of truly wise individuals",
+            "humility and continuous learning"
         ],
-        "primary_answer": "Humility and continuous learning are marks of true wisdom."
+        "primary_answer": "Humility and continuous learning are hallmarks of truly wise individuals."
     },
     {
         "id": "conv_adv_41",
         "badge": "💬 Mengubah Kegagalan Jadi Pembelajaran (Resilience Through Setbacks)",
-        "prompt": "<b>🧗 Situasi:</b> Rekan setimmu kecewa berat karena kalah dalam lomba debat.\n\n👉 <b>Giliranmu:</b> Kuatkan hatinya bahwa ketangguhan mengubah kegagalan menjadi batu loncatan berharga:\n<code>Resilience turns difficult setbacks into valuable stepping stones.</code>\n<i>(Artinya: Ketangguhan mental mengubah kegagalan berat menjadi batu loncatan berharga.)</i>",
+        "prompt": "<b>🧗 Evaluasi Pasca Kompetisi:</b>\nPelatih: <i>\"We didn't win the championship trophy today, but our performance was valiant.\"</i>\nTeam Leader: <i>\"Every obstacle we encountered showed us exactly where we can improve.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa ketangguhan mengubah rintangan sulit menjadi batu loncatan kesuksesan:\n<code>Resilience turns difficult setbacks into stepping stones toward success.</code>\n<i>(Artinya: Ketangguhan mengubah rintangan sulit menjadi batu loncatan menuju kesuksesan.)</i>",
         "expected": [
-            "resilience turns difficult setbacks into valuable stepping stones",
-            "resilience turns setbacks into valuable stepping stones",
-            "valuable stepping stones"
+            "resilience turns difficult setbacks into stepping stones toward success",
+            "resilience turns setbacks into stepping stones toward success",
+            "stepping stones toward success",
+            "turns difficult setbacks into stepping stones"
         ],
-        "primary_answer": "Resilience turns difficult setbacks into valuable stepping stones."
+        "primary_answer": "Resilience turns difficult setbacks into stepping stones toward success."
     },
     {
         "id": "conv_adv_42",
         "badge": "💬 Hak Akses Air Bersih (Universal Access to Clean Water)",
-        "prompt": "<b>💧 Situasi:</b> Kamu memaparkan esai tentang kelestarian sumber mata air pegunungan.\n\n👉 <b>Giliranmu:</b> Tegaskan bahwa akses terhadap air minum yang aman adalah hak asasi manusia:\n<code>Access to safe drinking water is a fundamental human right.</code>\n<i>(Artinya: Akses terhadap air minum yang aman adalah hak asasi manusia yang mendasar.)</i>",
+        "prompt": "<b>💧 Diskusi Pembangunan Berkelanjutan:</b>\nHealth Officer: <i>\"Clean potable water is the first defense against gastrointestinal infections.\"</i>\nTono: <i>\"No family should have to walk miles every morning just to fetch contaminated water.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa akses terhadap air minum yang aman adalah hak dasar setiap insan:\n<code>Access to safe drinking water is a fundamental human right.</code>\n<i>(Artinya: Akses terhadap air minum yang aman adalah hak asasi manusia yang mendasar.)</i>",
         "expected": [
             "access to safe drinking water is a fundamental human right",
-            "access to clean drinking water is a fundamental human right",
-            "fundamental human right"
+            "access to safe water is a fundamental human right",
+            "a fundamental human right",
+            "safe drinking water is a fundamental human right"
         ],
         "primary_answer": "Access to safe drinking water is a fundamental human right."
     },
     {
         "id": "conv_adv_43",
         "badge": "💬 Dampak Pemanasan Global (Global Warming Impact)",
-        "prompt": "<b>🌡️ Situasi:</b> Di kelas geografi, kamu diminta merangkum dampak pemanasan bumi.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa pemanasan global memicu berbagai cuaca ekstrem di seantero dunia:\n<code>Global warming causes extreme weather phenomena around the world.</code>\n<i>(Artinya: Pemanasan global menyebabkan fenomena cuaca ekstrem di seluruh dunia.)</i>",
+        "prompt": "<b>🌡️ Forum Iklim Sekolah:</b>\nClimatologist: <i>\"Global temperatures have reached historic highs over the past decade.\"</i>\nSari: <i>\"Farmers in our region are already struggling with prolonged droughts and unseasonal rain.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa pemanasan global memicu cuaca ekstrem yang mengancam ketahanan pangan:\n<code>Global warming causes extreme weather patterns that endanger food security.</code>\n<i>(Artinya: Pemanasan global menyebabkan pola cuaca ekstrem yang membahayakan ketahanan pangan.)</i>",
         "expected": [
-            "global warming causes extreme weather phenomena around the world",
-            "global warming causes extreme weather around the world",
-            "extreme weather phenomena around the world"
+            "global warming causes extreme weather patterns that endanger food security",
+            "global warming causes extreme weather patterns",
+            "endanger food security",
+            "extreme weather patterns that endanger food security"
         ],
-        "primary_answer": "Global warming causes extreme weather phenomena around the world."
+        "primary_answer": "Global warming causes extreme weather patterns that endanger food security."
     },
     {
         "id": "conv_adv_44",
         "badge": "💬 Manfaat Menguasai Bahasa Asing (Benefits of Multilingualism)",
-        "prompt": "<b>🌏 Situasi:</b> Kamu diwawancarai tentang motivasi tekun mengasah keterampilan bahasa.\n\n👉 <b>Giliranmu:</b> Katakan bahwa fasih bahasa asing membuka peluang karier secara mendunia:\n<code>Speaking foreign languages broadens career opportunities globally.</code>\n<i>(Artinya: Menguasai bahasa asing memperluas peluang karier secara global.)</i>",
+        "prompt": "<b>🌐 Wawancara Karir Global:</b>\nHR Director: <i>\"Our multinational team collaborates with partners across six continents.\"</i>\nRio: <i>\"Language skills enable people to understand nuanced cultural perspectives seamlessly.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa fasih berbahasa asing memperluas prospek karir dan toleransi antarbudaya:\n<code>Speaking foreign languages broadens career horizons and cultural empathy.</code>\n<i>(Artinya: Berbicara bahasa asing memperluas cakrawala karir dan empati budaya.)</i>",
         "expected": [
-            "speaking foreign languages broadens career opportunities globally",
-            "speaking foreign languages broadens career opportunities",
-            "broadens career opportunities globally"
+            "speaking foreign languages broadens career horizons and cultural empathy",
+            "speaking foreign languages broadens career horizons",
+            "broadens career horizons and cultural empathy",
+            "speaking foreign languages"
         ],
-        "primary_answer": "Speaking foreign languages broadens career opportunities globally."
+        "primary_answer": "Speaking foreign languages broadens career horizons and cultural empathy."
     },
     {
         "id": "conv_adv_45",
         "badge": "💬 Mendengarkan Nasihat Lansia (Listening to the Elderly)",
-        "prompt": "<b>👴 Situasi:</b> Kamu berdiskusi tentang cara mempererat relasi antar-generasi di desa.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa mendengarkan para lansia dengan seksama menjembatani jarak generasi:\n<code>Listening attentively to the elderly bridges the generation gap.</code>\n<i>(Artinya: Mendengarkan para orang tua dengan seksama menjembatani perbedaan generasi.)</i>",
+        "prompt": "<b>👴 Mengunjungi Kakek Nenek:</b>\nKakek: <i>\"Technology changes fast, but values like patience, integrity, and gratitude never change.\"</i>\nDimas: <i>\"Your life experiences have taught me far more than any internet article!\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa mendengarkan nasihat orang tua dengan saksama menghadirkan kearifan hidup:\n<code>Listening attentively to the elderly brings priceless wisdom to our lives.</code>\n<i>(Artinya: Mendengarkan para orang tua dengan saksama membawa kearifan hidup yang tak ternilai.)</i>",
         "expected": [
-            "listening attentively to the elderly bridges the generation gap",
-            "listening to the elderly bridges the generation gap",
-            "bridges the generation gap"
+            "listening attentively to the elderly brings priceless wisdom to our lives",
+            "listening attentively to the elderly brings priceless wisdom",
+            "brings priceless wisdom to our lives",
+            "listening attentively to the elderly"
         ],
-        "primary_answer": "Listening attentively to the elderly bridges the generation gap."
+        "primary_answer": "Listening attentively to the elderly brings priceless wisdom to our lives."
     },
     {
         "id": "conv_adv_46",
         "badge": "💬 Menjaga Keseimbangan Belajar dan Istirahat (Preventing Study Burnout)",
-        "prompt": "<b>⚖️ Situasi:</b> Temanmu belajar hingga larut malam setiap hari sampai jatuh sakit.\n\n👉 <b>Giliranmu:</b> Beri saran bahwa menyeimbangkan belajar dan istirahat mencegah kelelahan mental:\n<code>Balancing study and leisure prevents mental exhaustion and burnout.</code>\n<i>(Artinya: Menyeimbangkan waktu belajar dan santai mencegah kelelahan mental dan kejenuhan.)</i>",
+        "prompt": "<b>🧘 Konseling Beban Belajar:</b>\nSchool Counselor: <i>\"Staying up all night studying for consecutive days impairs your cognitive ability.\"</i>\nLisa: <i>\"I felt exhausted yesterday and couldn't even recall simple vocabulary terms.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa menyeimbangkan belajar dan istirahat mencegah kejenuhan mental:\n<code>Balancing study and leisure prevents mental exhaustion and burnout.</code>\n<i>(Artinya: Menyeimbangkan waktu belajar dan santai mencegah kelelahan mental dan kejenuhan.)</i>",
         "expected": [
             "balancing study and leisure prevents mental exhaustion and burnout",
-            "balancing study and rest prevents mental exhaustion",
-            "prevents mental exhaustion and burnout"
+            "balancing study and leisure prevents mental exhaustion",
+            "prevents mental exhaustion and burnout",
+            "balancing study and leisure"
         ],
         "primary_answer": "Balancing study and leisure prevents mental exhaustion and burnout."
     },
     {
         "id": "conv_adv_47",
         "badge": "💬 Berdialog Konstruktif (Constructive Dialogue)",
-        "prompt": "<b>🤝 Situasi:</b> Terjadi perbedaan sudut pandang sengit dalam musyawarah pemilihan ketua OSIS.\n\n👉 <b>Giliranmu:</b> Ingatkan bahwa dialog sehat menuntut kesediaan mendengar pendapat berbeda secara santun:\n<code>Constructive dialogue requires listening politely to differing views.</code>\n<i>(Artinya: Dialog konstruktif menuntut kesediaan mendengarkan pandangan yang berbeda dengan santun.)</i>",
+        "prompt": "<b>🕊️ Menyelesaikan Perselisihan:</b>\nMediator: <i>\"Shouting over each other only generates anger without resolving any underlying problems.\"</i>\nDani: <i>\"If we want peace, both sides must be willing to express views without hostility.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa dialog konstruktif membutuhkan kemampuan mendengarkan dan saling menghormati:\n<code>Constructive dialogue requires listening patiently with mutual respect.</code>\n<i>(Artinya: Dialog yang konstruktif membutuhkan kemampuan mendengarkan dengan sabar serta saling menghormati.)</i>",
         "expected": [
-            "constructive dialogue requires listening politely to differing views",
-            "dialogue requires listening politely to differing views",
-            "listening politely to differing views"
+            "constructive dialogue requires listening patiently with mutual respect",
+            "constructive dialogue requires listening patiently",
+            "listening patiently with mutual respect",
+            "constructive dialogue requires listening"
         ],
-        "primary_answer": "Constructive dialogue requires listening politely to differing views."
+        "primary_answer": "Constructive dialogue requires listening patiently with mutual respect."
     },
     {
         "id": "conv_adv_48",
         "badge": "💬 Manfaat Ruang Terbuka Hijau (Urban Green Spaces)",
-        "prompt": "<b>🌳 Situasi:</b> Kamu menulis artikel mengenai perlunya taman kota yang asri.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa taman kota menyediakan pasokan oksigen segar dan tempat rekreasi warga:\n<code>Urban parks provide fresh oxygen and recreational spaces for citizens.</code>\n<i>(Artinya: Taman kota menyediakan oksigen segar dan ruang rekreasi bagi warga.)</i>",
+        "prompt": "<b>🌳 Tata Kota Berkelanjutan:</b>\nUrban Planner: <i>\"Modern cities are filled with asphalt and concrete that trap excessive heat.\"</i>\nMira: <i>\"Residents need community spaces where they can walk among trees and breathe fresh air.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa taman kota menyediakan oksigen segar dan tempat rekreasi bagi warga:\n<code>Urban parks provide fresh oxygen and recreation areas for citizens.</code>\n<i>(Artinya: Taman kota menyediakan oksigen segar dan area rekreasi bagi warga masyarakat.)</i>",
         "expected": [
-            "urban parks provide fresh oxygen and recreational spaces for citizens",
-            "parks provide fresh oxygen and recreational spaces",
-            "fresh oxygen and recreational spaces for citizens"
+            "urban parks provide fresh oxygen and recreation areas for citizens",
+            "urban parks provide fresh oxygen and recreation areas",
+            "provide fresh oxygen and recreation areas",
+            "urban parks provide fresh oxygen"
         ],
-        "primary_answer": "Urban parks provide fresh oxygen and recreational spaces for citizens."
+        "primary_answer": "Urban parks provide fresh oxygen and recreation areas for citizens."
     },
     {
         "id": "conv_adv_49",
         "badge": "💬 Peran Teladan Guru (Teacher Moral Guidance)",
-        "prompt": "<b>👩‍🏫 Situasi:</b> Dalam pidato wisuda kelulusan, kamu menyampaikan apresiasi mendalam kepada guru.\n\n👉 <b>Giliranmu:</b> Katakan bahwa pendidik tidak hanya mengasah akal tetapi juga membina kompas moral siswa:\n<code>Educators shape not only intellect but also students' moral compass.</code>\n<i>(Artinya: Pendidik tidak hanya membentuk kecerdasan namun juga kompas moral para siswa.)</i>",
+        "prompt": "<b>👩‍🏫 Bincang Pendidikan:</b>\nKepala Sekolah: <i>\"Teaching is not merely about transmitting textbook data for exam scores.\"</i>\nArif: <i>\"A great educator's example of integrity and kindness inspires students for decades.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa pendidik membentuk tidak hanya kecerdasan tetapi juga karakter moral siswa:\n<code>Educators shape not only intellect but also moral character and integrity.</code>\n<i>(Artinya: Para pendidik membentuk tidak hanya kecerdasan intelektual tetapi juga karakter moral dan integritas.)</i>",
         "expected": [
-            "educators shape not only intellect but also students' moral compass",
-            "educators shape not only intellect but also moral compass",
-            "shape not only intellect but also students' moral compass"
+            "educators shape not only intellect but also moral character and integrity",
+            "educators shape not only intellect but also moral character",
+            "shape not only intellect but also moral character",
+            "moral character and integrity"
         ],
-        "primary_answer": "Educators shape not only intellect but also students' moral compass."
+        "primary_answer": "Educators shape not only intellect but also moral character and integrity."
     },
     {
         "id": "conv_adv_50",
         "badge": "💬 Mendukung Pengrajin Lokal (Supporting Local Artisans)",
-        "prompt": "<b>🛍️ Situasi:</b> Di pameran UMKM desa, kamu mengajak pengunjung membeli kerajinan tangan lokal.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa membeli produk pengrajin lokal memperkuat kemandirian ekonomi desa:\n<code>Buying from local artisans strengthens our village economic independence.</code>\n<i>(Artinya: Membeli dari perajin lokal memperkuat kemandirian ekonomi desa kita.)</i>",
+        "prompt": "<b>🏺 Bazar Kerajinan Nusantara:</b>\nKurator Pameran: <i>\"These hand-woven fabrics and carved ceramics represent generations of family craftsmanship.\"</i>\nSanti: <i>\"Mass-produced goods from abroad are cheap, but they lack the soul of handmade art.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa membeli produk pengrajin lokal memperkuat ekonomi dan melestarikan tradisi:\n<code>Buying from local artisans strengthens our economy and preserves cultural heritage.</code>\n<i>(Artinya: Membeli dari perajin lokal memperkuat ekonomi kita dan melestarikan warisan budaya.)</i>",
         "expected": [
-            "buying from local artisans strengthens our village economic independence",
-            "buying from local artisans strengthens village economic independence",
-            "strengthens our village economic independence"
+            "buying from local artisans strengthens our economy and preserves cultural heritage",
+            "buying from local artisans strengthens our economy",
+            "strengthens our economy and preserves cultural heritage",
+            "buying from local artisans"
         ],
-        "primary_answer": "Buying from local artisans strengthens our village economic independence."
+        "primary_answer": "Buying from local artisans strengthens our economy and preserves cultural heritage."
     },
     {
         "id": "conv_adv_51",
         "badge": "💬 Olahraga Rutin Tingkatkan Fokus (Exercise and Focus)",
-        "prompt": "<b>🏃 Situasi:</b> Kamu membagikan kiat konsentrasi belajar kepada rekan sekelas.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa olahraga aerobik teratur meningkatkan stamina jantung dan fokus belajar:\n<code>Regular aerobic exercise improves cardiovascular endurance and focus.</code>\n<i>(Artinya: Olahraga aerobik teratur meningkatkan daya tahan kardiovaskular dan fokus.)</i>",
+        "prompt": "<b>🏃 Kelas Olahraga:</b>\nGuru Penjaskes: <i>\"Physical exercise is just as essential for your brain as studying textbooks!\"</i>\nRudi: <i>\"Whenever I go jogging in the morning, my focus during afternoon lessons improves dramatically.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa olahraga aerobik teratur meningkatkan stamina jantung dan ketajaman berpikir:\n<code>Regular aerobic exercise improves cardiovascular health and mental sharpness.</code>\n<i>(Artinya: Olahraga aerobik yang teratur meningkatkan kesehatan kardiovaskular dan ketajaman mental.)</i>",
         "expected": [
-            "regular aerobic exercise improves cardiovascular endurance and focus",
-            "regular exercise improves cardiovascular endurance and focus",
-            "improves cardiovascular endurance and focus"
+            "regular aerobic exercise improves cardiovascular health and mental sharpness",
+            "regular aerobic exercise improves cardiovascular health",
+            "improves cardiovascular health and mental sharpness",
+            "regular aerobic exercise"
         ],
-        "primary_answer": "Regular aerobic exercise improves cardiovascular endurance and focus."
+        "primary_answer": "Regular aerobic exercise improves cardiovascular health and mental sharpness."
     },
     {
         "id": "conv_adv_52",
         "badge": "💬 Menjaga Hutan Hujan Tropis (Preserving Tropical Rainforests)",
-        "prompt": "<b>🌴 Situasi:</b> Kamu menyusun laporan tentang kekayaan hayati hutan nusantara.\n\n👉 <b>Giliranmu:</b> Katakan bahwa melindungi hutan hujan menyelamatkan tumbuhan berkhasiat obat yang belum terkuak:\n<code>Preserving rainforests safeguards countless undiscovered medicinal plants.</code>\n<i>(Artinya: Melestarikan hutan hujan melindungi tanaman obat berkhasiat yang tak terhitung jumlahnya.)</i>",
+        "prompt": "<b>🌿 Ekspedisi Rimba Tropis:</b>\nForest Ranger: <i>\"Indonesia's primary rainforests shelter endangered orangutans, tigers, and hornbills.\"</i>\nMaya: <i>\"Once these ancient forests are clear-cut or burned, they cannot be replaced easily.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa melestarikan hutan hujan melindungi satwa langka dan menyerap karbon global:\n<code>Preserving rainforests safeguards countless species and absorbs global carbon.</code>\n<i>(Artinya: Melestarikan hutan hujan melindungi spesies yang tak terhitung jumlahnya dan menyerap karbon global.)</i>",
         "expected": [
-            "preserving rainforests safeguards countless undiscovered medicinal plants",
-            "preserving rainforests safeguards undiscovered medicinal plants",
-            "safeguards countless undiscovered medicinal plants"
+            "preserving rainforests safeguards countless species and absorbs global carbon",
+            "preserving rainforests safeguards countless species",
+            "safeguards countless species and absorbs global carbon",
+            "preserving rainforests"
         ],
-        "primary_answer": "Preserving rainforests safeguards countless undiscovered medicinal plants."
+        "primary_answer": "Preserving rainforests safeguards countless species and absorbs global carbon."
     },
     {
         "id": "conv_adv_53",
         "badge": "💬 Bertanya sebagai Awal Riset (Curious Inquiry in Science)",
-        "prompt": "<b>🔬 Situasi:</b> Guru sains mengajak siswa berpikir kritis dalam praktikum laboratorium.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa mengajukan pertanyaan bermakna adalah gerbang penyelidikan ilmiah:\n<code>Asking thoughtful questions is the first step toward scientific inquiry.</code>\n<i>(Artinya: Mengajukan pertanyaan yang bermakna adalah langkah awal menuju penyelidikan ilmiah.)</i>",
+        "prompt": "<b>🔍 Diskusi Metodologi Penelitian:</b>\nPeneliti Senior: <i>\"Scientific breakthroughs never begin with rigid assumptions.\"</i>\nKevin: <i>\"They begin when someone dares to ask why natural phenomena occur the way they do.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa mengajukan pertanyaan kritis adalah langkah pertama dalam penemuan ilmiah:\n<code>Asking thoughtful questions is the first step in genuine scientific discovery.</code>\n<i>(Artinya: Mengajukan pertanyaan yang berbobot adalah langkah awal dalam penemuan ilmiah sejati.)</i>",
         "expected": [
-            "asking thoughtful questions is the first step toward scientific inquiry",
-            "asking questions is the first step toward scientific inquiry",
-            "first step toward scientific inquiry"
+            "asking thoughtful questions is the first step in genuine scientific discovery",
+            "asking thoughtful questions is the first step in scientific discovery",
+            "first step in genuine scientific discovery",
+            "asking thoughtful questions"
         ],
-        "primary_answer": "Asking thoughtful questions is the first step toward scientific inquiry."
+        "primary_answer": "Asking thoughtful questions is the first step in genuine scientific discovery."
     },
     {
         "id": "conv_adv_54",
         "badge": "💬 Tepat Waktu Cermin Rasa Hormat (Punctuality and Respect)",
-        "prompt": "<b>⏰ Situasi:</b> Kamu selalu datang lima menit lebih awal sebelum rapat dimulai.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa ketepatan waktu menunjukkan rasa saling menghargai dan dedikasi:\n<code>Punctuality demonstrates mutual respect and professional dedication.</code>\n<i>(Artinya: Ketepatan waktu menunjukkan rasa saling menghormati dan dedikasi profesional.)</i>",
+        "prompt": "<b>⌚ Rapat Proyek Tim:</b>\nKetua Tim: <i>\"Thank you everyone for arriving five minutes before our scheduled meeting time.\"</i>\nDenny: <i>\"When we show up on time, we show that we respect our colleagues' precious schedules.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa ketepatan waktu menunjukkan rasa saling menghargai dan profesionalisme:\n<code>Punctuality demonstrates mutual respect and personal professionalism.</code>\n<i>(Artinya: Ketepatan waktu menunjukkan rasa saling menghormati dan profesionalisme pribadi.)</i>",
         "expected": [
-            "punctuality demonstrates mutual respect and professional dedication",
-            "punctuality demonstrates mutual respect",
-            "demonstrates mutual respect and professional dedication"
+            "punctuality demonstrates mutual respect and personal professionalism",
+            "punctuality demonstrates mutual respect and professionalism",
+            "demonstrates mutual respect and personal professionalism",
+            "punctuality demonstrates mutual respect"
         ],
-        "primary_answer": "Punctuality demonstrates mutual respect and professional dedication."
+        "primary_answer": "Punctuality demonstrates mutual respect and personal professionalism."
     },
     {
         "id": "conv_adv_55",
         "badge": "💬 Perlindungan Satwa Liar (Protecting Endangered Wildlife)",
-        "prompt": "<b>🦏 Situasi:</b> Dalam kampanye perlindungan Badak Jawa dan Harimau Sumatera.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa hukum perlindungan satwa yang tegas mencegah perburuan liar:\n<code>Strict wildlife protection laws prevent illegal poaching and habitat loss.</code>\n<i>(Artinya: Hukum perlindungan satwa liar yang tegas mencegah perburuan liar dan hilangnya habitat.)</i>",
+        "prompt": "<b>🦏 Kampanye Konservasi Satwa:</b>\nWildlife Warden: <i>\"Illegal poaching and habitat destruction have pushed the Javan rhino to the brink of extinction.\"</i>\nSiska: <i>\"We cannot allow future generations to only see these majestic animals in photographs.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa hukum perlindungan satwa yang tegas mencegah kepunahan hewan langka:\n<code>Strict wildlife protection laws prevent vulnerable species from extinction.</code>\n<i>(Artinya: Undang-undang perlindungan satwa liar yang tegas mencegah kepunahan spesies rentan.)</i>",
         "expected": [
-            "strict wildlife protection laws prevent illegal poaching and habitat loss",
-            "wildlife protection laws prevent illegal poaching and habitat loss",
-            "prevent illegal poaching and habitat loss"
+            "strict wildlife protection laws prevent vulnerable species from extinction",
+            "strict wildlife protection laws prevent species from extinction",
+            "prevent vulnerable species from extinction",
+            "strict wildlife protection laws"
         ],
-        "primary_answer": "Strict wildlife protection laws prevent illegal poaching and habitat loss."
+        "primary_answer": "Strict wildlife protection laws prevent vulnerable species from extinction."
     },
     {
         "id": "conv_adv_56",
         "badge": "💬 Kolaborasi Internasional (International Cooperation)",
-        "prompt": "<b>🌐 Situasi:</b> Pada simulasi sidang PBB (Model UN), kamu mewakili delegasi pemuda.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kerja sama global mampu mengatasi tantangan besar seperti iklim:\n<code>International collaboration solves global challenges like climate change.</code>\n<i>(Artinya: Kolaborasi internasional menyelesaikan tantangan global seperti perubahan iklim.)</i>",
+        "prompt": "<b>🌐 Konferensi Global Pemuda:</b>\nDiplomat: <i>\"Climate crises and global public health issues do not respect national borders.\"</i>\nAnwar: <i>\"No single nation can conquer these complex planetary challenges by working in isolation.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kolaborasi internasional menyelesaikan masalah global yang kompleks secara efektif:\n<code>International collaboration solves global challenges through shared solutions.</code>\n<i>(Artinya: Kolaborasi internasional menyelesaikan tantangan global melalui solusi bersama.)</i>",
         "expected": [
-            "international collaboration solves global challenges like climate change",
-            "collaboration solves global challenges like climate change",
-            "solves global challenges like climate change"
+            "international collaboration solves global challenges through shared solutions",
+            "international collaboration solves global challenges",
+            "solves global challenges through shared solutions",
+            "international collaboration"
         ],
-        "primary_answer": "International collaboration solves global challenges like climate change."
+        "primary_answer": "International collaboration solves global challenges through shared solutions."
     },
     {
         "id": "conv_adv_57",
         "badge": "💬 Kesehatan Mental dan Raga (Mental and Physical Wellness)",
-        "prompt": "<b>🧘 Situasi:</b> Dalam pekan kesadaran kesehatan siswa di sekolah.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kesadaran kesehatan mental sama pentingnya dengan kebugaran fisik:\n<code>Mental health awareness is just as crucial as physical wellness.</code>\n<i>(Artinya: Kesadaran kesehatan mental sama pentingnya dengan kebugaran fisik.)</i>",
+        "prompt": "<b>❤️ Bincang Kesehatan Remaja:</b>\nCounselor: <i>\"When our emotions are burdened with chronic stress, our physical health suffers too.\"</i>\nFarah: <i>\"Taking care of our emotional state is just as essential as eating well and exercising.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa kesadaran kesehatan mental sama pentingnya dengan kebugaran fisik:\n<code>Mental health awareness is just as crucial as physical fitness.</code>\n<i>(Artinya: Kesadaran kesehatan mental sama pentingnya dengan kebugaran fisik.)</i>",
         "expected": [
-            "mental health awareness is just as crucial as physical wellness",
-            "mental health is just as crucial as physical wellness",
-            "as crucial as physical wellness"
+            "mental health awareness is just as crucial as physical fitness",
+            "mental health awareness is crucial as physical fitness",
+            "just as crucial as physical fitness",
+            "mental health awareness is just as crucial"
         ],
-        "primary_answer": "Mental health awareness is just as crucial as physical wellness."
+        "primary_answer": "Mental health awareness is just as crucial as physical fitness."
     },
     {
         "id": "conv_adv_58",
         "badge": "💬 Latihan Konsisten Menuju Kemahiran (Daily Practice and Mastery)",
-        "prompt": "<b>🎯 Situasi:</b> Kamu menasihati adik kelas yang ingin mahir memainkan biola.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa latihan konsisten setiap hari mengubah bakat menjadi kemahiran sejati:\n<code>Consistent daily practice turns natural talent into lasting mastery.</code>\n<i>(Artinya: Latihan harian yang konsisten mengubah bakat alami menjadi kemahiran yang abadi.)</i>",
+        "prompt": "<b>🎻 Di Kelas Musik:</b>\nGuru Musik: <i>\"Talent alone cannot create a virtuoso; daily disciplined practice is the secret.\"</i>\nGilang: <i>\"Even twenty minutes of focused repetition every afternoon builds tremendous dexterity.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa latihan harian yang konsisten mengubah bakat alami menjadi kemahiran sejati:\n<code>Consistent daily practice turns natural talent into lasting mastery.</code>\n<i>(Artinya: Latihan harian yang konsisten mengubah bakat alami menjadi penguasaan yang langgeng.)</i>",
         "expected": [
             "consistent daily practice turns natural talent into lasting mastery",
-            "daily practice turns natural talent into lasting mastery",
-            "turns natural talent into lasting mastery"
+            "consistent daily practice turns natural talent into mastery",
+            "turns natural talent into lasting mastery",
+            "consistent daily practice"
         ],
         "primary_answer": "Consistent daily practice turns natural talent into lasting mastery."
     },
     {
         "id": "conv_adv_59",
         "badge": "💬 Mengurangi Sampah Makanan (Preventing Food Waste)",
-        "prompt": "<b>🍱 Situasi:</b> Kamu mengamati banyak sisa makanan yang terbuang di kantin sekolah.\n\n👉 <b>Giliranmu:</b> Ingatkan bahwa mencegah sampah makanan membutuhkan perencanaan porsi yang bijak:\n<code>Preventing food waste requires mindful purchasing and meal planning.</code>\n<i>(Artinya: Mencegah sampah makanan membutuhkan pembelian dan perencanaan porsi makan yang bijak.)</i>",
+        "prompt": "<b>🍲 Edukasi Pengelolaan Dapur:</b>\nChef: <i>\"Millions of tons of delicious food end up in landfills while families struggle with hunger.\"</i>\nKartika: <i>\"We can make a huge difference right at home by cooking only what we actually consume.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa mencegah pemborosan makanan memerlukan belanja dan perencanaan porsi yang bijak:\n<code>Preventing food waste requires mindful purchasing and meal planning.</code>\n<i>(Artinya: Mencegah pemborosan makanan membutuhkan belanja yang cermat dan perencanaan menu makan.)</i>",
         "expected": [
             "preventing food waste requires mindful purchasing and meal planning",
             "preventing food waste requires mindful meal planning",
-            "mindful purchasing and meal planning"
+            "mindful purchasing and meal planning",
+            "preventing food waste requires"
         ],
         "primary_answer": "Preventing food waste requires mindful purchasing and meal planning."
     },
     {
         "id": "conv_adv_60",
         "badge": "💬 Transportasi Kereta Listrik (Electric Transit and Traffic)",
-        "prompt": "<b>🚊 Situasi:</b> Kamu mengamati kemacetan kota metropolitan dan solusi transportasi massal.\n\n👉 <b>Giliranmu:</b> Katakan bahwa kereta dan bus listrik mengurai kemacetan kota secara efisien:\n<code>Electric trains and buses alleviate urban traffic congestion efficiently.</code>\n<i>(Artinya: Kereta dan bus listrik meredakan kemacetan lalu lintas perkotaan secara efisien.)</i>",
+        "prompt": "<b>🚊 Transportasi Masa Depan:</b>\nPengamat Kota: <i>\"Private automobiles create endless gridlock and severe exhaust emissions in our metropolis.\"</i>\nBambang: <i>\"Modern electric railways provide fast, reliable, and emission-free daily commuting.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa kereta dan bus listrik mengurai kemacetan kota secara efisien:\n<code>Electric trains and buses alleviate urban traffic congestion efficiently.</code>\n<i>(Artinya: Kereta dan bus listrik meredakan kemacetan lalu lintas perkotaan secara efisien.)</i>",
         "expected": [
             "electric trains and buses alleviate urban traffic congestion efficiently",
             "electric trains and buses reduce traffic congestion efficiently",
-            "alleviate urban traffic congestion efficiently"
+            "alleviate urban traffic congestion efficiently",
+            "electric trains and buses"
         ],
         "primary_answer": "Electric trains and buses alleviate urban traffic congestion efficiently."
     },
     {
         "id": "conv_adv_61",
         "badge": "💬 Kepedulian Sosial bagi Kaum Rentan (Social Caring for Vulnerable)",
-        "prompt": "<b>🤲 Situasi:</b> Dalam kegiatan bakti sosial panti asuhan, kamu membagikan motivasi kepada relawan.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa menjadi warga yang baik berarti peduli pada sesama yang membutuhkan:\n<code>Citizenship means caring for vulnerable members of our society.</code>\n<i>(Artinya: Kewarganegaraan sejati berarti peduli terhadap anggota masyarakat kita yang rentan.)</i>",
+        "prompt": "<b>🤲 Kunjungan Panti Asuhan:</b>\nRelawan Senior: <i>\"A great nation is measured by how tenderly it supports orphans and the elderly.\"</i>\nNita: <i>\"Every citizen has a shared responsibility to uplift those facing hardship.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa menjadi warga yang baik berarti peduli pada sesama yang membutuhkan:\n<code>Citizenship means caring for vulnerable members of our society.</code>\n<i>(Artinya: Kewarganegaraan sejati berarti peduli terhadap anggota masyarakat kita yang rentan.)</i>",
         "expected": [
             "citizenship means caring for vulnerable members of our society",
             "caring for vulnerable members of our society",
-            "citizenship means caring for vulnerable members"
+            "citizenship means caring for vulnerable members",
+            "caring for vulnerable members"
         ],
         "primary_answer": "Citizenship means caring for vulnerable members of our society."
     },
     {
         "id": "conv_adv_62",
         "badge": "💬 Menghargai Proses Belajar (The Learning Journey)",
-        "prompt": "<b>📖 Situasi:</b> Kamu merefleksikan proses belajar bahasa Inggris dari nol hingga lancar.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa proses pembelajaran seringkali lebih bermakna daripada tujuan akhir:\n<code>The learning journey is often more transformative than the destination.</code>\n<i>(Artinya: Proses perjalanan belajar seringkali lebih mengubah diri daripada sekadar tujuan akhir.)</i>",
+        "prompt": "<b>📖 Refleksi Belajar Bahasa:</b>\nEnglish Tutor: <i>\"Fluency isn't reached overnight; it unfolds through continuous small steps.\"</i>\nYudi: <i>\"Looking back at how nervous I was on day one shows how much I've transformed.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa proses pembelajaran seringkali lebih bermakna daripada tujuan akhir:\n<code>The learning journey is often more transformative than the destination.</code>\n<i>(Artinya: Proses perjalanan belajar seringkali lebih mengubah diri daripada sekadar tujuan akhir.)</i>",
         "expected": [
             "the learning journey is often more transformative than the destination",
             "learning journey is more transformative than the destination",
-            "more transformative than the destination"
+            "more transformative than the destination",
+            "the learning journey is often more transformative"
         ],
         "primary_answer": "The learning journey is often more transformative than the destination."
     },
     {
         "id": "conv_adv_63",
         "badge": "💬 Menghapus Prasangka Sosial (Dismantling Stereotypes)",
-        "prompt": "<b>🕊️ Situasi:</b> Kamu berorasi dalam peringatan hari toleransi sedunia di aula sekolah.\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa pendidikan meruntuhkan prasangka dan memajukan martabat manusia:\n<code>Education dismantles stereotypes and promotes universal human dignity.</code>\n<i>(Artinya: Pendidikan meruntuhkan stereotip dan memajukan martabat manusia yang universal.)</i>",
+        "prompt": "<b>🕊️ Hari Toleransi Sedunia:</b>\nOrator: <i>\"Prejudice divides communities and creates harmful misunderstandings between groups.\"</i>\nLestari: <i>\"When we meet people with an open heart, we realize how much we share in common.\"</i>\n\n👉 <b>Giliranmu:</b> Sampaikan bahwa pendidikan meruntuhkan prasangka dan memajukan martabat manusia:\n<code>Education dismantles stereotypes and promotes universal human dignity.</code>\n<i>(Artinya: Pendidikan meruntuhkan stereotip dan memajukan martabat manusia yang universal.)</i>",
         "expected": [
             "education dismantles stereotypes and promotes universal human dignity",
             "education dismantles stereotypes and promotes human dignity",
-            "dismantles stereotypes and promotes universal human dignity"
+            "dismantles stereotypes and promotes universal human dignity",
+            "education dismantles stereotypes"
         ],
         "primary_answer": "Education dismantles stereotypes and promotes universal human dignity."
     },
     {
         "id": "conv_adv_64",
         "badge": "💬 Literasi Digital bagi Generasi Muda (Digital Literacy Safety)",
-        "prompt": "<b>💻 Situasi:</b> Kamu membawakan materi pelatihan internet sehat bagi adik-adik kelas.\n\n👉 <b>Giliranmu:</b> Katakan bahwa literasi digital membekali siswa menjelajahi informasi secara aman dan bijak:\n<code>Digital literacy equips learners to navigate information safely and wisely.</code>\n<i>(Artinya: Literasi digital membekali para siswa untuk menjelajahi informasi dengan aman dan bijak.)</i>",
+        "prompt": "<b>💻 Pelatihan Internet Sehat:</b>\nPemateri IT: <i>\"The online world is filled with brilliant knowledge, but also phishing scams and misinformation.\"</i>\nAgung: <i>\"Young students need critical judgment so they can distinguish truth from fabricated media.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa literasi digital membekali siswa menjelajahi informasi secara aman dan bijak:\n<code>Digital literacy equips learners to navigate information safely and wisely.</code>\n<i>(Artinya: Literasi digital membekali para siswa untuk menjelajahi informasi dengan aman dan bijak.)</i>",
         "expected": [
             "digital literacy equips learners to navigate information safely and wisely",
             "digital literacy equips learners to navigate information safely",
-            "navigate information safely and wisely"
+            "navigate information safely and wisely",
+            "digital literacy equips learners"
         ],
         "primary_answer": "Digital literacy equips learners to navigate information safely and wisely."
     },
     {
         "id": "conv_adv_65",
         "badge": "💬 Keteguhan Menggapai Cita-cita (Perseverance in Adversity)",
-        "prompt": "<b>🧗 Situasi:</b> Kamu menuliskan kalimat mutiara inspiratif di dinding ruang belajar bersama.\n\n👉 <b>Giliranmu:</b> Tuliskan bahwa ketekunan di tengah rintangan menjadi ciri orang-orang sukses:\n<code>Perseverance in the face of adversity defines great achievers.</code>\n<i>(Artinya: Ketekunan dalam menghadapi kesulitan menentukan para peraih keberhasilan besar.)</i>",
+        "prompt": "<b>🧗 Motivasi Meraih Mimpi:</b>\nPembicara Tamu: <i>\"Every accomplished scientist, artist, and athlete faced moments where giving up seemed easy.\"</i>\nCitra: <i>\"Those who reach their goals are the ones who persist through difficulty with quiet determination.\"</i>\n\n👉 <b>Giliranmu:</b> Tuliskan bahwa ketekunan di tengah rintangan menjadi ciri orang-orang sukses:\n<code>Perseverance in the face of adversity defines great achievers.</code>\n<i>(Artinya: Ketekunan dalam menghadapi kesulitan menentukan para peraih keberhasilan besar.)</i>",
         "expected": [
             "perseverance in the face of adversity defines great achievers",
             "perseverance in the face of adversity",
-            "defines great achievers"
+            "defines great achievers",
+            "perseverance in the face of adversity defines achievers"
         ],
         "primary_answer": "Perseverance in the face of adversity defines great achievers."
     },
     {
         "id": "conv_adv_66",
         "badge": "💬 Masa Depan Cerah Melalui Pendidikan (Brighter Future for Indonesia)",
-        "prompt": "<b>🇮🇩 Situasi:</b> Kamu membagikan mimpi dan visimu untuk kemajuan generasi penerus bangsa.\n\n👉 <b>Giliranmu:</b> Katakan bahwa masa depan yang cerah berawal dari pendidikan berkualitas untuk semua:\n<code>A brighter future begins with accessible, high-quality education for all.</code>\n<i>(Artinya: Masa depan yang lebih cerah bermula dari pendidikan bermutu yang dapat diakses semua orang.)</i>",
+        "prompt": "<b>🇮🇩 Visi Generasi Emas:</b>\nTokoh Pemuda: <i>\"Our nation's greatest treasure is not oil or minerals, but the brilliance of our youth.\"</i>\nRizki: <i>\"When every child in every remote island has access to great teachers, our country will flourish.\"</i>\n\n👉 <b>Giliranmu:</b> Katakan bahwa masa depan yang cerah berawal dari pendidikan berkualitas untuk semua:\n<code>A brighter future begins with accessible, high-quality education for all.</code>\n<i>(Artinya: Masa depan yang lebih cerah bermula dari pendidikan bermutu yang dapat diakses semua orang.)</i>",
         "expected": [
             "a brighter future begins with accessible, high-quality education for all",
             "a brighter future begins with accessible high-quality education for all",
-            "a brighter future begins with high-quality education for all"
+            "a brighter future begins with high-quality education for all",
+            "accessible, high-quality education for all",
+            "accessible high-quality education for all"
         ],
         "primary_answer": "A brighter future begins with accessible, high-quality education for all."
     }

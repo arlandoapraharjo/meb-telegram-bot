@@ -147,7 +147,28 @@ class TestStudentQueryAndJailbreak(unittest.IsolatedAsyncioTestCase):
         self.assertIn("Kunci Jawaban", key_reveal)
         self.assertIn("<code>am</code>", key_reveal)
 
+    def test_vocabulary_nine_hint_regression(self) -> None:
+        """Verify /hint on vocabulary numbers (e.g. voc_beg_52 - Nine) returns pedagogical clues, not generic boilerplate."""
+        ex = content_bank.get_exercise_by_id("voc_beg_52")
+        self.assertIsNotNone(ex)
+
+        hint = content_bank.get_offline_hint(
+            active_exercise=ex,
+            mode=config.MODE_VOCABULARY,
+            level=config.LEVEL_BEGINNER,
+            query_text="minta petunjuk",
+        )
+        # Must give intelligent clues
+        self.assertIn("Petunjuk Jawaban", hint)
+        self.assertIn("N...", hint)
+        self.assertIn("4 huruf", hint)
+        self.assertIn("N _ _ e", hint)
+        self.assertIn("Sembilan (9)", hint)
+        # Must NOT return generic 'perhatikan instruksi di bagian Giliranmu'
+        self.assertNotIn("perhatikan instruksi di bagian", hint)
+
     async def test_text_handler_routes_jailbreak(self) -> None:
+
         """Verify text_message_handler intercepts jailbreak during an active exercise without calling LLM."""
         update = MagicMock(spec=Update)
         message = MagicMock(spec=Message)
