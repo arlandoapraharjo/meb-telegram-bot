@@ -32,6 +32,7 @@ import config
 from handlers import (
     global_error_handler,
     help_command,
+    hint_command,
     menu_callback_handler,
     setup_bot_profile,
     start_command,
@@ -182,6 +183,7 @@ def create_bot_application(token: str) -> Application:
 
     # 3. Register command handlers
     app.add_handler(CommandHandler("start", start_command))
+    app.add_handler(CommandHandler("hint", hint_command))
     app.add_handler(CommandHandler("help", help_command))
 
     # 4. Register callback query handlers (for learning modes and back to menu)

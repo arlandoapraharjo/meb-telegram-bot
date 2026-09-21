@@ -264,6 +264,14 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     if last_msg_id and update.effective_chat:
         await strip_previous_reply_markup(context, update.effective_chat.id, last_msg_id)
 
+    # Reset active exercise state upon returning to /start
+    user_data["active_exercise"] = None
+    user_data["active_prompt"] = None
+    user_data["active_mode"] = None
+    user_data["active_exercise_id"] = None
+    user_data["active_exercise_completed"] = False
+    user_data["active_msg_id"] = None
+
     bot_name, bot_username = _extract_bot_identity(context)
     welcome_text = get_welcome_message(bot_name, bot_username) if (bot_name or bot_username) else WELCOME_MESSAGE
 
@@ -298,9 +306,11 @@ def get_help_message(
         "2. Pilih topik yang ingin kamu pelajari.\n"
         "3. Ketik jawabanmu langsung di pesan chat saat soal muncul.\n"
         "4. Bot akan mengevaluasi jawabanmu secara ramah dan edukatif!\n"
-        "5. Gunakan tombol <b>🔄 Latihan Lain</b> untuk soal baru, atau <b>🔙 Menu Utama</b> untuk ganti materi.\n\n"
+        "5. Ketik /hint jika kamu butuh petunjuk atau bantuan pada soal aktif.\n"
+        "6. Gunakan tombol <b>🔄 Latihan Lain</b> untuk soal baru, atau <b>🔙 Menu Utama</b> untuk ganti materi.\n\n"
         "📌 <b>Perintah Tersedia:</b>\n"
         "• /start - Membuka menu utama pembelajaran\n"
+        "• /hint - Meminta petunjuk untuk soal yang sedang aktif\n"
         "• /help - Menampilkan panduan bantuan ini"
     )
 
@@ -373,6 +383,7 @@ BOT_SHORT_DESC_ID: str = get_bot_short_desc_id()
 
 BOT_COMMANDS = [
     BotCommand("start", "Buka menu utama belajar (Open main menu)"),
+    BotCommand("hint", "Petunjuk latihan aktif (Hint for active exercise)"),
     BotCommand("help", "Panduan & bantuan belajar (User guide & help)"),
 ]
 
@@ -450,6 +461,88 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 
 @rate_limited()
+async def hint_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Handles /hint command:
+    - Provides a contextual pedagogical hint for the active exercise.
+    - If no exercise is active, provides clear error handling and directs user to /start.
+    - If exercise is already completed, informs the user to tap 'Next Exercise'.
+    """
+    if update.message is None:
+        return
+
+    # Security: Restrict interactions to private chats only
+    if update.effective_chat and update.effective_chat.type != constants.ChatType.PRIVATE:
+        return
+
+    user_data = context.user_data if context.user_data is not None else {}
+    active_exercise = user_data.get("active_exercise")
+    active_mode = user_data.get("active_mode", config.MODE_DAILY_CONVERSATION)
+    current_level = user_data.get("level", config.DEFAULT_LEVEL)
+    active_prompt = user_data.get("active_prompt", "")
+    is_completed = user_data.get("active_exercise_completed", False)
+
+    # 1. Error handling: No active exercise
+    if not active_exercise:
+        keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🚀 Buka Menu Belajar (/start)", callback_data=config.ACTION_MAIN_MENU)]
+        ])
+        await update.message.reply_text(
+            text=(
+                "⚠️ <b>Belum ada soal latihan yang aktif!</b>\n\n"
+                "Petunjuk (/hint) hanya bisa digunakan saat kamu sedang mengerjakan soal latihan.\n"
+                "Silakan pilih materi di menu utama terlebih dahulu dengan mengetik /start ya! 😊"
+            ),
+            reply_markup=keyboard,
+            parse_mode=constants.ParseMode.HTML,
+        )
+        return
+
+    # 2. Error handling: Active exercise already completed
+    if is_completed:
+        await update.message.reply_text(
+            text=(
+                "🎉 <b>Latihan ini sudah kamu selesaikan dengan benar!</b>\n\n"
+                "Kamu tidak butuh petunjuk lagi untuk soal ini. "
+                "Yuk tekan tombol <b>🔄 Latihan Lain</b> di bawah untuk mencoba soal baru, "
+                "atau <b>🔙 Menu Utama</b> untuk memilih materi lain! 😊"
+            ),
+            reply_markup=get_mode_keyboard(active_mode),
+            parse_mode=constants.ParseMode.HTML,
+        )
+        return
+
+    # Show typing indicator while generating hint
+    if update.effective_chat:
+        try:
+            await context.bot.send_chat_action(
+                chat_id=update.effective_chat.id,
+                action=constants.ChatAction.TYPING,
+            )
+        except Exception:
+            pass
+
+    # Optional user query text after /hint (e.g., "/hint apa artinya?")
+    raw_args = update.message.text.strip()
+    query_text = raw_args[5:].strip() if len(raw_args) > 5 else "minta petunjuk"
+
+    hint_text = await gemini_service.explain_or_hint_exercise(
+        mode=active_mode,
+        level=current_level,
+        active_prompt=active_prompt,
+        user_text=query_text,
+        active_exercise=active_exercise,
+    )
+
+    sent_msg = await update.message.reply_text(
+        text=sanitize_outgoing_text(hint_text),
+        reply_markup=get_mode_keyboard(active_mode),
+        parse_mode=constants.ParseMode.HTML,
+    )
+    user_data["last_interactive_msg_id"] = sent_msg.message_id
+
+
+@rate_limited()
 async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     Handles inline keyboard callbacks:
@@ -481,6 +574,13 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
 
     # 1. Main Menu Navigation
     if data == config.ACTION_MAIN_MENU:
+        # Reset active exercise state
+        user_data["active_exercise"] = None
+        user_data["active_prompt"] = None
+        user_data["active_mode"] = None
+        user_data["active_exercise_id"] = None
+        user_data["active_exercise_completed"] = False
+        user_data["active_msg_id"] = None
         try:
             await query.edit_message_text(
                 text=welcome_text,
@@ -493,6 +593,11 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
 
     # 2. Level Selection Menu
     if data == config.ACTION_SELECT_LEVEL:
+        user_data["active_exercise"] = None
+        user_data["active_prompt"] = None
+        user_data["active_exercise_id"] = None
+        user_data["active_exercise_completed"] = False
+        user_data["active_msg_id"] = None
         level_text = (
             "⚙️ <b>Pilih Tingkat Kemampuan (Level):</b>\n\n"
             "• <b>🟢 Pemula (Beginner):</b> To be (am/is/are), anggota tubuh, kata kerja dasar, & susun kata mudah.\n"
@@ -516,6 +621,11 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
         if new_level in config.LEVEL_INFO:
             user_data["level"] = new_level
             current_level = new_level
+            user_data["active_exercise"] = None
+            user_data["active_prompt"] = None
+            user_data["active_exercise_id"] = None
+            user_data["active_exercise_completed"] = False
+            user_data["active_msg_id"] = None
             level_name = config.LEVEL_INFO[new_level]["title"]
             logger.info("User %s changed level to %s", update.effective_user.id if update.effective_user else 0, new_level)
             try:
@@ -535,8 +645,10 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
 
         exercise = await fetch_exercise(active_mode, current_level, exclude_id=last_id)
         user_data["last_exercise_id"] = exercise.get("id")
+        user_data["active_exercise_id"] = exercise.get("id")
         user_data["active_prompt"] = exercise.get("prompt", "")
         user_data["active_exercise"] = exercise
+        user_data["active_exercise_completed"] = False
 
         mode_badge = exercise.get("badge", "Practice Challenge")
         level_badge = config.LEVEL_INFO[current_level]["icon"]
@@ -544,14 +656,19 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
         message_text = (
             f"<b>{html.escape(exercise['title'])}</b> [{level_badge}]\n"
             f"<i>{html.escape(mode_badge)}</i>\n\n"
-            f"{exercise['prompt']}"
+            f"{exercise['prompt']}\n\n"
+            f"💡 <i>Ketik /hint jika kamu butuh bantuan petunjuk!</i>"
         )
         try:
-            await query.edit_message_text(
+            sent_edit = await query.edit_message_text(
                 text=message_text,
                 reply_markup=get_mode_keyboard(active_mode),
                 parse_mode=constants.ParseMode.HTML,
             )
+            if sent_edit and hasattr(sent_edit, "message_id"):
+                user_data["active_msg_id"] = sent_edit.message_id
+            elif query.message:
+                user_data["active_msg_id"] = query.message.message_id
         except Exception as exc:
             logger.debug("Error loading next exercise: %s", exc)
         return
@@ -561,22 +678,29 @@ async def menu_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
         user_data["active_mode"] = data
         exercise = await fetch_exercise(data, current_level)
         user_data["last_exercise_id"] = exercise.get("id")
+        user_data["active_exercise_id"] = exercise.get("id")
         user_data["active_prompt"] = exercise.get("prompt", "")
         user_data["active_exercise"] = exercise
+        user_data["active_exercise_completed"] = False
 
         level_badge = config.LEVEL_INFO[current_level]["icon"]
         message_text = (
             f"<b>{html.escape(exercise['title'])}</b> [{level_badge}]\n"
             f"<i>{html.escape(exercise['badge'])}</i>\n\n"
-            f"{exercise['prompt']}"
+            f"{exercise['prompt']}\n\n"
+            f"💡 <i>Ketik /hint jika kamu butuh bantuan petunjuk!</i>"
         )
 
         try:
-            await query.edit_message_text(
+            sent_edit = await query.edit_message_text(
                 text=message_text,
                 reply_markup=get_mode_keyboard(data),
                 parse_mode=constants.ParseMode.HTML,
             )
+            if sent_edit and hasattr(sent_edit, "message_id"):
+                user_data["active_msg_id"] = sent_edit.message_id
+            elif query.message:
+                user_data["active_msg_id"] = query.message.message_id
         except Exception as exc:
             logger.debug("Error opening mode %s: %s", data, exc)
 
@@ -586,6 +710,9 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     """
     Handles student messages with input guardrails:
     - Caps text at MAX_MESSAGE_LENGTH (300 characters).
+    - Prevents answering when no active exercise is loaded (e.g. in menu).
+    - Prevents answering when active exercise is already completed.
+    - Prevents answering old/stale exercises from prior messages.
     - Evaluates student response using the Conversational English Coach persona (Gemini / Offline).
     - Enforces honest, constructive pedagogical feedback without false praise.
     - Provides constructive feedback and inline next-exercise action buttons.
@@ -611,7 +738,6 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     else:
         user_text = raw_text
 
-
     user_data = context.user_data if context.user_data is not None else {}
     active_mode = user_data.get("active_mode", config.MODE_DAILY_CONVERSATION)
     current_level = user_data.get("level", config.DEFAULT_LEVEL)
@@ -623,7 +749,52 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     if last_msg_id and update.effective_chat:
         await strip_previous_reply_markup(context, update.effective_chat.id, last_msg_id)
 
-    # 1. Anti-Jailbreak / Prompt Injection Pre-screening (0 API tokens consumed)
+    # 1. State Check: Is there an active exercise?
+    if not active_exercise:
+        sent_msg = await update.message.reply_text(
+            text=(
+                "⚠️ <b>Belum ada soal latihan yang aktif!</b>\n\n"
+                "Kamu sedang berada di menu atau belum memilih materi latihan.\n"
+                "Silakan pilih topik materi di atas atau ketik /start untuk mulai berlatih ya! 😊"
+            ),
+            reply_markup=get_main_menu_keyboard(current_level),
+            parse_mode=constants.ParseMode.HTML,
+        )
+        user_data["last_interactive_msg_id"] = sent_msg.message_id
+        return
+
+    # 2. State Check: Has this exercise already been completed?
+    if user_data.get("active_exercise_completed", False):
+        sent_msg = await update.message.reply_text(
+            text=(
+                "🎉 <b>Latihan ini sudah kamu selesaikan dengan benar!</b>\n\n"
+                "Tekan tombol <b>🔄 Latihan Lain</b> di bawah untuk mencoba soal baru, "
+                "atau <b>🔙 Menu Utama</b> untuk memilih materi lain ya! 😊"
+            ),
+            reply_markup=get_mode_keyboard(active_mode),
+            parse_mode=constants.ParseMode.HTML,
+        )
+        user_data["last_interactive_msg_id"] = sent_msg.message_id
+        return
+
+    # 3. State Check: Replying to an old/stale message
+    if update.message.reply_to_message:
+        replied_id = update.message.reply_to_message.message_id
+        active_msg_id = user_data.get("active_msg_id")
+        if active_msg_id and replied_id != active_msg_id:
+            sent_msg = await update.message.reply_text(
+                text=(
+                    "⚠️ <b>Soal yang kamu balas sudah tidak aktif!</b>\n\n"
+                    "Kamu sudah beralih ke soal atau menu lain. "
+                    "Silakan jawab soal yang sedang aktif saat ini ya! 😊"
+                ),
+                reply_markup=get_mode_keyboard(active_mode),
+                parse_mode=constants.ParseMode.HTML,
+            )
+            user_data["last_interactive_msg_id"] = sent_msg.message_id
+            return
+
+    # 4. Anti-Jailbreak / Prompt Injection Pre-screening (0 API tokens consumed)
     jailbreak_msg = gemini_service.detect_potential_jailbreak(user_text)
     if jailbreak_msg:
         sent_msg = await update.message.reply_text(
@@ -644,24 +815,28 @@ async def text_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         except Exception:
             pass
 
-    # 2. Student Question / Clarification / Hint Intent ('apa maksudnya', 'apa jawabannya')
-    if gemini_service.is_student_query_or_hint_request(user_text):
-        feedback_text = await gemini_service.explain_or_hint_exercise(
-            mode=active_mode,
-            level=current_level,
-            active_prompt=active_prompt,
-            user_text=user_text,
-            active_exercise=active_exercise,
-        )
-    else:
-        # 3. Conversational Coach Evaluation for Student Answer Submissions
-        feedback_text = await gemini_service.evaluate_student_message(
-            mode=active_mode,
-            level=current_level,
-            active_prompt=active_prompt,
-            user_text=user_text,
-            active_exercise=active_exercise,
-        )
+    # 5. Conversational Coach Evaluation for Student Answer Submissions
+    feedback_text = await gemini_service.evaluate_student_message(
+        mode=active_mode,
+        level=current_level,
+        active_prompt=active_prompt,
+        user_text=user_text,
+        active_exercise=active_exercise,
+    )
+
+    # Check if answer was accurate/correct to mark completed
+    is_correct = False
+    if active_exercise and active_exercise.get("expected"):
+        norm_user = content_bank._normalize_answer(user_text)
+        for exp in active_exercise["expected"]:
+            if norm_user == content_bank._normalize_answer(exp):
+                is_correct = True
+                break
+    if "Jawabanmu Tepat Sekali!" in feedback_text:
+        is_correct = True
+
+    if is_correct:
+        user_data["active_exercise_completed"] = True
 
     sent_msg = await update.message.reply_text(
         text=sanitize_outgoing_text(feedback_text),

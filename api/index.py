@@ -43,6 +43,7 @@ from bot import TokenRedactingFilter  # noqa: E402
 from handlers import (  # noqa: E402
     global_error_handler,
     help_command,
+    hint_command,
     menu_callback_handler,
     start_command,
     text_message_handler,
@@ -95,6 +96,7 @@ def create_ptb_application() -> Application:
 
     # 1. Register command handlers
     application.add_handler(CommandHandler("start", start_command))
+    application.add_handler(CommandHandler("hint", hint_command))
     application.add_handler(CommandHandler("help", help_command))
 
     # 2. Register callback query handlers (6 learning tracks + level selector)
